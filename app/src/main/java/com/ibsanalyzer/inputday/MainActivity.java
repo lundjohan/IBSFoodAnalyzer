@@ -31,6 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void newMealActivity(View view) {
         Intent intent = new Intent(this, MealActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 }
