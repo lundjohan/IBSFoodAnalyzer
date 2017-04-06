@@ -8,15 +8,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private LinearLayout eventsLayout;
+    private RelativeLayout eventsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        eventsLayout = (RelativeLayout)  findViewById(R.id.eventsLayout);
 
     }
     /** Called when the user is finished with customizing new meal */
@@ -29,5 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void newMealActivity(View view) {
         Intent intent = new Intent(this, MealActivity.class);
+        startActivity(intent);
     }
 }
