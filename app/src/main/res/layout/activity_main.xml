@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,229 +9,88 @@
     tools:context="com.ibsanalyzer.inputday.MainActivity"
     tools:ignore="ExtraText">
 
-
-    <LinearLayout
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        tools:layout_editor_absoluteY="165dp"
+        tools:layout_editor_absoluteX="90dp">
 
-        <LinearLayout
-            android:id="@+id/icon_layout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="167dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="1.0">
 
-            <ImageButton
-                android:id="@+id/imageButton1"
-                android:layout_width="53dp"
-                android:layout_height="49dp"
-                android:layout_weight="1"
-                android:background="@drawable/meal"
-                tools:layout_editor_absoluteX="34dp"
-                tools:layout_editor_absoluteY="434dp" />
+        <ImageButton
+            android:id="@+id/mealBtn"
+            android:layout_width="53dp"
+            android:layout_height="49dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/meal"
+            android:contentDescription="Meal"
+            android:onClick="newMealActivity" />
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="53dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="Meal"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton"
-                tools:layout_editor_absoluteX="34dp" />
+        <ImageButton
+            android:id="@+id/otherBtn"
+            android:layout_width="53dp"
+            android:layout_height="49dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/mealBtn"
+            android:layout_toRightOf="@id/mealBtn"
+            android:layout_weight="1"
+            android:background="@drawable/meal"
+            android:contentDescription="Other"
+            android:onClick="newMeal" />
 
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/exerciseBtn"
+            android:layout_width="53dp"
+            android:layout_height="49dp"
+            android:layout_weight="1"
+            android:background="@drawable/meal"
+            android:contentDescription="Exercise"
+            android:layout_alignParentBottom = "true"
+            android:layout_toEndOf= "@id/otherBtn"
+            android:layout_toRightOf = "@id/otherBtn" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="0px"
-            android:layout_weight="1" />
+        <ImageButton
+            android:id="@+id/bmBtn"
+            android:layout_width="53dp"
+            android:layout_height="49dp"
+            android:layout_weight="1"
+            android:background="@drawable/meal"
+            android:contentDescription="Bowel Movement"
+            android:layout_alignParentBottom = "true"
+            android:layout_toEndOf= "@id/exerciseBtn"
+            android:layout_toRightOf = "@id/exerciseBtn" />
 
-        <LinearLayout
-            android:id="@+id/icon_layout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent">
+        <ImageButton
+            android:id="@+id/scoreBtn"
+            android:layout_width="53dp"
+            android:layout_height="49dp"
+            android:layout_weight="1"
+            android:background="@drawable/meal"
+            android:layout_alignParentBottom = "true"
+            android:layout_toEndOf= "@id/bmBtn"
+            android:layout_toRightOf = "@id/bmBtn" />
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="53dp"
-                android:layout_height="49dp"
-                android:layout_weight="1"
-                android:background="@drawable/meal"
-                tools:layout_editor_absoluteX="34dp"
-                tools:layout_editor_absoluteY="434dp" />
+        <ImageButton
+            android:id="@+id/templateBtn"
+            android:layout_width="53dp"
+            android:layout_height="49dp"
+            android:layout_weight="1"
+            android:background="@drawable/meal"
+            android:contentDescription="Template"
+            android:layout_alignParentBottom = "true"
+            android:layout_toEndOf= "@id/scoreBtn"
+            android:layout_toRightOf = "@id/scoreBtn" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="53dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="@string/meal_icon_label"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton"
-                tools:layout_editor_absoluteX="34dp" />
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/icon_layout3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@+id/icon_layout2">
-
-            <ImageButton
-                android:id="@+id/imageButton3"
-                android:layout_width="53dp"
-                android:layout_height="49dp"
-                android:layout_weight="1"
-                android:background="@drawable/meal"
-                android:contentDescription="Exercise"
-                tools:layout_editor_absoluteX="34dp"
-                tools:layout_editor_absoluteY="434dp" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="53dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="@string/meal_icon_label"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton"
-                tools:layout_editor_absoluteX="34dp" />
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/icon_layout4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@+id/icon_layout3">
-
-            <ImageButton
-                android:id="@+id/imageButton4"
-                android:layout_width="53dp"
-                android:layout_height="49dp"
-                android:layout_weight="1"
-                android:background="@drawable/meal"
-                android:contentDescription="Exercise"
-                tools:layout_editor_absoluteX="34dp"
-                tools:layout_editor_absoluteY="434dp" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="53dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="@string/meal_icon_label"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton"
-                tools:layout_editor_absoluteX="34dp" />
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/icon_layout5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@+id/icon_layout4">
-
-            <ImageButton
-                android:id="@+id/imageButton5"
-                android:layout_width="53dp"
-                android:layout_height="49dp"
-                android:layout_weight="1"
-                android:background="@drawable/meal"
-                android:contentDescription="Exercise"
-                tools:layout_editor_absoluteX="34dp"
-                tools:layout_editor_absoluteY="434dp" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="53dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="@string/meal_icon_label"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton"
-                tools:layout_editor_absoluteX="34dp" />
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/icon_layout6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
-
-            <ImageButton
-                android:id="@+id/imageButton6"
-                android:layout_width="53dp"
-                android:layout_height="49dp"
-                android:layout_weight="1"
-                android:background="@drawable/meal"
-                android:contentDescription="Exercise"
-                tools:layout_editor_absoluteX="34dp"
-                tools:layout_editor_absoluteY="434dp" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="53dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="@string/meal_icon_label"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton"
-                tools:layout_editor_absoluteX="34dp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </android.support.constraint.ConstraintLayout>

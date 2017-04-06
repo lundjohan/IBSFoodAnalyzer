@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">InputDay</string>
     <string name="meal_icon_label">Meal</string>
+    <string name="other_icon_label">Other</string>
+    <string name="exercise_icon_label">Exercise</string>
+    <string name="bm_icon_label">BM</string>
+    <string name="score_icon_label">Score</string>
+    <string name="template_icon_label">Template</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
