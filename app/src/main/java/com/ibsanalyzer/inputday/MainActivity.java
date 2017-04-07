@@ -12,16 +12,19 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.ibsanalyzer.base_classes.Meal;
+
 public class MainActivity extends AppCompatActivity {
     static private final int NEW_MEAL = 1000;
 
-    private RelativeLayout eventsLayout;
+    private LinearLayout eventsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        eventsLayout = (RelativeLayout) findViewById(R.id.eventsLayout);
+        eventsLayout = (LinearLayout) findViewById(R.id.eventsLayout);
 
     }
 
@@ -45,9 +48,12 @@ public class MainActivity extends AppCompatActivity {
             if (requestCode == NEW_MEAL) {
                 if (data.hasExtra("returnMealJSON")) {
                     String mealJSONData = data.getExtras().getString("returnMealJSON");
+                    Gson gson = new Gson();
+                    Meal meal = gson.fromJson(mealJSONData, Meal.class);
                     View mealBox = getLayoutInflater().inflate(R.layout.meal_box, eventsLayout);
                     TextView textView = new TextView(this);
-                    textView.setText(mealJSONData);
+                    String text = meal.getTime().getHour()+':'+meal.getTime().getMinute()+ " Portions: "+meal.getPortions() + "Tags: "+meal.getTags().get(0).getName()+" x"+meal.getTags().get(0).getSize();
+                    textView.setText(text);
                     eventsLayout.addView(textView);
 
                 }

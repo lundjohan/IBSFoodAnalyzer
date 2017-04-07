@@ -9,104 +9,106 @@
     tools:context="com.ibsanalyzer.inputday.MainActivity"
     tools:ignore="ExtraText">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/eventsLayout"
         android:layout_width="0dp"
         android:layout_height="446dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/eventsBtnLayout"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent">
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/eventsBtnLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginBottom="0dp">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp">
 
+    </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/mealBtn"
-            android:layout_width="53dp"
-            android:layout_height="49dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@drawable/meal"
-            android:contentDescription="Meal"
-            android:onClick="newMealActivity" />
+    <ImageButton
+        android:id="@+id/mealBtn"
+        android:layout_width="53dp"
+        android:layout_height="49dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/meal"
+        android:contentDescription="Meal"
+        android:onClick="newMealActivity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/otherBtn" />
 
-        <ImageButton
-            android:id="@+id/otherBtn"
-            android:layout_width="53dp"
-            android:layout_height="49dp"
+    <ImageButton
+        android:id="@+id/otherBtn"
+        android:layout_width="53dp"
+        android:layout_height="49dp"
 
-            android:layout_weight="1"
-            android:background="@drawable/meal"
-            android:contentDescription="Other"
-            android:onClick="newMeal"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/mealBtn"
-            android:layout_toEndOf="@+id/mealBtn" />
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/meal"
+        android:contentDescription="Other"
+        android:onClick="newMeal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toRightOf="@id/mealBtn"
+        app:layout_constraintRight_toLeftOf="@id/exerciseBtn" />
 
-        <ImageButton
-            android:id="@+id/exerciseBtn"
-            android:layout_width="53dp"
-            android:layout_height="49dp"
+    <ImageButton
+        android:id="@+id/exerciseBtn"
+        android:layout_width="53dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/meal"
+        android:contentDescription="Exercise"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/otherBtn"
+        app:layout_constraintRight_toLeftOf="@id/bmBtn" />
 
-            android:layout_toEndOf="@id/otherBtn"
-            android:layout_toRightOf="@id/otherBtn"
-            android:layout_weight="1"
-            android:background="@drawable/meal"
-            android:contentDescription="Exercise" />
+    <ImageButton
+        android:id="@+id/bmBtn"
+        android:layout_width="53dp"
+        android:layout_height="49dp"
 
-        <ImageButton
-            android:id="@+id/bmBtn"
-            android:layout_width="53dp"
-            android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_toEndOf="@id/exerciseBtn"
+        android:layout_toRightOf="@id/exerciseBtn"
+        android:layout_weight="1"
+        android:background="@drawable/meal"
+        android:contentDescription="Bowel Movement"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/exerciseBtn"
+        app:layout_constraintRight_toLeftOf="@id/scoreBtn" />
 
-            android:layout_toEndOf="@id/exerciseBtn"
-            android:layout_toRightOf="@id/exerciseBtn"
-            android:layout_weight="1"
-            android:background="@drawable/meal"
-            android:contentDescription="Bowel Movement" />
+    <ImageButton
+        android:id="@+id/scoreBtn"
+        android:layout_width="53dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/meal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/bmBtn"
+        app:layout_constraintRight_toLeftOf="@+id/templateBtn" />
 
-        <ImageButton
-            android:id="@+id/scoreBtn"
-            android:layout_width="53dp"
-            android:layout_height="49dp"
-
-            android:layout_toEndOf="@id/bmBtn"
-            android:layout_toRightOf="@id/bmBtn"
-            android:layout_weight="1"
-            android:background="@drawable/meal" />
-
-        <ImageButton
-            android:id="@+id/templateBtn"
-            android:layout_width="53dp"
-            android:layout_height="49dp"
-
-            android:layout_toEndOf="@id/scoreBtn"
-            android:layout_toRightOf="@id/scoreBtn"
-            android:layout_weight="1"
-            android:background="@drawable/meal"
-            android:contentDescription="Template" />
-
-    </RelativeLayout>
-
-
+    <ImageButton
+        android:id="@+id/templateBtn"
+        android:layout_width="53dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/meal"
+        android:contentDescription="Template"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/scoreBtn"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>
