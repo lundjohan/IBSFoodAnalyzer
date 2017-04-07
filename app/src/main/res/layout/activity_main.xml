@@ -37,7 +37,8 @@
         android:onClick="newMealActivity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/otherBtn" />
+        app:layout_constraintRight_toLeftOf="@+id/otherBtn"
+        app:layout_constraintHorizontal_chainStyle="spread" />
 
     <ImageButton
         android:id="@+id/otherBtn"
@@ -55,7 +56,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toRightOf="@id/mealBtn"
-        app:layout_constraintRight_toLeftOf="@id/exerciseBtn" />
+        app:layout_constraintRight_toLeftOf="@+id/exerciseBtn" />
 
     <ImageButton
         android:id="@+id/exerciseBtn"
@@ -68,7 +69,7 @@
         android:contentDescription="Exercise"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/otherBtn"
-        app:layout_constraintRight_toLeftOf="@id/bmBtn" />
+        app:layout_constraintRight_toLeftOf="@+id/bmBtn" />
 
     <ImageButton
         android:id="@+id/bmBtn"
@@ -84,13 +85,13 @@
         android:contentDescription="Bowel Movement"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/exerciseBtn"
-        app:layout_constraintRight_toLeftOf="@id/scoreBtn" />
+        app:layout_constraintRight_toLeftOf="@+id/scoreBtn" />
 
     <ImageButton
         android:id="@+id/scoreBtn"
         android:layout_width="53dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_weight="1"

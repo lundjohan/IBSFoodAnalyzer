@@ -29,7 +29,7 @@ public class MealActivity extends AppCompatActivity implements TextWatcher {
     private TextView suggestions;
     private Button doneBtn;
     private static final String[] tagsFromDB = {"milk", "yoghurt", "spinach", "oats"};
-    private final Meal meal;
+    private Meal meal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +43,7 @@ public class MealActivity extends AppCompatActivity implements TextWatcher {
 
     @Override
     public void finish() {
-        Meal meal;
+      /*  Meal meal = null;
         String str;
 
         //must replace anonymous class.
@@ -57,7 +57,7 @@ public class MealActivity extends AppCompatActivity implements TextWatcher {
         if (meal == null){
             setResult(RESULT_CANCELED);
             super.finish();
-        }
+        }*/
         //wait for user to do all the inputs for a meal. Some other thread must take care of the processing needed there.
         //user has pressed done or cancelled, or made some error, so we are back here.
 
