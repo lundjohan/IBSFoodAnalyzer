@@ -41,27 +41,13 @@ public class MealActivity extends AppCompatActivity implements TextWatcher {
 
     }
 
+    public void doneClicked(View view){
+        //ev samla ihop data här.
+
+        finish();
+    }
     @Override
     public void finish() {
-      /*  Meal meal = null;
-        String str;
-
-        //must replace anonymous class.
-        doneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //waiting for user input, no need for code here (I think)
-            }
-        });
-
-        if (meal == null){
-            setResult(RESULT_CANCELED);
-            super.finish();
-        }*/
-        //wait for user to do all the inputs for a meal. Some other thread must take care of the processing needed there.
-        //user has pressed done or cancelled, or made some error, so we are back here.
-
-
         Intent data = new Intent();
         LocalDateTime time = LocalDateTime.now();
         List<Tag> tags = new ArrayList<>();

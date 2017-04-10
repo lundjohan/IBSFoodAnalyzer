@@ -2,6 +2,7 @@ package com.ibsanalyzer.inputday;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Rating;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Meal;
+
+import static com.ibsanalyzer.inputday.R.attr.colorAccent;
 
 public class MainActivity extends AppCompatActivity {
     static private final int NEW_MEAL = 1000;
@@ -50,10 +53,19 @@ public class MainActivity extends AppCompatActivity {
                     String mealJSONData = data.getExtras().getString("returnMealJSON");
                     Gson gson = new Gson();
                     Meal meal = gson.fromJson(mealJSONData, Meal.class);
-                    View mealBox = getLayoutInflater().inflate(R.layout.meal_box, eventsLayout);
-                    TextView textView = new TextView(this);
+
+
+
+
                     String text = meal.getTime().getHour()+':'+meal.getTime().getMinute()+ " Portions: "+meal.getPortions() + "Tags: "+meal.getTags().get(0).getName()+" x"+meal.getTags().get(0).getSize();
+                    TextView textView = new TextView(this);
                     textView.setText(text);
+                    textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                    textView.setBackgroundColor(Color.MAGENTA);
+                    textView.setPadding(20,20,20,20);
+                    //LinearLayout view = (LinearLayout)getLayoutInflater().inflate(R.layout.meal_box, eventsLayout,true);
+                   // LinearLayout mealBox = (LinearLayout) findViewById(R.id.meal_layout);
                     eventsLayout.addView(textView);
 
                 }
