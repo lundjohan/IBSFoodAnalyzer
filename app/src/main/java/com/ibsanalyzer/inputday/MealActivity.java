@@ -53,6 +53,7 @@ public class MealActivity extends AppCompatActivity implements TextWatcher {
         LocalDateTime time = LocalDateTime.now();
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag(time, "green_leaves", 1.7));
+        tags.add(new Tag(time, "lactiplus", 1.));
         Meal meal = new Meal(time, tags, 2.3);
 
         //JSON
