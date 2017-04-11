@@ -28,28 +28,44 @@ public class MainActivity extends AppCompatActivity {
 
     List<Event> eventList = new ArrayList<>();
 
+    //p. 121 Android Essentials
+@Override
+protected void onSaveInstanceState(Bundle outState){
+    super.onSaveInstanceState(outState);
+    outState.putParcelableArrayList("eventList", new ArrayList<Event>(eventList));
+}
 
-
+    //behövs denna?
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //populate array, this will be added to when button is pressed
-        //===================================================================
-        LocalDateTime ldt = LocalDateTime.of(2016, Month.APRIL, 3, 16, 10);
-        Tag t1 = new Tag(ldt, "milk", 2);
-        Tag t2 = new Tag(ldt, "yoghurt", 1);
-        List<Tag> tagList = new ArrayList<>();
-        tagList.add(t1);
-        tagList.add(t2);
-        Meal meal1 = new Meal(ldt, tagList, 2.);
-        Meal meal2 = new Meal(ldt, tagList, 1.);
 
-        eventList.add(meal1);
-        eventList.add(meal2);
-        //=====================================================
+        if(savedInstanceState == null || !savedInstanceState.containsKey("eventList")) {
+            //populate array, this will be added to when button is pressed
+            //===================================================================
+            LocalDateTime ldt = LocalDateTime.of(2016, Month.APRIL, 3, 16, 10);
+            Tag t1 = new Tag(ldt, "milk", 2);
+            Tag t2 = new Tag(ldt, "yoghurt", 1);
+            List<Tag> tagList = new ArrayList<>();
+            tagList.add(t1);
+            tagList.add(t2);
+            Meal meal1 = new Meal(ldt, tagList, 2.);
+            Meal meal2 = new Meal(ldt, tagList, 1.);
+
+            eventList.add(meal1);
+            eventList.add(meal2);
+            //=====================================================
+        }
+        else{ //behövs denna eller räcker det med onRestoreInstanceState?
+            eventList = savedInstanceState.getParcelableArrayList("eventList");
+        }
 
         recyclerView = (RecyclerView)findViewById(R.id.events_layout);
         layoutManager = new LinearLayoutManager(this);
