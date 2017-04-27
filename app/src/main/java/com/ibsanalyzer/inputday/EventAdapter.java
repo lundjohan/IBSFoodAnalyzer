@@ -82,8 +82,6 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return viewHolder;
     }
 
-
-    //Change! Will crash!
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
@@ -99,7 +97,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 LocalDateTime from = div.getTime();
                 Log.d("Debug","scoreHolder: "+ scoreHolder);
                 Log.d("Debug","scoreHolder.fromTime: "+ scoreHolder.fromTime);
-                scoreHolder.fromTime.setText(String.valueOf(from.getHour())+':'+String.valueOf(from.getMinute()));
+                scoreHolder.fromTime.setText(String.format("%02d",from.getHour())+':'+String.format("%02d",from.getMinute()));
 
                 //toTime will be much more advanced, do this implementation much later
                 scoreHolder.toTime.setText("tomorrow 10:00");
