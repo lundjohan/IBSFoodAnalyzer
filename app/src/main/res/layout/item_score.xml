@@ -49,25 +49,22 @@
         android:id="@+id/scoreAfterLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"
-        android:text="Score After This:"
-        android:textSize="24sp"
+        android:text="Score:"
 
-        app:layout_constraintLeft_toRightOf="@+id/fromTime"
+        android:textSize="24sp"
+        app:layout_constraintRight_toLeftOf="@+id/scoreAfter"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/scoreAfter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="9"
+        android:text="0"
         android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/scoreAfterLabel"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toRightOf="@+id/scoreAfterLabel"
         app:layout_constraintRight_toRightOf="parent" />
 
 

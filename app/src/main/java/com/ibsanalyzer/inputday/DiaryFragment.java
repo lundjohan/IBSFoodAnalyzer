@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,7 +35,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
     public static int NEW_MEAL = 1000;
 
     RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
+    LinearLayoutManager layoutManager;
     RecyclerView.Adapter adapter;
 
     List<Event> eventList = new ArrayList<>();
@@ -85,13 +86,19 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
 
         //do other buttons here
 
-
+        //RecyclerView initiation
+        //==========================================================================================
         recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new EventAdapter(eventList);
         recyclerView.setAdapter(adapter);
 
+        //add line separator
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(mDividerItemDecoration);
+        //==========================================================================================
         return view;
     }
 
