@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.google.gson.Gson;
+import com.ibsanalyzer.base_classes.Divider;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Tag;
@@ -45,7 +47,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    //    outState.putParcelableArrayList("eventList", new ArrayList<Event>(eventList));
+        //    outState.putParcelableArrayList("eventList", new ArrayList<Event>(eventList));
     }
 
     @Override
@@ -72,12 +74,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
             eventList.add(meal2);
             //=====================================================
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
-         //   eventList = savedInstanceState.getParcelableArrayList("eventList");
+            //   eventList = savedInstanceState.getParcelableArrayList("eventList");
         }
 
         //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
         mealBtn.setOnClickListener(this);
+        ImageButton scoreBtn = (ImageButton) view.findViewById(R.id.scoreBtn);
+        scoreBtn.setOnClickListener(this);
 
         //do other buttons here
 
@@ -92,7 +96,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
@@ -102,31 +105,42 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
                     Gson gson = new Gson();
                     Meal meal = gson.fromJson(mealJSONData, Meal.class);
 
-                    String text = meal.getTime().getHour() + ":" + meal.getTime().getMinute() + " Portions: " + meal.getPortions() + "Tags: " + meal.getTags().get(0).getName() + " x" + meal.getTags().get(0).getSize();
+                    //String text = meal.getTime().getHour() + ":" + meal.getTime().getMinute() + " Portions: " + meal.getPortions() + "Tags: " + meal.getTags().get(0).getName() + " x" + meal.getTags().get(0).getSize();
                     eventList.add(meal);
-                    adapter.notifyDataSetChanged();
+
+                    //se https://guides.codepath.com/android/Using-the-RecyclerView#itemanimator för 4 alternativ
+                    //här för förtydligande varför notifyDataSetChanged är mer mer ineffektiv: inte https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyDataSetChanged()
+                    //item inserted in last position of eventList
+                    adapter.notifyItemInserted(eventList.size()-1);
                 }
             }
 
         }
     }
 
-    //behövs denna verkligen?
+    /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.mealBtn:
                 newMealActivity(v);
                 break;
+            case R.id.scoreBtn:
+                newScoreItem(v);
+                break;
         }
-    //do other buttons here
+        //do other buttons here
     }
+
     public void newMealActivity(View view) {
         Intent intent = new Intent(getActivity(), MealActivity.class);
         startActivityForResult(intent, NEW_MEAL);
     }
+
     public void newScoreItem(View view) {
-        Intent intent = new Intent(getActivity(), MealActivity.class);
-        startActivityForResult(intent, NEW_MEAL);
+        Divider div = new Divider(LocalDateTime.now(), 9.0);
+        eventList.add(div);
+        adapter.notifyItemInserted(eventList.size()-1);
+        Log.d("Debugging", "inuti newScoreItem");
     }
 }

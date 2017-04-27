@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/fromLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -16,37 +16,37 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/toLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="8dp"
         android:text="To"
-        app:layout_constraintLeft_toLeftOf="@id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintLeft_toLeftOf="@id/fromLabel"
+        app:layout_constraintTop_toBottomOf="@+id/fromLabel" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/fromTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="TODO"
-        app:layout_constraintLeft_toRightOf="@+id/textView5"
+        app:layout_constraintLeft_toRightOf="@+id/fromLabel"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/toTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="10:00"
-        app:layout_constraintLeft_toRightOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintLeft_toRightOf="@+id/fromLabel"
+        app:layout_constraintTop_toBottomOf="@+id/fromTime" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/scoreAfterLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -54,20 +54,20 @@
         android:text="Score After This:"
         android:textSize="24sp"
 
-        app:layout_constraintLeft_toRightOf="@+id/textView6"
+        app:layout_constraintLeft_toRightOf="@+id/fromTime"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/scoreAfter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:text="9"
         android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView11"
+        app:layout_constraintBaseline_toBaselineOf="@+id/scoreAfterLabel"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toRightOf="@+id/textView11"
+        app:layout_constraintLeft_toRightOf="@+id/scoreAfterLabel"
         app:layout_constraintRight_toRightOf="parent" />
 
 
