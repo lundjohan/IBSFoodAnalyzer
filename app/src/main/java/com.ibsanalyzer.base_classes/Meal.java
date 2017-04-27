@@ -20,7 +20,7 @@ public class Meal extends Event {
 
 
 	//parceable methods
-	@Override
+	/*@Override
 	public void writeToParcel(Parcel out, int flags) {
 		super.writeToParcel(out, flags);
 		out.writeDouble(portions);
@@ -44,5 +44,5 @@ public class Meal extends Event {
 		public Meal[] newArray(int size) {
 			return new Meal[size];
 		}
-	};
+	};*/
 }

@@ -2,7 +2,6 @@ package com.ibsanalyzer.inputday;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,13 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.meal.MealActivity;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
@@ -46,7 +45,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("eventList", new ArrayList<Event>(eventList));
+    //    outState.putParcelableArrayList("eventList", new ArrayList<Event>(eventList));
     }
 
     @Override
@@ -73,10 +72,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
             eventList.add(meal2);
             //=====================================================
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
-            eventList = savedInstanceState.getParcelableArrayList("eventList");
+         //   eventList = savedInstanceState.getParcelableArrayList("eventList");
         }
 
-        //Event Buttons, do onClick here so handlers doesnt have to be in parent Activity
+        //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
         mealBtn.setOnClickListener(this);
 
@@ -92,10 +91,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    public void newMealActivity(View view) {
-        Intent intent = new Intent(getActivity(), MealActivity.class);
-        startActivityForResult(intent, NEW_MEAL);
-    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -115,7 +111,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
+    //behövs denna verkligen?
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -124,5 +120,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     //do other buttons here
+    }
+    public void newMealActivity(View view) {
+        Intent intent = new Intent(getActivity(), MealActivity.class);
+        startActivityForResult(intent, NEW_MEAL);
+    }
+    public void newScoreItem(View view) {
+        Intent intent = new Intent(getActivity(), MealActivity.class);
+        startActivityForResult(intent, NEW_MEAL);
     }
 }

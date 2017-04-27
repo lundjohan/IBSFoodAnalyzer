@@ -5,7 +5,8 @@
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application android:name = "com.ibsanalyzer.application.MyCustomApplication"
+    <application
+        android:name="com.ibsanalyzer.application.MyCustomApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,13 +21,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MealActivity"
+            android:name="com.ibsanalyzer.meal.MealActivity"
             android:parentActivityName=".MainActivity">
+
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity android:name=".TagActivity" />
+        <activity android:name=".TagTemplateActivity"></activity>
     </application>
 
 </manifest>
