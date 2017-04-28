@@ -44,6 +44,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     //for pinning/ marking events, this must be cleaned when user quits application or app crashes etc
     List<Integer> eventsMarked = new ArrayList<>();
     static final int BACKGROUND_COLOR = Color.BLUE;
+    MainActivity parentActivity;
+
     public DiaryFragment() {
         // Required empty public constructor
     }
@@ -60,6 +62,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
+        parentActivity = (MainActivity) getActivity();
         super.onCreate(savedInstanceState);
 
 
@@ -93,7 +96,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //RecyclerView initiation
         //==========================================================================================
         recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
-        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(parentActivity);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new EventAdapter(eventList, this);
         recyclerView.setAdapter(adapter);
@@ -122,7 +125,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                     //se https://guides.codepath.com/android/Using-the-RecyclerView#itemanimator för 4 alternativ
                     //här för förtydligande varför notifyDataSetChanged är mer mer ineffektiv: inte https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyDataSetChanged()
                     //item inserted in last position of eventList
-                    adapter.notifyItemInserted(eventList.size()-1);
+                    adapter.notifyItemInserted(eventList.size() - 1);
                 }
             }
 
@@ -144,14 +147,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
     public void newMealActivity(View view) {
-        Intent intent = new Intent(getActivity(), MealActivity.class);
+        Intent intent = new Intent(parentActivity, MealActivity.class);
         startActivityForResult(intent, NEW_MEAL);
     }
 
     public void newScoreItem(View view) {
         Divider div = new Divider(LocalDateTime.now(), 9.0);
         eventList.add(div);
-        adapter.notifyItemInserted(eventList.size()-1);
+        adapter.notifyItemInserted(eventList.size() - 1);
         Log.d("Debugging", "inuti newScoreItem");
     }
 
@@ -165,37 +168,61 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
      */
     @Override
     public void onItemClicked(View v, int position) {
-        Log.d("Debug","inside fragment, item was clicked");
-        if (!markingModeIsOn()){
+        Log.d("Debug", "inside fragment, item was clicked");
+        if (!markingModeIsOn()) {
             editEvent(position);
         }
-        else if (eventIsMarked(position)){
-            eventsMarked.remove(Integer.valueOf(position)); //remove special case integer
-            v.setBackgroundColor(Color.WHITE);
-        }
-        else {   //markingModeIsOn but eventIsNotMarked
-            eventsMarked.add(position);
-            v.setBackgroundColor(BACKGROUND_COLOR);
+        else {
+            clickHelper(v, position);
         }
     }
-
 
 
     @Override
     public boolean onItemLongClicked(View v, int position) {
-        Log.d("Debug","inside fragment, item was LONG clicked");
-        if (!markingModeIsOn()){
+        if (!markingModeIsOn()) {
             eventsMarked.add(position);
             v.setBackgroundColor(BACKGROUND_COLOR);
+            changeToMarkedMenu();
+        } else {
+            clickHelper(v, position);
         }
         return false;
     }
-    private boolean markingModeIsOn(){
-        return eventsMarked.size()>0;
+
+    //same actions for short and long clicks
+    // given: markingModeIsOn
+    private void clickHelper(View v, int position) {
+        if (eventIsMarked(position)) {
+            eventsMarked.remove(Integer.valueOf(position)); //remove special case integer
+            v.setBackgroundColor(Color.WHITE);
+
+            //if last item now is unmarked, then change back menu.
+            if (!markingModeIsOn()) {
+                changeToTabbedMenu();
+            }
+        } else {   //markingModeIsOn but eventIsNotMarked
+            eventsMarked.add(position);
+            v.setBackgroundColor(BACKGROUND_COLOR);
+        }
     }
+
+    private void changeToMarkedMenu() {
+        parentActivity.tabLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void changeToTabbedMenu() {
+        parentActivity.tabLayout.setVisibility(View.VISIBLE);
+    }
+
+    private boolean markingModeIsOn() {
+        return eventsMarked.size() > 0;
+    }
+
     private void editEvent(int position) {
         //TODO
     }
+
     private boolean eventIsMarked(int position) {
         return eventsMarked.contains(position);
     }

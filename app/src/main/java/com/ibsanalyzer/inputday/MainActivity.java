@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    TabLayout tabLayout;
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -35,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        /*tabLayout.addTab(tabLayout.newTab().setText("1"));
-        tabLayout.addTab(tabLayout.newTab().setText("2"));
-        tabLayout.addTab(tabLayout.newTab().setText("3"));*/
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         //see Android Studio Development essentials p. 337
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
@@ -47,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
                 viewPager.setCurrentItem(tab.getPosition());
-                Log.d("Debugging", "Inside onTabSelected, I think I never get here. Poistion is "+tab.getPosition()); //jorå hit kommer jag.
             }
 
             @Override
@@ -64,5 +59,19 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
+
+    /*
+    The AppBar has 2 different versions, depending on whether items are marked or not in DiaryFragment
+     */
+    /*public void changeToTabbedMenu() {
+        tabLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void changeToMarkedMenu() {
+        tabLayout.setVisibility(View.INVISIBLE);
+    }*/
+
+
 }
 
