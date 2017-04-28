@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiaryFragment extends Fragment implements View.OnClickListener {
+public class DiaryFragment extends Fragment implements View.OnClickListener, EventAdapter.OnItemClickListener, EventAdapter.OnItemLongClickListener {
     public static int NEW_MEAL = 1000;
 
     RecyclerView recyclerView;
@@ -91,7 +91,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
         recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new EventAdapter(eventList);
+        adapter = new EventAdapter(eventList, this);
         recyclerView.setAdapter(adapter);
 
         //add line separator
@@ -149,5 +149,28 @@ public class DiaryFragment extends Fragment implements View.OnClickListener {
         eventList.add(div);
         adapter.notifyItemInserted(eventList.size()-1);
         Log.d("Debugging", "inuti newScoreItem");
+    }
+
+    /*
+    see http://stackoverflow.com/questions/27945078/onlongitemclick-in-recyclerview
+    These are for clicks on items in RecyclerView
+     */
+
+    /*
+    Obs krasch om man klickar för snabbt, i alla fall vid adapter.notifyItemRemoved!
+     */
+    @Override
+    public void onItemClicked(int position) {
+        Log.d("Debug","inside fragment, item was clicked");
+        eventList.remove(position);
+        adapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        Log.d("Debug","inside fragment, item was LONG clicked");
+        eventList.remove(position);
+        adapter.notifyItemRemoved(position);
+        return false;
     }
 }

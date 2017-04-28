@@ -1,10 +1,12 @@
 package com.ibsanalyzer.inputday;
 
+import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -23,13 +25,32 @@ import java.util.List;
 
 class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> events = new ArrayList<>();
-
-    public EventAdapter(List<Event> events) {
-        this.events = events;
+    private DiaryFragment usingFragment;
+    public EventAdapter(List<Event> events, DiaryFragment fragment) {
+        this.events = events; this.usingFragment = fragment;
     }
     private final int MEAL = 0, SCORE = 4;
 
-    class MealViewHolder extends RecyclerView.ViewHolder {
+    /*
+    Click Listeners
+     */
+    public interface OnItemClickListener {
+        public void onItemClicked(int position);
+    }
+
+    public interface OnItemLongClickListener {
+        public boolean onItemLongClicked(int position);
+    }
+
+    class EventViewHolder extends RecyclerView.ViewHolder {
+        public View itemView;
+        public EventViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+
+        }
+    }
+    class MealViewHolder extends EventViewHolder {
         public TextView tag1;
         public TextView tag2;
 
@@ -39,7 +60,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tag2 = (TextView) itemView.findViewById(R.id.tag2);
         }
     }
-    class ScoreViewHolder extends RecyclerView.ViewHolder {
+    class ScoreViewHolder extends EventViewHolder {
         public TextView fromTime;
         public TextView toTime;
         public TextView afterScore;
@@ -79,11 +100,35 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 viewHolder = new ScoreViewHolder(v);
                 break;
         }
+        //here: make v clickable item.
+
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+        /*
+        Add clickability and holding in to item for copying etc.
+
+        Inspiration from http://stackoverflow.com/questions/27945078/onlongitemclick-in-recyclerview
+         */
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usingFragment.onItemClicked(position);
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                usingFragment.onItemLongClicked(position);
+                return true;
+            }
+        });
+
+
+
         switch (holder.getItemViewType()) {
             case 0: //MEAL
                 MealViewHolder mealHolder = (MealViewHolder) holder;
@@ -95,8 +140,6 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
                 Divider div = (Divider) events.get(position);
                 LocalDateTime from = div.getTime();
-                Log.d("Debug","scoreHolder: "+ scoreHolder);
-                Log.d("Debug","scoreHolder.fromTime: "+ scoreHolder.fromTime);
                 scoreHolder.fromTime.setText(String.format("%02d",from.getHour())+':'+String.format("%02d",from.getMinute()));
 
                 //toTime will be much more advanced, do this implementation much later
@@ -105,8 +148,6 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 scoreHolder.afterScore.setText(Double.toString(div.getAfter()));
                 break;
         }
-
-
     }
 
     @Override
