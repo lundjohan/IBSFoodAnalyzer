@@ -3,6 +3,7 @@ package com.ibsanalyzer.inputday;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -40,6 +41,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     List<Event> eventList = new ArrayList<>();
 
+    //for pinning/ marking events, this must be cleaned when user quits application or app crashes etc
+    List<Integer> eventsMarked = new ArrayList<>();
+    static final int BACKGROUND_COLOR = Color.BLUE;
     public DiaryFragment() {
         // Required empty public constructor
     }
@@ -160,17 +164,39 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     Obs krasch om man klickar för snabbt, i alla fall vid adapter.notifyItemRemoved!
      */
     @Override
-    public void onItemClicked(int position) {
+    public void onItemClicked(View v, int position) {
         Log.d("Debug","inside fragment, item was clicked");
-        eventList.remove(position);
-        adapter.notifyItemRemoved(position);
+        if (!markingModeIsOn()){
+            editEvent(position);
+        }
+        else if (eventIsMarked(position)){
+            eventsMarked.remove(Integer.valueOf(position)); //remove special case integer
+            v.setBackgroundColor(Color.WHITE);
+        }
+        else {   //markingModeIsOn but eventIsNotMarked
+            eventsMarked.add(position);
+            v.setBackgroundColor(BACKGROUND_COLOR);
+        }
     }
 
+
+
     @Override
-    public boolean onItemLongClicked(int position) {
+    public boolean onItemLongClicked(View v, int position) {
         Log.d("Debug","inside fragment, item was LONG clicked");
-        eventList.remove(position);
-        adapter.notifyItemRemoved(position);
+        if (!markingModeIsOn()){
+            eventsMarked.add(position);
+            v.setBackgroundColor(BACKGROUND_COLOR);
+        }
         return false;
+    }
+    private boolean markingModeIsOn(){
+        return eventsMarked.size()>0;
+    }
+    private void editEvent(int position) {
+        //TODO
+    }
+    private boolean eventIsMarked(int position) {
+        return eventsMarked.contains(position);
     }
 }

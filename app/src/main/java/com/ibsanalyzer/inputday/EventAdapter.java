@@ -35,11 +35,11 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Click Listeners
      */
     public interface OnItemClickListener {
-        public void onItemClicked(int position);
+        public void onItemClicked(View v, int position);
     }
 
     public interface OnItemLongClickListener {
-        public boolean onItemLongClicked(int position);
+        public boolean onItemLongClicked(View v, int position);
     }
 
     class EventViewHolder extends RecyclerView.ViewHolder {
@@ -116,13 +116,13 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usingFragment.onItemClicked(position);
+                usingFragment.onItemClicked(v, position);
             }
         });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                usingFragment.onItemLongClicked(position);
+                usingFragment.onItemLongClicked(v, position);
                 return true;
             }
         });
