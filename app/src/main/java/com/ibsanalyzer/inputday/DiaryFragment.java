@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,6 +46,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     List<Integer> eventsMarked = new ArrayList<>();
     static final int BACKGROUND_COLOR = Color.BLUE;
     MainActivity parentActivity;
+    AppBarLayout appBarMarked;
 
     public DiaryFragment() {
         // Required empty public constructor
@@ -63,6 +65,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
         parentActivity = (MainActivity) getActivity();
+
+
         super.onCreate(savedInstanceState);
 
 
@@ -84,6 +88,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
             //   eventList = savedInstanceState.getParcelableArrayList("eventList");
         }
+
+        //starts as invisible appBarLayout but when user marks something this pops up
+        appBarMarked = (AppBarLayout) view.findViewById(R.id.appbar_marked);
 
         //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
@@ -171,8 +178,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         Log.d("Debug", "inside fragment, item was clicked");
         if (!markingModeIsOn()) {
             editEvent(position);
-        }
-        else {
+        } else {
             clickHelper(v, position);
         }
     }
@@ -207,12 +213,22 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
     }
 
+    /*
+        When user markes list items for template or copying
+     */
     private void changeToMarkedMenu() {
-        parentActivity.tabLayout.setVisibility(View.INVISIBLE);
+
+        parentActivity.tabLayout.setVisibility(View.GONE);
+        appBarMarked.setVisibility(View.VISIBLE);
     }
 
+    /*
+        When user unmarkes list items
+     */
     private void changeToTabbedMenu() {
+        appBarMarked.setVisibility(appBarMarked.GONE);
         parentActivity.tabLayout.setVisibility(View.VISIBLE);
+
     }
 
     private boolean markingModeIsOn() {
