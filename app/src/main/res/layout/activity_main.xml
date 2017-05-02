@@ -14,32 +14,66 @@
         android:background="@color/colorOrange"
         app:layout_scrollFlags="scroll|enterAlways" >
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
+        <ViewSwitcher
+            android:id="@+id/tabLayoutSwitcher"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorOrange"
-            app:tabGravity="fill"
-            app:tabMode="fixed">
+            android:layout_height="match_parent">
 
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Templates"/>
-            <!--app:theme="@style/AppTheme"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorOrange"
+                app:tabGravity="fill"
+                app:tabMode="fixed">
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Templates" />
+                <!--app:theme="@style/AppTheme"
             app:tabTextColor="@color/colorWhite"
             app:tabTextAppearance="@style/TabLayoutTextStyle" />-->
 
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_diary"/>
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_diary" />
 
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Statistics" />
+            </android.support.design.widget.TabLayout>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabsMarked"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Statistics" />
-        </android.support.design.widget.TabLayout>
+                android:background="@color/colorBlack"
+                app:tabIndicatorColor="@color/colorWhite"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/colorWhite"
+                app:tabTextColor="@color/colorWhite">
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To Template" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Copy" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel" />
+            </android.support.design.widget.TabLayout>
+
+        </ViewSwitcher>
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager

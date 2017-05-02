@@ -1,16 +1,14 @@
 package com.ibsanalyzer.inputday;
 
-import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.ibsanalyzer.base_classes.Divider;
+import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
 
@@ -80,7 +78,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
         if (events.get(position) instanceof Meal) {
             return MEAL;
-        } else if (events.get(position) instanceof Divider) {
+        } else if (events.get(position) instanceof Score) {
             return SCORE;
         }
         return -1;  //is this good implementation?
@@ -107,7 +105,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-
+        Event event = events.get(position);
         /*
         Add clickability and holding in to item for copying etc.
 
@@ -132,20 +130,20 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (holder.getItemViewType()) {
             case 0: //MEAL
                 MealViewHolder mealHolder = (MealViewHolder) holder;
-                mealHolder.tag1.setText(events.get(position).getTags().get(0).getName());
-                mealHolder.tag2.setText(events.get(position).getTags().get(1).getName());
+                mealHolder.tag1.setText(event.getTags().get(0).getName());
+                mealHolder.tag2.setText(event.getTags().get(1).getName());
                 break;
 
             case 4: //SCORE
+                Score score = (Score)event;
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
-                Divider div = (Divider) events.get(position);
-                LocalDateTime from = div.getTime();
+                LocalDateTime from = score.getTime();
                 scoreHolder.fromTime.setText(String.format("%02d",from.getHour())+':'+String.format("%02d",from.getMinute()));
 
                 //toTime will be much more advanced, do this implementation much later
                 scoreHolder.toTime.setText("tomorrow 10:00");
 
-                scoreHolder.afterScore.setText(Double.toString(div.getAfter()));
+                scoreHolder.afterScore.setText(Integer.toString(score.getAfter()));
                 break;
         }
     }

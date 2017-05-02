@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,9 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
-import com.ibsanalyzer.base_classes.Divider;
+import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Tag;
@@ -34,8 +34,8 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class DiaryFragment extends Fragment implements View.OnClickListener, EventAdapter.OnItemClickListener, EventAdapter.OnItemLongClickListener {
-    public static int NEW_MEAL = 1000;
-
+    public static final int NEW_MEAL = 1000;
+    public static final int NEW_SCORE = 1004;
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -46,8 +46,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     List<Integer> eventsMarked = new ArrayList<>();
     static final int BACKGROUND_COLOR = Color.BLUE;
     MainActivity parentActivity;
-    AppBarLayout appBarMarked;
-
+    ViewSwitcher tabsLayoutSwitcher;
     public DiaryFragment() {
         // Required empty public constructor
     }
@@ -90,7 +89,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
 
         //starts as invisible appBarLayout but when user marks something this pops up
-        appBarMarked = (AppBarLayout) view.findViewById(R.id.appbar_marked);
+        tabsLayoutSwitcher = (ViewSwitcher) parentActivity.findViewById(R.id.tabLayoutSwitcher);
 
         //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
@@ -107,7 +106,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         recyclerView.setLayoutManager(layoutManager);
         adapter = new EventAdapter(eventList, this);
         recyclerView.setAdapter(adapter);
-
         //add line separator
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 layoutManager.getOrientation());
@@ -119,8 +117,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == NEW_MEAL) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case NEW_MEAL:
                 if (data.hasExtra("returnMealJSON")) {
                     String mealJSONData = data.getExtras().getString("returnMealJSON");
                     Gson gson = new Gson();
@@ -134,8 +135,16 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                     //item inserted in last position of eventList
                     adapter.notifyItemInserted(eventList.size() - 1);
                 }
-            }
-
+                break;
+            case NEW_SCORE:
+                if (data.hasExtra("returnScoreJSON")) {
+                    String scoreJSONData = data.getExtras().getString("returnScoreJSON");
+                    Gson gson = new Gson();
+                    Score score = gson.fromJson(scoreJSONData, Score.class);
+                    eventList.add(score);
+                    adapter.notifyItemInserted(eventList.size() - 1);   //denna är simplistic. vadom man lägger in eventet mitt i listan?
+                }
+                break;
         }
     }
 
@@ -159,10 +168,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
     public void newScoreItem(View view) {
-        Divider div = new Divider(LocalDateTime.now(), 9.0);
-        eventList.add(div);
-        adapter.notifyItemInserted(eventList.size() - 1);
-        Log.d("Debugging", "inuti newScoreItem");
+        Intent intent = new Intent(parentActivity, ScoreActivity.class);
+        startActivityForResult(intent, NEW_SCORE);
     }
 
     /*
@@ -217,17 +224,15 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         When user markes list items for template or copying
      */
     private void changeToMarkedMenu() {
-
-        parentActivity.tabLayout.setVisibility(View.GONE);
-        appBarMarked.setVisibility(View.VISIBLE);
+        tabsLayoutSwitcher.showNext();
+        //parentActivity.viewPager do something here to stop swipe
     }
 
     /*
         When user unmarkes list items
      */
     private void changeToTabbedMenu() {
-        appBarMarked.setVisibility(appBarMarked.GONE);
-        parentActivity.tabLayout.setVisibility(View.VISIBLE);
+        tabsLayoutSwitcher.showNext();
 
     }
 

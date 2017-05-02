@@ -92,11 +92,11 @@ public class Day {
 		}
 		return others;
 	}
-	public List<Divider> getDividers() {
-		List<Divider> divs = new ArrayList<>();
+	public List<Score> getDividers() {
+		List<Score> divs = new ArrayList<>();
 		for (Event event : events) {
-			if (event instanceof Divider) {
-				divs.add((Divider) event);
+			if (event instanceof Score) {
+				divs.add((Score) event);
 			}
 		}
 		return divs;

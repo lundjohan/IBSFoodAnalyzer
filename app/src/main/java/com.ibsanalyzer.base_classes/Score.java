@@ -4,13 +4,13 @@ import org.threeten.bp.LocalDateTime;;
 import java.util.ArrayList;
 
 //this class is an exception from EventModel rule: it does not use Tags.
-public class Divider extends Event {
-	double after;
-	public Divider(LocalDateTime time, double after) {
+public class Score extends Event {
+	int after;
+	public Score(LocalDateTime time, int after) {
 		super(time, new ArrayList<Tag>());
 		this.after = after;
 	}
-	public double getAfter() {
+	public int getAfter() {
 		return after;
 	}
 
