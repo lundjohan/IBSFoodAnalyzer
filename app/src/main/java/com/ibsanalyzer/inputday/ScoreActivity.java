@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -38,8 +39,18 @@ public class ScoreActivity extends FragmentActivity implements
     Button doneBtn;
     Button dateBtn;
     Button timeBtn;
-    LocalTime lt;
-    LocalDate ld;
+    LocalTime lt = LocalTime.now();
+    LocalDate ld= LocalDate.now();
+
+    SeekBar scoreBar;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("seekBar", scoreBar.getProgress());
+        outState.putString("localDateStr", (String) ld.toString());
+        outState.putString("localTimeStr", (String) lt.toString());
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +62,23 @@ public class ScoreActivity extends FragmentActivity implements
         timeBtn = (Button) findViewById(R.id.timeBtn);
         date = (TextView) findViewById(R.id.date);
         time = (TextView) findViewById(R.id.time);
-        date.setText(LocalDate.now().toString());
-        time.setText(LocalTime.now().toString());
-        score = (EditText) findViewById(R.id.score);
-        score.setText("5");
+        setDate(LocalDate.now());
+        setTime(LocalTime.now());
+        scoreBar = (SeekBar) findViewById(R.id.scoreBar);
+
+        if (savedInstanceState != null) {//startvalue is set to 5 if no value exists in savedInstance
+            if (savedInstanceState.containsKey("seekBar")) {
+                scoreBar.setProgress(savedInstanceState.getInt("seekBar"));
+            }
+            if (savedInstanceState.containsKey("localDateStr")){
+                LocalDate localDate = LocalDate.parse((CharSequence) savedInstanceState.get("localDateStr"));
+                setDate(localDate);
+            }
+            if (savedInstanceState.containsKey("localTimeStr")){
+                LocalTime localTime = LocalTime.parse((CharSequence) savedInstanceState.get("localTimeStr"));
+                setTime(localTime);
+            }
+        }
     }
 
     public void startTimePicker(View view) {
@@ -85,7 +109,8 @@ public class ScoreActivity extends FragmentActivity implements
             Log.d("Cathed Exception", "LocalDateTime could not be resolved");
             datetime = LocalDateTime.now();
         }
-        int after = Integer.parseInt(score.getText().toString());
+        //scoreBar starts from zero
+        int after = scoreBar.getProgress() + 1;
         Score score = new Score(datetime, after);
 
         //Put in database here (Android Studio Development Essentials [ASDE] p. 558, 559)
@@ -103,15 +128,27 @@ public class ScoreActivity extends FragmentActivity implements
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Log.d("Debug", "inuti ScoreActivity.onDateSet");
-        date.setText(Integer.toString(view.getYear())+"-"+ Month.of(month)+"-"+String.format("%02d",dayOfMonth));
-        ld = LocalDate.of(year, month, dayOfMonth);
-    }
 
+        //month datepicker +1 == LocalDate.Month
+        ld = LocalDate.of(year, month+1, dayOfMonth);
+        setDate(ld);
+    }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        time.setText(String.format("%02d",hourOfDay) +":"+String.format("%02d",minute));
-        lt = LocalTime.of(hourOfDay,minute);
+        lt = LocalTime.of(hourOfDay, minute);
+        setTime(lt);
     }
+
+    private void setDate (LocalDate ld){
+        date.setText(ld.getMonth().toString()+" " + String.valueOf(ld.getDayOfMonth()) + ", " + String.valueOf(ld.getYear()));
+        this.ld = ld;
+    }
+    private void setTime (LocalTime lt){
+        time.setText(String.format("%02d", lt.getHour()) + ":" + String.format("%02d", lt.getMinute()));
+        this.lt = lt;
+    }
+
+
 
 
     /*
@@ -136,7 +173,7 @@ public class ScoreActivity extends FragmentActivity implements
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             //see http://stackoverflow.com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted answer.
-            ((TimePickerDialog.OnTimeSetListener)getActivity()).onTimeSet(view, hourOfDay, minute);
+            ((TimePickerDialog.OnTimeSetListener) getActivity()).onTimeSet(view, hourOfDay, minute);
 
         }
 
@@ -167,7 +204,7 @@ public class ScoreActivity extends FragmentActivity implements
         @Override
         public void onDateSet(DatePicker view, int year, int month, int day) {
             //see http://stackoverflow.com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted answer.
-            ((DatePickerDialog.OnDateSetListener)getActivity()).onDateSet(view, year, month, day);
+            ((DatePickerDialog.OnDateSetListener) getActivity()).onDateSet(view, year, month, day);
             //  localDate = LocalDate.of(year,month,day);
             // date.setText(Integer.valueOf(ld.getYear())+" "+ld.getMonth().toString()+" "+Integer.valueOf(ld.getDayOfMonth()));
         }

@@ -50,21 +50,6 @@
         app:layout_constraintLeft_toRightOf="@+id/timeBtn"
         app:layout_constraintBaseline_toBaselineOf="@+id/timeBtn" />
 
-    <EditText
-        android:id="@+id/score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Score"
-        android:inputType="number"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeBtn"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/doneBtn"
-        app:layout_constraintVertical_bias="0.06999999" />
-
     <Button
         android:id="@+id/doneBtn"
         android:layout_width="wrap_content"
@@ -77,5 +62,33 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <SeekBar
+        android:id="@+id/scoreBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:max="6"
+        android:progress="3"
+        app:layout_constraintBottom_toTopOf="@+id/doneBtn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="Score"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/timeBtn" />
 
 </android.support.constraint.ConstraintLayout>
