@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -32,9 +34,10 @@ import java.util.Calendar;
  */
 
 public class ScoreActivity extends FragmentActivity implements
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     TextView date;
     TextView time;
+    TextView scoreName;
     EditText score;
     Button doneBtn;
     Button dateBtn;
@@ -52,6 +55,12 @@ public class ScoreActivity extends FragmentActivity implements
         super.onSaveInstanceState(outState);
     }
 
+   /* @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return true;
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +71,50 @@ public class ScoreActivity extends FragmentActivity implements
         timeBtn = (Button) findViewById(R.id.timeBtn);
         date = (TextView) findViewById(R.id.date);
         time = (TextView) findViewById(R.id.time);
+        scoreName = (TextView) findViewById(R.id.scoreName);
         setDate(LocalDate.now());
         setTime(LocalTime.now());
         scoreBar = (SeekBar) findViewById(R.id.scoreBar);
+        scoreBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.d("Debug", "inside onProgressChanged");
+                int score = ++progress;
+                switch(score){
+                    case 1:
+                        scoreName.setText("Abysmal");
+                        break;
+                    case 2:
+                        scoreName.setText("Awful");
+                        break;
+                    case 3:
+                        scoreName.setText("Bad");
+                        break;
+                    case 4:
+                        scoreName.setText("Deficient");
+                        break;
+                    case 5:
+                        scoreName.setText("Good");
+                        break;
+                    case 6:
+                        scoreName.setText("Great");
+                        break;
+                    case 7:
+                        scoreName.setText("Phenomenal");
+                        break;
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         if (savedInstanceState != null) {//startvalue is set to 5 if no value exists in savedInstance
             if (savedInstanceState.containsKey("seekBar")) {
@@ -147,7 +197,6 @@ public class ScoreActivity extends FragmentActivity implements
         time.setText(String.format("%02d", lt.getHour()) + ":" + String.format("%02d", lt.getMinute()));
         this.lt = lt;
     }
-
 
 
 
