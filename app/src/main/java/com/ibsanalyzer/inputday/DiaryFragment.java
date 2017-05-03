@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
+import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
@@ -35,6 +36,7 @@ import java.util.List;
  */
 public class DiaryFragment extends Fragment implements View.OnClickListener, EventAdapter.OnItemClickListener, EventAdapter.OnItemLongClickListener {
     public static final int NEW_MEAL = 1000;
+    public static final int NEW_BM = 1003;
     public static final int NEW_SCORE = 1004;
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
@@ -47,6 +49,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     static final int BACKGROUND_COLOR = Color.BLUE;
     MainActivity parentActivity;
     ViewSwitcher tabsLayoutSwitcher;
+
     public DiaryFragment() {
         // Required empty public constructor
     }
@@ -94,6 +97,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
         mealBtn.setOnClickListener(this);
+        ImageButton bmBtn = (ImageButton) view.findViewById(R.id.bmBtn);
+        bmBtn.setOnClickListener(this);
         ImageButton scoreBtn = (ImageButton) view.findViewById(R.id.scoreBtn);
         scoreBtn.setOnClickListener(this);
 
@@ -120,32 +125,38 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
+        //common for all
+        Gson gson = new Gson();
+        Event event = null;
+
         switch (requestCode) {
+
             case NEW_MEAL:
                 if (data.hasExtra("returnMealJSON")) {
                     String mealJSONData = data.getExtras().getString("returnMealJSON");
-                    Gson gson = new Gson();
-                    Meal meal = gson.fromJson(mealJSONData, Meal.class);
+                    event = gson.fromJson(mealJSONData, Meal.class);
 
-                    //String text = meal.getTime().getHour() + ":" + meal.getTime().getMinute() + " Portions: " + meal.getPortions() + "Tags: " + meal.getTags().get(0).getName() + " x" + meal.getTags().get(0).getSize();
-                    eventList.add(meal);
-
-                    //se https://guides.codepath.com/android/Using-the-RecyclerView#itemanimator för 4 alternativ
-                    //här för förtydligande varför notifyDataSetChanged är mer mer ineffektiv: inte https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyDataSetChanged()
-                    //item inserted in last position of eventList
-                    adapter.notifyItemInserted(eventList.size() - 1);
+                }
+                break;
+            case NEW_BM:
+                if (data.hasExtra("returnBmJSON")) {
+                    String bmJSONData = data.getExtras().getString("returnBmJSON");
+                    event = gson.fromJson(bmJSONData, BM.class);
                 }
                 break;
             case NEW_SCORE:
                 if (data.hasExtra("returnScoreJSON")) {
                     String scoreJSONData = data.getExtras().getString("returnScoreJSON");
-                    Gson gson = new Gson();
-                    Score score = gson.fromJson(scoreJSONData, Score.class);
-                    eventList.add(score);
-                    adapter.notifyItemInserted(eventList.size() - 1);   //denna är simplistic. vadom man lägger in eventet mitt i listan?
+                    event = gson.fromJson(scoreJSONData, Score.class);
                 }
                 break;
         }
+        eventList.add(event);
+
+        //se https://guides.codepath.com/android/Using-the-RecyclerView#itemanimator för 4 alternativ
+        //här för förtydligande varför notifyDataSetChanged är mer mer ineffektiv: inte https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyDataSetChanged()
+        //item inserted in last position of eventList
+        adapter.notifyItemInserted(eventList.size() - 1); //OBS! Simplistic!
     }
 
     /*This is needed since onClick otherwise goes to parent Activity*/
@@ -155,6 +166,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             case R.id.mealBtn:
                 newMealActivity(v);
                 break;
+            case R.id.bmBtn:
+                newBmActivity(v);
+                break;
             case R.id.scoreBtn:
                 newScoreItem(v);
                 break;
@@ -162,9 +176,15 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //do other buttons here
     }
 
+
+
     public void newMealActivity(View view) {
         Intent intent = new Intent(parentActivity, MealActivity.class);
         startActivityForResult(intent, NEW_MEAL);
+    }
+    private void newBmActivity(View v) {
+        Intent intent = new Intent(parentActivity, BmActivity.class);
+        startActivityForResult(intent, NEW_BM);
     }
 
     public void newScoreItem(View view) {

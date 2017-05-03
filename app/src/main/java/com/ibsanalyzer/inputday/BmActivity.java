@@ -33,7 +33,7 @@ import java.util.Calendar;
  * Created by Johan on 2017-05-01.
  */
 
-public class ScoreActivity extends FragmentActivity implements
+public class BmActivity extends FragmentActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     TextView date;
     TextView time;
@@ -55,12 +55,12 @@ public class ScoreActivity extends FragmentActivity implements
         super.onSaveInstanceState(outState);
     }
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mainmenu, menu);
-        return true;
-    }*/
+    /* @Override
+     public boolean onCreateOptionsMenu(Menu menu){
+         MenuInflater inflater = getMenuInflater();
+         inflater.inflate(R.menu.mainmenu, menu);
+         return true;
+     }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

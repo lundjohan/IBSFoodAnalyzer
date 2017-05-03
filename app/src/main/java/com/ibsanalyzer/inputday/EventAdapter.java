@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
@@ -58,6 +59,18 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tag2 = (TextView) itemView.findViewById(R.id.tag2);
         }
     }
+    class BmViewHolder extends EventViewHolder {
+        public TextView fromTime;
+        public TextView bristol;
+        public TextView completeness;
+
+        public BmViewHolder(View itemView) {
+            super(itemView);
+            fromTime = (TextView) itemView.findViewById(R.id.time);
+            bristol = (TextView) itemView.findViewById(R.id.bristol);
+            completeness = (TextView) itemView.findViewById(R.id.completeness);
+        }
+    }
     class ScoreViewHolder extends EventViewHolder {
         public TextView fromTime;
         public TextView toTime;
@@ -92,6 +105,10 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 0:
                 v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent, false);
                 viewHolder = new MealViewHolder(v);
+                break;
+            case 3:
+                v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bm, parent, false);
+                viewHolder = new BmViewHolder(v);
                 break;
             case 4:
                 v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_score, parent, false);
@@ -133,7 +150,15 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 mealHolder.tag1.setText(event.getTags().get(0).getName());
                 mealHolder.tag2.setText(event.getTags().get(1).getName());
                 break;
+            case 3: //BM
+                BM bm = (BM)event;
+                BmViewHolder bmHolder = (BmViewHolder) holder;
+                LocalDateTime timeBM = bm.getTime();
+                bmHolder.fromTime.setText(String.format("%02d",timeBM.getHour())+':'+String.format("%02d",timeBM.getMinute()));
 
+                bmHolder.completeness.setText(BM.completenessScoreToText(bm.getComplete()));
+                bmHolder.bristol.setText(String.valueOf(bm.getBristol()));
+                break;
             case 4: //SCORE
                 Score score = (Score)event;
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
@@ -143,7 +168,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 //toTime will be much more advanced, do this implementation much later
                 scoreHolder.toTime.setText("tomorrow 10:00");
 
-                scoreHolder.afterScore.setText(Integer.toString(score.getAfter()));
+                scoreHolder.afterScore.setText(Score.pointsToText(score.getAfter()));
                 break;
         }
     }

@@ -6,29 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BM extends Event {
-	private double size;
+	//private double size;
 	private int bristol;
 	private int complete = 0;
 
-	public BM(LocalDateTime time, List<Tag> tags, double size, int bristol) {
-		super(time, tags);
+	public BM(LocalDateTime time,int complete, int bristol) {
+		super(time, new ArrayList<Tag>());
 		//preliminary solution, better to have complete handling in import.
-		for (Tag tag:tags){
-			if (tag.getName().equalsIgnoreCase("complete")){
-				complete += 1;
-			}
-			else if (tag.getName().equalsIgnoreCase("incomplete")){
-				complete -= 1;
-			}
-
-		}
-		this.size = size;
+		//this.size = size;
 		this.bristol = bristol;
 	}
 
-	public double getSize() {
+	/*public double getSize() {
 		return size;
-	}
+	}*/
 	public double getBristol() {
 		return bristol;
 	}
@@ -48,7 +39,29 @@ public class BM extends Event {
 		return toReturn;
 	}
 
-	public int isComplete() {
+	public int getComplete() {
 		return complete;
+	}
+
+	public static String completenessScoreToText(int score){
+		String text = "OUT OF RANGE";
+		switch(score){
+			case 1:
+				text = "Abysmal";
+				break;
+			case 2:
+				text = "Bad";
+				break;
+			case 3:
+				text = "Deficient";
+				break;
+			case 4:
+				text = "Good";
+				break;
+			case 5:
+				text = "Phenomenal";
+				break;
+		}
+		return text;
 	}
 }
