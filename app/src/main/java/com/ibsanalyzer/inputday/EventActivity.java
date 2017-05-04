@@ -6,8 +6,13 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,7 +40,7 @@ import static com.ibsanalyzer.inputday.R.id.scoreName;
  * http://stackoverflow.com/questions/36970142/how-to-display-layout-of-child-activity
  */
 
-public abstract class EventActivity extends FragmentActivity implements
+public abstract class EventActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     TextView date;
     TextView time;
@@ -46,14 +51,20 @@ public abstract class EventActivity extends FragmentActivity implements
     LocalDate ld= LocalDate.now();
     LocalDateTime datetime;
 
-    public void doneClicked(View view) {
-        Log.d("Debug","inside doneClicked inside abstract class");
 
-        setLocalDate();
-        finish();
-        super.finish();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.cancel_done_menu, menu);
+        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                doneClicked(null);
+                return true;
+            }
+        });
+        return true;
     }
-
     protected abstract int getLayoutRes();
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -61,6 +72,7 @@ public abstract class EventActivity extends FragmentActivity implements
         outState.putString("localTimeStr", (String) lt.toString());
         super.onSaveInstanceState(outState);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +97,13 @@ public abstract class EventActivity extends FragmentActivity implements
                 setTime(localTime);
             }
         }
+    }
+    public void doneClicked(View view) {
+        Log.d("Debug","inside doneClicked inside abstract class");
+
+        setLocalDate();
+        finish();
+        super.finish();
     }
     public void startTimePicker(View view) {
         DialogFragment newFragment = new ScoreActivity.TimePickerFragment();
