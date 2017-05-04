@@ -45,13 +45,13 @@
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:id="@+id/fromTime"
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:text="TODO"
-        app:layout_constraintLeft_toRightOf="@+id/fromLabel"
-        app:layout_constraintBaseline_toBaselineOf="@+id/fromLabel" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/fromLabel"
+        app:layout_constraintLeft_toRightOf="@+id/fromLabel" />
 
     <TextView
         android:id="@+id/toTime"
