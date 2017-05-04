@@ -5,74 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ibsanalyzer.meal.MealActivity">
-
-    <Button
-        android:id="@+id/doneBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:onClick="doneClicked"
-        android:text="Done"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.847"
-        app:layout_constraintLeft_toRightOf="@+id/editText7"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/timeInput"
-        android:layout_marginStart="8dp" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="29dp"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        app:layout_constraintBaseline_toBaselineOf="@+id/dateInput"
-        android:layout_marginStart="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/dateInput"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginEnd="8dp" />
-
-    <EditText
-        android:id="@+id/dateInput"
-        android:layout_width="94dp"
-        android:layout_height="34dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintLeft_toRightOf="@+id/textView7"
-        app:layout_constraintRight_toLeftOf="@+id/textView8"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
-        app:layout_constraintHorizontal_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time:"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/dateInput"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp" />
-
-    <EditText
-        android:id="@+id/timeInput"
-        android:layout_width="90dp"
-        android:layout_height="34dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
-        app:layout_constraintLeft_toRightOf="@+id/textView8"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+    tools:context=".MealActivity">
 
     <TextView
         android:id="@+id/textView9"
@@ -82,49 +15,20 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/dateInput" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp" />
 
-    <EditText
-        android:id="@+id/editText7"
-        android:layout_width="66dp"
-        android:layout_height="38dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        app:layout_constraintLeft_toRightOf="@+id/textView9"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView9"
-        android:layout_marginStart="8dp"
-        tools:layout_editor_absoluteY="30dp"
-        tools:layout_editor_absoluteX="71dp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="169dp"
-        android:layout_height="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/addTagBtn"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/doneBtn" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addTagBtn"
+    <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:onClick="addTagToEvent"
-        app:fabSize="mini"
+        android:text="1"
+        app:layout_constraintLeft_toRightOf="@+id/textView9"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doneBtn"
-        app:srcCompat="@drawable/common_full_open_on_phone" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

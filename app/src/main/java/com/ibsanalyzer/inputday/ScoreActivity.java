@@ -38,11 +38,6 @@ public class ScoreActivity extends EventActivity {
     SeekBar scoreBar;
 
     @Override
-    public void doneClicked(View view){
-        super.doneClicked(view);
-    }
-
-    @Override
     protected int getLayoutRes() {
         return R.layout.activity_score;
     }

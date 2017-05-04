@@ -44,7 +44,6 @@ public abstract class EventActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
     TextView date;
     TextView time;
-    Button doneBtn;
     Button dateBtn;
     Button timeBtn;
     LocalTime lt = LocalTime.now();
@@ -79,7 +78,6 @@ public abstract class EventActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_event);
         ViewGroup content = (ViewGroup) findViewById(R.id.appendingLayout);
         getLayoutInflater().inflate(getLayoutRes(),content,true);
-        doneBtn = (Button) findViewById(R.id.doneBtn);
         dateBtn = (Button) findViewById(R.id.dateBtn);
         timeBtn = (Button) findViewById(R.id.timeBtn);
         date = (TextView) findViewById(R.id.date);

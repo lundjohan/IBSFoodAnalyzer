@@ -22,7 +22,6 @@ import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Tag;
-import com.ibsanalyzer.meal.MealActivity;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;

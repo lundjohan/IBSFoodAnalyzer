@@ -1,5 +1,6 @@
-package com.ibsanalyzer.meal;
+package com.ibsanalyzer.inputday;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.inputday.EventActivity;
 import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.meal.TagFragment;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
@@ -31,7 +34,7 @@ import java.util.List;
 //see p. 124 'Beginning Android' for the inspiraiton for this class
 //This Activity starts when user press Meal button, and a meal should be constructed
 //It is called from DiaryFragment
-public class MealActivity extends AppCompatActivity implements TextWatcher {
+public class MealActivity extends EventActivity implements TextWatcher {
     private EditText inputTag;
 
     //Make better
@@ -42,6 +45,12 @@ public class MealActivity extends AppCompatActivity implements TextWatcher {
     private Button doneBtn;
     private FloatingActionButton addTagBtn;
     private Meal meal;
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_meal;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,27 +58,19 @@ public class MealActivity extends AppCompatActivity implements TextWatcher {
 
         //suggestions = (TextView)findViewById(R.id.mealTagSuggestions);
 
-        doneBtn = (Button)findViewById(R.id.doneBtn);
-        addTagBtn = (FloatingActionButton)findViewById(R.id.addTagBtn);
 
 
         //inputTag.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,tagsFromDB));
 
     }
 
-    public void doneClicked(View view){
-        //ev samla ihop data här från inputTag.
-
-        finish();
-    }
     @Override
     public void finish() {
         Intent data = new Intent();
-        LocalDateTime time = LocalDateTime.now();
         List<Tag> tags = new ArrayList<>();
-        tags.add(new Tag(time, "green_leaves", 1.7));
-        tags.add(new Tag(time, "lactiplus", 1.));
-        Meal meal = new Meal(time, tags, 2.3);
+        tags.add(new Tag(datetime, "green_leaves", 1.7));
+        tags.add(new Tag(datetime, "lactiplus", 1.));
+        Meal meal = new Meal(datetime, tags, 2.3);
 
         //Put in database here (Android Studio Development Essentials [ASDE] p. 558, 559)
 

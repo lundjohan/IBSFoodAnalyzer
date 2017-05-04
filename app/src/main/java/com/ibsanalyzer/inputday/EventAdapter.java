@@ -70,7 +70,13 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tagList = (ListView)itemView.findViewById(tagView);
             listItems = new ArrayList<>();
             adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listItems);
+
+
             tagList.setAdapter(adapter);
+            //makes list non-clickable
+            tagList.setClickable(false);
+            tagList.setItemsCanFocus(false);
+
 
         }
     }
