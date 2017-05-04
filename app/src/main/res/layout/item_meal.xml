@@ -79,22 +79,33 @@
         tools:layout_editor_absoluteX="60dp"
         tools:layout_editor_absoluteY="0dp" />
 
-    <ListView
-        android:id="@+id/tagView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <LinearLayout
+        android:id="@+id/tagQuantities"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:layout_marginTop="2dp"
-        android:isScrollContainer="false"
-        android:scrollbars="none"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toRightOf="@+id/portions"
+        app:layout_constraintRight_toLeftOf="@+id/tagNames"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"></LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tagNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="2dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        />
+        app:layout_constraintVertical_bias="0.0">
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

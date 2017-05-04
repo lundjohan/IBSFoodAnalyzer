@@ -2,31 +2,25 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.ibsanalyzer.base_classes.BM;
-import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Tag;
 
 import org.threeten.bp.LocalDateTime;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.tag;
-import static com.ibsanalyzer.inputday.R.drawable.meal;
-import static com.ibsanalyzer.inputday.R.id.tagView;
-import static java.security.AccessController.getContext;
+import static com.ibsanalyzer.inputday.R.id.tagNames;
+import static com.ibsanalyzer.inputday.R.id.tagQuantities;
 
 /**
  * Created by Johan on 2017-04-10.
@@ -62,20 +56,19 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
     //this is for tags
     abstract class InputEventViewHolder extends EventViewHolder {
-        public ListView tagList;
-        public List<String>listItems;
-        ArrayAdapter<String>adapter;
-        public InputEventViewHolder(View itemView,  Context context) {
+        public LinearLayout tagQuantsLayout;
+        public LinearLayout tagNamesLayout;
+        public Context context;
+       /* public List<String>tagQuantsList;
+        public List<String>tagNamesList;*/
+
+        public InputEventViewHolder(View itemView, Context context) {
             super(itemView);
-            tagList = (ListView)itemView.findViewById(tagView);
-            listItems = new ArrayList<>();
-            adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listItems);
+            //used for initation of textViews for lists
+            this.context = context;
+            tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
+            tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
 
-
-            tagList.setAdapter(adapter);
-            //makes list non-clickable
-            tagList.setClickable(false);
-            tagList.setItemsCanFocus(false);
 
 
         }
@@ -182,9 +175,14 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 //do this one generic in InputEventViewHolder
                 List<String>tagStrings = new ArrayList<>();
                 for (Tag tag: meal.getTags()){
-                    mealHolder.listItems.add(tag.getName());
+                    TextView tagQuant = new TextView(mealHolder.tagQuantsLayout.getContext());
+                    tagQuant.setText(Double.toString(tag.getSize())+'X');
+                    mealHolder.tagQuantsLayout.addView(tagQuant);
+
+                    TextView tagName = new TextView(mealHolder.tagNamesLayout.getContext());
+                    tagName.setText(tag.getName());
+                    mealHolder.tagNamesLayout.addView(tagName);
                 }
-                mealHolder.adapter.notifyDataSetChanged();
                 break;
             case 3: //BM
                 BM bm = (BM)event;
