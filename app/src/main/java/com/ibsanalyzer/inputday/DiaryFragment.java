@@ -139,6 +139,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 }
                 break;
             case NEW_BM:
+                Log.d("Debug", "inuti DiaryFragment. OnactivityResult for NEW_BM");
                 if (data.hasExtra("returnBmJSON")) {
                     String bmJSONData = data.getExtras().getString("returnBmJSON");
                     event = gson.fromJson(bmJSONData, BM.class);

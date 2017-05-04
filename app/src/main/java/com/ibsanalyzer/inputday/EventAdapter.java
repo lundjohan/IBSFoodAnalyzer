@@ -28,7 +28,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public EventAdapter(List<Event> events, DiaryFragment fragment) {
         this.events = events; this.usingFragment = fragment;
     }
-    private final int MEAL = 0, SCORE = 4;
+   private final int MEAL = 0, _BM = 3, SCORE = 4;
 
     /*
     Click Listeners
@@ -91,7 +91,9 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
         if (events.get(position) instanceof Meal) {
             return MEAL;
-        } else if (events.get(position) instanceof Score) {
+        } else if (events.get(position) instanceof BM) {
+            return _BM;
+        }else if (events.get(position) instanceof Score) {
             return SCORE;
         }
         return -1;  //is this good implementation?

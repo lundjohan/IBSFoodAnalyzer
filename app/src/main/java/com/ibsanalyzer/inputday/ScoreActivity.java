@@ -35,7 +35,6 @@ import java.util.Calendar;
 
 public class ScoreActivity extends EventActivity {
     TextView scoreName;
-    EditText score;
     SeekBar scoreBar;
 
     @Override
@@ -92,12 +91,6 @@ public class ScoreActivity extends EventActivity {
 
     @Override
     public void finish() {
-        try {
-            datetime = LocalDateTime.of(ld, lt);
-        } catch (Exception ex) {
-            Log.d("Cathed Exception", "LocalDateTime could not be resolved");
-            datetime = LocalDateTime.now();
-        }
         //scoreBar starts from zero
         int after = scoreBar.getProgress() + 1;
         Score score = new Score(datetime, after);
