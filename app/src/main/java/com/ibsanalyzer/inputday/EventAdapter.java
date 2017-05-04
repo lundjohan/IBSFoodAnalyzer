@@ -176,7 +176,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 List<String>tagStrings = new ArrayList<>();
                 for (Tag tag: meal.getTags()){
                     TextView tagQuant = new TextView(mealHolder.tagQuantsLayout.getContext());
-                    tagQuant.setText(Double.toString(tag.getSize())+'X');
+                    tagQuant.setText('X'+Double.toString(tag.getSize()));
                     mealHolder.tagQuantsLayout.addView(tagQuant);
 
                     TextView tagName = new TextView(mealHolder.tagNamesLayout.getContext());
