@@ -29,6 +29,25 @@
             tools:layout_conversion_absoluteY="120dp"
             tools:layout_editor_absoluteY="120dp" />
 
+        <TextView
+            android:id="@+id/scoreName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/textView12"
+            android:layout_toRightOf="@+id/textView12"
+            android:text="name"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
+            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintLeft_toRightOf="@+id/textView12"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_conversion_absoluteHeight="16dp"
+            tools:layout_conversion_absoluteWidth="0dp"
+            tools:layout_conversion_absoluteX="55dp"
+            tools:layout_conversion_absoluteY="120dp" />
+
         <SeekBar
             android:id="@+id/scoreBar"
             style="@android:style/Widget.SeekBar"
@@ -48,26 +67,9 @@
             tools:layout_conversion_absoluteHeight="20dp"
             tools:layout_conversion_absoluteWidth="368dp"
             tools:layout_conversion_absoluteX="8dp"
-            tools:layout_conversion_absoluteY="144dp" />
+            tools:layout_conversion_absoluteY="144dp"
+            android:layout_toRightOf="@+id/textView12" />
 
-        <TextView
-            android:id="@+id/scoreName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@+id/textView12"
-            android:layout_toRightOf="@+id/textView12"
-            android:text="name"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
-            app:layout_constraintHorizontal_bias="0.01"
-            app:layout_constraintLeft_toRightOf="@+id/textView12"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_conversion_absoluteHeight="16dp"
-            tools:layout_conversion_absoluteWidth="0dp"
-            tools:layout_conversion_absoluteX="55dp"
-            tools:layout_conversion_absoluteY="120dp" />
     </RelativeLayout>
 
 

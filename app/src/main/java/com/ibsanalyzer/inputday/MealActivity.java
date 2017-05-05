@@ -54,7 +54,6 @@ public class MealActivity extends EventActivity implements TextWatcher {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meal);
 
         //suggestions = (TextView)findViewById(R.id.mealTagSuggestions);
 
