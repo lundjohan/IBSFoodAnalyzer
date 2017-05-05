@@ -1,27 +1,10 @@
 package com.ibsanalyzer.inputday;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-
-import com.google.gson.Gson;
-import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.base_classes.Meal;
-import com.ibsanalyzer.base_classes.Tag;
-
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.Month;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
