@@ -11,7 +11,7 @@ public class BM extends Event {
 	private int complete = 0;
 
 	public BM(LocalDateTime time,int complete, int bristol) {
-		super(time, new ArrayList<Tag>());
+		super(time);
 		this.complete = complete;
 		this.bristol = bristol;
 
@@ -24,20 +24,6 @@ public class BM extends Event {
 		return bristol;
 	}
 
-	/**
-	 * BM tags are, in general, not input-tags.
-	 */
-	@Override
-	public List<Tag>getInputTags(){
-		List<Tag>toReturn = new ArrayList<>();
-		List<Tag>allTags = getTags();
-		for (Tag t:allTags){
-			if (t.getName().equalsIgnoreCase("squat") || t.getName().equalsIgnoreCase("squatting")) {
-				toReturn.add(t);
-			}
-		}
-		return toReturn;
-	}
 
 	public int getComplete() {
 		return complete;

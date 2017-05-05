@@ -3,7 +3,7 @@ package com.ibsanalyzer.base_classes;
 import org.threeten.bp.LocalDateTime;;
 import java.util.List;
 
-public class Exercise extends Event {
+public class Exercise extends InputEvent {
 	private double intensity;
 
 	public Exercise(){

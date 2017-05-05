@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import org.threeten.bp.LocalDateTime;;
 import java.util.List;
 
-public class Meal extends Event {
+public class Meal extends InputEvent {
 	private double portions;
 
 	public Meal(LocalDateTime time, List<Tag> tags, double portions) {

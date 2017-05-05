@@ -9,7 +9,7 @@ import static com.ibsanalyzer.inputday.R.id.scoreName;
 public class Score extends Event {
 	private int after;
 	public Score(LocalDateTime time, int after) {
-		super(time, new ArrayList<Tag>());
+		super(time);
 		this.after = after;
 	}
 	public int getAfter() {
