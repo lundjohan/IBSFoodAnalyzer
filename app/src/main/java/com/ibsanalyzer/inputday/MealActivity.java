@@ -28,13 +28,8 @@ import static com.ibsanalyzer.inputday.R.drawable.meal;
 //see p. 124 'Beginning Android' for the inspiraiton for this class
 //This Activity starts when user press Meal button, and a meal should be constructed
 //It is called from DiaryFragment
-public class MealActivity extends EventActivity {
-    private Button addTagsBtn;
+public class MealActivity extends TagEventActivity {
 
-    private List<Tag> tagsList;
-    private RecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
-    private TagAdapter adapter;
     private TextView portionView;
 
     @Override
@@ -46,20 +41,6 @@ public class MealActivity extends EventActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         portionView = (TextView) findViewById(R.id.portions);
-
-
-        addTagsBtn = (Button) findViewById(R.id.addTagsBtn);
-        recyclerView = (RecyclerView) findViewById(R.id.addedTagsView);
-        layoutManager = new LinearLayoutManager(this);
-        tagsList = new ArrayList<>();
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new TagAdapter(tagsList, this);
-        recyclerView.setAdapter(adapter);
-        //add line separator
-        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(mDividerItemDecoration);
-
     }
 
     public void newTagAdderActivity(View view) {
@@ -105,6 +86,6 @@ public class MealActivity extends EventActivity {
             Tag tag = new Tag(datetime, tagTemplate.get_tagname(), 1.0);
             tagsList.add(tag);
         }
-        adapter.notifyItemInserted(tagsList.size() - 1);
+        notifyItemInserted();
     }
 }

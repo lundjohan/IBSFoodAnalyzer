@@ -23,9 +23,9 @@ import static android.media.CamcorderProfile.get;
 class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Tag>tagsList;;
     private Activity parentActivity;
-    public TagAdapter(List<Tag> tagsList, MealActivity mealActivity) {
+    public TagAdapter(List<Tag> tagsList, TagEventActivity tagEventActivity) {
         this.tagsList = tagsList;
-        parentActivity = mealActivity;
+        parentActivity = tagEventActivity;
     }
 
     //s. 355
