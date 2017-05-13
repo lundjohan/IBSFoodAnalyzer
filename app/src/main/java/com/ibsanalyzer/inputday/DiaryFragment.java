@@ -156,7 +156,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //se https://guides.codepath.com/android/Using-the-RecyclerView#itemanimator för 4 alternativ
         //här för förtydligande varför notifyDataSetChanged är mer mer ineffektiv: inte https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyDataSetChanged()
         //item inserted in last position of eventList
-        adapter.notifyItemInserted(eventList.size() - 1); //OBS! Simplistic!
+        adapter.notifyItemInserted(eventList.size() - 1); //OBS! Simplistic! There should be possiblities to add another date & time than the latest.
     }
 
     /*This is needed since onClick otherwise goes to parent Activity*/

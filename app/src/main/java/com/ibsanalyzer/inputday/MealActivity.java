@@ -2,49 +2,32 @@ package com.ibsanalyzer.inputday;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Tag;
-import com.ibsanalyzer.inputday.EventActivity;
-import com.ibsanalyzer.inputday.R;
-import com.ibsanalyzer.meal.TagFragment;
-
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.Month;
+import com.ibsanalyzer.model.TagTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
+
 //see p. 124 'Beginning Android' for the inspiraiton for this class
 //This Activity starts when user press Meal button, and a meal should be constructed
 //It is called from DiaryFragment
-public class MealActivity extends EventActivity implements TextWatcher {
-    private EditText inputTag;
+public class MealActivity extends EventActivity {
+    private Button addTagsBtn;
+    private ListView tagNamesList;
 
-    //Make better
-    private TextView suggestion1;
-    private TextView suggestion2;
-    private TextView suggestion3;
-
-    private Button doneBtn;
-    private FloatingActionButton addTagBtn;
-    private Meal meal;
+    //TODO CHANGE TO=> List<Tag>  -> TagAdderActivity should return a full Tag in json-format (performance-reasons for this, so that there is no need to look up parent twice)
+    private List<String>tagNamesAdded;
+    private ArrayAdapter<String>adapter;
 
     @Override
     protected int getLayoutRes() {
@@ -54,15 +37,19 @@ public class MealActivity extends EventActivity implements TextWatcher {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        addTagsBtn = (Button)findViewById(R.id.addTagsBtn);
+        tagNamesList = (ListView)findViewById(R.id.tagname_listview);
+        tagNamesAdded = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tagNamesAdded);
+        tagNamesList.setAdapter(adapter);
 
-        //suggestions = (TextView)findViewById(R.id.mealTagSuggestions);
-
-
-
-        //inputTag.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,tagsFromDB));
 
     }
 
+    public void newTagAdderActivity(View view) {
+        Intent intent = new Intent(this, TagAdderActivity.class);
+        startActivityForResult(intent, TAGS_TO_ADD);
+    }
     @Override
     public void finish() {
         Intent data = new Intent();
@@ -82,30 +69,23 @@ public class MealActivity extends EventActivity implements TextWatcher {
         setResult(RESULT_OK, data);
         super.finish();
     }
-    private Meal inputsToMeal(){
-        return null;
-    }
+
+
+    //data coming back from TagAdder
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        //inputTag.getText is more complex than what it seems -> it effectively uses the tagsFromDB array (I think)
-        //suggestions.setText(inputTag.getText());
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
-
-    public void addTagToEvent(View view){
-        Fragment tagFrag= new TagFragment(); //send list of tags already added
-        this.getFragmentManager().beginTransaction()
-                .replace(R.id.mealContainer, tagFrag)
-                .addToBackStack(null)
-                .commit();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode!= TAGS_TO_ADD) {
+            return;
+        }
+        Gson gson = new Gson();
+        if (data.hasExtra("returnTagTemplateJSON")) {
+            String tagJSONData = data.getExtras().getString("returnTagTemplateJSON");
+            TagTemplate tagTemplate = gson.fromJson(tagJSONData, TagTemplate.class);
+            tagNamesAdded.add(tagTemplate.get_tagname());
+        }
+        adapter.notifyDataSetChanged(); // change to RecyclerView.adapter and notifyItemInserted(tagNamesAdded.size() - 1);
     }
 }
