@@ -1,15 +1,22 @@
 package com.ibsanalyzer.inputday;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.model.TagTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
 
 /**
  * Created by Johan on 2017-05-13.
@@ -39,5 +46,29 @@ public abstract class TagEventActivity extends EventActivity {
     }
     protected void notifyItemInserted(){
         adapter.notifyItemInserted(tagsList.size() - 1);
+    }
+    //data coming back from TagAdder
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode != TAGS_TO_ADD) {
+            return;
+        }
+        Gson gson = new Gson();
+        if (data.hasExtra("returnTagTemplateJSON")) {
+            String tagJSONData = data.getExtras().getString("returnTagTemplateJSON");
+            TagTemplate tagTemplate = gson.fromJson(tagJSONData, TagTemplate.class);
+
+            //create a new Tag
+            Tag tag = new Tag(datetime, tagTemplate.get_tagname(), 1.0);
+            tagsList.add(tag);
+        }
+        notifyItemInserted();
+    }
+    public void newTagAdderActivity(View view) {
+        Intent intent = new Intent(this, TagAdderActivity.class);
+        startActivityForResult(intent, TAGS_TO_ADD);
     }
 }

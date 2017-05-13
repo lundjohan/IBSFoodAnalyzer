@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Tag;
 
@@ -32,7 +34,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public EventAdapter(List<Event> events, DiaryFragment fragment) {
         this.events = events; this.usingFragment = fragment;
     }
-   private final int MEAL = 0, _BM = 3, SCORE = 4;
+   private final int _MEAL = 0, _OTHER = 1,_EXERCISE = 2,_BM = 3, _SCORE = 4;
 
     /*
     Click Listeners
@@ -68,9 +70,6 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.context = context;
             tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
             tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
-
-
-
         }
     }
     class MealViewHolder extends InputEventViewHolder {
@@ -79,9 +78,19 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public MealViewHolder(View itemView, Context context) {
             super(itemView, context);
             portions = (TextView) itemView.findViewById(R.id.portions);
+        }
+    }
+    class OtherViewHolder extends InputEventViewHolder {
 
-            //add tags, to be moved up in hierarchy
+        public OtherViewHolder(View itemView, Context context) {
+            super(itemView, context);
+        }
+    }
+    class ExerciseViewHolder extends InputEventViewHolder {
+        public TextView intensity;
 
+        public ExerciseViewHolder(View itemView, Context context) {
+            super(itemView, context);
         }
     }
     class BmViewHolder extends EventViewHolder {
@@ -109,14 +118,21 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     /*method implemented with help from https://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView#viewholder2-java*/
     @Override
     public int getItemViewType(int position) {
-        if (events.get(position) instanceof Meal) {
-            return MEAL;
-        } else if (events.get(position) instanceof BM) {
-            return _BM;
-        }else if (events.get(position) instanceof Score) {
-            return SCORE;
-        }
-        return -1;  //is -1 good implementation?
+            if (events.get(position) instanceof Meal) {
+                return _MEAL;
+            }
+            else if (events.get(position) instanceof Other) {
+                return _OTHER;
+            }
+            else if (events.get(position) instanceof Exercise) {
+                return _EXERCISE;
+            }
+            else if (events.get(position) instanceof BM) {
+                return _BM;
+            } else if (events.get(position) instanceof Score) {
+                return _SCORE;
+            }
+        throw new RuntimeException("unknown class");
     }
 
     @Override
@@ -124,15 +140,23 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         RecyclerView.ViewHolder viewHolder = null;
         View v;
         switch (viewType) {
-            case 0:
+            case _MEAL:
                 v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent, false);
                 viewHolder = new MealViewHolder(v, parent.getContext());
                 break;
-            case 3:
+            case _OTHER:
+                v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent, false);
+                viewHolder = new OtherViewHolder(v, parent.getContext());
+                break;
+            case _EXERCISE:
+                v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise, parent, false);
+                viewHolder = new ExerciseViewHolder(v, parent.getContext());
+                break;
+            case _BM:
                 v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bm, parent, false);
                 viewHolder = new BmViewHolder(v);
                 break;
-            case 4:
+            case _SCORE:
                 v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_score, parent, false);
                 viewHolder = new ScoreViewHolder(v);
                 break;

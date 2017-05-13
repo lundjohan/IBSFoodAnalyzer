@@ -1,9 +1,8 @@
 package com.ibsanalyzer.base_classes;
 
-import org.threeten.bp.LocalDateTime;;
-import java.util.ArrayList;
+import org.threeten.bp.LocalDateTime;
 
-import static com.ibsanalyzer.inputday.R.id.scoreName;
+;
 
 //this class is an exception from EventModel rule: it does not use Tags.
 public class Score extends Event {

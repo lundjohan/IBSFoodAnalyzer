@@ -45,8 +45,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".InputEventActivity" />
-        <activity android:name=".TagAdderActivity"></activity>
+        <activity android:name=".TagAdderActivity" />
+        <activity android:name=".OtherActivity" />
+        <activity android:name=".ExerciseActivity"></activity>
     </application>
 
 </manifest>

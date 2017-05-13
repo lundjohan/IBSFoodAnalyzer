@@ -2,9 +2,6 @@ package com.ibsanalyzer.base_classes;
 
 import org.threeten.bp.LocalDateTime;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BM extends Event {
 	//private double size;
 	private int bristol;

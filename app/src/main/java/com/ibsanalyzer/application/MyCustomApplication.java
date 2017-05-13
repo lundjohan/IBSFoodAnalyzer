@@ -2,7 +2,6 @@ package com.ibsanalyzer.application;
 
 import android.app.Application;
 import android.os.StrictMode;
-import android.util.Config;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 

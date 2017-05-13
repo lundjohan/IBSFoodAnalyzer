@@ -18,9 +18,10 @@ import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.BM;
-import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.base_classes.Other;
+import com.ibsanalyzer.base_classes.Score;
 import com.ibsanalyzer.base_classes.Tag;
 
 import org.threeten.bp.LocalDateTime;
@@ -35,6 +36,8 @@ import java.util.List;
  */
 public class DiaryFragment extends Fragment implements View.OnClickListener, EventAdapter.OnItemClickListener, EventAdapter.OnItemLongClickListener {
     public static final int NEW_MEAL = 1000;
+    public static final int NEW_OTHER = 1001;
+    public static final int NEW_EXERCISE = 1002;
     public static final int NEW_BM = 1003;
     public static final int NEW_SCORE = 1004;
     RecyclerView recyclerView;
@@ -96,8 +99,16 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
         mealBtn.setOnClickListener(this);
+
+        ImageButton otherBtn = (ImageButton) view.findViewById(R.id.otherBtn);
+        otherBtn.setOnClickListener(this);
+
+        ImageButton exerciseBtn = (ImageButton) view.findViewById(R.id.exerciseBtn);
+        exerciseBtn.setOnClickListener(this);
+
         ImageButton bmBtn = (ImageButton) view.findViewById(R.id.bmBtn);
         bmBtn.setOnClickListener(this);
+
         ImageButton scoreBtn = (ImageButton) view.findViewById(R.id.scoreBtn);
         scoreBtn.setOnClickListener(this);
 
@@ -134,7 +145,18 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 if (data.hasExtra("returnMealJSON")) {
                     String mealJSONData = data.getExtras().getString("returnMealJSON");
                     event = gson.fromJson(mealJSONData, Meal.class);
-
+                }
+                break;
+            case NEW_OTHER:
+                if (data.hasExtra("returnOtherJSON")) {
+                    String otherJSONData = data.getExtras().getString("returnOtherJSON");
+                    event = gson.fromJson(otherJSONData, Other.class);
+                }
+                break;
+            case NEW_EXERCISE:
+                if (data.hasExtra("returnExerciseJSON")) {
+                    String exerciseJSONData = data.getExtras().getString("returnExerciseJSON");
+                    event = gson.fromJson(exerciseJSONData, Other.class);
                 }
                 break;
             case NEW_BM:
@@ -157,7 +179,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //här för förtydligande varför notifyDataSetChanged är mer mer ineffektiv: inte https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyDataSetChanged()
         //item inserted in last position of eventList
         adapter.notifyItemInserted(eventList.size() - 1); //OBS! Simplistic! There should be possiblities to add another date & time than the latest.
-    }
+    } //efter detta kraschar det
 
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
@@ -165,6 +187,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         switch (v.getId()) {
             case R.id.mealBtn:
                 newMealActivity(v);
+                break;
+            case R.id.otherBtn:
+                newOtherActivity(v);
+                break;
+            case R.id.exerciseBtn:
+                newExerciseActivity(v);
                 break;
             case R.id.bmBtn:
                 newBmActivity(v);
@@ -182,6 +210,15 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         Intent intent = new Intent(parentActivity, MealActivity.class);
         startActivityForResult(intent, NEW_MEAL);
     }
+    private void newOtherActivity(View v) {
+        Intent intent = new Intent(parentActivity, OtherActivity.class);
+        startActivityForResult(intent, NEW_OTHER);
+    }
+    private void newExerciseActivity(View v) {
+        Intent intent = new Intent(parentActivity, ExerciseActivity.class);
+        startActivityForResult(intent, NEW_EXERCISE);
+    }
+
     private void newBmActivity(View v) {
         Intent intent = new Intent(parentActivity, BmActivity.class);
         startActivityForResult(intent, NEW_BM);

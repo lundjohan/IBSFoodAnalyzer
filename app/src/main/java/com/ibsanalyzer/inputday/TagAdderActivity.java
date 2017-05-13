@@ -1,10 +1,9 @@
 package com.ibsanalyzer.inputday;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,17 +12,12 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.google.gson.Gson;
-import com.ibsanalyzer.base_classes.Meal;
-import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.database.TagnameCursorAdapter;
 import com.ibsanalyzer.model.TagTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static com.ibsanalyzer.inputday.R.drawable.meal;
 
 public class TagAdderActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     SearchView tagSearch;

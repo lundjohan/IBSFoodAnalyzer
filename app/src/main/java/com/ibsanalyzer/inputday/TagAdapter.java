@@ -7,14 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Tag;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.tag;
-import static android.media.CamcorderProfile.get;
 
 /**
  * Created by Johan on 2017-05-13.

@@ -1,12 +1,8 @@
 package com.ibsanalyzer.base_classes;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneOffset;;
-import java.util.Collection;
-import java.util.List;
+
+;
 
 //baseclass only exists to avoid duplication of code.
 public abstract class Event {//implements Parcelable {

@@ -1,10 +1,10 @@
 package com.ibsanalyzer.base_classes;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.threeten.bp.LocalDateTime;
 
-import org.threeten.bp.LocalDateTime;;
 import java.util.List;
+
+;
 
 public class Meal extends InputEvent {
 	private double portions;

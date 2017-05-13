@@ -1,10 +1,6 @@
 package com.ibsanalyzer.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneOffset;
 
 //write for example spinach@green_leaves => 2 tags: spinach &
 //green_leaves
