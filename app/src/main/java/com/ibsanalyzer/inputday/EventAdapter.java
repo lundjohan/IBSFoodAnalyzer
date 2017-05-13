@@ -116,7 +116,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }else if (events.get(position) instanceof Score) {
             return SCORE;
         }
-        return -1;  //is this good implementation?
+        return -1;  //is -1 good implementation?
     }
 
     @Override
