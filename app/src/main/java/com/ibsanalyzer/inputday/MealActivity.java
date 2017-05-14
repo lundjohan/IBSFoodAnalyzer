@@ -6,7 +6,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.util.Util;
 
+import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 
 public class MealActivity extends TagEventActivity {
@@ -27,11 +29,6 @@ public class MealActivity extends TagEventActivity {
         //create meal
         double portions = Double.parseDouble((String) portionView.getText());
         Meal meal = new Meal(datetime, tagsList, portions);
-        Gson gson = new Gson();
-        String mealAsJSON = gson.toJson(meal);
-        Intent data = new Intent();
-        data.putExtra(RETURN_MEAL_JSON, mealAsJSON);
-        setResult(RESULT_OK, data);
-        super.finish();
+        Util.jsonAndMoreFinishingData(meal,RETURN_MEAL_JSON, this);
     }
 }

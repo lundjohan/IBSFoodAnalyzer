@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bristolBar" />
 
     <TextView
-        android:id="@+id/scoreName"
+        android:id="@+id/intensityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
@@ -85,7 +85,7 @@
         android:layout_marginRight="8dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/scoreName"
+        app:layout_constraintLeft_toLeftOf="@+id/intensityName"
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView

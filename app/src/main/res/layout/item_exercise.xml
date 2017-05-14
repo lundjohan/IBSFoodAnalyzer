@@ -33,8 +33,8 @@
         android:text="10:00"
         app:layout_constraintLeft_toRightOf="@+id/textView6"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
+        app:layout_constraintRight_toLeftOf="@+id/intensity"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/tagNames"
         app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
@@ -56,37 +56,35 @@
         app:layout_constraintGuide_begin="60dp"
         tools:layout_editor_absoluteX="60dp"
         tools:layout_editor_absoluteY="0dp" />
-
-    <LinearLayout
-        android:id="@+id/tagNames"
+    <TextView
+        android:id="@+id/exercise_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="2dp"
-        android:gravity="right|fill|end"
-        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        android:text="TODO"
+        android:layout_marginTop="3dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintRight_toLeftOf="@+id/tagQuantities"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></LinearLayout>
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintRight_toLeftOf="@+id/intensity"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.0" />
 
-    <LinearLayout
-        android:id="@+id/tagQuantities"
+    <TextView
+        android:id="@+id/intensity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="2dp"
-        android:orientation="vertical"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Intensity"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-    </LinearLayout>
+        app:layout_constraintVertical_bias="0.5" />
 
 </android.support.constraint.ConstraintLayout>

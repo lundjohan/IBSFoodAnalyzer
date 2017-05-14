@@ -30,7 +30,7 @@
             tools:layout_editor_absoluteY="120dp" />
 
         <TextView
-            android:id="@+id/scoreName"
+            android:id="@+id/intensityName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -49,7 +49,7 @@
             tools:layout_conversion_absoluteY="120dp" />
 
         <SeekBar
-            android:id="@+id/scoreBar"
+            android:id="@+id/intensityBar"
             style="@android:style/Widget.SeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

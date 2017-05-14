@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Score;
 
+import static com.ibsanalyzer.constants.Constants.RETURN_SCORE_JSON;
+
 /**
  * Created by Johan on 2017-05-01.
  */
@@ -27,18 +29,11 @@ public class ScoreActivity extends EventActivity {
         outState.putInt("seekBar", scoreBar.getProgress());
         super.onSaveInstanceState(outState);
     }
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mainmenu, menu);
-        return true;
-    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scoreName = (TextView) findViewById(R.id.scoreName);
-        scoreBar = (SeekBar) findViewById(R.id.scoreBar);
+        scoreName = (TextView) findViewById(R.id.intensityName);
+        scoreBar = (SeekBar) findViewById(R.id.intensityBar);
         scoreBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -82,7 +77,7 @@ public class ScoreActivity extends EventActivity {
         String scoreAsJSON = gson.toJson(score);
 
         Intent data = new Intent();
-        data.putExtra("returnScoreJSON", scoreAsJSON);
+        data.putExtra(RETURN_SCORE_JSON, scoreAsJSON);
         setResult(RESULT_OK, data);
     }
 }
