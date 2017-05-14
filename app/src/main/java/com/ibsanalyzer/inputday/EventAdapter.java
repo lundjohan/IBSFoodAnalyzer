@@ -2,6 +2,7 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
+import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Score;
@@ -21,6 +23,8 @@ import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.tag;
+import static com.ibsanalyzer.inputday.R.drawable.meal;
 import static com.ibsanalyzer.inputday.R.id.tagNames;
 import static com.ibsanalyzer.inputday.R.id.tagQuantities;
 
@@ -70,6 +74,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.context = context;
             tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
             tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
+            Log.d("Debug","Inside InputEventViewHolder, tagNamesLayout.toString() "+tagNamesLayout.toString());
         }
     }
     class MealViewHolder extends InputEventViewHolder {
@@ -83,6 +88,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class OtherViewHolder extends InputEventViewHolder {
 
         public OtherViewHolder(View itemView, Context context) {
+
             super(itemView, context);
         }
     }
@@ -145,7 +151,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 viewHolder = new MealViewHolder(v, parent.getContext());
                 break;
             case _OTHER:
-                v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent, false);
+                v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_other, parent, false);
                 viewHolder = new OtherViewHolder(v, parent.getContext());
                 break;
             case _EXERCISE:
@@ -189,33 +195,31 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         });
 
         switch (holder.getItemViewType()) {
-            case 0: //MEAL
+            case _MEAL:
                 Meal meal = (Meal)event;
                 MealViewHolder mealHolder = (MealViewHolder) holder;
-                setTime(meal,mealHolder);
                 mealHolder.portions.setText(String.valueOf(meal.getPortions()));
-
-                //s. 323
-                //do this one generic in InputEventViewHolder
-                List<String>tagStrings = new ArrayList<>();
-                for (Tag tag: meal.getTags()){
-                    TextView tagQuant = new TextView(mealHolder.tagQuantsLayout.getContext());
-                    tagQuant.setText('X'+Double.toString(tag.getSize()));
-                    mealHolder.tagQuantsLayout.addView(tagQuant);
-
-                    TextView tagName = new TextView(mealHolder.tagNamesLayout.getContext());
-                    tagName.setText(tag.getName());
-                    mealHolder.tagNamesLayout.addView(tagName);
-                }
+                bindTagsToTagEventViewHolder(meal,mealHolder);
                 break;
-            case 3: //BM
+            case _OTHER:
+                Other other = (Other)event;
+                OtherViewHolder otherHolder = (OtherViewHolder) holder;
+                bindTagsToTagEventViewHolder(other,otherHolder);
+                break;
+            case _EXERCISE:
+                Exercise exercise = (Exercise)event;
+                ExerciseViewHolder exerciseHolder = (ExerciseViewHolder) holder;
+
+                //TODO bind tag and intensity somewhere
+                break;
+            case _BM:
                 BM bm = (BM)event;
                 BmViewHolder bmHolder = (BmViewHolder) holder;
                 setTime(bm, bmHolder);
                 bmHolder.completeness.setText(BM.completenessScoreToText(bm.getComplete()));
                 bmHolder.bristol.setText(String.valueOf(bm.getBristol()));
                 break;
-            case 4: //SCORE
+            case _SCORE:
                 Score score = (Score)event;
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
                 setTime(score,scoreHolder);
@@ -241,5 +245,18 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
     private String formatTime (LocalDateTime ldt){
         return String.format("%02d",ldt.getHour())+':'+String.format("%02d",ldt.getMinute());
+    }
+    private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder tagHolder){
+        setTime(inputEvent,tagHolder);
+        List<String>tagStrings = new ArrayList<>();
+        for (Tag tag: inputEvent.getTags()){
+            TextView tagQuant = new TextView(tagHolder.tagQuantsLayout.getContext());
+            tagQuant.setText('X'+Double.toString(tag.getSize()));
+            tagHolder.tagQuantsLayout.addView(tagQuant);
+
+            TextView tagName = new TextView(tagHolder.tagNamesLayout.getContext());
+            tagName.setText(tag.getName());
+            tagHolder.tagNamesLayout.addView(tagName);
+        }
     }
 }

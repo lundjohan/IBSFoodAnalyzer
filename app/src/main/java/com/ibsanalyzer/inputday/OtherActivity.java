@@ -6,6 +6,8 @@ import android.os.Bundle;
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Other;
 
+import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
+
 public class OtherActivity extends TagEventActivity {
 
     @Override
@@ -24,7 +26,7 @@ public class OtherActivity extends TagEventActivity {
         Gson gson = new Gson();
         String otherAsJSON = gson.toJson(other);
         Intent data = new Intent();
-        data.putExtra("returnOtherJSON", otherAsJSON);
+        data.putExtra(RETURN_OTHER_JSON, otherAsJSON);
         setResult(RESULT_OK, data);
         super.finish();
     }

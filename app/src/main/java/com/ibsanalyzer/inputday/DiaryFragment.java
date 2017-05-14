@@ -19,6 +19,7 @@ import android.widget.ViewSwitcher;
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Score;
@@ -29,6 +30,9 @@ import org.threeten.bp.Month;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
 
 
 /**
@@ -142,21 +146,22 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         switch (requestCode) {
 
             case NEW_MEAL:
-                if (data.hasExtra("returnMealJSON")) {
-                    String mealJSONData = data.getExtras().getString("returnMealJSON");
+                if (data.hasExtra(RETURN_MEAL_JSON)) {
+                    String mealJSONData = data.getExtras().getString(RETURN_MEAL_JSON);
                     event = gson.fromJson(mealJSONData, Meal.class);
                 }
                 break;
             case NEW_OTHER:
-                if (data.hasExtra("returnOtherJSON")) {
-                    String otherJSONData = data.getExtras().getString("returnOtherJSON");
+                if (data.hasExtra(RETURN_OTHER_JSON)) {
+                    String otherJSONData = data.getExtras().getString(RETURN_OTHER_JSON);
                     event = gson.fromJson(otherJSONData, Other.class);
+                    Log.d("Debug", "Inside DiaryFragment, creating event from returned Other gson=>  time of this event: "+event.getTime());
                 }
                 break;
             case NEW_EXERCISE:
                 if (data.hasExtra("returnExerciseJSON")) {
                     String exerciseJSONData = data.getExtras().getString("returnExerciseJSON");
-                    event = gson.fromJson(exerciseJSONData, Other.class);
+                    event = gson.fromJson(exerciseJSONData, Exercise.class);
                 }
                 break;
             case NEW_BM:
