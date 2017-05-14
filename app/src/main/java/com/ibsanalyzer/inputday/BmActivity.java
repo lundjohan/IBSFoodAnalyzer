@@ -1,16 +1,13 @@
 package com.ibsanalyzer.inputday;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 
 /**
  * Created by Johan on 2017-05-01.

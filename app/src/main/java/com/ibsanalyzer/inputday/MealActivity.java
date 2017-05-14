@@ -1,14 +1,11 @@
 package com.ibsanalyzer.inputday;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.util.Util;
 
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 
 public class MealActivity extends TagEventActivity {

@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.google.gson.Gson;
-import com.ibsanalyzer.base_classes.Event;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 
 /**
  * Created by Johan on 2017-05-14.
@@ -21,12 +19,12 @@ public class Util {
     /**
      * Common usage for EventActivities inside the finish() method (Activity has been called from other Activity via startActivityForResult)
      */
-    public static void jsonAndMoreFinishingData(Event event, String putExtraString, Activity usingActivity){
+    public static void jsonAndMoreFinishingData(Object obj, String putExtraString, Activity usingActivity){
         Gson gson = new Gson();
-        String eventAsJSON = gson.toJson(event);
+        String objAsJSON = gson.toJson(obj);
 
         Intent data = new Intent();
-        data.putExtra(putExtraString, eventAsJSON);
+        data.putExtra(putExtraString, objAsJSON);
         usingActivity.setResult(RESULT_OK, data);
     }
     public static void dataComingBackFromTagAdder(){

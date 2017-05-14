@@ -11,5 +11,6 @@ public class Constants {
     public final static String RETURN_EXERCISE_JSON = "returnExerciseJSON";
     public final static String RETURN_BM_JSON = "returnBmJSON";
     public final static String RETURN_SCORE_JSON = "returnScoreJSON";
+    public final static String RETURN_TAGTEMPLATE_JSON = "returnTagTemplateJSON";
 
 }

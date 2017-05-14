@@ -11,10 +11,11 @@ import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.google.gson.Gson;
+import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.database.TagnameCursorAdapter;
 import com.ibsanalyzer.model.TagTemplate;
+import com.ibsanalyzer.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,12 +84,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     //TODO
     @Override
     public void finish() {
-        Intent data = new Intent();
         TagTemplate tagTemplate = chosenTagTemplate;
-        Gson gson = new Gson();
-        String tagTemplateAsJSON = gson.toJson(tagTemplate);
-        data.putExtra("returnTagTemplateJSON", tagTemplateAsJSON);
-        setResult(RESULT_OK, data);
+        Util.jsonAndMoreFinishingData(tagTemplate, Constants.RETURN_TAGTEMPLATE_JSON, this);
         super.finish();
     }
 
