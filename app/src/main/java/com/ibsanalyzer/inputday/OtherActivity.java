@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Other;
+import com.ibsanalyzer.util.Util;
 
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
 
 public class OtherActivity extends TagEventActivity {
@@ -23,11 +25,7 @@ public class OtherActivity extends TagEventActivity {
     public void finish() {
         //create event
         Other other = new Other(datetime, tagsList);
-        Gson gson = new Gson();
-        String otherAsJSON = gson.toJson(other);
-        Intent data = new Intent();
-        data.putExtra(RETURN_OTHER_JSON, otherAsJSON);
-        setResult(RESULT_OK, data);
+        Util.jsonAndMoreFinishingData(other,RETURN_OTHER_JSON, this);
         super.finish();
     }
 }

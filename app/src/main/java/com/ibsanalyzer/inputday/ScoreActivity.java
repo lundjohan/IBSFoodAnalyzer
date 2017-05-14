@@ -8,7 +8,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Score;
+import com.ibsanalyzer.util.Util;
 
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_SCORE_JSON;
 
 /**
@@ -72,12 +74,7 @@ public class ScoreActivity extends EventActivity {
 
         //Put in database here (Android Studio Development Essentials [ASDE] p. 558, 559)
 
+        Util.jsonAndMoreFinishingData(score,RETURN_SCORE_JSON, this);
 
-        Gson gson = new Gson();
-        String scoreAsJSON = gson.toJson(score);
-
-        Intent data = new Intent();
-        data.putExtra(RETURN_SCORE_JSON, scoreAsJSON);
-        setResult(RESULT_OK, data);
     }
 }

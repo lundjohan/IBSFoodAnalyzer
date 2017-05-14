@@ -7,6 +7,10 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.BM;
+import com.ibsanalyzer.util.Util;
+
+import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -99,13 +103,7 @@ public class BmActivity extends EventActivity {
 
         //Put in database here (Android Studio Development Essentials [ASDE] p. 558, 559)
 
-
-        Gson gson = new Gson();
-        String bmAsJSON = gson.toJson(bm);
-
-        Intent data = new Intent();
-        data.putExtra("returnBmJSON", bmAsJSON);
-        setResult(RESULT_OK, data);
+        Util.jsonAndMoreFinishingData(bm,RETURN_BM_JSON, this);
         super.finish();
     }
 }
