@@ -5,9 +5,9 @@ import org.threeten.bp.LocalDateTime;
 ;
 
 //this class is an exception from EventModel rule: it does not use Tags.
-public class Score extends Event {
+public class Rating extends Event {
 	private int after;
-	public Score(LocalDateTime time, int after) {
+	public Rating(LocalDateTime time, int after) {
 		super(time);
 		this.after = after;
 	}

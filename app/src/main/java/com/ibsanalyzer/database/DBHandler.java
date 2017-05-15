@@ -25,18 +25,76 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String NO_INHERITANCE = "0Null0";
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "tagnameDB.db";
-    public static final String TABLE_TAGTEMPLATES = "tag_templates";
+
+
+    //for all
     public static final String COLUMN_ID = "_id";
+
+    //TagTemplate
+    public static final String TABLE_TAGTEMPLATES = "tag_templates";
     public static final String COLUMN_TAGNAME = "_tagname"; //this should be unique
     public static final String COLUMN_IS_A = "_is_a1";      //make it point to parent TagName and not to id, it make it possible to display in listview after filtering.
 
+
+    //Tag
+    public static final String TABLE_TAGS = "tags";
+    public static final String COLUMN_TAGTEMPLATE = "tagtemplate";
+    public static final String COLUMN_SIZE = "size";
+    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_EVENTS = "events";
+
+    //Event
+    public static final String TABLE_EVENTS = "events";
+    public static final String COLUMN_TAGS = "tags";
+
+    //EventTags
+    private static final String TABLE_EVENTTAGS = "event_tags";
+    private static final String COLUMN_EVENT = "event";
+    private static final String COLUMN_TAG = "tag";
+
+
+
     // see https://sqlite.org/foreignkeys.html for creation of foreign keys.
     public static final String CREATE_TAGTEMPLATE_TABLE = "CREATE TABLE " +
-            TABLE_TAGTEMPLATES + "(" + COLUMN_ID + " INTEGER PRIMARY KEY," +
+            TABLE_TAGTEMPLATES + "(" +
+            COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE, " +
             COLUMN_IS_A + " TEXT CHECK("+COLUMN_IS_A+" != "+COLUMN_TAGNAME+"),  " +
             " FOREIGN KEY(" + COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " (" + COLUMN_TAGNAME + ")" +
+            ");";
+    //for date as int (which actually long) see => http://stackoverflow.com/questions/7363112/best-way-to-work-with-dates-in-android-sqlite
+    public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
+            TABLE_TAGS + "(" +
+            COLUMN_ID + " INTEGER PRIMARY KEY," +
+            COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
+            COLUMN_SIZE + " REAL NOT NULL, " +
+            COLUMN_DATE + " INTEGER NOT NULL, " +
+            COLUMN_EVENTS + " INTEGER, " +
+            " FOREIGN KEY(" + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
+            + " (" + COLUMN_ID + ")" +
+            " FOREIGN KEY(" + COLUMN_EVENTS + ") REFERENCES " + TABLE_EVENTTAGS
+            + " (" + COLUMN_TAG + ")" +
+            ");";
+
+
+    public static final String CREATE_EVENT_TABLE = "CREATE TABLE " +
+            TABLE_EVENTS + "(" +
+            COLUMN_ID + " INTEGER PRIMARY KEY," +
+            COLUMN_DATE + " INTEGER NOT NULL, " +
+            COLUMN_TAGS + " INTEGER, " +
+            " FOREIGN KEY(" + COLUMN_TAGS + ") REFERENCES " + TABLE_EVENTTAGS
+            + " (" + COLUMN_EVENT + ")" +
+            ");";
+    public static final String CREATE_EVENTTAGS = "CREATE TABLE " +
+            TABLE_EVENTTAGS + "(" +
+            COLUMN_ID + " INTEGER PRIMARY KEY," +
+            COLUMN_EVENT + " INTEGER NOT NULL, " +
+            COLUMN_TAG + " INTEGER NOT NULL, " +
+            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " (" + COLUMN_TAGS + ")" +
+            " FOREIGN KEY(" + COLUMN_TAG + ") REFERENCES " + TABLE_TAGS
+            + " (" + COLUMN_EVENT + ")" +
             ");";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -47,11 +105,14 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL(CREATE_TAGTEMPLATE_TABLE);
+        db.execSQL(CREATE_TAG_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {  // Drop older table if existed
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGTEMPLATES);
+
 
         // Create tables again
         onCreate(db);

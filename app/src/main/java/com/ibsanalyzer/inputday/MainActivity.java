@@ -1,30 +1,19 @@
 package com.ibsanalyzer.inputday;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
-import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.template.TemplateAdderFragment;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.data;
-import static android.R.attr.fragment;
-import static android.R.attr.id;
-import static android.R.attr.key;
-import static android.R.attr.tag;
-import static android.R.attr.value;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
-import static com.ibsanalyzer.constants.Constants.MARKED_EVENTS_JSON;
 
 public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener, TemplateAdderFragment.TemplateAdderListener{
     TabLayout tabLayout;

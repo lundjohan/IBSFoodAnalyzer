@@ -13,8 +13,8 @@ public class Chunk {
 		this.days = days;
 	}
 
-	public List<Score> getDivs() {
-		List<Score> divs = new ArrayList<>();
+	public List<Rating> getDivs() {
+		List<Rating> divs = new ArrayList<>();
 		for (Day day : days) {
 			divs.addAll(day.getDividers());
 		}
@@ -100,7 +100,7 @@ public class Chunk {
 	 */
 	public double calcAvgScoreFromToTime(LocalDateTime from, long hoursAhead) {
 		ZoneId zoneId = ZoneId.systemDefault();
-		List<Score> divs = getDivsBetweenAndSometimesOneBefore(from, hoursAhead); //ok!
+		List<Rating> divs = getDivsBetweenAndSometimesOneBefore(from, hoursAhead); //ok!
 		if (divs.size() == 1) {
 			return divs.get(0).getAfter();
 		}
@@ -125,13 +125,13 @@ public class Chunk {
 	 *
 	 * @return If there is no div on same time as from, then an earlier div is returned as well.
 	 */
-	public List<Score> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, long hoursAhead) {
+	public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, long hoursAhead) {
 		return getDivsBetweenAndSometimesOneBefore(from, from.plusHours(hoursAhead));
 	}
-	public List<Score> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to) {
+	public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to) {
 		//get firstInd
 		int firstInd= 0;
-		List<Score> divs = getDivs();
+		List<Rating> divs = getDivs();
 		for (int i = 0; i < divs.size(); i++) {
 			LocalDateTime divTime = divs.get(i).getTime();
 			if (divTime.isBefore(from) || divTime.isEqual(from)){

@@ -95,11 +95,11 @@ public class Day {
         return others;
     }
 
-    public List<Score> getDividers() {
-        List<Score> divs = new ArrayList<>();
+    public List<Rating> getDividers() {
+        List<Rating> divs = new ArrayList<>();
         for (Event event : events) {
-            if (event instanceof Score) {
-                divs.add((Score) event);
+            if (event instanceof Rating) {
+                divs.add((Rating) event);
             }
         }
         return divs;

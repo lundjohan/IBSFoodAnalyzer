@@ -5,22 +5,22 @@ import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.ibsanalyzer.base_classes.Score;
+import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.util.Util;
 
-import static com.ibsanalyzer.constants.Constants.RETURN_SCORE_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_RATING_JSON;
 
 /**
  * Created by Johan on 2017-05-01.
  */
 
-public class ScoreActivity extends EventActivity {
+public class RatingActivity extends EventActivity {
     TextView scoreName;
     SeekBar scoreBar;
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_score;
+        return R.layout.activity_rating;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ScoreActivity extends EventActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Log.d("Debug", "inside onProgressChanged");
                 int score = ++progress;
-                scoreName.setText(Score.pointsToText(score));
+                scoreName.setText(Rating.pointsToText(score));
             }
 
             @Override
@@ -67,11 +67,11 @@ public class ScoreActivity extends EventActivity {
     public void finish() {
         //scoreBar starts from zero
         int after = scoreBar.getProgress() + 1;
-        Score score = new Score(datetime, after);
+        Rating rating = new Rating(datetime, after);
 
         //Put in database here (Android Studio Development Essentials [ASDE] p. 558, 559)
 
-        Util.jsonAndMoreFinishingData(score,RETURN_SCORE_JSON, this);
+        Util.jsonAndMoreFinishingData(rating, RETURN_RATING_JSON, this);
 
     }
 }

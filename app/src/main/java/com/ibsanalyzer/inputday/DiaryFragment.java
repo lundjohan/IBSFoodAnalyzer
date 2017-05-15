@@ -23,7 +23,7 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
-import com.ibsanalyzer.base_classes.Score;
+import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 
 import org.threeten.bp.LocalDateTime;
@@ -37,7 +37,7 @@ import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
-import static com.ibsanalyzer.constants.Constants.RETURN_SCORE_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_RATING_JSON;
 
 
 /**
@@ -227,9 +227,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 }
                 break;
             case NEW_SCORE:
-                if (data.hasExtra(RETURN_SCORE_JSON)) {
-                    String scoreJSONData = data.getExtras().getString(RETURN_SCORE_JSON);
-                    event = gson.fromJson(scoreJSONData, Score.class);
+                if (data.hasExtra(RETURN_RATING_JSON)) {
+                    String scoreJSONData = data.getExtras().getString(RETURN_RATING_JSON);
+                    event = gson.fromJson(scoreJSONData, Rating.class);
                 }
                 break;
         }
@@ -286,7 +286,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
     public void newScoreItem(View view) {
-        Intent intent = new Intent(parentActivity, ScoreActivity.class);
+        Intent intent = new Intent(parentActivity, RatingActivity.class);
         startActivityForResult(intent, NEW_SCORE);
     }
 

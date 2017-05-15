@@ -94,7 +94,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         super.finish();
     }
     public void startTimePicker(View view) {
-        DialogFragment newFragment = new ScoreActivity.TimePickerFragment();
+        DialogFragment newFragment = new RatingActivity.TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
        /* newFragment.getHour();
         lt = newFragment.getTime();
@@ -102,13 +102,13 @@ public abstract class EventActivity extends AppCompatActivity implements
     }
 
     public void startDatePicker(View view) {
-        DialogFragment newFragment = new ScoreActivity.DatePickerFragment();
+        DialogFragment newFragment = new RatingActivity.DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
 
     }
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Log.d("Debug", "inuti ScoreActivity.onDateSet");
+        Log.d("Debug", "inuti RatingActivity.onDateSet");
 
         //month datepicker +1 == LocalDate.Month
         ld = LocalDate.of(year, month+1, dayOfMonth);

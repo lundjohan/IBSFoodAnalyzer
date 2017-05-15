@@ -15,18 +15,14 @@ import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
-import com.ibsanalyzer.base_classes.Score;
+import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 
 import org.threeten.bp.LocalDateTime;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.tag;
-import static com.ibsanalyzer.inputday.R.drawable.meal;
-import static com.ibsanalyzer.inputday.R.id.intensity;
 import static com.ibsanalyzer.inputday.R.id.tagNames;
 import static com.ibsanalyzer.inputday.R.id.tagQuantities;
 
@@ -148,7 +144,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return _EXERCISE;
         } else if (events.get(position) instanceof BM) {
             return _BM;
-        } else if (events.get(position) instanceof Score) {
+        } else if (events.get(position) instanceof Rating) {
             return _SCORE;
         }
         throw new RuntimeException("unknown class");
@@ -176,7 +172,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 viewHolder = new BmViewHolder(v);
                 break;
             case _SCORE:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_score, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rating, parent, false);
                 viewHolder = new ScoreViewHolder(v);
                 break;
         }
@@ -234,14 +230,14 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 bmHolder.bristol.setText(String.valueOf(bm.getBristol()));
                 break;
             case _SCORE:
-                Score score = (Score) event;
+                Rating rating = (Rating) event;
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
-                setTime(score, scoreHolder);
+                setTime(rating, scoreHolder);
 
                 //toTime will be much more advanced, do this implementation much later
                 scoreHolder.toTime.setText("tomorrow 10:00");
 
-                scoreHolder.afterScore.setText(Score.pointsToText(score.getAfter()));
+                scoreHolder.afterScore.setText(Rating.pointsToText(rating.getAfter()));
                 break;
         }
     }
