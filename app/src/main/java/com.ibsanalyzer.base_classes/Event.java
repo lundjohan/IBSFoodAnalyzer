@@ -1,11 +1,14 @@
 package com.ibsanalyzer.base_classes;
 
+import android.os.Parcelable;
+
 import org.threeten.bp.LocalDateTime;
 
-;
+;import java.io.Serializable;
 
 //baseclass only exists to avoid duplication of code.
-public abstract class Event {//implements Parcelable {
+//implemts serializable so it can be passed in putExtra to Fragments
+public abstract class Event implements Serializable {
 	protected LocalDateTime time;
 
 

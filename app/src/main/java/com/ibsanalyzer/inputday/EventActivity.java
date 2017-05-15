@@ -89,8 +89,6 @@ public abstract class EventActivity extends AppCompatActivity implements
         }
     }
     public void doneClicked(View view) {
-        Log.d("Debug","inside doneClicked inside abstract class");
-
         setLocalDate();
         finish();
         super.finish();

@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
 /**
  * Created by Johan on 2017-04-18.
@@ -12,6 +14,7 @@ import android.util.Log;
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
     int tabCount;
+    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
     public TabPagerAdapter(FragmentManager fm, int nrOfTabs){
         super(fm);
@@ -21,7 +24,6 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch(position){
             case 0:
-                Log.d("Debugging","Inuti TabPagerAdapter getItem"); //det här sker aldrig...
                 TemplateFragment tabT = new TemplateFragment();
                 return tabT;
             case 1:
@@ -38,5 +40,24 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return tabCount;
+    }
+
+    //metods below are needed to get access to specigic fragment directly in code from MainActivity
+    //from http://stackoverflow.com/questions/8785221/retrieve-a-fragment-from-a-viewpager
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        registeredFragments.put(position, fragment);
+        return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        registeredFragments.remove(position);
+        super.destroyItem(container, position, object);
+    }
+
+    public Fragment getRegisteredFragment(int position) {
+        return registeredFragments.get(position);
     }
 }

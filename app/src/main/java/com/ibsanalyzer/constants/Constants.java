@@ -13,4 +13,11 @@ public class Constants {
     public final static String RETURN_SCORE_JSON = "returnScoreJSON";
     public final static String RETURN_TAGTEMPLATE_JSON = "returnTagTemplateJSON";
 
+
+    public final static String MARKED_EVENTS_JSON = "markedEventsJson";
+
+
+    public final static String LIST_OF_EVENTS = "listOfEvents";
+
+
 }

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.google.gson.Gson;
+import com.ibsanalyzer.base_classes.Event;
+
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -30,4 +33,11 @@ public class Util {
     public static void dataComingBackFromTagAdder(){
 
     }
+    public static void eventsToJSON(Object obj, String putExtraString, Activity usingActivity){
+
+    }
+    public static List<Event> eventsFromJSON(Object obj, String putExtraString, Activity usingActivity){
+        return null;
+    }
+
 }

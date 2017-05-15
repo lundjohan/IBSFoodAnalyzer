@@ -47,7 +47,7 @@
         </activity>
         <activity android:name=".TagAdderActivity" />
         <activity android:name=".OtherActivity" />
-        <activity android:name=".ExerciseActivity"></activity>
+        <activity android:name=".ExerciseActivity" />
     </application>
 
 </manifest>

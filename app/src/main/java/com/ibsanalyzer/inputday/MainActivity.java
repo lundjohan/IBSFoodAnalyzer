@@ -1,14 +1,35 @@
 package com.ibsanalyzer.inputday;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.gson.Gson;
+import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.model.EventsTemplate;
+import com.ibsanalyzer.template.TemplateAdderFragment;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.attr.data;
+import static android.R.attr.fragment;
+import static android.R.attr.id;
+import static android.R.attr.key;
+import static android.R.attr.tag;
+import static android.R.attr.value;
+import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
+import static com.ibsanalyzer.constants.Constants.MARKED_EVENTS_JSON;
+
+public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener, TemplateAdderFragment.TemplateAdderListener{
     TabLayout tabLayout;
     ViewPager viewPager;
+    TabPagerAdapter adapter;
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -21,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         //see Android Studio Development essentials p. 337
         viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        adapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -41,8 +62,20 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-    }
 
+    }
+  /*  private void newTemplateAdderActivity(View v) {
+        Intent intent = new Intent(this, TemplateAdderFragment.class);
+        //lägg in markerade event.
+        List<Event> eventsToSend = new ArrayList<>();
+        for (int i: eventsMarked){
+            eventsToSend.add(eventList.get(i));
+        }
+        Gson gson = new Gson();
+        String objAsJSON = gson.toJson(eventsToSend);
+        intent.putExtra(MARKED_EVENTS_JSON, objAsJSON);
+        startActivity(intent);
+    }*/
 
     /*
     The AppBar has 2 different versions, depending on whether items are marked or not in DiaryFragment
@@ -56,5 +89,49 @@ public class MainActivity extends AppCompatActivity {
     }*/
 
 
+
+    //receivingData from TemplateAdderFragment and posting it to TemplateFragment
+    /*public void eventsToTemplateFragment(String jsonWithEvents){
+        TemplateFragment templateFragment = (TemplateFragment)adapter.getRegisteredFragment(0);
+        templateFragment.retrieveEventsAsJSON (jsonWithEvents);
+    }*/
+
+
+    //==============================================================================================
+    // Communication between thos Activity and child Fragments regarding EventsTemplates
+    //==============================================================================================
+    //start TemplateAdderFragment
+    //=> events
+    //<= EventsTemplate
+    // start TemplateFragment
+    //=> EventsTemplate
+    //klar!
+    //from DiaryFragment
+    @Override
+    public void eventsToTemplateAdderFragment(List<Event>events){
+        //start TemplateAdderFragment
+        //p. 252
+        TemplateAdderFragment taf = new TemplateAdderFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(LIST_OF_EVENTS, (Serializable) events);
+        taf.setArguments(bundle);
+
+        //osäker om pager är rätt argument to pass
+        getSupportFragmentManager().beginTransaction().add(R.id.pager, taf);
+    }
+
+    //from TemplateAdderFragment
+    @Override
+    public void eventsTemplateToTemplateFragment(EventsTemplate et){
+        Fragment templateFragment = adapter.getRegisteredFragment(0);
+        //get access to TemplateFragment (through adapter(0))
+        templateFragment.setArguments();
+
+        //send et there and go to that fragment
+
+
+    }
+
+    //==============================================================================================
 }
 

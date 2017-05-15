@@ -7,12 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.model.EventsTemplate;
+
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TemplateFragment extends Fragment {
-
+    private List<EventsTemplate> eventsTemplate;
 
     public TemplateFragment() {
         // Required empty public constructor
@@ -26,4 +31,7 @@ public class TemplateFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_template, container, false);
     }
 
+    public void retrieveEventsAsJSON(String jsonWithEvents) {
+
+    }
 }

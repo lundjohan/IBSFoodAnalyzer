@@ -1,10 +1,11 @@
 package com.ibsanalyzer.inputday;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabItem;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,8 +32,12 @@ import org.threeten.bp.Month;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_SCORE_JSON;
 
 
 /**
@@ -44,6 +49,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public static final int NEW_EXERCISE = 1002;
     public static final int NEW_BM = 1003;
     public static final int NEW_SCORE = 1004;
+    public static final int NEW_TEMPLATE_ADDER = 2000;
+
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -52,9 +59,39 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     //for pinning/ marking events, this must be cleaned when user quits application or app crashes etc
     List<Integer> eventsMarked = new ArrayList<>();
-    static final int BACKGROUND_COLOR = Color.BLUE;
+    static final int BACKGROUND_COLOR = Color.YELLOW;
     MainActivity parentActivity;
+
+
+    //switcher tab and it's tabs
     ViewSwitcher tabsLayoutSwitcher;
+    TabItem toTemplateTab;
+
+//==================================================================================================
+    //as recommended for communication between Fragment to Activity.
+    //https://developer.android.com/training/basics/fragments/communicating.html
+//==================================================================================================
+    DiaryFragmentListener mCallback;
+
+    // Container Activity must implement this interface
+    public interface DiaryFragmentListener {
+        public void eventsToTemplateAdderFragment(List<Event>events);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (DiaryFragmentListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+//==================================================================================================
 
     public DiaryFragment() {
         // Required empty public constructor
@@ -72,7 +109,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
-        parentActivity = (MainActivity) getActivity();
+        parentActivity = (MainActivity) mCallback;
 
 
         super.onCreate(savedInstanceState);
@@ -99,6 +136,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
         //starts as invisible appBarLayout but when user marks something this pops up
         tabsLayoutSwitcher = (ViewSwitcher) parentActivity.findViewById(R.id.tabLayoutSwitcher);
+
+        //initiate tabItems inside switcher bar
 
         //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
@@ -130,13 +169,31 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
         //==========================================================================================
+
+
+        //
+        //toTemplateTab = (TabItem) view.findViewById(R.id.to_template_tab);
+       // TabLayout toTemplateTa = (TabLayout) tabsLayoutSwitcher.getNextView().findViewById(R.id.tabsMarked);
+
+        //Får nullpointerexception
+        /* toTemplateTab = (TabItem) tabsLayoutSwitcher.getNextView().findViewById(R.id.to_template_tab);
+        toTemplateTab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Log.d("Debug","TabLayout clicked");
+                newTemplateAdderActivity(v);
+
+            }
+        });*/
         return view;
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
+        if (resultCode != RESULT_OK) {
             return;
         }
         //common for all
@@ -155,25 +212,23 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 if (data.hasExtra(RETURN_OTHER_JSON)) {
                     String otherJSONData = data.getExtras().getString(RETURN_OTHER_JSON);
                     event = gson.fromJson(otherJSONData, Other.class);
-                    Log.d("Debug", "Inside DiaryFragment, creating event from returned Other gson=>  time of this event: "+event.getTime());
                 }
                 break;
             case NEW_EXERCISE:
-                if (data.hasExtra("returnExerciseJSON")) {
-                    String exerciseJSONData = data.getExtras().getString("returnExerciseJSON");
+                if (data.hasExtra(RETURN_EXERCISE_JSON)) {
+                    String exerciseJSONData = data.getExtras().getString(RETURN_EXERCISE_JSON);
                     event = gson.fromJson(exerciseJSONData, Exercise.class);
                 }
                 break;
             case NEW_BM:
-                Log.d("Debug", "inuti DiaryFragment. OnactivityResult for NEW_BM");
-                if (data.hasExtra("returnBmJSON")) {
-                    String bmJSONData = data.getExtras().getString("returnBmJSON");
+                if (data.hasExtra(RETURN_BM_JSON)) {
+                    String bmJSONData = data.getExtras().getString(RETURN_BM_JSON);
                     event = gson.fromJson(bmJSONData, BM.class);
                 }
                 break;
             case NEW_SCORE:
-                if (data.hasExtra("returnScoreJSON")) {
-                    String scoreJSONData = data.getExtras().getString("returnScoreJSON");
+                if (data.hasExtra(RETURN_SCORE_JSON)) {
+                    String scoreJSONData = data.getExtras().getString(RETURN_SCORE_JSON);
                     event = gson.fromJson(scoreJSONData, Score.class);
                 }
                 break;
@@ -210,7 +265,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
 
-
+    //dessa metoder ska istället skapa fragments.
+    //ska de skapas inifrån denna fragment (vad jag tror) eller från parentActivity
     public void newMealActivity(View view) {
         Intent intent = new Intent(parentActivity, MealActivity.class);
         startActivityForResult(intent, NEW_MEAL);
@@ -233,6 +289,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         Intent intent = new Intent(parentActivity, ScoreActivity.class);
         startActivityForResult(intent, NEW_SCORE);
     }
+
 
     /*
     see http://stackoverflow.com/questions/27945078/onlongitemclick-in-recyclerview
@@ -279,7 +336,20 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         } else {   //markingModeIsOn but eventIsNotMarked
             eventsMarked.add(position);
             v.setBackgroundColor(BACKGROUND_COLOR);
+
+            //temproarely, remove when to_template tab can be pressed
+            if (eventsMarked.size()==2){
+                sendEventsForTemplate(v);
+            }
         }
+    }
+
+    private void sendEventsForTemplate(View v) {
+        List<Event>eventsToSend = new ArrayList<>();
+        for (int i: eventsMarked){
+            eventsToSend.add(eventList.get(i));
+        }
+        mCallback.eventsToTemplateAdderFragment(eventsToSend);
     }
 
     /*
