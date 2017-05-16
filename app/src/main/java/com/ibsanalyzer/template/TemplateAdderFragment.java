@@ -1,7 +1,7 @@
 package com.ibsanalyzer.template;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,34 +20,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
-import static com.ibsanalyzer.constants.Constants.MARKED_EVENTS_JSON;
 
 public class TemplateAdderFragment extends Fragment {
-    List<Event> events = new ArrayList<>();
-    TemplateAdderListener callBack;
+    private List<Event> events = new ArrayList<>();
+    public TemplateAdderListener callback;
 
     public interface TemplateAdderListener {
-        public void startTemplateFragment();
+        void startTemplateFragment();
     }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setHasOptionsMenu(true);
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            callback = (TemplateAdderListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement TemplateAdderListener");
+        }
 
+    }
     //not finished, see http://stackoverflow.com/questions/15653737/oncreateoptionsmenu-inside-fragments
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.to_template_menu, menu);
+        inflater.inflate(R.menu.template_adder_menu, menu);
         menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 //lägg in switch här
-                saveToDB();
-                callBack.startTemplateFragment();
+                saveToDB(null);
+                callback.startTemplateFragment();
                 return true;
             }
 
         });
     }
-
-    private void saveToDB() {
+    private void saveToDB(View v) {
         EventsTemplate et = new EventsTemplate(events, "TestnameOfTemplate");
         DBHandler dbHandler = new DBHandler(getActivity(), null, null,1);
         dbHandler.addEventsTemplate(et);
@@ -67,6 +78,7 @@ public class TemplateAdderFragment extends Fragment {
             Log.d("Debug", eventListJson);
         }*/
        events = (List<Event>) b.getSerializable(LIST_OF_EVENTS);
+        Log.d("Debug","inside TemplateAdderFragment");  //hit kommer jag.
         return inflater.inflate(R.layout.activity_template_adder, container, false);
     }
 

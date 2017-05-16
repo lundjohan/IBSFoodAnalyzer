@@ -12,9 +12,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
@@ -49,7 +54,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public static final int NEW_EXERCISE = 1002;
     public static final int NEW_BM = 1003;
     public static final int NEW_SCORE = 1004;
-    public static final int NEW_TEMPLATE_ADDER = 2000;
 
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
@@ -75,13 +79,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
-        public void eventsToTemplateAdderFragment(List<Event>events);
+        void eventsToTemplateAdderFragment(List<Event>events);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        setHasOptionsMenu(true);
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
@@ -90,6 +94,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             throw new ClassCastException(context.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
+
     }
 //==================================================================================================
 
@@ -170,26 +175,31 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         recyclerView.addItemDecoration(mDividerItemDecoration);
         //==========================================================================================
 
-
-        //
-        //toTemplateTab = (TabItem) view.findViewById(R.id.to_template_tab);
-       // TabLayout toTemplateTa = (TabLayout) tabsLayoutSwitcher.getNextView().findViewById(R.id.tabsMarked);
-
-        //Får nullpointerexception
-        /* toTemplateTab = (TabItem) tabsLayoutSwitcher.getNextView().findViewById(R.id.to_template_tab);
-        toTemplateTab.setOnClickListener(new View.OnClickListener()
-        {
+        //cant come up with better solution for gaining access to toolbar buttons that lie on main_activity.xml
+        Button toTemplateBtn  = (Button) getActivity().findViewById(R.id.to_template_btn);
+        toTemplateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Log.d("Debug","TabLayout clicked");
-                newTemplateAdderActivity(v);
-
+            public void onClick(View v) {
+                sendEventsForTemplate(v);
             }
-        });*/
+        });
         return view;
     }
+   /* public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("Debug", "isnide onCreateOptionsMenu inside DiaryFragment"); //kallas aldrig.
+        MenuInflater inflater = parentActivity.getMenuInflater();
+        inflater.inflate(R.menu.cancel_done_menu, menu);
+        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                sendEventsForTemplate(null);
+                return true;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+        return true;
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -336,19 +346,17 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         } else {   //markingModeIsOn but eventIsNotMarked
             eventsMarked.add(position);
             v.setBackgroundColor(BACKGROUND_COLOR);
-
-            //temproarely, remove when to_template tab can be pressed
-            if (eventsMarked.size()==2){
-                sendEventsForTemplate(v);
-            }
         }
     }
 
-    private void sendEventsForTemplate(View v) {
+    public synchronized void  sendEventsForTemplate(View v) {
+
+        Log.d("Debug", "inuti sendEventsForTemplate");
         List<Event>eventsToSend = new ArrayList<>();
         for (int i: eventsMarked){
             eventsToSend.add(eventList.get(i));
         }
+
         mCallback.eventsToTemplateAdderFragment(eventsToSend);
     }
 

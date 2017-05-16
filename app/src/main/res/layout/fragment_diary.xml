@@ -9,8 +9,6 @@
         android:layout_height="match_parent"
         tools:context="com.ibsanalyzer.inputday.DiaryFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/events_layout"
             android:layout_width="0dp"

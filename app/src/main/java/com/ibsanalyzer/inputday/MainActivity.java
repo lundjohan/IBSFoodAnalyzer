@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.model.EventsTemplate;
@@ -106,17 +107,18 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
         taf.setArguments(bundle);
 
         //osäker om pager (container view) är rätt id to pass
-        getSupportFragmentManager().beginTransaction().add(R.id.pager, taf);
+        getSupportFragmentManager().beginTransaction().replace(R.id.pager, taf).commit();
     }
 
     //from TemplateAdderFragment
     @Override
     public void startTemplateFragment(){
-        //Fragment templateFragment = adapter.getRegisteredFragment(0);
-        //get access to TemplateFragment (through adapter(0))
+        Log.d("Debug","Inside MainActivity:startTemplateFragment");
 
-        //OK?
-        viewPager.setCurrentItem(0);
+
+        //same as Fragment templateFragment = new TemplateFragment();
+        Fragment templateFragment = adapter.getItem(0);
+        getSupportFragmentManager().beginTransaction().replace(R.id.pager, templateFragment).commit();
 
 
     }
