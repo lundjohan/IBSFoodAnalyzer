@@ -199,6 +199,8 @@ public abstract class EventActivity extends AppCompatActivity implements
        /* public LocalDate getLocalDate (){
             return localDate;
         }*/
+
+
     }
 
 }

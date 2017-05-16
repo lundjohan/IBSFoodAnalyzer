@@ -16,10 +16,12 @@ import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 
-public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener, TemplateAdderFragment.TemplateAdderListener{
+public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener,
+        TemplateAdderFragment.TemplateAdderListener, TabPagerAdapter.MiddlePageFragmentListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     TabPagerAdapter adapter;
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -79,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     }*/
 
 
-
     //receivingData from TemplateAdderFragment and posting it to TemplateFragment
     /*public void eventsToTemplateFragment(String jsonWithEvents){
         TemplateFragment templateFragment = (TemplateFragment)adapter.getRegisteredFragment(0);
@@ -98,9 +99,27 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     //klar!
     //from DiaryFragment
     @Override
-    public void eventsToTemplateAdderFragment(List<Event>events){
+    public void eventsToTemplateAdderFragment(List<Event> events) {
+        onSwitchToTemplateAdderFragment(events);
         //start TemplateAdderFragment
         //p. 252
+
+    }
+
+    //from TemplateAdderFragment
+    @Override
+    public void startTemplateFragment() {
+
+        Log.d("Debug", "Inside MainActivity:startTemplateFragment");
+
+
+        //same as Fragment templateFragment = new TemplateFragment();
+        Fragment templateFragment = adapter.getItem(0);
+        getSupportFragmentManager().beginTransaction().replace(R.id.pager, templateFragment).commit();
+    }
+
+    @Override
+    public void onSwitchToTemplateAdderFragment(List<Event> events) {
         TemplateAdderFragment taf = new TemplateAdderFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(LIST_OF_EVENTS, (Serializable) events);
@@ -108,19 +127,6 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
 
         //osäker om pager (container view) är rätt id to pass
         getSupportFragmentManager().beginTransaction().replace(R.id.pager, taf).commit();
-    }
-
-    //from TemplateAdderFragment
-    @Override
-    public void startTemplateFragment(){
-        Log.d("Debug","Inside MainActivity:startTemplateFragment");
-
-
-        //same as Fragment templateFragment = new TemplateFragment();
-        Fragment templateFragment = adapter.getItem(0);
-        getSupportFragmentManager().beginTransaction().replace(R.id.pager, templateFragment).commit();
-
-
     }
 
     //==============================================================================================

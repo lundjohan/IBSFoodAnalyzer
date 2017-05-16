@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.ibsanalyzer.constants.Constants.POSITION_IN_DIARY;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
@@ -386,5 +387,17 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     private boolean eventIsMarked(int position) {
         return eventsMarked.contains(position);
+    }
+
+
+    //used by TabPagerAdapter to interchange fragments
+    public static DiaryFragment newInstance(TabPagerAdapter.MiddlePageFragmentListener middlePage){//) {
+
+        //Bundle args = new Bundle();
+        //args.putInt(POSITION_IN_DIARY, list_position);
+
+        DiaryFragment fragment = new DiaryFragment();
+       // fragment.setArguments(args);
+        return fragment;
     }
 }

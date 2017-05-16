@@ -19,5 +19,6 @@ public class Constants {
 
     public final static String LIST_OF_EVENTS = "listOfEvents";
 
-
+    //this is saved, so that user can come back to same positition (=same date) in DiaryFragment as when he left
+    public final static String POSITION_IN_DIARY = "position_in_diary";
 }
