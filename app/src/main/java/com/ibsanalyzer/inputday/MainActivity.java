@@ -6,9 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.template.TemplateAdderFragment;
 
 import java.io.Serializable;
@@ -16,8 +16,8 @@ import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 
-public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener,
-        TemplateAdderFragment.TemplateAdderListener, TabPagerAdapter.MiddlePageFragmentListener {
+public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener
+        /*TemplateAdderFragment.TemplateAdderListener*/ {
     TabLayout tabLayout;
     ViewPager viewPager;
     TabPagerAdapter adapter;
@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
 
         });
 
+    }
+
+    @Override
+    public ViewSwitcher getTabsLayoutSwitcher() {
+        return (ViewSwitcher) findViewById(R.id.tabLayoutSwitcher);
     }
   /*  private void newTemplateAdderActivity(View v) {
         Intent intent = new Intent(this, TemplateAdderFragment.class);
@@ -98,16 +103,16 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     //=> EventsTemplate
     //klar!
     //from DiaryFragment
-    @Override
+  /*  @Override
     public void eventsToTemplateAdderFragment(List<Event> events) {
         onSwitchToTemplateAdderFragment(events);
         //start TemplateAdderFragment
         //p. 252
 
-    }
+    }*/
 
     //from TemplateAdderFragment
-    @Override
+  /*  @Override
     public void startTemplateFragment() {
 
         Log.d("Debug", "Inside MainActivity:startTemplateFragment");
@@ -116,9 +121,9 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
         //same as Fragment templateFragment = new TemplateFragment();
         Fragment templateFragment = adapter.getItem(0);
         getSupportFragmentManager().beginTransaction().replace(R.id.pager, templateFragment).commit();
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void onSwitchToTemplateAdderFragment(List<Event> events) {
         TemplateAdderFragment taf = new TemplateAdderFragment();
         Bundle bundle = new Bundle();
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
 
         //osäker om pager (container view) är rätt id to pass
         getSupportFragmentManager().beginTransaction().replace(R.id.pager, taf).commit();
-    }
+    }*/
 
     //==============================================================================================
 }

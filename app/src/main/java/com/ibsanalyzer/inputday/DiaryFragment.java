@@ -1,6 +1,7 @@
 package com.ibsanalyzer.inputday;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,14 +13,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
@@ -34,11 +31,12 @@ import com.ibsanalyzer.base_classes.Tag;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ibsanalyzer.constants.Constants.POSITION_IN_DIARY;
+import static com.ibsanalyzer.constants.Constants.LISTENER_AS_ARG;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
@@ -56,6 +54,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public static final int NEW_BM = 1003;
     public static final int NEW_SCORE = 1004;
 
+
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -65,8 +64,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     //for pinning/ marking events, this must be cleaned when user quits application or app crashes etc
     List<Integer> eventsMarked = new ArrayList<>();
     static final int BACKGROUND_COLOR = Color.YELLOW;
-    MainActivity parentActivity;
-
 
     //switcher tab and it's tabs
     ViewSwitcher tabsLayoutSwitcher;
@@ -76,31 +73,38 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     //as recommended for communication between Fragment to Activity.
     //https://developer.android.com/training/basics/fragments/communicating.html
 //==================================================================================================
-    DiaryFragmentListener mCallback;
+
+    DiaryFragmentListener callback;
+
+
+    protected TabPagerAdapter.PageFragmentListener listener;
 
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
-        void eventsToTemplateAdderFragment(List<Event>events);
+        ViewSwitcher getTabsLayoutSwitcher();
     }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        setHasOptionsMenu(true);
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (DiaryFragmentListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
+        callback = (DiaryFragmentListener) context;
 
+        Bundle args = getArguments();
+        if (args!= null) {
+            listener = (TabPagerAdapter.PageFragmentListener) args.getSerializable(LISTENER_AS_ARG);
+        }
+        setHasOptionsMenu(true);
     }
 //==================================================================================================
 
     public DiaryFragment() {
-        // Required empty public constructor
+
+        Bundle b = getArguments();
+        if (b != null) {
+            Serializable s = b.getSerializable(LISTENER_AS_ARG);
+            this.listener = (TabPagerAdapter.PageFragmentListener) s;
+        }
     }
 
     //p. 121 Android Essentials
@@ -115,8 +119,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
-        parentActivity = (MainActivity) mCallback;
-
 
         super.onCreate(savedInstanceState);
 
@@ -124,27 +126,24 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         if (savedInstanceState == null || !savedInstanceState.containsKey("eventList")) {
             //populate array, this will be added to when button is pressed
             //===================================================================
-            LocalDateTime ldt = LocalDateTime.of(2016, Month.APRIL, 3, 16, 10);
-            Tag t1 = new Tag(ldt, "milk", 2);
-            Tag t2 = new Tag(ldt, "yoghurt", 1);
-            List<Tag> tagList = new ArrayList<>();
-            tagList.add(t1);
-            tagList.add(t2);
-            Meal meal1 = new Meal(ldt, tagList, 2.);
-            Meal meal2 = new Meal(ldt, tagList, 1.);
+            populateList();
 
-            eventList.add(meal1);
-            eventList.add(meal2);
+
             //=====================================================
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
             //   eventList = savedInstanceState.getParcelableArrayList("eventList");
         }
 
         //starts as invisible appBarLayout but when user marks something this pops up
-        tabsLayoutSwitcher = (ViewSwitcher) parentActivity.findViewById(R.id.tabLayoutSwitcher);
+        tabsLayoutSwitcher = (ViewSwitcher) callback.getTabsLayoutSwitcher();
+        setUpEventButtons(view);
+        initiateRecyclerView(view);
 
-        //initiate tabItems inside switcher bar
+        setUpMenu();
+        return view;
+    }
 
+    private void setUpEventButtons(View view) {
         //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
         mealBtn.setOnClickListener(this);
@@ -160,13 +159,25 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
         ImageButton scoreBtn = (ImageButton) view.findViewById(R.id.scoreBtn);
         scoreBtn.setOnClickListener(this);
+    }
 
-        //do other buttons here
+    private void setUpMenu() {
+        //cant come up with better solution for gaining access to toolbar buttons that lie on main_activity.xml
+        Button toTemplateBtn = (Button) getActivity().findViewById(R.id.to_template_btn);
+        toTemplateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onSwitchToNextFragment(prepareMarkedEvents());
+                }
+            }
+        });
+    }
 
-        //RecyclerView initiation
+    private void initiateRecyclerView(View v) {
         //==========================================================================================
-        recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
-        layoutManager = new LinearLayoutManager(parentActivity);
+        recyclerView = (RecyclerView) v.findViewById(R.id.events_layout);
+        layoutManager = new LinearLayoutManager((Context) this.callback);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new EventAdapter(eventList, this);
         recyclerView.setAdapter(adapter);
@@ -175,20 +186,24 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
         //==========================================================================================
+    }
 
-        //cant come up with better solution for gaining access to toolbar buttons that lie on main_activity.xml
-        Button toTemplateBtn  = (Button) getActivity().findViewById(R.id.to_template_btn);
-        toTemplateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendEventsForTemplate(v);
-            }
-        });
-        return view;
+    private void populateList() {
+        LocalDateTime ldt = LocalDateTime.of(2016, Month.APRIL, 3, 16, 10);
+        Tag t1 = new Tag(ldt, "milk", 2);
+        Tag t2 = new Tag(ldt, "yoghurt", 1);
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(t1);
+        tagList.add(t2);
+        Meal meal1 = new Meal(ldt, tagList, 2.);
+        Meal meal2 = new Meal(ldt, tagList, 1.);
+
+        eventList.add(meal1);
+        eventList.add(meal2);
     }
    /* public boolean onCreateOptionsMenu(Menu menu) {
         Log.d("Debug", "isnide onCreateOptionsMenu inside DiaryFragment"); //kallas aldrig.
-        MenuInflater inflater = parentActivity.getMenuInflater();
+        MenuInflater inflater = callBack.getMenuInflater();
         inflater.inflate(R.menu.cancel_done_menu, menu);
         menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -277,27 +292,29 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
 
     //dessa metoder ska istället skapa fragments.
-    //ska de skapas inifrån denna fragment (vad jag tror) eller från parentActivity
+    //ska de skapas inifrån denna fragment (vad jag tror) eller från callBack
     public void newMealActivity(View view) {
-        Intent intent = new Intent(parentActivity, MealActivity.class);
+        Intent intent = new Intent((Activity) this.callback, MealActivity.class);
         startActivityForResult(intent, NEW_MEAL);
     }
+
     private void newOtherActivity(View v) {
-        Intent intent = new Intent(parentActivity, OtherActivity.class);
+        Intent intent = new Intent((Activity) this.callback, OtherActivity.class);
         startActivityForResult(intent, NEW_OTHER);
     }
+
     private void newExerciseActivity(View v) {
-        Intent intent = new Intent(parentActivity, ExerciseActivity.class);
+        Intent intent = new Intent((Activity) this.callback, ExerciseActivity.class);
         startActivityForResult(intent, NEW_EXERCISE);
     }
 
     private void newBmActivity(View v) {
-        Intent intent = new Intent(parentActivity, BmActivity.class);
+        Intent intent = new Intent((Activity) this.callback, BmActivity.class);
         startActivityForResult(intent, NEW_BM);
     }
 
     public void newScoreItem(View view) {
-        Intent intent = new Intent(parentActivity, RatingActivity.class);
+        Intent intent = new Intent((Activity) this.callback, RatingActivity.class);
         startActivityForResult(intent, NEW_SCORE);
     }
 
@@ -350,15 +367,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
     }
 
-    public synchronized void  sendEventsForTemplate(View v) {
-
-        Log.d("Debug", "inuti sendEventsForTemplate");
-        List<Event>eventsToSend = new ArrayList<>();
-        for (int i: eventsMarked){
+    private List<Event> prepareMarkedEvents() {
+        List<Event> eventsToSend = new ArrayList<>();
+        for (int i : eventsMarked) {
             eventsToSend.add(eventList.get(i));
         }
-
-        mCallback.eventsToTemplateAdderFragment(eventsToSend);
+        return eventsToSend;
     }
 
     /*
@@ -366,7 +380,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
      */
     private void changeToMarkedMenu() {
         tabsLayoutSwitcher.showNext();
-        //parentActivity.viewPager do something here to stop swipe
+        //callBack.viewPager do something here to stop swipe
     }
 
     /*
@@ -391,13 +405,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
 
     //used by TabPagerAdapter to interchange fragments
-    public static DiaryFragment newInstance(TabPagerAdapter.MiddlePageFragmentListener middlePage){//) {
-
-        //Bundle args = new Bundle();
-        //args.putInt(POSITION_IN_DIARY, list_position);
-
-        DiaryFragment fragment = new DiaryFragment();
-       // fragment.setArguments(args);
-        return fragment;
+    public static DiaryFragment newInstance(TabPagerAdapter.PageFragmentListener listener) {//) {
+        Bundle b = new Bundle();
+        b.putSerializable(LISTENER_AS_ARG, listener);
+        DiaryFragment df = new DiaryFragment();
+        df.setArguments(b);
+        return df;
     }
 }

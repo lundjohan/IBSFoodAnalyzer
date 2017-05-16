@@ -7,9 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.template.TemplateAdderFragment;
 
+import java.io.Serializable;
 import java.util.List;
-
-import static android.os.Build.VERSION_CODES.N;
 
 /**
  * Created by Johan on 2017-04-18.
@@ -41,11 +40,12 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
                 if (fragmentAtPos1 == null) {
                     //place is empty means that mainActivity has not created other fragments to fill this place
                     //=> restart a DiaryFragment
-                    fragmentAtPos1 = DiaryFragment.newInstance(new MiddlePageFragmentListener() {
-                        public void onSwitchToTemplateAdderFragment(List<Event>events)
+                    fragmentAtPos1 = DiaryFragment.newInstance(new PageFragmentListener() {
+                        public void onSwitchToNextFragment(List<Event> events)
                         {
                             fm.beginTransaction().remove(fragmentAtPos1).commit();
                             fragmentAtPos1 = TemplateAdderFragment.newInstance(events);
+                            //fragmentAtPos1.setShowingChild(true);
                             notifyDataSetChanged();
                         }
                     });
@@ -55,7 +55,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
                 StatFragment tabS = new StatFragment();
                 return tabS;
             default:
-                return null;
+                return TemplateFragment.newInstance();
         }
     }
 
@@ -94,8 +94,8 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
             return POSITION_NONE;
         return POSITION_UNCHANGED;
     }
-    public interface MiddlePageFragmentListener {
-        void onSwitchToTemplateAdderFragment(List<Event> events);
+    public interface PageFragmentListener extends Serializable{
+        void onSwitchToNextFragment(List<Event>events);
     }
 
 

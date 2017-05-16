@@ -34,4 +34,8 @@ public class TemplateFragment extends Fragment {
     public void retrieveEventsAsJSON(String jsonWithEvents) {
 
     }
+
+    public static Fragment newInstance() {
+        return new TemplateFragment();
+    }
 }
