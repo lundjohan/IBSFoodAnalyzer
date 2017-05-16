@@ -105,18 +105,18 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
         bundle.putSerializable(LIST_OF_EVENTS, (Serializable) events);
         taf.setArguments(bundle);
 
-        //osäker om pager är rätt argument to pass
+        //osäker om pager (container view) är rätt id to pass
         getSupportFragmentManager().beginTransaction().add(R.id.pager, taf);
     }
 
     //from TemplateAdderFragment
     @Override
-    public void eventsTemplateToTemplateFragment(EventsTemplate et){
-        Fragment templateFragment = adapter.getRegisteredFragment(0);
+    public void startTemplateFragment(){
+        //Fragment templateFragment = adapter.getRegisteredFragment(0);
         //get access to TemplateFragment (through adapter(0))
-        templateFragment.setArguments();
 
-        //send et there and go to that fragment
+        //OK?
+        viewPager.setCurrentItem(0);
 
 
     }

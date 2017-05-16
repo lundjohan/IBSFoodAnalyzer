@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.model.EventsTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.MARKED_EVENTS_JSON;
 
 public class TemplateAdderFragment extends Fragment {
@@ -25,7 +27,7 @@ public class TemplateAdderFragment extends Fragment {
     TemplateAdderListener callBack;
 
     public interface TemplateAdderListener {
-        public void eventsTemplateToTemplateFragment(EventsTemplate et);
+        public void startTemplateFragment();
     }
 
     //not finished, see http://stackoverflow.com/questions/15653737/oncreateoptionsmenu-inside-fragments
@@ -36,11 +38,20 @@ public class TemplateAdderFragment extends Fragment {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                callBack.eventsTemplateToTemplateFragment(new EventsTemplate(events));
+                //lägg in switch här
+                saveToDB();
+                callBack.startTemplateFragment();
                 return true;
             }
 
         });
+    }
+
+    private void saveToDB() {
+        EventsTemplate et = new EventsTemplate(events, "TestnameOfTemplate");
+        DBHandler dbHandler = new DBHandler(getActivity(), null, null,1);
+        dbHandler.addEventsTemplate(et);
+        Log.d("Debug","Inside TemplateAdderFragment: EventsTemplate "+et.getNameOfTemplate() + "has been added to database");
     }
 
 
@@ -55,13 +66,8 @@ public class TemplateAdderFragment extends Fragment {
             String eventListJson = extras.getString(MARKED_EVENTS_JSON);
             Log.d("Debug", eventListJson);
         }*/
+       events = (List<Event>) b.getSerializable(LIST_OF_EVENTS);
         return inflater.inflate(R.layout.activity_template_adder, container, false);
     }
 
-    private void doneClicked() {
-        //starta TemplateFragment, hur? => måste accessa mainActivity och därifrån
-        //skicka events som data.
-        //det är allt.
-
-    }
 }

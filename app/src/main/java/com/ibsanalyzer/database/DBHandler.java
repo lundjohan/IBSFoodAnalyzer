@@ -8,10 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.model.TagTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ibsanalyzer.database.TablesAndStrings.*;
 
 
 /**
@@ -21,167 +25,6 @@ import java.util.List;
  */
 
 public class DBHandler extends SQLiteOpenHelper {
-    //NO_INHERITANCE is used to say: "TagTemplate is not inheriting"
-    public static final String NO_INHERITANCE = "0Null0";
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "tagnameDB.db";
-
-    //Foreign key support
-    public static final String ENABLE_FOREIGN_KEYS = "PRAGMA foreign_keys=ON;";
-    //for all
-    public static final String COLUMN_ID = "_id";
-
-    //TagTemplate
-    public static final String TABLE_TAGTEMPLATES = "tag_templates";
-    public static final String COLUMN_TAGNAME = "_tagname"; //this should be unique
-    public static final String COLUMN_IS_A = "_is_a1";      //make it point to parent TagName and not to id, it make it possible to display in listview after filtering.
-
-
-    //Tag
-    public static final String TABLE_TAGS = "tags";
-    public static final String COLUMN_TAGTEMPLATE = "tagtemplate";
-    public static final String COLUMN_SIZE = "size";
-    public static final String COLUMN_DATE = "date";
-    public static final String COLUMN_EVENTS = "events";
-
-    //Event
-    public static final String TABLE_EVENTS = "events";
-    public static final String COLUMN_TAGS = "tags";
-
-    //Event => many-to-many =>  Tags
-    private static final String TABLE_EVENTTAGS = "event_tags";
-    private static final String COLUMN_EVENT = "event";
-    private static final String COLUMN_TAG = "tag";
-
-    //Meals
-    private static final String TABLE_MEALS = "meals";
-    private static final String COLUMN_PORTIONS = "portions";
-
-    //Other
-    private static final String TABLE_OTHERS = "others";
-
-    //Exercise
-    private static final String TABLE_EXERCISES = "exercises";
-    private static final String COLUMN_INTENSITY = "intensity";
-
-    //BMs
-    private static final String TABLE_BMS = "bms";
-    private static final String COLUMN_COMPLETENESS = "completeness";
-    private static final String COLUMN_BRISTOL = "bristol";
-
-    //Ratings
-    private static final String TABLE_RATINGS = "ratings";
-    private static final String COLUMN_AFTER = "after";
-
-    //EventsTemplates
-    private static final String TABLE_EVENTSTEMPLATES = "event_templates";
-
-    //EventsTemplate => many-to-many => Events
-    private static final String TABLE_EVENTSTEMPLATEEVENTS = "event_template_events";
-    private static final String COLUMN_EVENTSTEMPLATE = "events_template";
-
-    // see https://sqlite.org/foreignkeys.html for creation of foreign keys.
-    public static final String CREATE_TAGTEMPLATE_TABLE = "CREATE TABLE " +
-            TABLE_TAGTEMPLATES + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE, " +
-            COLUMN_IS_A + " TEXT CHECK(" + COLUMN_IS_A + " != " + COLUMN_TAGNAME + "),  " +
-            " FOREIGN KEY(" + COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
-            + " (" + COLUMN_TAGNAME + ")" +
-            ");";
-    //for date as int (which actually long) see => http://stackoverflow.com/questions/7363112/best-way-to-work-with-dates-in-android-sqlite
-    public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
-            TABLE_TAGS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
-            COLUMN_SIZE + " REAL NOT NULL, " +
-            COLUMN_DATE + " INTEGER NOT NULL, " +
-            COLUMN_EVENTS + " INTEGER, " +
-            " FOREIGN KEY(" + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
-            + " (" + COLUMN_ID + ")" +
-            " FOREIGN KEY(" + COLUMN_EVENTS + ") REFERENCES " + TABLE_EVENTTAGS
-            + " (" + COLUMN_TAG + ")" +
-            ");";
-
-
-    public static final String CREATE_EVENT_TABLE = "CREATE TABLE " +
-            TABLE_EVENTS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_DATE + " INTEGER NOT NULL, " +
-            COLUMN_TAGS + " INTEGER, " +
-            " FOREIGN KEY(" + COLUMN_TAGS + ") REFERENCES " + TABLE_EVENTTAGS
-            + " (" + COLUMN_EVENT + ")" +
-            ");";
-    public static final String CREATE_EVENTTAGS_TABLE = "CREATE TABLE " +
-            TABLE_EVENTTAGS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_TAG + " INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_TAGS + ")" +
-            " FOREIGN KEY(" + COLUMN_TAG + ") REFERENCES " + TABLE_TAGS
-            + " (" + COLUMN_EVENT + ")" +
-            ");";
-    public static final String CREATE_MEAL_TABLE = "CREATE TABLE " +
-            TABLE_MEALS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_PORTIONS + "REAL NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
-            ");";
-
-    public static final String CREATE_OTHER_TABLE = "CREATE TABLE " +
-            TABLE_OTHERS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
-            ");";
-
-    public static final String CREATE_EXERCISE_TABLE = "CREATE TABLE " +
-            TABLE_EXERCISES + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_INTENSITY + "INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
-            ");";
-
-    public static final String CREATE_BM_TABLE = "CREATE TABLE " +
-            TABLE_BMS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_COMPLETENESS + "INTEGER NOT NULL, " +
-            COLUMN_BRISTOL + "INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
-            ");";
-    public static final String CREATE_RATING_TABLE = "CREATE TABLE " +
-            TABLE_RATINGS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_AFTER + "INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
-            ");";
-    public static final String CREATE_EVENTS_TEMPLATE_TABLE = "CREATE TABLE " +
-            TABLE_EVENTSTEMPLATES + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTSTEMPLATEEVENTS
-            + " (" + COLUMN_ID + ")" +
-            ");";
-    public static final String CREATE_EVENTS_TEMPLATE_TO_EVENT_TABLE = "CREATE TABLE " +
-            TABLE_EVENTSTEMPLATEEVENTS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_EVENTSTEMPLATE + "INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
-            " FOREIGN KEY(" + COLUMN_EVENTSTEMPLATE + ") REFERENCES " + TABLE_EVENTSTEMPLATES
-            + " (" + COLUMN_ID + ")" +
-            ");";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -223,7 +66,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGTEMPLATES);
-        
+
         // Create tables again
         onCreate(db);
     }
@@ -363,4 +206,30 @@ public class DBHandler extends SQLiteOpenHelper {
         return mCursor;
 
     }
+
+    //==============================================================================================
+    //EventsTemplate functions
+    public void addEventsTemplate(EventsTemplate et) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, et.getNameOfTemplate());
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //https://sqlite.org/c3ref/last_insert_rowid.html
+        //insert returns rowId => If the table has a column of type INTEGER PRIMARY KEY then that column is another alias for the rowid.
+        long template_id = db.insert(TABLE_TAGTEMPLATES, null, values);
+
+        for (Event e:et.getEvents()) {
+            ContentValues eventValue = new ContentValues();
+            long event_id = db.insert(TABLE_EVENTS,null,eventValue);
+
+            //insert into many-to-many table
+            ContentValues eventsTemplateToEvent = new ContentValues();
+            values.put(COLUMN_EVENT, event_id);
+            values.put(COLUMN_EVENTSTEMPLATE, template_id);
+        }
+        db.close();
+        //Log.d("Debug", "addTagTemplate completed! TagTemplate " + tagTemplate.get_tagname() + " with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
+
+    }
+//==================================================================================================
 }

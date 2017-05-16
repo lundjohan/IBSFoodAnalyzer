@@ -9,16 +9,23 @@ import java.util.List;
  */
 
 public class EventsTemplate {
+    String nameOfTemplate;
     List<Event> events;
 
-    public EventsTemplate(List<Event> events) {
+
+
+
+    public EventsTemplate(List<Event> events, String name) {
         this.events = events;
+        this.nameOfTemplate = name;
     }
 
     public List<Event> getEvents() {
         return events;
     }
-
+    public String getNameOfTemplate() {
+        return nameOfTemplate;
+    }
     public void setEvents(List<Event> events) {
         this.events = events;
     }

@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.inputday.R;
 
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_IS_A;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
+import static com.ibsanalyzer.database.TablesAndStrings.NO_INHERITANCE;
+
 /**
  * Created by Johan on 2017-05-10.
  */
@@ -33,10 +38,10 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         TextView tagName = (TextView) view.findViewById(R.id.tagName);
         TextView inherits = (TextView) view.findViewById(R.id.inherits);
 
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(DBHandler.COLUMN_TAGNAME));
-        String inheritanceOne = cursor.getString(cursor.getColumnIndexOrThrow(DBHandler.COLUMN_IS_A));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TAGNAME));
+        String inheritanceOne = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IS_A));
         tagName.setText(name);
-        if (inheritanceOne.equals(DBHandler.NO_INHERITANCE)){
+        if (inheritanceOne.equals(NO_INHERITANCE)){
             inherits.setText("");
             return;
         }
@@ -54,8 +59,8 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         cursor.moveToFirst();
         String tagName = "";
         while (!cursor.isAfterLast()) {
-            if (cursor.getInt(cursor.getColumnIndexOrThrow(DBHandler.COLUMN_ID))==id){
-                tagName = cursor.getString(cursor.getColumnIndexOrThrow(DBHandler.COLUMN_TAGNAME));
+            if (cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))==id){
+                tagName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TAGNAME));
                 break;
             }
             cursor.moveToNext();
