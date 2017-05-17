@@ -24,4 +24,7 @@ public class Constants {
 
     //interface passed as arg to bundle
     public static final String LISTENER_AS_ARG = "listener_interface";
+
+    //used for backstack
+    public static final String TEMPLATE_ADDER_FRAGMENT = "template_adder_fragment_tag";
 }

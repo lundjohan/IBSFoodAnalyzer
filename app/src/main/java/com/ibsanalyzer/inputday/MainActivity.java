@@ -123,17 +123,21 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
         getSupportFragmentManager().beginTransaction().replace(R.id.pager, templateFragment).commit();
     }*/
 
-   /* @Override
-    public void onSwitchToTemplateAdderFragment(List<Event> events) {
-        TemplateAdderFragment taf = new TemplateAdderFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(LIST_OF_EVENTS, (Serializable) events);
-        taf.setArguments(bundle);
+    /* @Override
+     public void onSwitchToTemplateAdderFragment(List<Event> events) {
+         TemplateAdderFragment taf = new TemplateAdderFragment();
+         Bundle bundle = new Bundle();
+         bundle.putSerializable(LIST_OF_EVENTS, (Serializable) events);
+         taf.setArguments(bundle);
 
-        //osäker om pager (container view) är rätt id to pass
-        getSupportFragmentManager().beginTransaction().replace(R.id.pager, taf).commit();
-    }*/
+         //osäker om pager (container view) är rätt id to pass
+         getSupportFragmentManager().beginTransaction().replace(R.id.pager, taf).commit();
+     }*/
 
+    //from TemplateAdderFragment, really bad solution with very high coupling
+    public void changeToTemplateFragment() {
+        viewPager.setCurrentItem(0);
+    }
     //==============================================================================================
 }
 

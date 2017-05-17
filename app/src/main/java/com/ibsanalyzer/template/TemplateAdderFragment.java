@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.inputday.DiaryFragment;
+import com.ibsanalyzer.inputday.MainActivity;
 import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.model.EventsTemplate;
 
@@ -48,7 +49,12 @@ public class TemplateAdderFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 //lägg in switch här
                 saveToDB(null);
-                callback.startTemplateFragment();
+               // callback.startTemplateFragment();
+                //getChildFragmentManager().popBackStackImmediate();
+
+                //really bad solution => thight coupling. This fragment should know as little as possible about its ancestors
+                ((MainActivity)getActivity()).changeToTemplateFragment();
+
                 return true;
             }
 

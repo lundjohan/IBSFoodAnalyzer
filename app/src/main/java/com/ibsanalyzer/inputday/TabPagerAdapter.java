@@ -91,8 +91,8 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         if (object instanceof DiaryFragment && fragmentAtPos1 instanceof TemplateAdderFragment)
-            return POSITION_NONE;
-        return POSITION_UNCHANGED;
+            return POSITION_NONE;   //this destroy current page to replace it with object, johan kommentar
+        return POSITION_UNCHANGED;  //this keep all pages, johan kommentar
     }
     public interface PageFragmentListener extends Serializable{
         void onSwitchToNextFragment(List<Event>events);
