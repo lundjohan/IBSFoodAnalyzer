@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
-import com.ibsanalyzer.inputday.DiaryFragment;
 import com.ibsanalyzer.inputday.MainActivity;
 import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.model.EventsTemplate;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
-import static com.ibsanalyzer.constants.Constants.POSITION_IN_DIARY;
 
 public class TemplateAdderFragment extends Fragment {
     private List<Event> events = new ArrayList<>();
@@ -81,7 +79,7 @@ public class TemplateAdderFragment extends Fragment {
         }*/
        events = (List<Event>) b.getSerializable(LIST_OF_EVENTS);
         Log.d("Debug","inside TemplateAdderFragment events: "+events.toString());  //hit kommer jag.
-        return inflater.inflate(R.layout.activity_template_adder, container, false);
+        return inflater.inflate(R.layout.fragment_template_adder, container, false);
     }
     //used by TabPagerAdapter to interchange fragments
     public static TemplateAdderFragment newInstance(List<Event>events) {
