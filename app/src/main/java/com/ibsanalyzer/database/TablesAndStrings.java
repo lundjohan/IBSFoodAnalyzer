@@ -63,108 +63,108 @@ public class TablesAndStrings {
 
     //EventsTemplate => many-to-many => Events
     public static final String TABLE_EVENTSTEMPLATEEVENTS = "event_template_events";
-    public static final String COLUMN_EVENTSTEMPLATE = "events_template";
+    public static final String COLUMN_EVENTSTEMPLATE = "events_template";   //denna => unknown column?
 
     // see https://sqlite.org/foreignkeys.html for creation of foreign keys.
     public static final String CREATE_TAGTEMPLATE_TABLE = "CREATE TABLE " +
-            TABLE_TAGTEMPLATES + "(" +
+            TABLE_TAGTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE, " +
-            COLUMN_IS_A + " TEXT CHECK(" + COLUMN_IS_A + " != " + COLUMN_TAGNAME + "),  " +
-            " FOREIGN KEY(" + COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
-            + " (" + COLUMN_TAGNAME + ")" +
+            COLUMN_IS_A + " TEXT CHECK( " + COLUMN_IS_A + " != " + COLUMN_TAGNAME + "),  " +
+            " FOREIGN KEY( " + COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
+            + " ( " + COLUMN_TAGNAME + ")" +
             ");";
     //for date as int (which actually long) see => http://stackoverflow.com/questions/7363112/best-way-to-work-with-dates-in-android-sqlite
     public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
-            TABLE_TAGS + "(" +
+            TABLE_TAGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
             COLUMN_SIZE + " REAL NOT NULL, " +
-            COLUMN_DATE + " INTEGER NOT NULL, " +
+            COLUMN_DATE + " TEXT NOT NULL, " +
             COLUMN_EVENTS + " INTEGER, " +
-            " FOREIGN KEY(" + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
-            + " (" + COLUMN_ID + ")" +
-            " FOREIGN KEY(" + COLUMN_EVENTS + ") REFERENCES " + TABLE_EVENTTAGS
-            + " (" + COLUMN_TAG + ")" +
+            " FOREIGN KEY( " + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
+            + " ( " + COLUMN_ID + ")" +
+            " FOREIGN KEY( " + COLUMN_EVENTS + ") REFERENCES " + TABLE_EVENTTAGS
+            + " ( " + COLUMN_TAG + ")" +
             ");";
 
 
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE " +
-            TABLE_EVENTS + "(" +
+            TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_DATE + " INTEGER NOT NULL, " +
+            COLUMN_DATE + " TEXT NOT NULL, " +
             COLUMN_TAGS + " INTEGER, " +
-            " FOREIGN KEY(" + COLUMN_TAGS + ") REFERENCES " + TABLE_EVENTTAGS
-            + " (" + COLUMN_EVENT + ")" +
+            " FOREIGN KEY( " + COLUMN_TAGS + ") REFERENCES " + TABLE_EVENTTAGS
+            + " ( " + COLUMN_EVENT + ")" +
             ");";
     public static final String CREATE_EVENTTAGS_TABLE = "CREATE TABLE " +
-            TABLE_EVENTTAGS + "(" +
+            TABLE_EVENTTAGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_TAG + " INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_TAGS + ")" +
-            " FOREIGN KEY(" + COLUMN_TAG + ") REFERENCES " + TABLE_TAGS
-            + " (" + COLUMN_EVENT + ")" +
+            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_TAGS + ")" +
+            " FOREIGN KEY( " + COLUMN_TAG + ") REFERENCES " + TABLE_TAGS
+            + " ( " + COLUMN_EVENT + ")" +
             ");";
     public static final String CREATE_MEAL_TABLE = "CREATE TABLE " +
-            TABLE_MEALS + "(" +
+            TABLE_MEALS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_PORTIONS + "REAL NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
+            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" +
             ");";
 
     public static final String CREATE_OTHER_TABLE = "CREATE TABLE " +
-            TABLE_OTHERS + "(" +
+            TABLE_OTHERS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
+            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" +
             ");";
 
     public static final String CREATE_EXERCISE_TABLE = "CREATE TABLE " +
-            TABLE_EXERCISES + "(" +
+            TABLE_EXERCISES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_INTENSITY + "INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
+            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" +
             ");";
 
     public static final String CREATE_BM_TABLE = "CREATE TABLE " +
-            TABLE_BMS + "(" +
+            TABLE_BMS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_COMPLETENESS + "INTEGER NOT NULL, " +
             COLUMN_BRISTOL + "INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
+            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" +
             ");";
     public static final String CREATE_RATING_TABLE = "CREATE TABLE " +
-            TABLE_RATINGS + "(" +
+            TABLE_RATINGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_AFTER + "INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
+            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" +
             ");";
     public static final String CREATE_EVENTS_TEMPLATE_TABLE = "CREATE TABLE " +
-            TABLE_EVENTSTEMPLATES + "(" +
+            TABLE_EVENTSTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_NAME + " TEXT NOT NULL UNIQUE ," +
-            " FOREIGN KEY(" + COLUMN_ID + ") REFERENCES " + TABLE_EVENTSTEMPLATEEVENTS
-            + " (" + COLUMN_EVENTSTEMPLATE + ")" +
+            " FOREIGN KEY( " + COLUMN_ID + ") REFERENCES " + TABLE_EVENTSTEMPLATEEVENTS
+            + " ( " + COLUMN_EVENTSTEMPLATE + ")" +
             ");";
     public static final String CREATE_EVENTS_TEMPLATE_TO_EVENT_TABLE = "CREATE TABLE " +
-            TABLE_EVENTSTEMPLATEEVENTS + "(" +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
+            TABLE_EVENTSTEMPLATEEVENTS + " (  " +
+            COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_EVENTSTEMPLATE + "INTEGER NOT NULL, " +
-            " FOREIGN KEY(" + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " (" + COLUMN_ID + ")" +
-            " FOREIGN KEY(" + COLUMN_EVENTSTEMPLATE + ") REFERENCES " + TABLE_EVENTSTEMPLATES
-            + " (" + COLUMN_ID + ")" +
+            COLUMN_EVENTSTEMPLATE + " INTEGER NOT NULL, " +
+            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ") " +
+            " FOREIGN KEY( " + COLUMN_EVENTSTEMPLATE + " ) REFERENCES " + TABLE_EVENTSTEMPLATES
+            + " ( " + COLUMN_ID + ")" +
             ");";
 }

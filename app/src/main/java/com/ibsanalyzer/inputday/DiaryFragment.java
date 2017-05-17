@@ -91,6 +91,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         callback = (DiaryFragmentListener) context;
 
         Bundle args = getArguments();
+        Log.d("Debug","args.getSerializable(LISTENER_AS_ARG).toString() "+args.getSerializable(LISTENER_AS_ARG).toString());
         if (args!= null) {
             listener = (TabPagerAdapter.PageFragmentListener) args.getSerializable(LISTENER_AS_ARG);
         }

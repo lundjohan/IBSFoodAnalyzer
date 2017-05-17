@@ -17,6 +17,8 @@ import com.ibsanalyzer.inputday.DiaryFragment;
 import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.model.EventsTemplate;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,15 +37,6 @@ public class TemplateAdderFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         setHasOptionsMenu(true);
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            callback = (TemplateAdderListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement TemplateAdderListener");
-        }
-
     }
     //not finished, see http://stackoverflow.com/questions/15653737/oncreateoptionsmenu-inside-fragments
     @Override
@@ -62,7 +55,7 @@ public class TemplateAdderFragment extends Fragment {
         });
     }
     private void saveToDB(View v) {
-        EventsTemplate et = new EventsTemplate(events, "TestnameOfTemplate");
+        EventsTemplate et = new EventsTemplate(events, "TestnameOfTemplate"+ LocalDateTime.now().toString());
         DBHandler dbHandler = new DBHandler(getActivity(), null, null,1);
         dbHandler.addEventsTemplate(et);
         Log.d("Debug","Inside TemplateAdderFragment: EventsTemplate "+et.getNameOfTemplate() + "has been added to database");
@@ -81,7 +74,7 @@ public class TemplateAdderFragment extends Fragment {
             Log.d("Debug", eventListJson);
         }*/
        events = (List<Event>) b.getSerializable(LIST_OF_EVENTS);
-        Log.d("Debug","inside TemplateAdderFragment");  //hit kommer jag.
+        Log.d("Debug","inside TemplateAdderFragment events: "+events.toString());  //hit kommer jag.
         return inflater.inflate(R.layout.activity_template_adder, container, false);
     }
     //used by TabPagerAdapter to interchange fragments

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.model.TagTemplate;
 
@@ -216,10 +217,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
         //https://sqlite.org/c3ref/last_insert_rowid.html
         //insert returns rowId => If the table has a column of type INTEGER PRIMARY KEY then that column is another alias for the rowid.
-        long template_id = db.insert(TABLE_TAGTEMPLATES, null, values);
+        long template_id = db.insert(TABLE_EVENTSTEMPLATES, null, values);
 
         for (Event e:et.getEvents()) {
             ContentValues eventValue = new ContentValues();
+            eventValue.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(e.getTime()));
             long event_id = db.insert(TABLE_EVENTS,null,eventValue);
 
             //insert into many-to-many table
