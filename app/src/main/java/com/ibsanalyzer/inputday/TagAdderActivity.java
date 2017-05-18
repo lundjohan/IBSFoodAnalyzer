@@ -1,6 +1,5 @@
 package com.ibsanalyzer.inputday;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +38,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
         tagSearch = (SearchView) findViewById(R.id.searchTags);
         tagsList = (ListView)findViewById(R.id.listOfTags);
-        Cursor cursor = dbHandler.getCursorToAllElements();
+        Cursor cursor = dbHandler.getCursorToTagTemplates();
         adapter = new TagnameCursorAdapter(this,
                 cursor);
         tagsList.setAdapter(adapter);

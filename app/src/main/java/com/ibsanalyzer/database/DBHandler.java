@@ -174,7 +174,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getCursorToAllElements() {
+    public Cursor getCursorToTagTemplates() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT  * FROM " + TABLE_TAGTEMPLATES, null);
     }
@@ -232,6 +232,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         //Log.d("Debug", "addTagTemplate completed! TagTemplate " + tagTemplate.get_tagname() + " with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
 
+    }
+    public Cursor getCursorToEventsTemplates(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT  * FROM " + TABLE_EVENTSTEMPLATES, null);
     }
 //==================================================================================================
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InputDay</string>
+    <string name="app_name">FoodAnalyzer</string>
     <string name="meal_icon_label">Meal</string>
     <string name="other_icon_label">Other</string>
     <string name="exercise_icon_label">Exercise</string>

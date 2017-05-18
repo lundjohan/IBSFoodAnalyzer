@@ -35,7 +35,7 @@
                 <android.support.design.widget.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Templates" />
+                    android:icon="@drawable/ic_folder_open_black_24dp" />
                 <!--app:theme="@style/AppTheme"
             app:tabTextColor="@color/colorWhite"
             app:tabTextAppearance="@style/TabLayoutTextStyle" />-->
@@ -43,12 +43,12 @@
                 <android.support.design.widget.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tab_diary" />
+                    android:icon="@drawable/diary_24dp" />
 
                 <android.support.design.widget.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Statistics" />
+                    android:icon="@drawable/icon_statistics_24dp" />
             </android.support.design.widget.TabLayout>
 
 
@@ -66,23 +66,33 @@
                     android:layout_height="wrap_content"
                     android:gravity="right">
 
-                    <Button
-                        android:id="@+id/cancel_btn"
+                    <ImageButton
+                        android:id="@+id/break_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CANCEL" />
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_pan_tool_black_24dp" />
 
-                    <Button
-                        android:id="@+id/copy_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="COPY" />
-
-                    <Button
+                    <ImageButton
                         android:id="@+id/to_template_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TO TEMPLATE" />
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_save_black_24dp" />
+
+                    <ImageButton
+                        android:id="@+id/copy_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_content_copy_black_24dp" />
+
+                    <ImageButton
+                        android:id="@+id/cancel_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_close_black_24dp" />
 
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>

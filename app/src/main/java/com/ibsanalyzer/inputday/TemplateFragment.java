@@ -1,6 +1,7 @@
 package com.ibsanalyzer.inputday;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.EventsTemplate;
 
 import java.util.List;
@@ -40,7 +42,9 @@ public class TemplateFragment extends Fragment {
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new EventsTemplateAdapter();
+        DBHandler dbHandler = new DBHandler(getActivity(), null, null,1);
+        Cursor cursor = dbHandler.getCursorToEventsTemplates();
+        adapter = new EventsTemplateAdapter(getActivity(), cursor);
         recyclerView.setAdapter(adapter);
 
 

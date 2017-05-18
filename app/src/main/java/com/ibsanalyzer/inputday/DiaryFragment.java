@@ -164,7 +164,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     private void setUpMenu() {
         //cant come up with better solution for gaining access to toolbar buttons that lie on main_activity.xml
-        Button toTemplateBtn = (Button) getActivity().findViewById(R.id.to_template_btn);
+        ImageButton toTemplateBtn = (ImageButton) getActivity().findViewById(R.id.to_template_btn);
         toTemplateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
