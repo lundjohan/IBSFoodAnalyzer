@@ -59,10 +59,6 @@ public class RatingActivity extends EventActivity {
         }
     }
 
-
-
-
-
     @Override
     public void finish() {
         //scoreBar starts from zero

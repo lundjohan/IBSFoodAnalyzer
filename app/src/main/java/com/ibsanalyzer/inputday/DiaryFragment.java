@@ -176,17 +176,48 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
     private void populateList() {
-        LocalDateTime ldt = LocalDateTime.of(2016, Month.APRIL, 3, 16, 10);
+        LocalDateTime ldt = LocalDateTime.of(2016, Month.APRIL, 3, 8, 0);
+        //rating morgon
+        Rating rating = new Rating (ldt, 6);
+
+        //frukost
+        LocalDateTime ldt2 = LocalDateTime.of(2016, Month.APRIL, 3, 9, 0);
         Tag t1 = new Tag(ldt, "milk", 2);
         Tag t2 = new Tag(ldt, "yoghurt", 1);
         List<Tag> tagList = new ArrayList<>();
         tagList.add(t1);
         tagList.add(t2);
-        Meal meal1 = new Meal(ldt, tagList, 2.);
-        Meal meal2 = new Meal(ldt, tagList, 1.);
+        Meal meal1 = new Meal(ldt2, tagList, 2.);
 
+        //execercise
+        LocalDateTime ldt3 = LocalDateTime.of(2016, Month.APRIL, 3, 12, 0);
+        Exercise exercise = new Exercise(ldt3, new Tag(ldt3, "running", 1), 4);
+
+        //BM
+        LocalDateTime ldt4 = LocalDateTime.of(2016, Month.APRIL, 3, 14, 20);
+        BM bm = new BM(ldt4, 3, 5);
+
+        //Other
+        LocalDateTime ldtx = LocalDateTime.of(2016, Month.APRIL, 3, 14, 30);
+        Tag t3 = new Tag(ldt, "sleep", 1);
+        List<Tag> tagList2 = new ArrayList<>();
+        tagList2.add(t3);
+        Other other = new Other(ldtx, tagList2);
+
+        //rating kväll
+        LocalDateTime ldt5 = LocalDateTime.of(2016, Month.APRIL, 3, 18, 30);
+        Rating rating2 = new Rating (ldt5, 5);
+
+        eventList.add(rating);
         eventList.add(meal1);
-        eventList.add(meal2);
+        eventList.add(exercise);
+        eventList.add(bm);
+        eventList.add(other);
+        eventList.add(rating2);
+
+
+
+
     }
    /* public boolean onCreateOptionsMenu(Menu menu) {
         Log.d("Debug", "isnide onCreateOptionsMenu inside DiaryFragment"); //kallas aldrig.

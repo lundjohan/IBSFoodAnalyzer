@@ -127,7 +127,6 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public ScoreViewHolder(View itemView) {
             super(itemView);
-            toTime = (TextView) itemView.findViewById(R.id.toTime);
             afterScore = (TextView) itemView.findViewById(R.id.scoreAfter);
         }
     }
@@ -233,10 +232,6 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Rating rating = (Rating) event;
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
                 setTime(rating, scoreHolder);
-
-                //toTime will be much more advanced, do this implementation much later
-                scoreHolder.toTime.setText("tomorrow 10:00");
-
                 scoreHolder.afterScore.setText(Rating.pointsToText(rating.getAfter()));
                 break;
         }

@@ -183,6 +183,8 @@ public class DBHandler extends SQLiteOpenHelper {
         addTagTemplate(new TagTemplate("dairy"));
         addTagTemplate(new TagTemplate("yoghurt", findTagTemplate("dairy")));
         addTagTemplate(new TagTemplate("wheat"));
+        addTagTemplate(new TagTemplate("running"));
+        addTagTemplate(new TagTemplate("sleep"));
         addTagTemplate(new TagTemplate("pizza", findTagTemplate("wheat")));
     }
 
