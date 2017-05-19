@@ -15,7 +15,7 @@ import java.util.List;
  * From Android Studio Development Essentials p. 334
  */
 
-public class TabPagerAdapter extends FragmentPagerAdapter {
+public class TabPagerAdapter extends FragmentPagerAdapter{
     int tabCount;
     private Fragment fragmentAtPos1;
     FragmentManager fm;

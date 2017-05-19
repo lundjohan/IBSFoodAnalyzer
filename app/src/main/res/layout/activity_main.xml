@@ -56,8 +56,7 @@
                 android:id="@+id/toolbar2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?attr/colorPrimary"
+                android:background="@android:color/black"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme">
 
@@ -71,6 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@null"
                         app:srcCompat="@drawable/ic_pan_tool_black_24dp" />
 
                     <ImageButton
@@ -78,6 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@null"
                         app:srcCompat="@drawable/ic_save_black_24dp" />
 
                     <ImageButton
@@ -85,6 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@null"
                         app:srcCompat="@drawable/ic_content_copy_black_24dp" />
 
                     <ImageButton
@@ -92,6 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@null"
                         app:srcCompat="@drawable/ic_close_black_24dp" />
 
                 </LinearLayout>
