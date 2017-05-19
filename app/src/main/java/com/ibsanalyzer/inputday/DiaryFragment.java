@@ -75,10 +75,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 //==================================================================================================
 
     DiaryFragmentListener callback;
-
-
-    protected TabPagerAdapter.PageFragmentListener listener;
-
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
         ViewSwitcher getTabsLayoutSwitcher();
@@ -91,10 +87,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         callback = (DiaryFragmentListener) context;
 
         Bundle args = getArguments();
-        Log.d("Debug","args.getSerializable(LISTENER_AS_ARG).toString() "+args.getSerializable(LISTENER_AS_ARG).toString());
-        if (args!= null) {
-            listener = (TabPagerAdapter.PageFragmentListener) args.getSerializable(LISTENER_AS_ARG);
-        }
         setHasOptionsMenu(true);
     }
 //==================================================================================================
@@ -102,10 +94,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public DiaryFragment() {
 
         Bundle b = getArguments();
-        if (b != null) {
-            Serializable s = b.getSerializable(LISTENER_AS_ARG);
-            this.listener = (TabPagerAdapter.PageFragmentListener) s;
-        }
+
     }
 
     //p. 121 Android Essentials
@@ -168,9 +157,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         toTemplateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.onSwitchToNextFragment(prepareMarkedEvents());
-                }
             }
         });
     }
@@ -405,12 +391,5 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
 
-    //used by TabPagerAdapter to interchange fragments
-    public static DiaryFragment newInstance(TabPagerAdapter.PageFragmentListener listener) {//) {
-        Bundle b = new Bundle();
-        b.putSerializable(LISTENER_AS_ARG, listener);
-        DiaryFragment df = new DiaryFragment();
-        df.setArguments(b);
-        return df;
-    }
+
 }
