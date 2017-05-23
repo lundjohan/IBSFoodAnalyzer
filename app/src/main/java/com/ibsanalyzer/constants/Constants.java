@@ -14,7 +14,10 @@ public class Constants {
     public final static String RETURN_TAGTEMPLATE_JSON = "returnTagTemplateJSON";
 
     public final static String RETURN_MEAL_SERIALIZABLE = "returnMealSer";
+    public final static String RETURN_OTHER_SERIALIZABLE = "returnOtherSer";
     public final static String RETURN_EXERCISE_SERIALIZABLE = "returnExerciseSer";
+    public final static String RETURN_BM_SERIALIZABLE = "returnBmSer";
+    public final static String RETURN_RATING_SERIALIZABLE = "returnRatingSer";
 
     public final static String MARKED_EVENTS_JSON = "markedEventsJson";
 

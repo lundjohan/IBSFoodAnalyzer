@@ -8,7 +8,9 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.util.Util;
 
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -64,10 +66,7 @@ public class RatingActivity extends EventActivity {
         //scoreBar starts from zero
         int after = scoreBar.getProgress() + 1;
         Rating rating = new Rating(datetime, after);
-
-        //Put in database here (Android Studio Development Essentials [ASDE] p. 558, 559)
-
-        Util.jsonAndMoreFinishingData(rating, RETURN_RATING_JSON, this);
+        Util.eventReturn(rating,RETURN_RATING_SERIALIZABLE, this);
 
     }
 }

@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ViewSwitcher;
 
@@ -31,19 +30,15 @@ import com.ibsanalyzer.base_classes.Tag;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ibsanalyzer.constants.Constants.LISTENER_AS_ARG;
-import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
-import static com.ibsanalyzer.constants.Constants.RETURN_RATING_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
 
 
 /**
@@ -151,7 +146,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         ImageButton bmBtn = (ImageButton) view.findViewById(R.id.bmBtn);
         bmBtn.setOnClickListener(this);
 
-        ImageButton scoreBtn = (ImageButton) view.findViewById(R.id.scoreBtn);
+        ImageButton scoreBtn = (ImageButton) view.findViewById(R.id.ratingBtn);
         scoreBtn.setOnClickListener(this);
     }
 
@@ -249,15 +244,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
             case NEW_MEAL:
                 if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
-                   // String mealJSONData = data.getExtras().getString(RETURN_MEAL_JSON);
-                    //event = gson.fromJson(mealJSONData, Meal.class);
                     event = (Meal)data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
                 }
                 break;
             case NEW_OTHER:
-                if (data.hasExtra(RETURN_OTHER_JSON)) {
-                    String otherJSONData = data.getExtras().getString(RETURN_OTHER_JSON);
-                    event = gson.fromJson(otherJSONData, Other.class);
+                if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
+                    event = (Other)data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
                 }
                 break;
             case NEW_EXERCISE:
@@ -266,15 +258,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 }
                 break;
             case NEW_BM:
-                if (data.hasExtra(RETURN_BM_JSON)) {
-                    String bmJSONData = data.getExtras().getString(RETURN_BM_JSON);
-                    event = gson.fromJson(bmJSONData, BM.class);
+                if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
+                    event = (BM)data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
                 }
                 break;
             case NEW_SCORE:
-                if (data.hasExtra(RETURN_RATING_JSON)) {
-                    String scoreJSONData = data.getExtras().getString(RETURN_RATING_JSON);
-                    event = gson.fromJson(scoreJSONData, Rating.class);
+                if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
+                    event = (Rating)data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
                 }
                 break;
         }
@@ -302,7 +292,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             case R.id.bmBtn:
                 newBmActivity(v);
                 break;
-            case R.id.scoreBtn:
+            case R.id.ratingBtn:
                 newScoreItem(v);
                 break;
         }

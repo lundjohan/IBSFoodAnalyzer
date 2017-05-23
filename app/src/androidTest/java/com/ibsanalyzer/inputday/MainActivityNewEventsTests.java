@@ -11,9 +11,12 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 
+import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.base_classes.Other;
+import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 
 import org.hamcrest.Matcher;
@@ -41,8 +44,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
 import static com.ibsanalyzer.inputday.R.drawable.meal;
 import static org.hamcrest.Matchers.allOf;
 
@@ -65,6 +71,19 @@ public class MainActivityNewEventsTests {
 
     List<Tag> tags = new ArrayList<>();
     LocalDateTime ldt;
+
+    private Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event event) {
+        Intent resultData = new Intent();
+        resultData.putExtra(putExtraStr, event);
+        return new Instrumentation.ActivityResult(Activity
+                .RESULT_OK, resultData);
+    }
+
+    private void stubOutActivity(String className, Instrumentation.ActivityResult result) {
+        intending(IntentMatchers.
+                hasComponent(hasClassName(className))).respondWith(result);
+    }
+
     @Rule
     public IntentsTestRule<MainActivity> intentsRule = new IntentsTestRule<>(MainActivity.class);
 
@@ -101,13 +120,38 @@ public class MainActivityNewEventsTests {
                 ))))
                 .check(matches(isDisplayed()));
     }
-    /*Similar tests for the other events buttons and activities here
-    .
-    .
-    .
-    */
 
-    // TODO Othertest  (but it so similar to Meal so maybe I don't have to do it), but should make BM and Rating at least
+    @Test
+    public void testReturnValueFromOtherActivity() {
+        ldt = LocalDateTime.of(2017, Month.MAY, 23, 23, 22);
+
+        tags.add(new Tag(ldt, "happy", 1.0));
+        Other other = new Other(ldt, tags);
+
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_OTHER_SERIALIZABLE,
+                other);
+        stubOutActivity(OtherActivity.class.getName(), result);
+
+        //now press click of MealBtn that makes us go to MealActivity stub above
+        onView(withId(R.id.otherBtn)).perform(click());
+
+        //check that an item exists in RecyclerView that has Time 16:00 and portions 2.5
+        onView(allOf(
+
+                //all meal items has portions id
+                withId(R.id.smallOtherIcon),
+
+                //time
+                hasSibling(withText("23:22")),
+
+                //tags in item
+                hasSibling(withChild(withText("happy"))
+                )))
+                .check(matches(isDisplayed()));
+    }
+
+    // TODO Othertest  (but it so similar to Meal so maybe I don't have to do it), but should
+    // make BM and Rating at least
     @Test
     public void testReturnValueFromExerciseActivity() {
         // Create a meal object with time 16:00
@@ -117,7 +161,8 @@ public class MainActivityNewEventsTests {
         //a 4 means Intense
         Exercise exercise = new Exercise(ldt, running, 4);
 
-        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EXERCISE_SERIALIZABLE, exercise);
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EXERCISE_SERIALIZABLE,
+                exercise);
         stubOutActivity(ExerciseActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
@@ -126,7 +171,7 @@ public class MainActivityNewEventsTests {
         //check that a relevant item exists in RecyclerView
         onView(allOf(
                 //use the image
-                withId(R.id.exercise_type),
+                withId(R.id.smallExerciseIcon),
                 //withText("17:30"),
                 //time
                 hasSibling(withText("17:30")),
@@ -136,23 +181,62 @@ public class MainActivityNewEventsTests {
 
                 //intensity
                 hasSibling(withText("Intense"))
-                ))
+        ))
                 .check(matches(isDisplayed()));
     }
-    /*Similar tests for the other events buttons and activities here
-    .
-    .
-    .
-    */
-    private Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event event) {
-        Intent resultData = new Intent();
-        resultData.putExtra(putExtraStr, event);
-        return new Instrumentation.ActivityResult(Activity
-                .RESULT_OK, resultData);
+
+    @Test
+    public void testReturnValueFromBMActivity() {
+        // Create a meal object with time 16:00
+        LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 18, 0);
+        BM bm = new BM(ldt, 5, 2);
+
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_BM_SERIALIZABLE,
+                bm);
+        stubOutActivity(BmActivity.class.getName(), result);
+
+        //now press click of MealBtn that makes us go to MealActivity stub above
+        onView(withId(R.id.bmBtn)).perform(click());
+
+        //check that a relevant item exists in RecyclerView
+        onView(allOf(
+                //use the image
+                withId(R.id.smallBmIcon),
+                //time
+                hasSibling(withText("18:00")),
+
+                //tag
+                hasSibling(withText("Phenomenal")),
+
+                //intensity
+                hasSibling(withText("2"))
+        ))
+                .check(matches(isDisplayed()));
     }
 
-    private void stubOutActivity(String className, Instrumentation.ActivityResult result) {
-        intending(IntentMatchers.
-                hasComponent(hasClassName(className))).respondWith(result);
+    @Test
+    public void testReturnValueFromRatingActivity() {
+        // Create a meal object with time 16:00
+        LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 19, 0);
+        Rating rating = new Rating(ldt, 6);
+
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_RATING_SERIALIZABLE,
+                rating);
+        stubOutActivity(RatingActivity.class.getName(), result);
+
+        //now press click of MealBtn that makes us go to MealActivity stub above
+        onView(withId(R.id.ratingBtn)).perform(click());
+
+        //check that a relevant item exists in RecyclerView
+        onView(allOf(
+                //use the image
+                withId(R.id.smallRatingIcon),
+                //time
+                hasSibling(withText("19:00")),
+
+                //rating/after
+                hasSibling(withText("Great"))
+        ))
+                .check(matches(isDisplayed()));
     }
 }

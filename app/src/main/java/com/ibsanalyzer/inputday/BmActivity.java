@@ -8,6 +8,8 @@ import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -97,10 +99,7 @@ public class BmActivity extends EventActivity {
         int complete = completeBar.getProgress() + 1;
         int bristol = bristolBar.getProgress() + 1;
         BM bm = new BM(datetime, complete, bristol);
-
-        //Put in database here (Android Studio Development Essentials [ASDE] p. 558, 559)
-
-        Util.jsonAndMoreFinishingData(bm,RETURN_BM_JSON, this);
+        Util.eventReturn(bm,RETURN_BM_SERIALIZABLE, this);
         super.finish();
     }
 }

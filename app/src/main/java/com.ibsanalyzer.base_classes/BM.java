@@ -3,8 +3,9 @@ package com.ibsanalyzer.base_classes;
 import org.threeten.bp.LocalDateTime;
 
 public class BM extends Event {
-	//private double size;
+	//bristol should be between 1 and 7;
 	private int bristol;
+	//complete should be between 1 and 5
 	private int complete = 0;
 
 	public BM(LocalDateTime time,int complete, int bristol) {
