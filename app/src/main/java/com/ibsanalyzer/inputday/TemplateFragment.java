@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.EventsTemplate;
+import com.ibsanalyzer.util.Util;
 
 import java.util.List;
 
@@ -39,24 +40,17 @@ public class TemplateFragment extends Fragment {
 
         //CHANGE parameters.
         //see http://stackoverflow.com/questions/33575731/gridlayoutmanager-how-to-auto-fit-columns
-        layoutManager = new GridLayoutManager(getActivity(), 2);
+
+        int mNoOfColumns = Util.calculateNoOfColumns(getActivity().getApplicationContext(), 180);
+        int width = Util.calculateWidthOfItem(getActivity().getApplicationContext(), mNoOfColumns);
+        Log.d("Debug","width of item in GridLayout: "+width);
+        layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
         recyclerView.setLayoutManager(layoutManager);
 
         DBHandler dbHandler = new DBHandler(getActivity(), null, null,1);
         Cursor cursor = dbHandler.getCursorToEventsTemplates();
-        adapter = new EventsTemplateAdapter(getActivity(), cursor);
+        adapter = new EventsTemplateAdapter(getActivity(), cursor, width);
         recyclerView.setAdapter(adapter);
-
-
-
         return v;
-    }
-
-    public void retrieveEventsAsJSON(String jsonWithEvents) {
-
-    }
-
-    public static Fragment newInstance() {
-        return new TemplateFragment();
     }
 }

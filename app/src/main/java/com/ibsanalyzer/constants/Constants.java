@@ -7,6 +7,10 @@ package com.ibsanalyzer.constants;
 public class Constants {
     public static int TAGS_TO_ADD = 4444;
     public final static String RETURN_MEAL_JSON = "returnMealJSON";
+    public final static String RETURN_MEAL_SERIALIZABLE = "returnMealSer";
+
+
+
     public final static String RETURN_OTHER_JSON = "returnOtherJSON";
     public final static String RETURN_EXERCISE_JSON = "returnExerciseJSON";
     public final static String RETURN_BM_JSON = "returnBmJSON";
@@ -27,4 +31,8 @@ public class Constants {
 
     //used for backstack
     public static final String TEMPLATE_ADDER_FRAGMENT = "template_adder_fragment_tag";
+
+    //public static final int NEW_EVENTSTEMPLATE = 5555;
+
+
 }

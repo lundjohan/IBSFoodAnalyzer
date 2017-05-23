@@ -1,7 +1,9 @@
 package com.ibsanalyzer.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Event;
@@ -9,6 +11,7 @@ import com.ibsanalyzer.base_classes.Event;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-14.
@@ -30,14 +33,38 @@ public class Util {
         data.putExtra(putExtraString, objAsJSON);
         usingActivity.setResult(RESULT_OK, data);
     }
+    public static void eventReturn(Event event, String putExtraString, Activity usingActivity){
+        Intent data = new Intent();
+        data.putExtra(RETURN_MEAL_SERIALIZABLE, event);
+        usingActivity.setResult(RESULT_OK, data);
+    }
+
+
     public static void dataComingBackFromTagAdder(){
 
     }
     public static void eventsToJSON(Object obj, String putExtraString, Activity usingActivity){
+
 
     }
     public static List<Event> eventsFromJSON(Object obj, String putExtraString, Activity usingActivity){
         return null;
     }
 
+    //from http://stackoverflow.com/questions/33575731/gridlayoutmanager-how-to-auto-fit-columns
+    public static int calculateNoOfColumns(Context context, int minWidth) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / minWidth);
+        return noOfColumns;
+    }
+
+    //Strange behavoiur!
+    public static int calculateWidthOfItem(Context context, int mNoOfColumns) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        //I cannot understand how the alternative to the bottom cannot be the right result, but this one is
+        return (int)(dpWidth);
+        //return (int)(dpWidth/mNoOfColumns);
+    }
 }

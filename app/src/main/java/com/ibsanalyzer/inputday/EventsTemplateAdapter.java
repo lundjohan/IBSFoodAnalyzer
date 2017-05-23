@@ -2,6 +2,8 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,17 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ibsanalyzer.model.EventsTemplate;
-
-import java.util.List;
-
-import static android.R.attr.name;
-import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_IS_A;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_NAME;
-import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
-import static com.ibsanalyzer.database.TablesAndStrings.NO_INHERITANCE;
-import static com.ibsanalyzer.inputday.R.id.inherits;
-import static com.ibsanalyzer.inputday.R.id.tagName;
 
 /**
  * Created by Johan on 2017-05-17.
@@ -36,10 +28,12 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     CursorAdapter mCursorAdapter;
 
     Context mContext;
+   // public final int width;
 
-    public EventsTemplateAdapter(Context context, Cursor c) {
+    public EventsTemplateAdapter(Context context, Cursor c, int width2) {
 
         mContext = context;
+        final int width = width2;
 
         mCursorAdapter = new CursorAdapter(mContext, c, 0) {
 
@@ -53,6 +47,27 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 TextView nameOfTemplate = (TextView) view.findViewById(R.id.template_title);
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
                 nameOfTemplate.setText(name);
+
+                //set alternating colors
+                int pos = cursor.getPosition();
+                if (pos%5==0){
+                    view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                }
+                else if (pos%5==1){
+                    view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDarkRed));
+                }
+                else if (pos%5==2){
+                    view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDarkGreen));
+                }
+                else if (pos%5==3){
+                    view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDarkPurple));
+                }
+                else if (pos%5==4){
+                    view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDarkBrown));
+                }
+
+                //set width and height
+                view.setLayoutParams(new RecyclerView.LayoutParams(width, (int)(width*0.75)));
             }
         };
     }

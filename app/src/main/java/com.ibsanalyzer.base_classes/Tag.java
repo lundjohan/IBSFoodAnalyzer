@@ -1,10 +1,14 @@
 package com.ibsanalyzer.base_classes;
 
+import android.os.Parcelable;
+
 import org.threeten.bp.LocalDateTime;
+
+import java.io.Serializable;
 
 //write for example spinach@green_leaves => 2 tags: spinach &
 //green_leaves
-public class Tag {//implements Parcelable {
+public class Tag implements Serializable {
     protected LocalDateTime time;
     private String name;
     private double size;

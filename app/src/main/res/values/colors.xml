@@ -11,4 +11,8 @@
     <color name="colorBrown">#d76800</color>
     <color name="colorWineRed">#e14277</color>
     <color name="colorLightBlue">#5effea</color>
+    <color name="colorDarkGreen">#00be43</color>
+    <color name="colorDarkPurple">#b100ab</color>
+    <color name="colorDarkRed">#910022</color>
+    <color name="colorDarkBrown">#ac904f</color>
 </resources>

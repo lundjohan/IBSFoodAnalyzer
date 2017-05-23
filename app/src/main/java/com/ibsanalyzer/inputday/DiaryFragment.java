@@ -40,6 +40,7 @@ import static com.ibsanalyzer.constants.Constants.LISTENER_AS_ARG;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_JSON;
 
@@ -78,6 +79,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
         ViewSwitcher getTabsLayoutSwitcher();
+        void doEventsTemplateAdder(List<Event>events);
+
     }
 
 
@@ -157,6 +160,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         toTemplateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                callback.doEventsTemplateAdder(retrieveMarkedEvents());
             }
         });
     }
@@ -214,10 +218,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         eventList.add(bm);
         eventList.add(other);
         eventList.add(rating2);
-
-
-
-
     }
    /* public boolean onCreateOptionsMenu(Menu menu) {
         Log.d("Debug", "isnide onCreateOptionsMenu inside DiaryFragment"); //kallas aldrig.
@@ -247,9 +247,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         switch (requestCode) {
 
             case NEW_MEAL:
-                if (data.hasExtra(RETURN_MEAL_JSON)) {
-                    String mealJSONData = data.getExtras().getString(RETURN_MEAL_JSON);
-                    event = gson.fromJson(mealJSONData, Meal.class);
+                if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
+                   // String mealJSONData = data.getExtras().getString(RETURN_MEAL_JSON);
+                    //event = gson.fromJson(mealJSONData, Meal.class);
+                    event = (Meal)data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
                 }
                 break;
             case NEW_OTHER:
@@ -385,7 +386,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
     }
 
-    private List<Event> prepareMarkedEvents() {
+    private List<Event> retrieveMarkedEvents() {
         List<Event> eventsToSend = new ArrayList<>();
         for (int i : eventsMarked) {
             eventsToSend.add(eventList.get(i));
@@ -420,7 +421,4 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     private boolean eventIsMarked(int position) {
         return eventsMarked.contains(position);
     }
-
-
-
 }
