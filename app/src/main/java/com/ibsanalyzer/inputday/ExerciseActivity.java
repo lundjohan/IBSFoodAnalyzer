@@ -14,6 +14,8 @@ import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
 
 public class ExerciseActivity extends EventActivity {
@@ -86,6 +88,6 @@ public class ExerciseActivity extends EventActivity {
         int intensity = intensityBar.getProgress() + 1;
         Tag typeOfExercise = new Tag(datetime, (String) this.typeOfExercise.getText(), 1.0);
         Exercise exercise = new Exercise(datetime, typeOfExercise, intensity);
-        Util.jsonAndMoreFinishingData(exercise,RETURN_EXERCISE_JSON, this);
+        Util.eventReturn(exercise,RETURN_EXERCISE_SERIALIZABLE, this);
     }
 }

@@ -3,6 +3,7 @@ package com.ibsanalyzer.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
@@ -34,8 +35,13 @@ public class Util {
         usingActivity.setResult(RESULT_OK, data);
     }
     public static void eventReturn(Event event, String putExtraString, Activity usingActivity){
+
+
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(putExtraString, event);
         Intent data = new Intent();
-        data.putExtra(RETURN_MEAL_SERIALIZABLE, event);
+        data.putExtras(bundle);
         usingActivity.setResult(RESULT_OK, data);
     }
 

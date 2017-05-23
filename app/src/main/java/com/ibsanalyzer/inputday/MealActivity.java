@@ -7,6 +7,7 @@ import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 public class MealActivity extends TagEventActivity {
     private TextView portionView;
@@ -26,6 +27,6 @@ public class MealActivity extends TagEventActivity {
         //create meal
         double portions = Double.parseDouble((String) portionView.getText());
         Meal meal = new Meal(datetime, tagsList, portions);
-        Util.jsonAndMoreFinishingData(meal,RETURN_MEAL_JSON, this);
+        Util.eventReturn(meal,RETURN_MEAL_SERIALIZABLE, this);
     }
 }

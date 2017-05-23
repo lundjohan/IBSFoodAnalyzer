@@ -39,6 +39,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.ibsanalyzer.constants.Constants.LISTENER_AS_ARG;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_JSON;
+import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
@@ -260,9 +261,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 }
                 break;
             case NEW_EXERCISE:
-                if (data.hasExtra(RETURN_EXERCISE_JSON)) {
-                    String exerciseJSONData = data.getExtras().getString(RETURN_EXERCISE_JSON);
-                    event = gson.fromJson(exerciseJSONData, Exercise.class);
+                if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
+                    event = (Exercise)data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
                 }
                 break;
             case NEW_BM:
