@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.InputEvent;
+import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.model.TagTemplate;
@@ -30,6 +33,9 @@ public class DBHandler extends SQLiteOpenHelper {
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
+    public DBHandler(Context context) {
+        super(context, null, null, 1);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -39,8 +45,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_TAG_TABLE);
 
         db.execSQL(CREATE_EVENT_TABLE);
-        db.execSQL(CREATE_EVENTTAGS_TABLE);
-
         db.execSQL(CREATE_MEAL_TABLE);
         db.execSQL(CREATE_OTHER_TABLE);
         db.execSQL(CREATE_EXERCISE_TABLE);
@@ -63,7 +67,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RATINGS);
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTTAGS);
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGTEMPLATES);
@@ -75,6 +78,40 @@ public class DBHandler extends SQLiteOpenHelper {
     //===================================================================================
     //add, query and delete methods
     //===================================================================================
+    private long addEvent(Event event){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(event.getTime()));
+
+        //if inputEvent => add tags
+        if (event instanceof InputEvent){
+            InputEvent ie = (InputEvent)event;
+            for (Tag t: ie.getTags()){
+                long tagId = addTag(t);
+
+            }
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        long eventId = db.insert(TABLE_EVENTS, null, values);
+        return eventId;
+    }
+
+
+    public void addMeal(Meal meal){
+        //first create event and obtain its id
+        long eventId = addEvent (meal);
+
+        //now create meal
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EVENT, eventId);
+        values.put(COLUMN_PORTIONS, meal.getPortions());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_MEALS, null, values);
+        db.close();
+    }
+
+
+
     public void addTagTemplate(TagTemplate tagTemplate) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_TAGNAME, tagTemplate.get_tagname());

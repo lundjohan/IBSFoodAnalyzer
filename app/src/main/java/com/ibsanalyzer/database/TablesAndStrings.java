@@ -74,18 +74,17 @@ public class TablesAndStrings {
             " FOREIGN KEY( " + COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_TAGNAME + ")" +
             ");";
-    //for date as int (which actually long) see => http://stackoverflow.com/questions/7363112/best-way-to-work-with-dates-in-android-sqlite
-    public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
+     public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
             TABLE_TAGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
             COLUMN_SIZE + " REAL NOT NULL, " +
             COLUMN_DATE + " TEXT NOT NULL, " +
-            COLUMN_EVENTS + " INTEGER, " +
+            COLUMN_EVENT + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_ID + ")" +
-            " FOREIGN KEY( " + COLUMN_EVENTS + ") REFERENCES " + TABLE_EVENTTAGS
-            + " ( " + COLUMN_TAG + ")" +
+            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" +
             ");";
 
 
@@ -93,20 +92,8 @@ public class TablesAndStrings {
             TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_DATE + " TEXT NOT NULL, " +
-            COLUMN_TAGS + " INTEGER, " +
-            " FOREIGN KEY( " + COLUMN_TAGS + ") REFERENCES " + TABLE_EVENTTAGS
-            + " ( " + COLUMN_EVENT + ")" +
             ");";
-    public static final String CREATE_EVENTTAGS_TABLE = "CREATE TABLE " +
-            TABLE_EVENTTAGS + " (  " +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_TAG + " INTEGER NOT NULL, " +
-            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_TAGS + ")" +
-            " FOREIGN KEY( " + COLUMN_TAG + ") REFERENCES " + TABLE_TAGS
-            + " ( " + COLUMN_EVENT + ")" +
-            ");";
+
     public static final String CREATE_MEAL_TABLE = "CREATE TABLE " +
             TABLE_MEALS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
