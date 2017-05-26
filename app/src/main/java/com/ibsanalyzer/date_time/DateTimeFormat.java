@@ -1,8 +1,8 @@
 package com.ibsanalyzer.date_time;
 
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
-import static android.R.attr.maxLength;
 
 /**
  * Created by Johan on 2017-05-16.
@@ -19,6 +19,16 @@ import static android.R.attr.maxLength;
 public class DateTimeFormat {
     //this is the maxlength of
     public static String toSqLiteFormat(LocalDateTime ldt){
+
         return ldt.toString();
+    }
+    public static LocalDateTime fromSqLiteFormat(String str){
+        //ugly format fix
+        if (str.length()== 16) {
+            str = str + ":00";
+        }
+      //  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.parse(str, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
     }
 }

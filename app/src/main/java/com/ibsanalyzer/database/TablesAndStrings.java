@@ -26,7 +26,7 @@ public class TablesAndStrings {
     public static final String COLUMN_TAGTEMPLATE = "tagtemplate";
     public static final String COLUMN_SIZE = "size";
     public static final String COLUMN_DATE = "date";
-    public static final String COLUMN_EVENTS = "events";
+    public static final String COLUMN_EVENT = "event";
 
     //Event
     public static final String TABLE_EVENTS = "events";
@@ -34,7 +34,6 @@ public class TablesAndStrings {
 
     //Event => many-to-many =>  Tags
     public static final String TABLE_EVENTTAGS = "event_tags";
-    public static final String COLUMN_EVENT = "event";
     public static final String COLUMN_TAG = "tag";
 
     //Meals
@@ -76,11 +75,11 @@ public class TablesAndStrings {
             ");";
      public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
             TABLE_TAGS + " (  " +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
+            COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
             COLUMN_SIZE + " REAL NOT NULL, " +
             COLUMN_DATE + " TEXT NOT NULL, " +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
+            COLUMN_EVENT       + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_ID + ")" +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
@@ -90,15 +89,15 @@ public class TablesAndStrings {
 
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE " +
             TABLE_EVENTS + " (  " +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_DATE + " TEXT NOT NULL, " +
+            COLUMN_ID + " INTEGER PRIMARY KEY, " +
+            COLUMN_DATE + " TEXT NOT NULL " +
             ");";
 
     public static final String CREATE_MEAL_TABLE = "CREATE TABLE " +
             TABLE_MEALS + " (  " +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
+            COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_PORTIONS + "REAL NOT NULL, " +
+            COLUMN_PORTIONS + " REAL NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
             + " ( " + COLUMN_ID + ")" +
             ");";
