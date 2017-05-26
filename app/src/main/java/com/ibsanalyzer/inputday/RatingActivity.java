@@ -8,8 +8,6 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.util.Util;
 
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_RATING_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
 
 /**
@@ -65,8 +63,8 @@ public class RatingActivity extends EventActivity {
     public void finish() {
         //scoreBar starts from zero
         int after = scoreBar.getProgress() + 1;
-        Rating rating = new Rating(datetime, after);
-        Util.eventReturn(rating,RETURN_RATING_SERIALIZABLE, this);
+        Rating rating = new Rating(getLocalDateTime(), after);
+        Util.serializableReturn(rating,RETURN_RATING_SERIALIZABLE, this);
 
     }
 }

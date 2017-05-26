@@ -22,14 +22,40 @@ import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.id;
-import static android.R.attr.name;
-import static android.app.SearchManager.QUERY;
-import static android.database.DatabaseUtils.dumpCursorToString;
-import static android.provider.ContactsContract.CommonDataKinds.Organization.DEPARTMENT;
-import static android.webkit.WebSettings.PluginState.ON;
-import static com.ibsanalyzer.database.TablesAndStrings.*;
-import static com.ibsanalyzer.inputday.R.id.tagname;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATE;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENT;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENTSTEMPLATE;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_IS_A;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_NAME;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_PORTIONS;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_SIZE;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGTEMPLATE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_BM_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EVENTS_TEMPLATE_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EVENTS_TEMPLATE_TO_EVENT_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EVENT_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EXERCISE_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_MEAL_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_OTHER_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_RATING_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_TAGTEMPLATE_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.CREATE_TAG_TABLE;
+import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
+import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_VERSION;
+import static com.ibsanalyzer.database.TablesAndStrings.ENABLE_FOREIGN_KEYS;
+import static com.ibsanalyzer.database.TablesAndStrings.NO_INHERITANCE;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_BMS;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTS;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTSTEMPLATEEVENTS;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTSTEMPLATES;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EXERCISES;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_MEALS;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_OTHERS;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_RATINGS;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGS;
+import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGTEMPLATES;
 
 
 /**

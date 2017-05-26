@@ -3,13 +3,10 @@ package com.ibsanalyzer.inputday;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
-import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.view.View;
 
 import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.base_classes.Event;
@@ -19,26 +16,20 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 
-import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.os.Build.VERSION_CODES.M;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
@@ -49,7 +40,6 @@ import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
-import static com.ibsanalyzer.inputday.R.drawable.meal;
 import static org.hamcrest.Matchers.allOf;
 
 /**
@@ -109,7 +99,7 @@ public class MainActivityNewEventsTests {
                 //all meal items has portions id
                 withId(R.id.portions),
 
-                //time
+                //timeView
                 hasSibling(withText("16:00")),
 
                 //nr of portions
@@ -141,7 +131,7 @@ public class MainActivityNewEventsTests {
                 //all meal items has portions id
                 withId(R.id.smallOtherIcon),
 
-                //time
+                //timeView
                 hasSibling(withText("23:22")),
 
                 //tags in item
@@ -154,7 +144,7 @@ public class MainActivityNewEventsTests {
     // make BM and Rating at least
     @Test
     public void testReturnValueFromExerciseActivity() {
-        // Create a meal object with time 16:00
+        // Create a meal object with timeView 16:00
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 17, 30);
         Tag running = new Tag(ldt, "running", 1.0);
 
@@ -173,7 +163,7 @@ public class MainActivityNewEventsTests {
                 //use the image
                 withId(R.id.smallExerciseIcon),
                 //withText("17:30"),
-                //time
+                //timeView
                 hasSibling(withText("17:30")),
 
                 //tag
@@ -187,7 +177,7 @@ public class MainActivityNewEventsTests {
 
     @Test
     public void testReturnValueFromBMActivity() {
-        // Create a meal object with time 16:00
+        // Create a meal object with timeView 16:00
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 18, 0);
         BM bm = new BM(ldt, 5, 2);
 
@@ -202,7 +192,7 @@ public class MainActivityNewEventsTests {
         onView(allOf(
                 //use the image
                 withId(R.id.smallBmIcon),
-                //time
+                //timeView
                 hasSibling(withText("18:00")),
 
                 //tag
@@ -216,7 +206,7 @@ public class MainActivityNewEventsTests {
 
     @Test
     public void testReturnValueFromRatingActivity() {
-        // Create a meal object with time 16:00
+        // Create a meal object with timeView 16:00
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 19, 0);
         Rating rating = new Rating(ldt, 6);
 
@@ -231,7 +221,7 @@ public class MainActivityNewEventsTests {
         onView(allOf(
                 //use the image
                 withId(R.id.smallRatingIcon),
-                //time
+                //timeView
                 hasSibling(withText("19:00")),
 
                 //rating/after

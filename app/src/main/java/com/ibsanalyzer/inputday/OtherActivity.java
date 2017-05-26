@@ -5,8 +5,6 @@ import android.os.Bundle;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.util.Util;
 
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 
 public class OtherActivity extends TagEventActivity {
@@ -23,8 +21,8 @@ public class OtherActivity extends TagEventActivity {
     @Override
     public void finish() {
         //create event
-        Other other = new Other(datetime, tagsList);
-        Util.eventReturn(other,RETURN_OTHER_SERIALIZABLE, this);
+        Other other = new Other(getLocalDateTime(), tagsList);
+        Util.serializableReturn(other,RETURN_OTHER_SERIALIZABLE, this);
         super.finish();
     }
 }

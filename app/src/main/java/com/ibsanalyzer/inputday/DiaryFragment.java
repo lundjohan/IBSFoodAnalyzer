@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ViewSwitcher;
 
-import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
@@ -26,6 +25,7 @@ import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.database.DBHandler;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
@@ -237,14 +237,19 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             return;
         }
         //common for all
-        Gson gson = new Gson();
+        DBHandler dbHandler = new DBHandler(getContext());
         Event event = null;
 
         switch (requestCode) {
 
             case NEW_MEAL:
                 if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
-                    event = (Meal)data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
+                    //add to database
+                    Meal meal = (Meal)data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
+                    dbHandler.addMeal(meal);
+
+                    //for adding to list
+                    event = meal;
                 }
                 break;
             case NEW_OTHER:
@@ -273,7 +278,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //se https://guides.codepath.com/android/Using-the-RecyclerView#itemanimator för 4 alternativ
         //här för förtydligande varför notifyDataSetChanged är mer mer ineffektiv: inte https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyDataSetChanged()
         //item inserted in last position of eventList
-        adapter.notifyItemInserted(eventList.size() - 1); //OBS! Simplistic! There should be possiblities to add another date & time than the latest.
+        adapter.notifyItemInserted(eventList.size() - 1); //OBS! Simplistic! There should be possiblities to add another dateView & timeView than the latest.
     } //efter detta kraschar det
 
     /*This is needed since onClick otherwise goes to parent Activity*/

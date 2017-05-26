@@ -1,7 +1,5 @@
 package com.ibsanalyzer.base_classes;
 
-import android.os.Parcelable;
-
 import org.threeten.bp.LocalDateTime;
 
 import java.io.Serializable;

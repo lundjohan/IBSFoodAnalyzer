@@ -30,7 +30,7 @@ public class DatabaseTests {
     @Before
     public void setUp() {
         //clean database
-        dbHandler = new DBHandler(getTargetContext(), null, null,2);
+        dbHandler = new DBHandler(getTargetContext());
         dbHandler.deleteAllTables();
     }
 

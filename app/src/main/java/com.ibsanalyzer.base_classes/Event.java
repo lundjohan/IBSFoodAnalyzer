@@ -1,10 +1,10 @@
 package com.ibsanalyzer.base_classes;
 
-import android.os.Parcelable;
-
 import org.threeten.bp.LocalDateTime;
 
-;import java.io.Serializable;
+import java.io.Serializable;
+
+;
 
 //baseclass only exists to avoid duplication of code.
 //implemts serializable so it can be passed in putExtra to Fragments

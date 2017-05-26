@@ -6,7 +6,6 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.util.Util;
 
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 public class MealActivity extends TagEventActivity {
@@ -26,7 +25,7 @@ public class MealActivity extends TagEventActivity {
     public void finish() {
         //create meal
         double portions = Double.parseDouble((String) portionView.getText());
-        Meal meal = new Meal(datetime, tagsList, portions);
-        Util.eventReturn(meal,RETURN_MEAL_SERIALIZABLE, this);
+        Meal meal = new Meal(getLocalDateTime(), tagsList, portions);
+        Util.serializableReturn(meal,RETURN_MEAL_SERIALIZABLE, this);
     }
 }

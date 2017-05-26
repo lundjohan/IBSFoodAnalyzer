@@ -6,13 +6,14 @@ package com.ibsanalyzer.constants;
 
 public class Constants {
     public static int TAGS_TO_ADD = 4444;
-    public final static String RETURN_MEAL_JSON = "returnMealJSON";
+   /* public final static String RETURN_MEAL_JSON = "returnMealJSON";
     public final static String RETURN_OTHER_JSON = "returnOtherJSON";
     public final static String RETURN_EXERCISE_JSON = "returnExerciseJSON";
     public final static String RETURN_BM_JSON = "returnBmJSON";
     public final static String RETURN_RATING_JSON = "returnRatingJSON";
-    public final static String RETURN_TAGTEMPLATE_JSON = "returnTagTemplateJSON";
+    public final static String RETURN_TAGTEMPLATE_JSON = "returnTagTemplateJSON";*/
 
+    public final static String RETURN_TAG_TEMPLATE_SERIALIZABLE = "returnTagTemplateSer";
     public final static String RETURN_MEAL_SERIALIZABLE = "returnMealSer";
     public final static String RETURN_OTHER_SERIALIZABLE = "returnOtherSer";
     public final static String RETURN_EXERCISE_SERIALIZABLE = "returnExerciseSer";

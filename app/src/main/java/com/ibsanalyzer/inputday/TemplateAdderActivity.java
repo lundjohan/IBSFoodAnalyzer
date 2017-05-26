@@ -12,9 +12,6 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.EventsTemplate;
 
-import org.threeten.bp.LocalDateTime;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 

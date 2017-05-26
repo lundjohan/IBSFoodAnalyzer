@@ -30,7 +30,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_adder);
-        dbHandler = new DBHandler(this, null, null,1);
+        dbHandler = new DBHandler(this);
 
         //only in developing mode
         dbHandler.deleteAllTagTemplates();
@@ -84,7 +84,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     @Override
     public void finish() {
         TagTemplate tagTemplate = chosenTagTemplate;
-        Util.jsonAndMoreFinishingData(tagTemplate, Constants.RETURN_TAGTEMPLATE_JSON, this);
+        Util.serializableReturn(tagTemplate, Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, this);
         super.finish();
     }
 

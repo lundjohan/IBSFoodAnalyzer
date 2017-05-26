@@ -1,6 +1,8 @@
 package com.ibsanalyzer.date_time;
 
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
 
@@ -30,5 +32,22 @@ public class DateTimeFormat {
       //  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.parse(str, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
+    }
+    //MAY 26, 2017
+    public static LocalDate fromTextViewDateFormat(String str){
+       // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy");
+        return LocalDate.parse(str, DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+    public static LocalTime fromTextViewTimeFormat(String str){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return LocalTime.parse(str, formatter);
+    }
+
+    //TODO
+    public static String toTextViewFormat(LocalDate ld){
+        return String.valueOf(ld.getYear() + "-" + String.format("%02d", ld.getMonthValue())+"-" + String.format("%02d", ld.getDayOfMonth()));  //return ld.getMonth().toString()+" " + String.valueOf(ld.getDayOfMonth()) + ", " + String.valueOf(ld.getYear());
+    }
+    public static String toTextViewFormat(LocalTime lt){
+        return String.format("%02d", lt.getHour()) + ":" + String.format("%02d", lt.getMinute());
     }
 }

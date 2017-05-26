@@ -18,6 +18,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.ibsanalyzer.date_time.DateTimeFormat;
+
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
@@ -34,13 +36,13 @@ import java.util.Calendar;
 
 public abstract class EventActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
-    TextView date;
-    TextView time;
+    TextView dateView;
+    TextView timeView;
     Button dateBtn;
     Button timeBtn;
-    LocalTime lt = LocalTime.now();
-    LocalDate ld= LocalDate.now();
-    LocalDateTime datetime;
+   /* LocalTime lt = null;
+    LocalDate ld= null;
+    LocalDateTime datetime;*/
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,8 +61,8 @@ public abstract class EventActivity extends AppCompatActivity implements
     protected abstract int getLayoutRes();
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("localDateStr", (String) ld.toString());
-        outState.putString("localTimeStr", (String) lt.toString());
+        outState.putString("localDateStr",(String) dateView.getText());
+        outState.putString("localTimeStr", (String) timeView.getText());
         super.onSaveInstanceState(outState);
     }
 
@@ -72,24 +74,23 @@ public abstract class EventActivity extends AppCompatActivity implements
         getLayoutInflater().inflate(getLayoutRes(),content,true);
         dateBtn = (Button) findViewById(R.id.dateBtn);
         timeBtn = (Button) findViewById(R.id.timeBtn);
-        date = (TextView) findViewById(R.id.date);
-        time = (TextView) findViewById(R.id.time);
-        setDate(LocalDate.now());
-        setTime(LocalTime.now());
+        dateView = (TextView) findViewById(R.id.date);
+        timeView = (TextView) findViewById(R.id.time);
+        setDateView(LocalDate.now());
+        setTimeView(LocalTime.now());
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("localDateStr")){
                 LocalDate localDate = LocalDate.parse((CharSequence) savedInstanceState.get("localDateStr"));
-                setDate(localDate);
+                setDateView(localDate);
             }
             if (savedInstanceState.containsKey("localTimeStr")){
                 LocalTime localTime = LocalTime.parse((CharSequence) savedInstanceState.get("localTimeStr"));
-                setTime(localTime);
+                setTimeView(localTime);
             }
         }
     }
     public void doneClicked(View view) {
-        setLocalDate();
         finish();
         super.finish();
     }
@@ -98,7 +99,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         newFragment.show(getFragmentManager(), "timePicker");
        /* newFragment.getHour();
         lt = newFragment.getTime();
-        time.setText(lt.getHour()+':'+lt.getMinute());*/
+        timeView.setText(lt.getHour()+':'+lt.getMinute());*/
     }
 
     public void startDatePicker(View view) {
@@ -111,31 +112,20 @@ public abstract class EventActivity extends AppCompatActivity implements
         Log.d("Debug", "inuti RatingActivity.onDateSet");
 
         //month datepicker +1 == LocalDate.Month
-        ld = LocalDate.of(year, month+1, dayOfMonth);
-        setDate(ld);
+        LocalDate ld = LocalDate.of(year, month+1, dayOfMonth);
+        setDateView(ld);
     }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        lt = LocalTime.of(hourOfDay, minute);
-        setTime(lt);
+        LocalTime lt = LocalTime.of(hourOfDay, minute);
+        setTimeView(lt);
     }
 
-    private void setDate (LocalDate ld){
-        date.setText(ld.getMonth().toString()+" " + String.valueOf(ld.getDayOfMonth()) + ", " + String.valueOf(ld.getYear()));
-        this.ld = ld;
+    private void setDateView(LocalDate ld){
+        dateView.setText(DateTimeFormat.toTextViewFormat(ld));
     }
-    private void setTime (LocalTime lt){
-        time.setText(String.format("%02d", lt.getHour()) + ":" + String.format("%02d", lt.getMinute()));
-        this.lt = lt;
-    }
-
-    public void setLocalDate() {
-        try {
-            datetime = LocalDateTime.of(ld, lt);
-        } catch (Exception ex) {
-            Log.d("Cathed Exception", "LocalDateTime could not be resolved");
-            datetime = LocalDateTime.now();
-        }
+    private void setTimeView(LocalTime lt){
+        timeView.setText(DateTimeFormat.toTextViewFormat(lt));
     }
 
     /**
@@ -149,7 +139,7 @@ public abstract class EventActivity extends AppCompatActivity implements
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
+            // Use the current timeView as the default values for the picker
             final Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
@@ -179,7 +169,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         //  public LocalDate localDate;
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
+            // Use the current dateView as the default dateView in the picker
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
@@ -194,13 +184,22 @@ public abstract class EventActivity extends AppCompatActivity implements
             //see http://stackoverflow.com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted answer.
             ((DatePickerDialog.OnDateSetListener) getActivity()).onDateSet(view, year, month, day);
             //  localDate = LocalDate.of(year,month,day);
-            // date.setText(Integer.valueOf(ld.getYear())+" "+ld.getMonth().toString()+" "+Integer.valueOf(ld.getDayOfMonth()));
+            // dateView.setText(Integer.valueOf(ld.getYear())+" "+ld.getMonth().toString()+" "+Integer.valueOf(ld.getDayOfMonth()));
         }
        /* public LocalDate getLocalDate (){
             return localDate;
         }*/
 
 
+    }
+
+    //keep this method instead of local variables, it keeps it much less error prone
+    protected LocalDateTime getLocalDateTime(){
+        String ldStr = (String)dateView.getText();
+        String ltStr = (String)timeView.getText();
+        LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);
+        LocalTime lt = DateTimeFormat.fromTextViewTimeFormat(ltStr);
+        return LocalDateTime.of(ld,lt);
     }
 
 }

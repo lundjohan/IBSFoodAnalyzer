@@ -1,10 +1,12 @@
 package com.ibsanalyzer.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Johan on 2017-05-06.
  */
 
-public class TagTemplate {
+public class TagTemplate implements Serializable{
     int _id; //using pk with id instead of text since name should be able to be UNICODE.
     String _tagname;
     TagTemplate _is_a1 = null; //points to other TagTemplate it inherits, for example, Pasta points to wheat. Can be null.

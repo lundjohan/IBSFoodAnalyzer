@@ -9,13 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.model.TagTemplate;
+
+import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
 
 /**
@@ -56,13 +58,11 @@ public abstract class TagEventActivity extends EventActivity {
         if (requestCode != TAGS_TO_ADD) {
             return;
         }
-        Gson gson = new Gson();
-        if (data.hasExtra("returnTagTemplateJSON")) {
-            String tagJSONData = data.getExtras().getString("returnTagTemplateJSON");
-            TagTemplate tagTemplate = gson.fromJson(tagJSONData, TagTemplate.class);
+        if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
+            TagTemplate tagTemplate = (TagTemplate) data.getExtras().getSerializable(RETURN_TAG_TEMPLATE_SERIALIZABLE);
 
             //create a new Tag
-            Tag tag = new Tag(datetime, tagTemplate.get_tagname(), 1.0);
+            Tag tag = new Tag(getLocalDateTime(), tagTemplate.get_tagname(), 1.0);
             tagsList.add(tag);
         }
         notifyItemInserted();
@@ -71,4 +71,6 @@ public abstract class TagEventActivity extends EventActivity {
         Intent intent = new Intent(this, TagAdderActivity.class);
         startActivityForResult(intent, TAGS_TO_ADD);
     }
+
+
 }

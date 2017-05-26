@@ -9,10 +9,10 @@ import android.util.DisplayMetrics;
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Event;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-14.
@@ -34,12 +34,9 @@ public class Util {
         data.putExtra(putExtraString, objAsJSON);
         usingActivity.setResult(RESULT_OK, data);
     }
-    public static void eventReturn(Event event, String putExtraString, Activity usingActivity){
-
-
-
+    public static void serializableReturn(Serializable serializable, String putExtraString, Activity usingActivity){
         Bundle bundle = new Bundle();
-        bundle.putSerializable(putExtraString, event);
+        bundle.putSerializable(putExtraString, serializable);
         Intent data = new Intent();
         data.putExtras(bundle);
         usingActivity.setResult(RESULT_OK, data);

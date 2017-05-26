@@ -7,9 +7,7 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.BM;
 import com.ibsanalyzer.util.Util;
 
-import static com.ibsanalyzer.constants.Constants.RETURN_BM_JSON;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -98,8 +96,8 @@ public class BmActivity extends EventActivity {
         //scoreBar starts from zero
         int complete = completeBar.getProgress() + 1;
         int bristol = bristolBar.getProgress() + 1;
-        BM bm = new BM(datetime, complete, bristol);
-        Util.eventReturn(bm,RETURN_BM_SERIALIZABLE, this);
+        BM bm = new BM(getLocalDateTime(), complete, bristol);
+        Util.serializableReturn(bm,RETURN_BM_SERIALIZABLE, this);
         super.finish();
     }
 }
