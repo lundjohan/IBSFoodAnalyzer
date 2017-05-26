@@ -1,5 +1,7 @@
 package com.ibsanalyzer.date_time;
 
+import android.util.Log;
+
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
@@ -33,9 +35,14 @@ public class DateTimeFormat {
         return LocalDateTime.parse(str, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
     }
-    //MAY 26, 2017
+    //MAY 26 2017
+   /* public static LocalDate fromTextViewDateFormat(String str){
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy");
+        Log.d("Debug", formatter.toString());
+        return LocalDate.parse(str, formatter);
+    }*/
+
     public static LocalDate fromTextViewDateFormat(String str){
-       // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy");
         return LocalDate.parse(str, DateTimeFormatter.ISO_LOCAL_DATE);
     }
     public static LocalTime fromTextViewTimeFormat(String str){
@@ -44,6 +51,9 @@ public class DateTimeFormat {
     }
 
     //TODO
+/*    public static String toTextViewFormat(LocalDate ld){
+        return String.valueOf(ld.getMonth()  + " " +String.format("%02d", ld.getDayOfMonth())+" "+ ld.getYear());  //return ld.getMonth().toString()+" " + String.valueOf(ld.getDayOfMonth()) + ", " + String.valueOf(ld.getYear());
+    }*/
     public static String toTextViewFormat(LocalDate ld){
         return String.valueOf(ld.getYear() + "-" + String.format("%02d", ld.getMonthValue())+"-" + String.format("%02d", ld.getDayOfMonth()));  //return ld.getMonth().toString()+" " + String.valueOf(ld.getDayOfMonth()) + ", " + String.valueOf(ld.getYear());
     }

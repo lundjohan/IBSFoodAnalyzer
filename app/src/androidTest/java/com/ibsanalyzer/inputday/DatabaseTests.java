@@ -1,5 +1,6 @@
 package com.ibsanalyzer.inputday;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.ibsanalyzer.base_classes.Meal;
@@ -16,9 +17,9 @@ import org.threeten.bp.Month;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by Johan on 2017-05-24.
@@ -30,19 +31,30 @@ public class DatabaseTests {
     @Before
     public void setUp() {
         //clean database
-        dbHandler = new DBHandler(getTargetContext());
-        dbHandler.deleteAllTables();
+        dbHandler = new DBHandler(InstrumentationRegistry.getTargetContext());
+        dbHandler.deleteAllTablesRows();
     }
 
     @Test
-    public void addAndRetrieveMealTest(){
+    public void addAndRetrieveTagTemplateTest(){
         //create a TagTemplate
         TagTemplate tt = new TagTemplate("yoghurt");
         dbHandler.addTagTemplate(tt);
 
         //check that TagTemplate was added.
-        TagTemplate ttRetrieved = dbHandler.findTagTemplate("yogurt");
+        TagTemplate ttRetrieved = dbHandler.findTagTemplate("yoghurt");
         assertNotNull(ttRetrieved);
+
+        //check that null is returned if not added tag is searched
+        TagTemplate ttWrong = dbHandler.findTagTemplate("not_existing_tag");
+        assertNull(ttWrong);
+
+    }
+    @Test
+    public void addAndRetrieveMealTest(){
+        //create a TagTemplate (needed for below)
+        TagTemplate tt = new TagTemplate("yoghurt");
+        dbHandler.addTagTemplate(tt);
 
         //create a meal
         LocalDateTime ldt =  LocalDateTime.of(2017, Month.MAY, 24, 10, 38);

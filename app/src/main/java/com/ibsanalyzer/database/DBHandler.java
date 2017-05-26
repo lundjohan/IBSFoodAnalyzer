@@ -77,7 +77,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("Debug","inside DBHANDLER onCreate");
+        Log.d("Debug", "inside DBHANDLER onCreate");
         db.execSQL(ENABLE_FOREIGN_KEYS);
 
         db.execSQL(CREATE_TAGTEMPLATE_TABLE);
@@ -97,7 +97,7 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {  // Drop older
         // table if existed
-        Log.d("Debug","inside DBHANDLER onUpgrade");
+        Log.d("Debug", "inside DBHANDLER onUpgrade");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTSTEMPLATEEVENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTSTEMPLATES);
 
@@ -121,7 +121,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //===================================================================================
     private void addTag(Tag t, long eventId) {
         ContentValues values = new ContentValues();
-       values.put(COLUMN_EVENT, eventId);
+        values.put(COLUMN_EVENT, eventId);
         values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(t.getTime()));
         values.put(COLUMN_SIZE, t.getSize());
 
@@ -201,6 +201,11 @@ public class DBHandler extends SQLiteOpenHelper {
 //            Log.d("Debug","childTag tagName = "+tt.get_tagname() + "parentTag tagName =
 // "+parentTag.get_tagname());
             tt.set_is_a1(parentTag);
+
+        }
+        //there is no such TagTemplate in database
+        else {
+            tt = null;
         }
         return tt;
     }
@@ -266,7 +271,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //===================================================================================
     //delete methods
     //===================================================================================
-    public void deleteAllTables(){
+    public void deleteAllTablesRows() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TAGTEMPLATES, null, null);
         db.delete(TABLE_TAGS, null, null);
@@ -383,7 +388,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
         //testing if anything has been put in
-        String count = "SELECT count(*) FROM "+TABLE_MEALS;
+        String count = "SELECT count(*) FROM " + TABLE_MEALS;
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
@@ -402,15 +407,16 @@ public class DBHandler extends SQLiteOpenHelper {
         //select from meals where its event has time ...
         final String QUERY = "SELECT " + "a." + COLUMN_PORTIONS + ", a."
                 + COLUMN_EVENT + " FROM " +
-                TABLE_MEALS +" a "
-                + " INNER JOIN " + TABLE_EVENTS + " b ON " + " a." + COLUMN_EVENT + " = b."+ COLUMN_ID; //+
-              //  " WHERE " + "b."+ COLUMN_DATE + " =?";
+                TABLE_MEALS + " a "
+                + " INNER JOIN " + TABLE_EVENTS + " b ON " + " a." + COLUMN_EVENT + " = b." +
+                COLUMN_ID; //+
+        //  " WHERE " + "b."+ COLUMN_DATE + " =?";
 
         //retrieve portions and event_id
         SQLiteDatabase db = this.getWritableDatabase();
 
         //testing if anything has been put in
-        String count = "SELECT count(*) FROM "+TABLE_MEALS;
+        String count = "SELECT count(*) FROM " + TABLE_MEALS;
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
@@ -418,10 +424,7 @@ public class DBHandler extends SQLiteOpenHelper {
         //icount 0 !!!!
 
 
-
-
-
-        Cursor cursor = db.rawQuery(QUERY,null);
+        Cursor cursor = db.rawQuery(QUERY, null);
         //Cursor cursor = db.rawQuery(QUERY, new String[]{DateTimeFormat.toSqLiteFormat(ldt)});
 
         //debugging
