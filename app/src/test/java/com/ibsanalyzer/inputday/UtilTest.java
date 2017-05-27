@@ -1,11 +1,14 @@
 package com.ibsanalyzer.inputday;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.util.Util;
 
 import org.junit.Test;
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.LocalTime;
 import org.threeten.bp.Month;
 
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.List;
 
 import static android.R.string.no;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Johan on 2017-05-27.
@@ -43,5 +47,28 @@ public class UtilTest {
         assertEquals(2, pos3);  //should been put last of inserts
 
     }
+    @Test
+    public void dateMarkerEventIsAutomaticallyInsertedAndAlwaysOnRightPlaceInListTest(){
+        List<Event> events = new ArrayList<>();
+        LocalDate randomDate = LocalDate.of(2017, Month.JANUARY, 1);
+        LocalDateTime ldt = LocalDateTime.of(randomDate, LocalTime.MIN);
+        int notRelevantRating = 4;
+        //1. create a random event (with LocalTime.MIN), for example Rating, insert it with Util.insertEvent...
+        Rating rating = new Rating(ldt, notRelevantRating);
+        InsertPositions insertPositions = Util.insertEventByDateTimeOrder(events,rating);
 
+        //2. check that a dateMarkerEvent was created at right position, first amongst events same day.
+        assertEquals(2, events.size());
+        assertTrue(true, events.get(0) instanceof DateMarkerEvent);
+        assertEquals(rating, events.get(1));
+
+        //3 add another event the same day with same MIN time.
+        Util.insertEventByDateTimeOrder(events,rating);
+
+        //4. check that there is still only one DateMarkerEvent, that it is in first position and that the other two events still exist.
+        assertEquals(3, events.size());
+        assertTrue(events.get(0) instanceof DateMarkerEvent);
+        assertEquals(rating, events.get(1));
+        assertEquals(rating, events.get(2));
+    }
 }

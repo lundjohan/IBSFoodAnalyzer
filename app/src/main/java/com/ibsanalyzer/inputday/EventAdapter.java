@@ -17,8 +17,11 @@ import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.date_time.DateTimeFormat;
 
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.LocalTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -245,12 +248,16 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void setTime(Event event, EventViewHolder holder) {
         LocalDateTime time = event.getTime();
-        holder.time.setText(formatTime(time));
+        LocalDate ld = time.toLocalDate();
+        LocalTime lt = time.toLocalTime();
+
+
+        holder.time.setText(DateTimeFormat.toTextViewFormat(ld) +" " + DateTimeFormat.toTextViewFormat(lt));
     }
 
-    private String formatTime(LocalDateTime ldt) {
-        return String.format("%02d", ldt.getHour()) + ':' + String.format("%02d", ldt.getMinute());
-    }
+   /* private String formatTime(LocalDateTime ldt) {
+        return DateTimeFormat.toTextViewFormat(ldt.toLocalTime());//String.format("%02d", ldt.getHour()) + ':' + String.format("%02d", ldt.getMinute());
+    }*/
 
     private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder tagHolder) {
         setTime(inputEvent, tagHolder);
