@@ -164,7 +164,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     private void initiateRecyclerView(View v) {
         //==========================================================================================
         recyclerView = (RecyclerView) v.findViewById(R.id.events_layout);
-        layoutManager = new LinearLayoutManager((Context) this.callback);
+        layoutManager = new LinearLayoutManager((Context) this.callback,LinearLayoutManager.VERTICAL ,true);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new EventAdapter(eventList, this);
         recyclerView.setAdapter(adapter);

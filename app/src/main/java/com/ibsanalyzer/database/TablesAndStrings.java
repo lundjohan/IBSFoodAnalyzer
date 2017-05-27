@@ -68,7 +68,7 @@ public class TablesAndStrings {
     public static final String CREATE_TAGTEMPLATE_TABLE = "CREATE TABLE " +
             TABLE_TAGTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE, " +
+            COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE ON CONFLICT IGNORE, " +
             COLUMN_IS_A + " TEXT CHECK( " + COLUMN_IS_A + " != " + COLUMN_TAGNAME + "),  " +
             " FOREIGN KEY( " + COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_TAGNAME + ")" +

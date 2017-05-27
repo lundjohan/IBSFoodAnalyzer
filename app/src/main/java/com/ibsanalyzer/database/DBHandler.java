@@ -168,7 +168,23 @@ public class DBHandler extends SQLiteOpenHelper {
     //===================================================================================
     //find and get methods
     //===================================================================================
-    //TODO
+
+    public List<TagTemplate> getAllTagTemplates() {
+        List<TagTemplate> tagTemplates = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_TAGTEMPLATES;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                TagTemplate tt = findTagTemplateHelper2(cursor);
+                tagTemplates.add(tt);
+                cursor.moveToNext();
+            }
+        }
+        return tagTemplates;
+    }
+
     public TagTemplate findTagTemplate(String tagName) {
         String query = "SELECT * FROM " + TABLE_TAGTEMPLATES + " WHERE " + COLUMN_TAGNAME + " = " +
                 "\"" + tagName + "\"";
@@ -181,34 +197,32 @@ public class DBHandler extends SQLiteOpenHelper {
         return findTagTemplateHelper(query);
     }
 
+    //returns null if there is no such TagTemplate in database
     private TagTemplate findTagTemplateHelper(String query) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        TagTemplate tt = new TagTemplate();
+        TagTemplate tt = null;
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
-            tt.set_id(cursor.getInt(0));
-            tt.set_tagname(cursor.getString(1));
-            TagTemplate parentTag;
-            if (cursor.getString(2) == NO_INHERITANCE) {
-                parentTag = null;
-            } else {
-                parentTag = findTagTemplate(cursor.getString(2));
-            }
-
-            //TagTemplate parentTag = cursor.getInt(2) == NO_INHERITANCE ? null : findTagTemplate
-            // (cursor.getInt(2)); //denna är fucked up
-//            Log.d("Debug","childTag tagName = "+tt.get_tagname() + "parentTag tagName =
-// "+parentTag.get_tagname());
-            tt.set_is_a1(parentTag);
-
-        }
-        //there is no such TagTemplate in database
-        else {
-            tt = null;
+            tt = findTagTemplateHelper2(cursor);
         }
         return tt;
     }
+
+    private TagTemplate findTagTemplateHelper2(Cursor cursor) {
+        TagTemplate tt = new TagTemplate();
+        tt.set_id(cursor.getInt(0));
+        tt.set_tagname(cursor.getString(1));
+        TagTemplate parentTag;
+        if (cursor.getString(2) == NO_INHERITANCE) {
+            parentTag = null;
+        } else {
+            parentTag = findTagTemplate(cursor.getString(2));
+        }
+        tt.set_is_a1(parentTag);
+        return tt;
+    }
+
 
     //
     public String getTagname(long id) {
@@ -472,4 +486,5 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return tags;
     }
+
 }

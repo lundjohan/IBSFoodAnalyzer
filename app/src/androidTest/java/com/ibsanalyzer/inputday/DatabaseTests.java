@@ -36,6 +36,22 @@ public class DatabaseTests {
     }
 
     @Test
+    public void onlyOneTagTemplateWithUniqueNameIsAddedTest(){
+        //create a TagTemplate
+        TagTemplate tt = new TagTemplate("milk");
+        dbHandler.addTagTemplate(tt);
+
+        //TagTemplate Table should only accepts unique names, this should therefore not be added
+        TagTemplate tt2 = new TagTemplate("milk");
+        dbHandler.addTagTemplate(tt2);
+
+        List<TagTemplate>allTagTemplates = dbHandler.getAllTagTemplates();
+        assertEquals(1, allTagTemplates.size());
+
+
+    }
+
+    @Test
     public void addAndRetrieveTagTemplateTest(){
         //create a TagTemplate
         TagTemplate tt = new TagTemplate("yoghurt");
@@ -48,7 +64,6 @@ public class DatabaseTests {
         //check that null is returned if not added tag is searched
         TagTemplate ttWrong = dbHandler.findTagTemplate("not_existing_tag");
         assertNull(ttWrong);
-
     }
     @Test
     public void addAndRetrieveMealTest(){
