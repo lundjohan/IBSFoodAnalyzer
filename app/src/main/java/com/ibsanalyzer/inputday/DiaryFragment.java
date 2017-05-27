@@ -26,6 +26,7 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
@@ -273,13 +274,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 }
                 break;
         }
-        eventList.add(event);
-
-        //se https://guides.codepath.com/android/Using-the-RecyclerView#itemanimator för 4 alternativ
-        //här för förtydligande varför notifyDataSetChanged är mer mer ineffektiv: inte https://developer.android.com/reference/android/support/v7/widget/RecyclerView.Adapter.html#notifyDataSetChanged()
-        //item inserted in last position of eventList
-        adapter.notifyItemInserted(eventList.size() - 1); //OBS! Simplistic! There should be possiblities to add another dateView & timeView than the latest.
-    } //efter detta kraschar det
+        int posOfInsert = Util.insertEventByDateTimeOrder(eventList, event);
+        adapter.notifyItemInserted(posOfInsert);
+    }
 
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override

@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 //baseclass only exists to avoid duplication of code.
 //implemts serializable so it can be passed in putExtra to Fragments
-public abstract class Event implements Serializable {
+public abstract class Event implements Comparable<Event>, Serializable {
 	protected LocalDateTime time;
 
 
@@ -23,6 +23,18 @@ public abstract class Event implements Serializable {
 		this.time = time;
 	}
 
+	public int compareTo(Event event2) {
+		return this.time.compareTo(event2.time);
+	}
+
+	@Override
+	public boolean equals(Object b){
+		Event event2 = (Event)b;
+		if (this.getClass() == b.getClass() && this.getTime().isEqual(event2.getTime())){
+			return true;
+		}
+		return false;
+	}
 
 	//classes for parceable, most of them are implemented higher up in hierarchy.
     /*public Event(Parcel in){

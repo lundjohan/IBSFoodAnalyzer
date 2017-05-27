@@ -10,9 +10,11 @@ import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Event;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static java.util.Collections.sort;
 
 /**
  * Created by Johan on 2017-05-14.
@@ -70,4 +72,12 @@ public class Util {
         return (int)(dpWidth);
         //return (int)(dpWidth/mNoOfColumns);
     }
+    //returns position where insertion took place
+    //could perhaps be more effective in case the right index to insert was found first.
+    public static int insertEventByDateTimeOrder(List<Event>events, Event event){
+        events.add(event);
+        Collections.sort(events);
+        return events.indexOf(event);
+    }
+
 }
