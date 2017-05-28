@@ -18,10 +18,12 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
+import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.usingFragment = fragment;
     }
 
-    private final int _MEAL = 0, _OTHER = 1, _EXERCISE = 2, _BM = 3, _SCORE = 4;
+    private final int _MEAL = 0, _OTHER = 1, _EXERCISE = 2, _BM = 3, _SCORE = 4, _DATE_MARKER = 5;
 
     /*
     Click Listeners
@@ -133,6 +135,15 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             afterScore = (TextView) itemView.findViewById(R.id.scoreAfter);
         }
     }
+    //special case -> this one is not a REAL event. Its only purpose is to show start (actually placed at the end)of Day
+    class DateMarkerViewHolder extends RecyclerView.ViewHolder {
+        public TextView dateView;
+
+        public DateMarkerViewHolder(View itemView) {
+            super(itemView);
+            this.dateView = (TextView)itemView.findViewById(R.id.dateMarker);
+        }
+    }
 
 
     /*method implemented with help from https://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView#viewholder2-java*/
@@ -148,7 +159,10 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return _BM;
         } else if (events.get(position) instanceof Rating) {
             return _SCORE;
+        }else if (events.get(position) instanceof DateMarkerEvent) {
+            return _DATE_MARKER;
         }
+
         throw new RuntimeException("unknown class");
     }
 
@@ -176,6 +190,10 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case _SCORE:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rating, parent, false);
                 viewHolder = new ScoreViewHolder(v);
+                break;
+            case _DATE_MARKER:
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_datemarker, parent, false);
+                viewHolder = new DateMarkerViewHolder(v);
                 break;
         }
         //here: make v clickable item.
@@ -236,6 +254,11 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
                 setTime(rating, scoreHolder);
                 scoreHolder.afterScore.setText(Rating.pointsToText(rating.getAfter()));
+                break;
+            case _DATE_MARKER:
+                DateMarkerEvent dateMarker = (DateMarkerEvent) event;
+                DateMarkerViewHolder dateMarkerViewHolder = (DateMarkerViewHolder) holder;
+                dateMarkerViewHolder.dateView.setText(DateTimeFormat.toTextViewFormat(dateMarker.getDate()));
                 break;
         }
     }

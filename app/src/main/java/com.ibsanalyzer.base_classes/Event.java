@@ -1,5 +1,7 @@
 package com.ibsanalyzer.base_classes;
 
+import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
+
 import org.threeten.bp.LocalDateTime;
 
 import java.io.Serializable;
@@ -23,8 +25,18 @@ public abstract class Event implements Comparable<Event>, Serializable {
 		this.time = time;
 	}
 
+	//compares localdatetime + DateMarkerEvent (should come last in case of same time)
 	public int compareTo(Event event2) {
-		return this.time.compareTo(event2.time);
+		int toReturn = this.time.compareTo(event2.time);
+		if (toReturn == 0){
+			if (this instanceof DateMarkerEvent){
+				toReturn = 1; //positive
+			}
+			else if (event2 instanceof DateMarkerEvent){
+				toReturn = -1; //negative
+			}
+		}
+		return toReturn;
 	}
 
 	@Override

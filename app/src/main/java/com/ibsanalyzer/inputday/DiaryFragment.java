@@ -26,6 +26,7 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDateTime;
@@ -45,7 +46,8 @@ import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiaryFragment extends Fragment implements View.OnClickListener, EventAdapter.OnItemClickListener, EventAdapter.OnItemLongClickListener {
+public class DiaryFragment extends Fragment implements View.OnClickListener, EventAdapter
+        .OnItemClickListener, EventAdapter.OnItemLongClickListener {
     public static final int NEW_MEAL = 1000;
     public static final int NEW_OTHER = 1001;
     public static final int NEW_EXERCISE = 1002;
@@ -59,7 +61,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     List<Event> eventList = new ArrayList<>();
 
-    //for pinning/ marking events, this must be cleaned when user quits application or app crashes etc
+    //for pinning/ marking events, this must be cleaned when user quits application or app
+    // crashes etc
     List<Integer> eventsMarked = new ArrayList<>();
     static final int BACKGROUND_COLOR = Color.YELLOW;
 
@@ -73,10 +76,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 //==================================================================================================
 
     DiaryFragmentListener callback;
+
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
         ViewSwitcher getTabsLayoutSwitcher();
-        void doEventsTemplateAdder(List<Event>events);
+
+        void doEventsTemplateAdder(List<Event> events);
 
     }
 
@@ -113,6 +118,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         super.onCreate(savedInstanceState);
 
 
+
+
+        //starts as invisible appBarLayout but when user marks something this pops up
+        tabsLayoutSwitcher = (ViewSwitcher) callback.getTabsLayoutSwitcher();
+        setUpEventButtons(view);
+        initiateRecyclerView(view);
+
+        setUpMenu();
         if (savedInstanceState == null || !savedInstanceState.containsKey("eventList")) {
             //populate array, this will be added to when button is pressed
             //===================================================================
@@ -123,13 +136,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
             //   eventList = savedInstanceState.getParcelableArrayList("eventList");
         }
-
-        //starts as invisible appBarLayout but when user marks something this pops up
-        tabsLayoutSwitcher = (ViewSwitcher) callback.getTabsLayoutSwitcher();
-        setUpEventButtons(view);
-        initiateRecyclerView(view);
-
-        setUpMenu();
         return view;
     }
 
@@ -152,7 +158,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
     private void setUpMenu() {
-        //cant come up with better solution for gaining access to toolbar buttons that lie on main_activity.xml
+        //cant come up with better solution for gaining access to toolbar buttons that lie on
+        // main_activity.xml
         ImageButton toTemplateBtn = (ImageButton) getActivity().findViewById(R.id.to_template_btn);
         toTemplateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,12 +172,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     private void initiateRecyclerView(View v) {
         //==========================================================================================
         recyclerView = (RecyclerView) v.findViewById(R.id.events_layout);
-        layoutManager = new LinearLayoutManager((Context) this.callback,LinearLayoutManager.VERTICAL ,true);
+        layoutManager = new LinearLayoutManager((Context) this.callback, LinearLayoutManager
+                .VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new EventAdapter(eventList, this);
         recyclerView.setAdapter(adapter);
         //add line separator
-        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
+                .getContext(),
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
         //==========================================================================================
@@ -179,7 +188,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     private void populateList() {
         LocalDateTime ldt = LocalDateTime.of(2016, Month.APRIL, 3, 8, 0);
         //rating morgon
-        Rating rating = new Rating (ldt, 6);
+        Rating rating = new Rating(ldt, 6);
 
         //frukost
         LocalDateTime ldt2 = LocalDateTime.of(2016, Month.APRIL, 3, 9, 0);
@@ -207,20 +216,22 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
         //rating kväll
         LocalDateTime ldt5 = LocalDateTime.of(2016, Month.APRIL, 3, 18, 30);
-        Rating rating2 = new Rating (ldt5, 5);
+        Rating rating2 = new Rating(ldt5, 5);
 
-        eventList.add(rating);
-        eventList.add(meal1);
-        eventList.add(exercise);
-        eventList.add(bm);
-        eventList.add(other);
-        eventList.add(rating2);
+
+        addEventToList(eventList, rating);
+        addEventToList(eventList, meal1);
+        addEventToList(eventList, exercise);
+        addEventToList(eventList, bm);
+        addEventToList(eventList, other);
+        addEventToList(eventList, rating2);
     }
    /* public boolean onCreateOptionsMenu(Menu menu) {
         Log.d("Debug", "isnide onCreateOptionsMenu inside DiaryFragment"); //kallas aldrig.
         MenuInflater inflater = callBack.getMenuInflater();
         inflater.inflate(R.menu.cancel_done_menu, menu);
-        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
+        .OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -246,7 +257,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             case NEW_MEAL:
                 if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
                     //add to database
-                    Meal meal = (Meal)data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
+                    Meal meal = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
                     dbHandler.addMeal(meal);
 
                     //for adding to list
@@ -255,27 +266,35 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 break;
             case NEW_OTHER:
                 if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
-                    event = (Other)data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
+                    event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
                 }
                 break;
             case NEW_EXERCISE:
                 if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
-                    event = (Exercise)data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
+                    event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
                 }
                 break;
             case NEW_BM:
                 if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
-                    event = (BM)data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
+                    event = (BM) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
                 }
                 break;
             case NEW_SCORE:
                 if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
-                    event = (Rating)data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
+                    event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
                 }
                 break;
         }
-        int posOfInsert = Util.insertEventByDateTimeOrder(eventList, event);
-        adapter.notifyItemInserted(posOfInsert);
+        addEventToList(eventList, event);
+
+    }
+    private void addEventToList(List<Event>events, Event event){
+        InsertPositions insertPositions = Util.insertEventWithDayMarker(eventList, event);
+        adapter.notifyItemInserted(insertPositions.getPosInserted());
+        if (insertPositions.isDateMarkerAdded()) {
+            adapter.notifyItemInserted(insertPositions.getPosDateMarker());
+        }
+
     }
 
     /*This is needed since onClick otherwise goes to parent Activity*/
