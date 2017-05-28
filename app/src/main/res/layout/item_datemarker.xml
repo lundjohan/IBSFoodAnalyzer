@@ -8,7 +8,7 @@
         android:id="@+id/dateMarker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorDarkDarkRed"
+        android:background="@color/colorBlack"
         android:text="Date"
         android:textColor="@color/colorWhite"/>
 </LinearLayout>
