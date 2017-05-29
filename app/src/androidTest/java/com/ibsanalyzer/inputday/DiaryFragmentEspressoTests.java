@@ -1,6 +1,7 @@
 package com.ibsanalyzer.inputday;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -63,4 +64,22 @@ public class DiaryFragmentEspressoTests {
                 check(matches(isDisplayed())).perform(click());
         intended(hasComponent(OtherActivity.class.getName())); //only works if IntentTestRule instead of ActivityTestRule
     }
+
+    //====================================================================================
+    //tests for the RecyclerView and eventList inside DiaryFragment
+    //====================================================================================
+   //TODO
+    /* @Test
+    public void checkThatBreaksAreHandledCorrectlyOnClickOfItem() throws InterruptedException {
+        //1. Put in 3 events in eventsList. How???
+        //1.5. Has item now a break? => should be no
+        //2. Press longclick on one of them
+        //3. Choose menuoption "break"
+        //4. Has item now a break? => should be yes, the other ones should be no
+        //5. Press again => unbreak
+        //6. All items should have no break
+
+        onView(withId(R.id.recyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+    }*/
 }

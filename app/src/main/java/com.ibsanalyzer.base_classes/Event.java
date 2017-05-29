@@ -12,7 +12,7 @@ import java.io.Serializable;
 //implemts serializable so it can be passed in putExtra to Fragments
 public abstract class Event implements Comparable<Event>, Serializable {
 	protected LocalDateTime time;
-
+	protected boolean isBreak;
 
 	public LocalDateTime getTime() {
 		return time;
@@ -46,6 +46,13 @@ public abstract class Event implements Comparable<Event>, Serializable {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean hasBreak(){
+		return isBreak;
+	}
+	public void setBreak(boolean b){
+		isBreak = b;
 	}
 
 	//classes for parceable, most of them are implemented higher up in hierarchy.

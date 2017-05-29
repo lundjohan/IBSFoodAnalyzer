@@ -10,12 +10,17 @@ import android.support.design.widget.TabItem;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.base_classes.BM;
@@ -26,6 +31,7 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
@@ -35,12 +41,14 @@ import org.threeten.bp.Month;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.id.button1;
 import static android.app.Activity.RESULT_OK;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static java.lang.Boolean.FALSE;
 
 
 /**
@@ -219,12 +227,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         Rating rating2 = new Rating(ldt5, 5);
 
 
-        addEventToList(eventList, rating);
-        addEventToList(eventList, meal1);
-        addEventToList(eventList, exercise);
-        addEventToList(eventList, bm);
-        addEventToList(eventList, other);
-        addEventToList(eventList, rating2);
+        addEventToList(eventList, rating, adapter);
+        addEventToList(eventList, meal1, adapter);
+        addEventToList(eventList, exercise, adapter);
+        addEventToList(eventList, bm, adapter);
+        addEventToList(eventList, other, adapter);
+        addEventToList(eventList, rating2, adapter);
     }
    /* public boolean onCreateOptionsMenu(Menu menu) {
         Log.d("Debug", "isnide onCreateOptionsMenu inside DiaryFragment"); //kallas aldrig.
@@ -285,16 +293,16 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 }
                 break;
         }
-        addEventToList(eventList, event);
+        addEventToList(eventList, event, adapter);
 
     }
-    private void addEventToList(List<Event>events, Event event){
-        InsertPositions insertPositions = Util.insertEventWithDayMarker(eventList, event);
+    //adds also DateMarkerEvent if appropriate
+    private static void addEventToList(List<Event>events, Event event, RecyclerView.Adapter adapter){
+        InsertPositions insertPositions = Util.insertEventWithDayMarker(events, event);
         adapter.notifyItemInserted(insertPositions.getPosInserted());
         if (insertPositions.isDateMarkerAdded()) {
             adapter.notifyItemInserted(insertPositions.getPosDateMarker());
         }
-
     }
 
     /*This is needed since onClick otherwise goes to parent Activity*/
@@ -359,6 +367,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
      */
     @Override
     public void onItemClicked(View v, int position) {
+        final Event pressedEvent = eventList.get(position);
+        if (pressedEvent instanceof DateMarkerEvent){
+            return;
+        }
         Log.d("Debug", "inside fragment, item was clicked");
         if (!markingModeIsOn()) {
             editEvent(position);
@@ -368,18 +380,66 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
 
+    //put in smaller methods to make clearer
     @Override
-    public boolean onItemLongClicked(View v, int position) {
+    public boolean onItemLongClicked(final View v, final int position) {
+        final Event pressedEvent = eventList.get(position);
+        //it should not be possible to press a DateMarkerEvent
+        if (pressedEvent instanceof DateMarkerEvent){
+            return false;
+        }
         if (!markingModeIsOn()) {
-            eventsMarked.add(position);
-            v.setBackgroundColor(BACKGROUND_COLOR);
-            changeToMarkedMenu();
+            //initiate pop-up menu
+            PopupMenu popup = new PopupMenu(getActivity(), v);
+            //Inflating the Popup using xml file
+            popup.getMenuInflater().inflate(R.menu.event_item_marked_menu, popup.getMenu());
+            //makeBreakOrUnBreakOpitionVisible
+            Menu menu = popup.getMenu();
+            MenuItem breakItem = menu.findItem(R.id.insertBreakMenuItem);
+            MenuItem unBreakItem = menu.findItem(R.id.removeBreakMenuItem);
+
+            if (pressedEvent.hasBreak()){
+                breakItem.setVisible(false);
+                unBreakItem.setVisible(true);
+            }
+            else{
+                breakItem.setVisible(true);
+                unBreakItem.setVisible(false);
+            }
+
+
+
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    //marking for templates, copy etc
+                    if (item.getItemId() == R.id.markedMenuItem){
+                        eventsMarked.add(position);
+                        v.setBackgroundColor(BACKGROUND_COLOR);
+                        changeToMarkedMenu();
+                    }
+
+                    //options down here for break/ unbreak
+                    else if (item.getItemId() == R.id.insertBreakMenuItem){
+                        //1. make that event in item have a break true
+                        pressedEvent.setBreak(true);
+                        //2. update adapter for that position
+                        adapter.notifyItemChanged(position);
+                    }
+                    else if (item.getItemId() == R.id.removeBreakMenuItem){
+                        //1. make that event in item lose break
+                        pressedEvent.setBreak(false);
+                        //2. update adapter for that position
+                        adapter.notifyItemChanged(position);
+                    }
+                    return true;
+                }
+            });
+            popup.show();
         } else {
             clickHelper(v, position);
         }
         return false;
     }
-
     //same actions for short and long clicks
     // given: markingModeIsOn
     private void clickHelper(View v, int position) {
@@ -390,6 +450,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             //if last item now is unmarked, then change back menu.
             if (!markingModeIsOn()) {
                 changeToTabbedMenu();
+
             }
         } else {   //markingModeIsOn but eventIsNotMarked
             eventsMarked.add(position);

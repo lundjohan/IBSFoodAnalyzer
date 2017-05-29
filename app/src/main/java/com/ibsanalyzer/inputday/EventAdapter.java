@@ -1,6 +1,7 @@
 package com.ibsanalyzer.inputday;
 
 import android.content.Context;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +67,13 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.itemView = itemView;
             time = (TextView) itemView.findViewById(R.id.time);
         }
+
+        public void setBreakLayout() {
+          //TODO Problem in below is that it takes makes competition with marked_event
+            //=> solution seems to be to implement some top id in every item and then make it visible here or similiar
+            //  itemView.setBackgroundResource(R.drawable.frame_top_bold);
+
+        }
     }
 
     //this is for tags
@@ -82,7 +90,8 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.context = context;
             tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
             tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
-            Log.d("Debug", "Inside InputEventViewHolder, tagNamesLayout.toString() " + tagNamesLayout.toString());
+            Log.d("Debug", "Inside InputEventViewHolder, tagNamesLayout.toString() " +
+                    tagNamesLayout.toString());
         }
     }
 
@@ -110,8 +119,8 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public ExerciseViewHolder(View itemView) {
 
             super(itemView);
-            typeOfExcercise = (TextView)itemView.findViewById(R.id.exercise_type);
-            intensity = (TextView)itemView.findViewById(R.id.intensity);
+            typeOfExcercise = (TextView) itemView.findViewById(R.id.exercise_type);
+            intensity = (TextView) itemView.findViewById(R.id.intensity);
         }
     }
 
@@ -135,18 +144,21 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             afterScore = (TextView) itemView.findViewById(R.id.scoreAfter);
         }
     }
-    //special case -> this one is not a REAL event. Its only purpose is to show start (actually placed at the end)of Day
+
+    //special case -> this one is not a REAL event. Its only purpose is to show start (actually
+    // placed at the end)of Day
     class DateMarkerViewHolder extends RecyclerView.ViewHolder {
         public TextView dateView;
 
         public DateMarkerViewHolder(View itemView) {
             super(itemView);
-            this.dateView = (TextView)itemView.findViewById(R.id.dateMarker);
+            this.dateView = (TextView) itemView.findViewById(R.id.dateMarker);
         }
     }
 
 
-    /*method implemented with help from https://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView#viewholder2-java*/
+    /*method implemented with help from https://guides.codepath
+    .com/android/Heterogenous-Layouts-inside-RecyclerView#viewholder2-java*/
     @Override
     public int getItemViewType(int position) {
         if (events.get(position) instanceof Meal) {
@@ -159,7 +171,7 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return _BM;
         } else if (events.get(position) instanceof Rating) {
             return _SCORE;
-        }else if (events.get(position) instanceof DateMarkerEvent) {
+        } else if (events.get(position) instanceof DateMarkerEvent) {
             return _DATE_MARKER;
         }
 
@@ -172,27 +184,33 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View v;
         switch (viewType) {
             case _MEAL:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent,
+                        false);
                 viewHolder = new MealViewHolder(v, parent.getContext());
                 break;
             case _OTHER:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_other, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_other, parent,
+                        false);
                 viewHolder = new OtherViewHolder(v, parent.getContext());
                 break;
             case _EXERCISE:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise,
+                        parent, false);
                 viewHolder = new ExerciseViewHolder(v);
                 break;
             case _BM:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bm, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bm, parent,
+                        false);
                 viewHolder = new BmViewHolder(v);
                 break;
             case _SCORE:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rating, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rating,
+                        parent, false);
                 viewHolder = new ScoreViewHolder(v);
                 break;
             case _DATE_MARKER:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_datemarker, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_datemarker,
+                        parent, false);
                 viewHolder = new DateMarkerViewHolder(v);
                 break;
         }
@@ -222,7 +240,13 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return true;
             }
         });
-
+        //check for breaks
+        if (!(holder instanceof DateMarkerViewHolder)) {
+            if (event.hasBreak()) {
+                EventViewHolder eventHolder = (EventViewHolder) holder;
+                eventHolder.setBreakLayout();
+            }
+        }
         switch (holder.getItemViewType()) {
             case _MEAL:
                 Meal meal = (Meal) event;
@@ -239,7 +263,8 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Exercise exercise = (Exercise) event;
                 ExerciseViewHolder exerciseHolder = (ExerciseViewHolder) holder;
                 setTime(exercise, exerciseHolder);
-                exerciseHolder.intensity.setText(Exercise.intensityLevelToText(exercise.getIntensity()));
+                exerciseHolder.intensity.setText(Exercise.intensityLevelToText(exercise
+                        .getIntensity()));
                 exerciseHolder.typeOfExcercise.setText(exercise.getTypeOfExercise().getName());
                 break;
             case _BM:
@@ -258,7 +283,8 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case _DATE_MARKER:
                 DateMarkerEvent dateMarker = (DateMarkerEvent) event;
                 DateMarkerViewHolder dateMarkerViewHolder = (DateMarkerViewHolder) holder;
-                dateMarkerViewHolder.dateView.setText(DateTimeFormat.toTextViewFormat(dateMarker.getDate()));
+                dateMarkerViewHolder.dateView.setText(DateTimeFormat.toTextViewFormat(dateMarker
+                        .getDate()));
                 break;
         }
     }
@@ -275,14 +301,17 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         LocalTime lt = time.toLocalTime();
 
 
-        holder.time.setText(DateTimeFormat.toTextViewFormat(ld) +" " + DateTimeFormat.toTextViewFormat(lt));
+        holder.time.setText(DateTimeFormat.toTextViewFormat(ld) + " " + DateTimeFormat
+                .toTextViewFormat(lt));
     }
 
    /* private String formatTime(LocalDateTime ldt) {
-        return DateTimeFormat.toTextViewFormat(ldt.toLocalTime());//String.format("%02d", ldt.getHour()) + ':' + String.format("%02d", ldt.getMinute());
+        return DateTimeFormat.toTextViewFormat(ldt.toLocalTime());//String.format("%02d", ldt
+        .getHour()) + ':' + String.format("%02d", ldt.getMinute());
     }*/
 
-    private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder tagHolder) {
+    private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder
+            tagHolder) {
         setTime(inputEvent, tagHolder);
         List<String> tagStrings = new ArrayList<>();
         for (Tag tag : inputEvent.getTags()) {

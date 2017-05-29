@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/markedMenuItem"
+        android:title="Mark item"/>
+    <item
+        android:id="@+id/insertBreakMenuItem"
+        android:title="Insert Break after event"
+        android:visible="false"/>
+    <item
+        android:id="@+id/removeBreakMenuItem"
+        android:title="remove Break"
+        android:visible="false"/>
+</menu>
