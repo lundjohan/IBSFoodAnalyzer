@@ -1,6 +1,7 @@
 package com.ibsanalyzer.inputday;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,14 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.constants.Constants;
+import com.ibsanalyzer.database.ExternalStorageHandler;
 
 import java.io.Serializable;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
+import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener
         /*TemplateAdderActivity.TemplateAdderListener*/ {
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
                 //TODO
                 return true;
             case R.id.exportMenuItem:
-                //TODO
+                ExternalStorageHandler.saveDBToExtStorage(this);
                 return true;
             case R.id.settingsMenuItem:
                 //TODO
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Constants.PACKAGE_NAME = getApplicationContext().getPackageName();
+
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         //see Android Studio Development essentials p. 337
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -97,6 +104,23 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
         //String objAsJSON = gson.toJson(events);
         intent.putExtra(LIST_OF_EVENTS, (Serializable) events);
         startActivity(intent);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            String permissions[],
+            int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(MainActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                }
+        }
     }
 }
 

@@ -5,7 +5,11 @@ package com.ibsanalyzer.constants;
  */
 
 public class Constants {
-    public static int TAGS_TO_ADD = 4444;
+
+    //this one is set in MainActivity onCreate, so that it doesn't have to be hardcoded where it is needed
+    public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
+    public static String PACKAGE_NAME;
+    public final static int TAGS_TO_ADD = 4444;
    /* public final static String RETURN_MEAL_JSON = "returnMealJSON";
     public final static String RETURN_OTHER_JSON = "returnOtherJSON";
     public final static String RETURN_EXERCISE_JSON = "returnExerciseJSON";

@@ -8,7 +8,7 @@ public class TablesAndStrings {
     //NO_INHERITANCE is used to say: "TagTemplate is not inheriting"
     public static final String NO_INHERITANCE = "0Null0";
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "tagnameDB.db";
+    public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
     public static final String ENABLE_FOREIGN_KEYS = "PRAGMA foreign_keys=ON;";
