@@ -42,11 +42,6 @@ public class DateTimeFormat {
         return LocalDate.parse(str, formatter);
     }*/
 
-
-   //ISO_LOCAL_DATE is in the form 2016-11-03
-    public static LocalDate fromExcelFormat(String str){
-        return LocalDate.parse(str, DateTimeFormatter.ISO_LOCAL_DATE);
-    }
     public static LocalDate fromTextViewDateFormat(String str){
         return LocalDate.parse(str, DateTimeFormatter.ISO_LOCAL_DATE);
     }
@@ -54,7 +49,6 @@ public class DateTimeFormat {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return LocalTime.parse(str, formatter);
     }
-
 
     //TODO
 /*    public static String toTextViewFormat(LocalDate ld){

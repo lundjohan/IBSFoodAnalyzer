@@ -31,7 +31,6 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.database.DBHandler;
-import com.ibsanalyzer.importer.ImportExcel;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
@@ -78,7 +77,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     //switcher tab and it's tabs
     ViewSwitcher tabsLayoutSwitcher;
     TabItem toTemplateTab;
-    TabItem copyTab;
 
 //==================================================================================================
     //as recommended for communication between Fragment to Activity.
@@ -128,6 +126,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         super.onCreate(savedInstanceState);
 
 
+
+
         //starts as invisible appBarLayout but when user marks something this pops up
         tabsLayoutSwitcher = (ViewSwitcher) callback.getTabsLayoutSwitcher();
         setUpEventButtons(view);
@@ -175,26 +175,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 callback.doEventsTemplateAdder(retrieveMarkedEvents());
             }
         });
-        //only temporary used for importing from excel
-        ImageButton copyBtn = (ImageButton) getActivity().findViewById(R.id.copy_btn);
-        toTemplateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String filename = "food_diary.xlsx";
-                List<Event> importedEventList;
-                try {
-                    importedEventList = ImportExcel.toEvents(filename);
-
-                } catch (Exception e) {
-                    Log.d("Debug", "Something went wrong reading events from file. Reverting to " +
-                            "old state.");
-                    return;
-                }
-                eventList = importedEventList;
-                adapter.notifyDataSetChanged();
-            }
-        });
-
     }
 
     private void initiateRecyclerView(View v) {
@@ -316,10 +296,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         addEventToList(eventList, event, adapter);
 
     }
-
     //adds also DateMarkerEvent if appropriate
-    private static void addEventToList(List<Event> events, Event event, RecyclerView.Adapter
-            adapter) {
+    private static void addEventToList(List<Event>events, Event event, RecyclerView.Adapter adapter){
         InsertPositions insertPositions = Util.insertEventWithDayMarker(events, event);
         adapter.notifyItemInserted(insertPositions.getPosInserted());
         if (insertPositions.isDateMarkerAdded()) {
@@ -390,7 +368,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     @Override
     public void onItemClicked(View v, int position) {
         final Event pressedEvent = eventList.get(position);
-        if (pressedEvent instanceof DateMarkerEvent) {
+        if (pressedEvent instanceof DateMarkerEvent){
             return;
         }
         Log.d("Debug", "inside fragment, item was clicked");
@@ -407,7 +385,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public boolean onItemLongClicked(final View v, final int position) {
         final Event pressedEvent = eventList.get(position);
         //it should not be possible to press a DateMarkerEvent
-        if (pressedEvent instanceof DateMarkerEvent) {
+        if (pressedEvent instanceof DateMarkerEvent){
             return false;
         }
         if (!markingModeIsOn()) {
@@ -420,31 +398,34 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             MenuItem breakItem = menu.findItem(R.id.insertBreakMenuItem);
             MenuItem unBreakItem = menu.findItem(R.id.removeBreakMenuItem);
 
-            if (pressedEvent.hasBreak()) {
+            if (pressedEvent.hasBreak()){
                 breakItem.setVisible(false);
                 unBreakItem.setVisible(true);
-            } else {
+            }
+            else{
                 breakItem.setVisible(true);
                 unBreakItem.setVisible(false);
             }
 
 
+
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     //marking for templates, copy etc
-                    if (item.getItemId() == R.id.markedMenuItem) {
+                    if (item.getItemId() == R.id.markedMenuItem){
                         eventsMarked.add(position);
                         v.setBackgroundColor(BACKGROUND_COLOR);
                         changeToMarkedMenu();
                     }
 
                     //options down here for break/ unbreak
-                    else if (item.getItemId() == R.id.insertBreakMenuItem) {
+                    else if (item.getItemId() == R.id.insertBreakMenuItem){
                         //1. make that event in item have a break true
                         pressedEvent.setBreak(true);
                         //2. update adapter for that position
                         adapter.notifyItemChanged(position);
-                    } else if (item.getItemId() == R.id.removeBreakMenuItem) {
+                    }
+                    else if (item.getItemId() == R.id.removeBreakMenuItem){
                         //1. make that event in item lose break
                         pressedEvent.setBreak(false);
                         //2. update adapter for that position
@@ -459,7 +440,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
         return false;
     }
-
     //same actions for short and long clicks
     // given: markingModeIsOn
     private void clickHelper(View v, int position) {
