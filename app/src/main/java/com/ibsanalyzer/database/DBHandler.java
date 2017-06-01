@@ -20,6 +20,8 @@ import com.ibsanalyzer.model.TagTemplate;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATE;
@@ -116,39 +118,10 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
     //===================================================================================
-    //add methods
+    //TagTemplate
     //===================================================================================
-    private void addTag(Tag t, long eventId) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_EVENT, eventId);
-        values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(t.getTime()));
-        values.put(COLUMN_SIZE, t.getSize());
-
-        long tagTemplateId = getTagTemplateId(t.getName());
-        values.put(COLUMN_TAGTEMPLATE, tagTemplateId);
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_TAGS, null, values);
-        db.close();
-    }
-
-    private long addEvent(Event event) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(event.getTime()));
-        SQLiteDatabase db = this.getWritableDatabase();
-        long eventId = db.insert(TABLE_EVENTS, null, values);
-        //if inputEvent => add tags
-        if (event instanceof InputEvent) {
-            InputEvent ie = (InputEvent) event;
-            for (Tag t : ie.getTags()) {
-                addTag(t, eventId);
-
-            }
-        }
-        return eventId;
-    }
-
-
     public void addTagTemplate(TagTemplate tagTemplate) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_TAGNAME, tagTemplate.get_tagname());
@@ -164,10 +137,6 @@ public class DBHandler extends SQLiteOpenHelper {
         //Log.d("Debug", "addTagTemplate completed! TagTemplate " + tagTemplate.get_tagname() + "
         // with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
     }
-
-    //===================================================================================
-    //find and get methods
-    //===================================================================================
 
     public List<TagTemplate> getAllTagTemplates() {
         List<TagTemplate> tagTemplates = new ArrayList<>();
@@ -223,8 +192,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return tt;
     }
 
-
-    //
     public String getTagname(long id) {
         String query = "SELECT * FROM " + TABLE_TAGTEMPLATES + " WHERE " + COLUMN_ID + " = \"" +
                 id + "\"";
@@ -282,25 +249,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return tagTemplates;
     }
 
-    //===================================================================================
-    //delete methods
-    //===================================================================================
-    public void deleteAllTablesRows() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TAGTEMPLATES, null, null);
-        db.delete(TABLE_TAGS, null, null);
-        db.delete(TABLE_EVENTS, null, null);
-        db.delete(TABLE_RATINGS, null, null);
-        db.delete(TABLE_BMS, null, null);
-        db.delete(TABLE_EXERCISES, null, null);
-        db.delete(TABLE_OTHERS, null, null);
-        db.delete(TABLE_MEALS, null, null);
-        db.delete(TABLE_EVENTSTEMPLATES, null, null);
-        db.delete(TABLE_EVENTSTEMPLATEEVENTS, null, null);
-        db.close();
-    }
-
-
     public boolean deleteAllTagTemplates() {
         SQLiteDatabase db = this.getWritableDatabase();
         int doneDelete = db.delete(TABLE_TAGTEMPLATES, null, null);
@@ -308,10 +256,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return doneDelete > 0;
     }
 
-
-    //===================================================================================
-    //static create methods
-    //===================================================================================
     public void createSomeTagTemplates() {
         addTagTemplate(new TagTemplate("dairy"));
         addTagTemplate(new TagTemplate("yoghurt", findTagTemplate("dairy")));
@@ -323,9 +267,9 @@ public class DBHandler extends SQLiteOpenHelper {
         addTagTemplate(new TagTemplate("pizza", findTagTemplate("wheat")));
     }
 
-    //===================================================================================
+    //-----------------------------------------------------------------------------------
     //get cursor methods
-    //===================================================================================
+    //-----------------------------------------------------------------------------------
     public Cursor getCursorToTagTemplates() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT  * FROM " + TABLE_TAGTEMPLATES, null);
@@ -351,6 +295,24 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return mCursor;
 
+    }
+
+    //===================================================================================
+    //for all
+    //===================================================================================
+    public void deleteAllTablesRows() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TAGTEMPLATES, null, null);
+        db.delete(TABLE_TAGS, null, null);
+        db.delete(TABLE_EVENTS, null, null);
+        db.delete(TABLE_RATINGS, null, null);
+        db.delete(TABLE_BMS, null, null);
+        db.delete(TABLE_EXERCISES, null, null);
+        db.delete(TABLE_OTHERS, null, null);
+        db.delete(TABLE_MEALS, null, null);
+        db.delete(TABLE_EVENTSTEMPLATES, null, null);
+        db.delete(TABLE_EVENTSTEMPLATEEVENTS, null, null);
+        db.close();
     }
 
     //==============================================================================================
@@ -387,9 +349,91 @@ public class DBHandler extends SQLiteOpenHelper {
         return db.rawQuery("SELECT  * FROM " + TABLE_EVENTSTEMPLATES, null);
     }
 
+    //===================================================================================
+    //Event
+    //===================================================================================
+    //-----------------------------------------------------------------------------------
+    //add
+    //-----------------------------------------------------------------------------------
+    private long addEvent(Event event) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(event.getTime()));
+        SQLiteDatabase db = this.getWritableDatabase();
+        long eventId = db.insert(TABLE_EVENTS, null, values);
+        //if inputEvent => add tags
+        if (event instanceof InputEvent) {
+            InputEvent ie = (InputEvent) event;
+            for (Tag t : ie.getTags()) {
+                addTag(t, eventId);
+
+            }
+        }
+        db.close();
+        return eventId;
+    }
+
+    //-----------------------------------------------------------------------------------
+    //gets
+    //-----------------------------------------------------------------------------------
+    public List<Event> getAllEventsSorted() {
+        List<Event> eventList = new ArrayList<>();
+        eventList.addAll(getAllMeals());
+        eventList.addAll(getAllOthers());
+        eventList.addAll(getAllExercises());
+        eventList.addAll(getAllBMs());
+        eventList.addAll(getAllRatings());
+        Collections.sort(eventList);
+        return eventList;
+    }
+
+    private LocalDateTime getDateFromEvent(long eventId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_DATE + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ID
+                + " = " + eventId;
+
+        Cursor c = db.rawQuery(query, new String[]{String.valueOf(eventId)});
+        LocalDateTime ldt = null;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                String date = c.getString(c.getColumnIndex(COLUMN_DATE));
+                ldt = DateTimeFormat.fromSqLiteFormat(date);
+
+
+            }
+        }
+        db.close();
+        return ldt;
+    }
+
     //==============================================================================================
     // Meal methods
     //==============================================================================================
+    private List<Meal> getAllMeals() {
+
+        List<Meal> meals = new ArrayList<>();
+        final String QUERY = "SELECT * FROM " + TABLE_MEALS;
+
+        //retrieve portions and event_id
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor c = db.rawQuery(QUERY, null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            double portions = c.getDouble(c.getColumnIndex(COLUMN_PORTIONS));
+            long eventId = c.getLong(c.getColumnIndex(COLUMN_EVENT));
+            LocalDateTime ldt = getDateFromEvent(eventId);
+
+            List<Tag> tags = getTagsWithEventId(eventId);
+            Meal meal = new Meal(ldt, tags, portions);
+            meals.add(meal);
+            c.moveToNext();
+        }
+        c.close();
+        db.close();
+        return meals;
+    }
+
+
     public void addMeal(Meal meal) {
         //first create event and obtain its id
         long eventId = addEvent(meal);
@@ -457,6 +501,8 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //==================================================================================================
+    //TAGS
+    //==================================================================================================
     private List<Tag> getTagsWithEventId(long event_id) {
         final String TAG_QUERY = "SELECT * FROM " + TABLE_TAGS + " WHERE " + COLUMN_EVENT + " =? ";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -483,13 +529,16 @@ public class DBHandler extends SQLiteOpenHelper {
         return tags;
     }
 
-    public List<Event> getAllEvents() {
-        List<Event>eventList = new ArrayList<>();
-        eventList.addAll(getAllMeals());
-        eventList.addAll(getAllOthers());
-        eventList.addAll(getAllExercises());
-        eventList.addAll(getAllBMs());
-        eventList.addAll(getAllRatings());
-        return eventList;
+    private void addTag(Tag t, long eventId) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EVENT, eventId);
+        values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(t.getTime()));
+        values.put(COLUMN_SIZE, t.getSize());
+
+        long tagTemplateId = getTagTemplateId(t.getName());
+        values.put(COLUMN_TAGTEMPLATE, tagTemplateId);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_TAGS, null, values);
+        db.close();
     }
 }

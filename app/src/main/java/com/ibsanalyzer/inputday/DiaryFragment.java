@@ -12,7 +12,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.base_classes.BM;
@@ -41,14 +39,12 @@ import org.threeten.bp.Month;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.id.button1;
 import static android.app.Activity.RESULT_OK;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
-import static java.lang.Boolean.FALSE;
 
 
 /**
@@ -498,7 +494,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     public void refillEventListWithNewDatabase() {
         DBHandler dbHandler = new DBHandler(((Activity)callback).getApplicationContext());
-        eventList = dbHandler.getAllEvents();
+        eventList = dbHandler.getAllEventsSorted();
         adapter.notifyDataSetChanged();
     }
 }
