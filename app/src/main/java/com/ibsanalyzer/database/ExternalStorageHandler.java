@@ -74,12 +74,14 @@ public class ExternalStorageHandler {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 showExplanation("Permission Needed", "Rationale", Manifest.permission
-                        .WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE, activity);
+                        .WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE,
+                        activity);
             } else {
                 requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE, activity);
             }
         } else {
+            Log.d("Debug", "Permission is already granted for writing to external storage");
             Toast.makeText(activity, "Permission (already) Granted!", Toast
                     .LENGTH_SHORT).show();
         }
@@ -112,23 +114,32 @@ public class ExternalStorageHandler {
 
         try {
 
-            File sd = Environment.getExternalStorageDirectory();
+            File sd = Environment.getExternalStoragePublicDirectory(Environment
+                    .DIRECTORY_DOWNLOADS);
             File data = Environment.getDataDirectory();
             showWritablePermission(activity);
             String currentDBPath = "//data//" + Constants.PACKAGE_NAME + "//databases//" +
                     DATABASE_NAME;
             String backupDBPath = DATABASE_NAME;
             File currentDB = new File(data, currentDBPath);
-            File backupDB = new File(sd, backupDBPath);
+            if (!isExternalStorageWritable()){
+                return;
+            }
 
             if (currentDB.exists()) {
                 FileChannel src = new FileInputStream(currentDB).getChannel();
-                sd.mkdirs();
-                FileOutputStream fos = new FileOutputStream(backupDB);//kraschar
-                FileChannel dst = fos.getChannel();
-                dst.transferFrom(src, 0, src.size());
+                if (!sd.exists()) {
+                    sd.mkdirs();
+                }
+                File backupDB = new File(sd, backupDBPath);
+                FileOutputStream fos = new FileOutputStream(backupDB);
+                fos.write("adsfdsf".getBytes());
+                // FileChannel dst = fos.getChannel();
+                //dst.transferFrom(src, 0, src.size());
+                fos.flush();
                 src.close();
-                dst.close();
+                // dst.close();
+                fos.close();
 
             } else {
                 Log.d("Debug", "Problems saving to Database");
