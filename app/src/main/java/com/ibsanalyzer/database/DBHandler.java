@@ -375,7 +375,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     //gets
     //-----------------------------------------------------------------------------------
-    public List<Event> getAllEventsSorted() {
+  /*  public List<Event> getAllEventsSorted() {
         List<Event> eventList = new ArrayList<>();
         eventList.addAll(getAllMeals());
         eventList.addAll(getAllOthers());
@@ -384,9 +384,9 @@ public class DBHandler extends SQLiteOpenHelper {
         eventList.addAll(getAllRatings());
         Collections.sort(eventList);
         return eventList;
-    }
+    }*/
 
-    private LocalDateTime getDateFromEvent(long eventId) {
+    LocalDateTime getDateFromEvent(long eventId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + COLUMN_DATE + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ID
                 + " = " + eventId;
@@ -408,7 +408,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //==============================================================================================
     // Meal methods
     //==============================================================================================
-    private List<Meal> getAllMeals() {
+    List<Meal> getAllMeals() {
 
         List<Meal> meals = new ArrayList<>();
         final String QUERY = "SELECT * FROM " + TABLE_MEALS;
