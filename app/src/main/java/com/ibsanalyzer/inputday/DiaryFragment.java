@@ -496,7 +496,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         return eventsMarked.contains(position);
     }
 
-    public void updateDBAdapter() {
+    public void refillEventListWithNewDatabase() {
+        DBHandler dbHandler = new DBHandler(((Activity)callback).getApplicationContext());
+        eventList = dbHandler.getAllEvents();
         adapter.notifyDataSetChanged();
     }
 }

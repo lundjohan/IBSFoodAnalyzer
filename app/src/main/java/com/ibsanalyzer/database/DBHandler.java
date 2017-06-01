@@ -487,4 +487,9 @@ public class DBHandler extends SQLiteOpenHelper {
         return tags;
     }
 
+    public List<Event> getAllEvents() {
+        //query to all events
+        //should events_table refer to its children classes for simple retrieval?
+        return null;
+    }
 }

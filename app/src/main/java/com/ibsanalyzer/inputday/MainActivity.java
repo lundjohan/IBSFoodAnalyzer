@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
             case R.id.importMenuItem:
                 ExternalStorageHandler.replaceDBWithExtStorageFile(this);
                 try {
-                    adapter.getDiaryFragment().updateDBAdapter();
+                    adapter.getDiaryFragment().refillEventListWithNewDatabase();
 
                 }
                 catch(Exception e){
