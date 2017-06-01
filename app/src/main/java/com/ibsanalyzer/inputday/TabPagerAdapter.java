@@ -36,7 +36,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
         }
     }
     public DiaryFragment getDiaryFragment(){
-        return (DiaryFragment)getItem(1);
+        return (DiaryFragment)getRegisteredFragment(1);
     }
 
 
