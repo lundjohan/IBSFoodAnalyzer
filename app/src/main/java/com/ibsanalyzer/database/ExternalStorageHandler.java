@@ -12,11 +12,12 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ibsanalyzer.constants.Constants;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 
 import static com.ibsanalyzer.constants.Constants.CURRENT_DB_PATH;
@@ -75,7 +76,8 @@ public class ExternalStorageHandler {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 showExplanation("Permission Needed", "Rationale", Manifest.permission
-                        .WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE,
+                                .WRITE_EXTERNAL_STORAGE,
+                        REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE,
                         activity);
             } else {
                 requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -121,7 +123,7 @@ public class ExternalStorageHandler {
             showWritablePermission(activity);
             String backupDBPath = DATABASE_NAME;
             File currentDB = new File(data, CURRENT_DB_PATH);
-            if (!isExternalStorageWritable()){
+            if (!isExternalStorageAccessable()) {
                 return;
             }
 
@@ -154,16 +156,67 @@ public class ExternalStorageHandler {
         }
 
     }
-    private static boolean isExternalStorageWritable() {
+
+    private static boolean isExternalStorageAccessable() {
+
+        //override the other upmost file with new
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
         }
         return false;
     }
+
+    /*private void importDatabase(String inputFileName) throws IOException {
+        InputStream mInput = new FileInputStream(inputFileName);
+        String outFileName = YOUR_DB_PATH_HERE;
+        OutputStream mOutput = new FileOutputStream(outFileName);
+        byte[] mBuffer = new byte[1024];
+        int mLength;
+        while ((mLength = mInput.read(mBuffer)) > 0) {
+            mOutput.write(mBuffer, 0, mLength);
+        }
+        mOutput.flush();
+        mOutput.close();
+        mInput.close();
+    }*/
+
     public static void replaceDBWithExtStorageFile(Activity activity) {
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        //get current path to internal storage db file
+        File data = Environment.getDataDirectory();
+        File pathToCurrentDB = new File(data, CURRENT_DB_PATH);
+        //get current path to external storage db file
+        File sd = Environment.getExternalStoragePublicDirectory(Environment
+                .DIRECTORY_DOWNLOADS);
+        String pathToExternalDB = DATABASE_NAME;
+        if (!isExternalStorageAccessable()) {
+            //try to fix it
+        }
+        File backupDB = new File(sd, pathToExternalDB);
+        if (!sd.exists()) {
+            Log.d("Debug", "There is no database file stored in location: " + backupDB.toString());
+            return;
+        }
+        try {
+            FileChannel src = new FileInputStream(backupDB).getChannel();
+            FileOutputStream fos = new FileOutputStream(pathToCurrentDB);
+            FileChannel dst = fos.getChannel();
+            dst.transferFrom(src, 0, src.size());
+            fos.flush();
+            src.close();
+            dst.close();
+            fos.close();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
-
 }
+
+
+

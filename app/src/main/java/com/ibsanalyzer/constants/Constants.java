@@ -1,5 +1,7 @@
 package com.ibsanalyzer.constants;
 
+import com.ibsanalyzer.inputday.BuildConfig;
+
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 
 /**
@@ -8,7 +10,7 @@ import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 
 public class Constants {
     //Database operations
-    public final static String CURRENT_DB_PATH = "//data//" + Constants.PACKAGE_NAME + "//databases//" +
+    public final static String CURRENT_DB_PATH = "//data//" + BuildConfig.APPLICATION_ID + "//databases//" +
             DATABASE_NAME;
     public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
     public static String PACKAGE_NAME;
