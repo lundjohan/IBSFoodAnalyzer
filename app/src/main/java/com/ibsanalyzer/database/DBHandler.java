@@ -434,12 +434,8 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
-
-        //icount 0 !!!!
-
-
         Cursor cursor = db.rawQuery(QUERY, null);
-        //Cursor cursor = db.rawQuery(QUERY, new String[]{DateTimeFormat.toSqLiteFormat(ldt)});
+
 
         //debugging
         String cursorstr = DatabaseUtils.dumpCursorToString(cursor);
@@ -488,8 +484,12 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public List<Event> getAllEvents() {
-        //query to all events
-        //should events_table refer to its children classes for simple retrieval?
-        return null;
+        List<Event>eventList = new ArrayList<>();
+        eventList.addAll(getAllMeals());
+        eventList.addAll(getAllOthers());
+        eventList.addAll(getAllExercises());
+        eventList.addAll(getAllBMs());
+        eventList.addAll(getAllRatings());
+        return eventList;
     }
 }
