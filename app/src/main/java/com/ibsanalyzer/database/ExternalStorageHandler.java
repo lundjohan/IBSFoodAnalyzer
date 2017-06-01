@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
+import static com.ibsanalyzer.constants.Constants.CURRENT_DB_PATH;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 
@@ -118,10 +119,8 @@ public class ExternalStorageHandler {
                     .DIRECTORY_DOWNLOADS);
             File data = Environment.getDataDirectory();
             showWritablePermission(activity);
-            String currentDBPath = "//data//" + Constants.PACKAGE_NAME + "//databases//" +
-                    DATABASE_NAME;
             String backupDBPath = DATABASE_NAME;
-            File currentDB = new File(data, currentDBPath);
+            File currentDB = new File(data, CURRENT_DB_PATH);
             if (!isExternalStorageWritable()){
                 return;
             }
@@ -155,11 +154,6 @@ public class ExternalStorageHandler {
         }
 
     }
-
-    public static void loadDBFromExtStorage() {
-
-    }
-
     private static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -167,4 +161,9 @@ public class ExternalStorageHandler {
         }
         return false;
     }
+    public static void replaceDBWithExtStorageFile(Activity activity) {
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    }
+
+
 }

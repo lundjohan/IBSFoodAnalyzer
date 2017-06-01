@@ -85,6 +85,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     DiaryFragmentListener callback;
 
+
+
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
         ViewSwitcher getTabsLayoutSwitcher();
@@ -492,5 +494,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     private boolean eventIsMarked(int position) {
         return eventsMarked.contains(position);
+    }
+
+    public void updateDBAdapter() {
+        adapter.notifyDataSetChanged();
     }
 }

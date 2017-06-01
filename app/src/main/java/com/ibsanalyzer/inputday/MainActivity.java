@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,7 +43,16 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.importMenuItem:
-                //TODO
+                ExternalStorageHandler.replaceDBWithExtStorageFile(this);
+                try {
+                    adapter.getDiaryFragment().updateDBAdapter();
+
+                }
+                catch(Exception e){
+                    Log.d("Debug","Adapter could not be updated after replacement of database");
+                }
+
+
                 return true;
             case R.id.exportMenuItem:
                 ExternalStorageHandler.saveDBToExtStorage(this);

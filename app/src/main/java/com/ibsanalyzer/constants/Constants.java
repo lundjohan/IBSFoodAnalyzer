@@ -1,14 +1,19 @@
 package com.ibsanalyzer.constants;
 
+import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
+
 /**
  * Created by Johan on 2017-05-13.
  */
 
 public class Constants {
-
-    //this one is set in MainActivity onCreate, so that it doesn't have to be hardcoded where it is needed
+    //Database operations
+    public final static String CURRENT_DB_PATH = "//data//" + Constants.PACKAGE_NAME + "//databases//" +
+            DATABASE_NAME;
     public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
     public static String PACKAGE_NAME;
+
+    //Other
     public final static int TAGS_TO_ADD = 4444;
    /* public final static String RETURN_MEAL_JSON = "returnMealJSON";
     public final static String RETURN_OTHER_JSON = "returnOtherJSON";
@@ -29,7 +34,8 @@ public class Constants {
 
     public final static String LIST_OF_EVENTS = "listOfEvents";
 
-    //this is saved, so that user can come back to same positition (=same date) in DiaryFragment as when he left
+    //this is saved, so that user can come back to same positition (=same date) in DiaryFragment
+    // as when he left
     public final static String POSITION_IN_DIARY = "position_in_diary";
 
     //interface passed as arg to bundle

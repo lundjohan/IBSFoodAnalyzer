@@ -35,6 +35,11 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+    public DiaryFragment getDiaryFragment(){
+        return (DiaryFragment)getItem(1);
+    }
+
+
 
     @Override
     public int getCount() {
