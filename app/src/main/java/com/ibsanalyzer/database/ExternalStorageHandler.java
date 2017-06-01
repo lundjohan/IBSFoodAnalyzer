@@ -133,23 +133,25 @@ public class ExternalStorageHandler {
                 }
                 File backupDB = new File(sd, backupDBPath);
                 FileOutputStream fos = new FileOutputStream(backupDB);
-                fos.write("adsfdsf".getBytes());
-                // FileChannel dst = fos.getChannel();
-                //dst.transferFrom(src, 0, src.size());
+
+                FileChannel dst = fos.getChannel();
+                dst.transferFrom(src, 0, src.size());
                 fos.flush();
                 src.close();
                 // dst.close();
                 fos.close();
 
             } else {
-                Log.d("Debug", "Problems saving to Database");
+                Log.d("Debug", "There seem to be no database to save");
             }
 
         } catch (
                 Exception e)
 
+
         {
             Log.e("", e.getStackTrace().toString());
+            Log.d("Debug", "Problems in saving database to external storage");
         }
 
     }
