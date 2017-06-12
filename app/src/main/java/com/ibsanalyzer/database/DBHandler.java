@@ -12,6 +12,7 @@ import android.util.Log;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.model.EventsTemplate;
@@ -24,6 +25,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static android.R.attr.type;
+import static android.media.tv.TvContract.Channels.COLUMN_TYPE;
+import static android.os.Build.VERSION_CODES.M;
+import static com.ibsanalyzer.constants.Constants.BM;
+import static com.ibsanalyzer.constants.Constants.EXERCISE;
+import static com.ibsanalyzer.constants.Constants.MEAL;
+import static com.ibsanalyzer.constants.Constants.OTHER;
+import static com.ibsanalyzer.constants.Constants.RATING;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENT;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENTSTEMPLATE;
@@ -58,6 +67,7 @@ import static com.ibsanalyzer.database.TablesAndStrings.TABLE_OTHERS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_RATINGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGTEMPLATES;
+import static com.ibsanalyzer.inputday.R.id.portions;
 
 
 /**
@@ -355,9 +365,10 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     //add
     //-----------------------------------------------------------------------------------
-    private long addEvent(Event event) {
+    private long addEvent(Event event, int typeOfEvent) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(event.getTime()));
+        values.put(COLUMN_TYPE, typeOfEvent);
         SQLiteDatabase db = this.getWritableDatabase();
         long eventId = db.insert(TABLE_EVENTS, null, values);
         //if inputEvent => add tags
@@ -375,21 +386,98 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     //gets
     //-----------------------------------------------------------------------------------
-  /*  public List<Event> getAllEventsSorted() {
+    public List<Event> getAllEventsSorted() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATE + "ASC";
+        Cursor c = db.rawQuery(QUERY, null);
         List<Event> eventList = new ArrayList<>();
-        eventList.addAll(getAllMeals());
-        eventList.addAll(getAllOthers());
-        eventList.addAll(getAllExercises());
-        eventList.addAll(getAllBMs());
-        eventList.addAll(getAllRatings());
-        Collections.sort(eventList);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    long eventId = c.getLong(c.getColumnIndex(COLUMN_EVENT));
+                    String date = c.getString(c.getColumnIndex(COLUMN_DATE));
+                    LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
+                    int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE));
+                    Event event = getEvent(eventId, ldt, typeOfEvent);
+                    eventList.add(event);
+                    c.moveToNext();
+                }
+            }
+        }
+        c.close();
+        db.close();
         return eventList;
-    }*/
+    }
+
+    private Event getEvent(long eventId, LocalDateTime ldt, int typeOfEvent) {
+        Event event = null;
+        switch (typeOfEvent) {
+            case MEAL:
+                event = retrieveMeal(eventId, ldt);
+                break;
+            case OTHER:
+                event = retrieveOther(eventId, ldt);
+                break;
+            case EXERCISE:
+                event = retrieveExercise(eventId, ldt);
+                break;
+            case BM:
+                event = retrieveBM(eventId, ldt);
+                break;
+            case RATING:
+                event = retrieveRating(eventId, ldt);
+                break;
+        }
+        return event;
+    }
+
+    private Event retrieveMeal(long eventId, LocalDateTime ldt) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + TABLE_MEALS + " WHERE " + COLUMN_EVENT + " = ?";
+        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        Meal meal = null;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                double portions = c.getDouble(c.getColumnIndex(COLUMN_PORTIONS));
+                List<Tag> tags = getTagsWithEventId(eventId);
+                meal = new Meal(ldt, tags, portions);
+            }
+        }
+        c.close();
+        db.close();
+        return meal;
+    }
+    private Event retrieveOther(long eventId, LocalDateTime ldt) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + TABLE_OTHERS + " WHERE " + COLUMN_EVENT + " = ?";
+        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        Other other = null;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                List<Tag> tags = getTagsWithEventId(eventId);
+                other = new Other(ldt, tags);
+            }
+        }
+        return other;
+    }
+    private Event retrieveExercise(long eventId, LocalDateTime ldt) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + TABLE_EXERCISES + " WHERE " + COLUMN_EVENT + " = ?";
+        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        Other other = null;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                List<Tag> tags = getTagsWithEventId(eventId);
+                other = new Other(ldt, tags);
+            }
+        }
+        return other;
+    }
 
     LocalDateTime getDateFromEvent(long eventId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + COLUMN_DATE + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ID
-                + " = " + eventId;
+                + " = ?";
 
         Cursor c = db.rawQuery(query, new String[]{String.valueOf(eventId)});
         LocalDateTime ldt = null;
@@ -436,7 +524,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void addMeal(Meal meal) {
         //first create event and obtain its id
-        long eventId = addEvent(meal);
+        long eventId = addEvent(meal, MEAL);
         //now create meal
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
@@ -473,18 +561,7 @@ public class DBHandler extends SQLiteOpenHelper {
         //retrieve portions and event_id
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //testing if anything has been put in
-        String count = "SELECT count(*) FROM " + TABLE_MEALS;
-        Cursor mcursor = db.rawQuery(count, null);
-        mcursor.moveToFirst();
-        int icount = mcursor.getInt(0);
         Cursor cursor = db.rawQuery(QUERY, null);
-
-
-        //debugging
-        String cursorstr = DatabaseUtils.dumpCursorToString(cursor);
-        Log.d("Debug", cursorstr);
-
 
         double portions = -1.;
         long eventId = -1;

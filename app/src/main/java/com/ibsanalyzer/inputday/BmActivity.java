@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.ibsanalyzer.base_classes.BM;
+import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
@@ -49,7 +49,7 @@ public class BmActivity extends EventActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int score = ++progress;
-                bristolName.setText(BM.bristolToText(score));
+                bristolName.setText(Bm.bristolToText(score));
             }
 
             @Override
@@ -66,7 +66,7 @@ public class BmActivity extends EventActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int score = ++progress;
-                completeName.setText(BM.completenessScoreToText(score));
+                completeName.setText(Bm.completenessScoreToText(score));
             }
 
             @Override
@@ -96,7 +96,7 @@ public class BmActivity extends EventActivity {
         //scoreBar starts from zero
         int complete = completeBar.getProgress() + 1;
         int bristol = bristolBar.getProgress() + 1;
-        BM bm = new BM(getLocalDateTime(), complete, bristol);
+        Bm bm = new Bm(getLocalDateTime(), complete, bristol);
         Util.serializableReturn(bm,RETURN_BM_SERIALIZABLE, this);
         super.finish();
     }

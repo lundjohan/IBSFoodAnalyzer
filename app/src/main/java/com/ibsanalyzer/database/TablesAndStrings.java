@@ -1,5 +1,7 @@
 package com.ibsanalyzer.database;
 
+import static android.media.tv.TvContract.Channels.COLUMN_TYPE;
+
 /**
  * Created by Johan on 2017-05-15.
  */
@@ -91,6 +93,7 @@ public class TablesAndStrings {
             TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_DATE + " TEXT NOT NULL " +
+            COLUMN_TYPE + "INTEGER NOT NULL "+
             ");";
 
     public static final String CREATE_MEAL_TABLE = "CREATE TABLE " +
@@ -114,6 +117,7 @@ public class TablesAndStrings {
             TABLE_EXERCISES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
+            COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, "+
             COLUMN_INTENSITY + "INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
             + " ( " + COLUMN_ID + ")" +

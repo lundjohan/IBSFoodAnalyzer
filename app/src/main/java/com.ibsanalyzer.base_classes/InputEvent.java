@@ -36,7 +36,7 @@ public abstract class InputEvent extends Event {
         }
         return t;
     }
-    /**Some EventModel classes will override this one (read BM), therefore it exist.
+    /**Some EventModel classes will override this one (read Bm), therefore it exist.
      *
      * @return
      */

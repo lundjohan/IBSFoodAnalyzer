@@ -48,5 +48,8 @@ public class Constants {
 
     //public static final int NEW_EVENTSTEMPLATE = 5555;
 
+    //used in various cases
+    public static final int MEAL = 0, OTHER = 1, EXERCISE = 2, BM = 3, RATING = 4, DATE_MARKER = 5;
+
 
 }

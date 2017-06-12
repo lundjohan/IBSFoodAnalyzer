@@ -21,8 +21,8 @@ public class Chunk {
 		return divs;
 	}
 
-	public List<BM> getBMs() {
-		List<BM> bms = new ArrayList<>();
+	public List<Bm> getBMs() {
+		List<Bm> bms = new ArrayList<>();
 		for (Day d : days) {
 			bms.addAll(d.getBMs());
 		}
@@ -156,8 +156,8 @@ public class Chunk {
 		return divs.subList(firstInd, lastInd);
 	}
 
-	public List<BM> getBMsAfterTime(Chunk chunk, LocalDateTime time,
-			long hoursAhead) {
+	public List<Bm> getBMsAfterTime(Chunk chunk, LocalDateTime time,
+                                    long hoursAhead) {
 		return null; //change to under, when stream is ok
         /*return getBMs().stream().
 				filter(bm-> bm.getTime().isAfter(time) && bm.getTime().isBefore(time.plusHours(hoursAhead))).

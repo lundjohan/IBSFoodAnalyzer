@@ -51,14 +51,14 @@ public class Day {
 
     // ==================HEAVY COPY PASTING OF CODE FOR THESE getEventClasses!!!
     // => CHANGE! ========================
-    public List<BM> getBMs() {
-        List<BM> BMs = new ArrayList<>();
+    public List<Bm> getBMs() {
+        List<Bm> Bms = new ArrayList<>();
         for (Event event : events) {
-            if (event instanceof BM) {
-                BMs.add((BM) event);
+            if (event instanceof Bm) {
+                Bms.add((Bm) event);
             }
         }
-        return BMs;
+        return Bms;
     }
 
     public List<Meal> getMeals() {

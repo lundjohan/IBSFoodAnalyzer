@@ -1,7 +1,6 @@
 package com.ibsanalyzer.inputday;
 
 import android.content.Context;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ibsanalyzer.base_classes.BM;
+import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.InputEvent;
@@ -24,11 +23,16 @@ import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.BM;
+import static com.ibsanalyzer.constants.Constants.DATE_MARKER;
+import static com.ibsanalyzer.constants.Constants.EXERCISE;
+import static com.ibsanalyzer.constants.Constants.MEAL;
+import static com.ibsanalyzer.constants.Constants.OTHER;
+import static com.ibsanalyzer.constants.Constants.RATING;
 import static com.ibsanalyzer.inputday.R.id.tagNames;
 import static com.ibsanalyzer.inputday.R.id.tagQuantities;
 
@@ -44,8 +48,6 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.events = events;
         this.usingFragment = fragment;
     }
-
-    private final int _MEAL = 0, _OTHER = 1, _EXERCISE = 2, _BM = 3, _SCORE = 4, _DATE_MARKER = 5;
 
     /*
     Click Listeners
@@ -162,17 +164,17 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         if (events.get(position) instanceof Meal) {
-            return _MEAL;
+            return MEAL;
         } else if (events.get(position) instanceof Other) {
-            return _OTHER;
+            return OTHER;
         } else if (events.get(position) instanceof Exercise) {
-            return _EXERCISE;
-        } else if (events.get(position) instanceof BM) {
-            return _BM;
+            return EXERCISE;
+        } else if (events.get(position) instanceof Bm) {
+            return BM;
         } else if (events.get(position) instanceof Rating) {
-            return _SCORE;
+            return RATING;
         } else if (events.get(position) instanceof DateMarkerEvent) {
-            return _DATE_MARKER;
+            return DATE_MARKER;
         }
 
         throw new RuntimeException("unknown class");
@@ -183,32 +185,32 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         RecyclerView.ViewHolder viewHolder = null;
         View v;
         switch (viewType) {
-            case _MEAL:
+            case MEAL:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent,
                         false);
                 viewHolder = new MealViewHolder(v, parent.getContext());
                 break;
-            case _OTHER:
+            case OTHER:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_other, parent,
                         false);
                 viewHolder = new OtherViewHolder(v, parent.getContext());
                 break;
-            case _EXERCISE:
+            case EXERCISE:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise,
                         parent, false);
                 viewHolder = new ExerciseViewHolder(v);
                 break;
-            case _BM:
+            case BM:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bm, parent,
                         false);
                 viewHolder = new BmViewHolder(v);
                 break;
-            case _SCORE:
+            case RATING:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rating,
                         parent, false);
                 viewHolder = new ScoreViewHolder(v);
                 break;
-            case _DATE_MARKER:
+            case DATE_MARKER:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_datemarker,
                         parent, false);
                 viewHolder = new DateMarkerViewHolder(v);
@@ -248,18 +250,18 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         }
         switch (holder.getItemViewType()) {
-            case _MEAL:
+            case MEAL:
                 Meal meal = (Meal) event;
                 MealViewHolder mealHolder = (MealViewHolder) holder;
                 mealHolder.portions.setText(String.valueOf(meal.getPortions()));
                 bindTagsToTagEventViewHolder(meal, mealHolder);
                 break;
-            case _OTHER:
+            case OTHER:
                 Other other = (Other) event;
                 OtherViewHolder otherHolder = (OtherViewHolder) holder;
                 bindTagsToTagEventViewHolder(other, otherHolder);
                 break;
-            case _EXERCISE:
+            case EXERCISE:
                 Exercise exercise = (Exercise) event;
                 ExerciseViewHolder exerciseHolder = (ExerciseViewHolder) holder;
                 setTime(exercise, exerciseHolder);
@@ -267,20 +269,20 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         .getIntensity()));
                 exerciseHolder.typeOfExcercise.setText(exercise.getTypeOfExercise().getName());
                 break;
-            case _BM:
-                BM bm = (BM) event;
+            case BM:
+                Bm bm = (Bm) event;
                 BmViewHolder bmHolder = (BmViewHolder) holder;
                 setTime(bm, bmHolder);
-                bmHolder.completeness.setText(BM.completenessScoreToText(bm.getComplete()));
+                bmHolder.completeness.setText(Bm.completenessScoreToText(bm.getComplete()));
                 bmHolder.bristol.setText(String.valueOf(bm.getBristol()));
                 break;
-            case _SCORE:
+            case RATING:
                 Rating rating = (Rating) event;
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
                 setTime(rating, scoreHolder);
                 scoreHolder.afterScore.setText(Rating.pointsToText(rating.getAfter()));
                 break;
-            case _DATE_MARKER:
+            case DATE_MARKER:
                 DateMarkerEvent dateMarker = (DateMarkerEvent) event;
                 DateMarkerViewHolder dateMarkerViewHolder = (DateMarkerViewHolder) holder;
                 dateMarkerViewHolder.dateView.setText(DateTimeFormat.toTextViewFormat(dateMarker

@@ -8,7 +8,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.ibsanalyzer.base_classes.BM;
+import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
@@ -141,7 +141,7 @@ public class MainActivityNewEventsTests {
     }
 
     // TODO Othertest  (but it so similar to Meal so maybe I don't have to do it), but should
-    // make BM and Rating at least
+    // make Bm and Rating at least
     @Test
     public void testReturnValueFromExerciseActivity() {
         // Create a meal object with timeView 16:00
@@ -179,7 +179,7 @@ public class MainActivityNewEventsTests {
     public void testReturnValueFromBMActivity() {
         // Create a meal object with timeView 16:00
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 18, 0);
-        BM bm = new BM(ldt, 5, 2);
+        Bm bm = new Bm(ldt, 5, 2);
 
         Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_BM_SERIALIZABLE,
                 bm);

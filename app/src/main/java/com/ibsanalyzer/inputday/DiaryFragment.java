@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ViewSwitcher;
 
-import com.ibsanalyzer.base_classes.BM;
+import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
@@ -45,6 +45,7 @@ import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static com.ibsanalyzer.inputday.R.drawable.meal;
 
 
 /**
@@ -209,9 +210,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         LocalDateTime ldt3 = LocalDateTime.of(2016, Month.APRIL, 3, 12, 0);
         Exercise exercise = new Exercise(ldt3, new Tag(ldt3, "running", 1), 4);
 
-        //BM
+        //Bm
         LocalDateTime ldt4 = LocalDateTime.of(2016, Month.APRIL, 3, 14, 20);
-        BM bm = new BM(ldt4, 3, 5);
+        Bm bm = new Bm(ldt4, 3, 5);
 
         //Other
         LocalDateTime ldtx = LocalDateTime.of(2016, Month.APRIL, 3, 14, 30);
@@ -263,31 +264,32 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             case NEW_MEAL:
                 if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
                     //add to database
-                    Meal meal = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
-                    dbHandler.addMeal(meal);
-
-                    //for adding to list
-                    event = meal;
+                    event = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
+                    dbHandler.addMeal((Meal)event);
                 }
                 break;
             case NEW_OTHER:
                 if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
                     event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
+                    dbHandler.addOther((Other)event);
                 }
                 break;
             case NEW_EXERCISE:
                 if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
                     event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
+                    dbHandler.addExercise((Exercise)event);
                 }
                 break;
             case NEW_BM:
                 if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
-                    event = (BM) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
+                    event = (Bm) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
+                    dbHandler.addBm((Bm)event);
                 }
                 break;
             case NEW_SCORE:
                 if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
                     event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
+                    dbHandler.addRating((Rating)event);
                 }
                 break;
         }
@@ -495,6 +497,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public void refillEventListWithNewDatabase() {
         DBHandler dbHandler = new DBHandler(((Activity)callback).getApplicationContext());
         eventList = dbHandler.getAllEventsSorted();
+        addDateEventsToList(eventList);
         adapter.notifyDataSetChanged();
     }
 }
