@@ -9,10 +9,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
+import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.model.EventsTemplate;
@@ -33,14 +36,19 @@ import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.MEAL;
 import static com.ibsanalyzer.constants.Constants.OTHER;
 import static com.ibsanalyzer.constants.Constants.RATING;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_AFTER;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_BRISTOL;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_COMPLETENESS;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENT;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENTSTEMPLATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_INTENSITY;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_IS_A;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_NAME;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_PORTIONS;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_SIZE;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAG;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGTEMPLATE;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_BM_TABLE;
@@ -67,6 +75,9 @@ import static com.ibsanalyzer.database.TablesAndStrings.TABLE_OTHERS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_RATINGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGTEMPLATES;
+import static com.ibsanalyzer.inputday.R.drawable.meal;
+import static com.ibsanalyzer.inputday.R.id.bristol;
+import static com.ibsanalyzer.inputday.R.id.intensity;
 import static com.ibsanalyzer.inputday.R.id.portions;
 
 
@@ -210,7 +221,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String tagname = "";
         if (cursor.moveToFirst()) {
             //cursor.moveToFirst();
-            tagname = cursor.getString(1);
+            tagname = cursor.getString(cursor.getColumnIndex(COLUMN_TAGNAME));
         }
         db.close();
         return tagname;
@@ -422,7 +433,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 event = retrieveExercise(eventId, ldt);
                 break;
             case BM:
-                event = retrieveBM(eventId, ldt);
+                event = retrieveBm(eventId, ldt);
                 break;
             case RATING:
                 event = retrieveRating(eventId, ldt);
@@ -432,9 +443,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     private Event retrieveMeal(long eventId, LocalDateTime ldt) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_MEALS + " WHERE " + COLUMN_EVENT + " = ?";
-        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        Cursor c = retrieveHelper(eventId, TABLE_MEALS);
         Meal meal = null;
         if (c != null) {
             if (c.moveToFirst()) {
@@ -444,13 +453,10 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         c.close();
-        db.close();
         return meal;
     }
     private Event retrieveOther(long eventId, LocalDateTime ldt) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_OTHERS + " WHERE " + COLUMN_EVENT + " = ?";
-        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        Cursor c = retrieveHelper(eventId, TABLE_OTHERS);
         Other other = null;
         if (c != null) {
             if (c.moveToFirst()) {
@@ -458,20 +464,53 @@ public class DBHandler extends SQLiteOpenHelper {
                 other = new Other(ldt, tags);
             }
         }
+        c.close();
         return other;
     }
     private Event retrieveExercise(long eventId, LocalDateTime ldt) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_EXERCISES + " WHERE " + COLUMN_EVENT + " = ?";
-        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
-        Other other = null;
+        Cursor c = retrieveHelper(eventId, TABLE_EXERCISES);
+        Exercise exercise = null;
         if (c != null) {
             if (c.moveToFirst()) {
-                List<Tag> tags = getTagsWithEventId(eventId);
-                other = new Other(ldt, tags);
+                int intensity = c.getInt(c.getColumnIndex(COLUMN_INTENSITY));
+                String tagName = getTagname(c.getColumnIndex(COLUMN_TAGTEMPLATE));
+                Tag tag = new Tag (ldt, tagName, 1);
+                exercise = new Exercise(ldt, tag, intensity);
             }
         }
-        return other;
+        c.close();
+        return exercise;
+    }
+    private Event retrieveBm(long eventId, LocalDateTime ldt) {
+        Cursor c = retrieveHelper(eventId, TABLE_BMS);
+        Bm bm = null;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                int complete = c.getInt(c.getColumnIndex(COLUMN_COMPLETENESS));
+                int bristol = c.getInt(c.getColumnIndex(COLUMN_BRISTOL));
+                bm = new Bm(ldt, complete, bristol);
+            }
+        }
+        c.close();
+        return bm;
+    }
+    private Event retrieveRating(long eventId, LocalDateTime ldt) {
+        Cursor c = retrieveHelper(eventId, TABLE_RATINGS);
+        Rating rating = null;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                int after = c.getInt(c.getColumnIndex(COLUMN_AFTER));
+                rating = new Rating(ldt, after);
+            }
+        }
+        c.close();
+        return rating;
+    }
+    private Cursor retrieveHelper(long eventId, String nameOfEventTable){
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + nameOfEventTable + " WHERE " + COLUMN_EVENT + " = ?";
+        db.close();
+        return db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
     }
 
     LocalDateTime getDateFromEvent(long eventId) {
@@ -575,6 +614,56 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         List<Tag> tags = getTagsWithEventId(eventId);
         return new Meal(ldt, tags, portions);
+    }
+    //==============================================================================================
+    // Other
+    //==============================================================================================
+    public void addOther(Other other) {
+        //first create event and obtain its id
+        long eventId = addEvent(other, OTHER);
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EVENT, eventId);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_OTHERS, DATABASE_NAME, values);
+        db.close();
+    }
+    //==============================================================================================
+    // Exercise
+    //==============================================================================================
+    public void addExercise(Exercise exercise) {
+        //first create event and obtain its id
+        long eventId = addEvent(exercise, EXERCISE);
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EVENT, eventId);
+        long tagTemplateId = getTagTemplateId(exercise.getTypeOfExercise().getName());
+        values.put(COLUMN_TAGTEMPLATE, tagTemplateId);
+        values.put(COLUMN_INTENSITY, exercise.getIntensity());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_EXERCISES, DATABASE_NAME, values);
+        db.close();
+    }
+    //==============================================================================================
+    // BM
+    //==============================================================================================
+    public void addBm(Bm bm) {
+        //first create event and obtain its id
+        long eventId = addEvent(bm, BM);
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EVENT, eventId);
+        values.put(COLUMN_BRISTOL, bm.getBristol());
+        values.put(COLUMN_COMPLETENESS, bm.getComplete());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_BMS, DATABASE_NAME, values);
+        db.close();
+    }
+    public void addRating(Rating rating) {
+        long eventId = addEvent(rating, RATING);
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EVENT, eventId);
+        values.put(COLUMN_AFTER, rating.getAfter());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_RATINGS, DATABASE_NAME, values);
+        db.close();
     }
 
     //==================================================================================================

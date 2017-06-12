@@ -18,9 +18,9 @@ public class Tag implements Serializable {
 
     }
 
-    public Tag(LocalDateTime time, String name, double portions) {
+    public Tag(LocalDateTime time, String name, double size) {
         this.name = name;
-        this.size = portions;
+        this.size = size;
         this.time = time;
     }
 /*

@@ -78,6 +78,7 @@ public class TablesAndStrings {
      public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
             TABLE_TAGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
+             //perhaps should be COLUMN TAG INSTEAD... but this works...
             COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
             COLUMN_SIZE + " REAL NOT NULL, " +
             COLUMN_DATE + " TEXT NOT NULL, " +
