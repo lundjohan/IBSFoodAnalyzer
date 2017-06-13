@@ -51,6 +51,7 @@ import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_SIZE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAG;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGTEMPLATE;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TYPE_OF_EVENT;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_BM_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EVENTS_TEMPLATE_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EVENTS_TEMPLATE_TO_EVENT_TABLE;
@@ -89,13 +90,8 @@ import static com.ibsanalyzer.inputday.R.id.portions;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int
-            version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-    }
-
     public DBHandler(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -376,12 +372,12 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     //add
     //-----------------------------------------------------------------------------------
-    private long addEvent(Event event, int typeOfEvent) {
+    private long addEvent(Event event, long typeOfEvent) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(event.getTime()));
-        values.put(COLUMN_TYPE, typeOfEvent);
+        values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
         SQLiteDatabase db = this.getWritableDatabase();
-        long eventId = db.insert(TABLE_EVENTS, null, values);
+        long eventId = db.insert(TABLE_EVENTS, DATABASE_NAME, values);
         //if inputEvent => add tags
         if (event instanceof InputEvent) {
             InputEvent ie = (InputEvent) event;
@@ -399,16 +395,16 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     public List<Event> getAllEventsSorted() {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATE + "ASC";
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATE + " ASC";
         Cursor c = db.rawQuery(QUERY, null);
         List<Event> eventList = new ArrayList<>();
         if (c != null) {
             if (c.moveToFirst()) {
                 while (!c.isAfterLast()) {
-                    long eventId = c.getLong(c.getColumnIndex(COLUMN_EVENT));
+                    long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
                     String date = c.getString(c.getColumnIndex(COLUMN_DATE));
                     LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
-                    int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE));
+                    int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));  //här kraschar det.
                     Event event = getEvent(eventId, ldt, typeOfEvent);
                     eventList.add(event);
                     c.moveToNext();
@@ -453,6 +449,7 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         c.close();
+        this.close();
         return meal;
     }
     private Event retrieveOther(long eventId, LocalDateTime ldt) {
@@ -465,6 +462,7 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         c.close();
+        this.close();
         return other;
     }
     private Event retrieveExercise(long eventId, LocalDateTime ldt) {
@@ -479,6 +477,7 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         c.close();
+        this.close();
         return exercise;
     }
     private Event retrieveBm(long eventId, LocalDateTime ldt) {
@@ -492,6 +491,7 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         c.close();
+        this.close();
         return bm;
     }
     private Event retrieveRating(long eventId, LocalDateTime ldt) {
@@ -504,13 +504,15 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         c.close();
+        this.close();
         return rating;
     }
+    //db must be closed elsewhere, if closed here using methods will fail using cursor
     private Cursor retrieveHelper(long eventId, String nameOfEventTable){
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT * FROM " + nameOfEventTable + " WHERE " + COLUMN_EVENT + " = ?";
-        db.close();
-        return db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        Cursor c= db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        return c;
     }
 
     LocalDateTime getDateFromEvent(long eventId) {
@@ -637,7 +639,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_EVENT, eventId);
         long tagTemplateId = getTagTemplateId(exercise.getTypeOfExercise().getName());
         values.put(COLUMN_TAGTEMPLATE, tagTemplateId);
-        values.put(COLUMN_INTENSITY, exercise.getIntensity());
+        values.put(COLUMN_INTENSITY, (long)exercise.getIntensity());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_EXERCISES, DATABASE_NAME, values);
         db.close();
@@ -660,7 +662,7 @@ public class DBHandler extends SQLiteOpenHelper {
         long eventId = addEvent(rating, RATING);
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
-        values.put(COLUMN_AFTER, rating.getAfter());
+        values.put(COLUMN_AFTER, (long)rating.getAfter());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_RATINGS, DATABASE_NAME, values);
         db.close();

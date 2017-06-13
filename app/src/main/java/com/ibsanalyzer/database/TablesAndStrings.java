@@ -9,7 +9,7 @@ import static android.media.tv.TvContract.Channels.COLUMN_TYPE;
 public class TablesAndStrings {
     //NO_INHERITANCE is used to say: "TagTemplate is not inheriting"
     public static final String NO_INHERITANCE = "0Null0";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -37,6 +37,7 @@ public class TablesAndStrings {
     //Event => many-to-many =>  Tags
     public static final String TABLE_EVENTTAGS = "event_tags";
     public static final String COLUMN_TAG = "tag";
+    public static final String COLUMN_TYPE_OF_EVENT = "type_of_event";
 
     //Meals
     public static final String TABLE_MEALS = "meals";
@@ -93,11 +94,11 @@ public class TablesAndStrings {
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE " +
             TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
-            COLUMN_DATE + " TEXT NOT NULL " +
-            COLUMN_TYPE + "INTEGER NOT NULL "+
+            COLUMN_DATE + " TEXT NOT NULL, " +
+            COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL "+
             ");";
 
-    public static final String CREATE_MEAL_TABLE = "CREATE TABLE " +
+    public static final String CREATE_MEAL_TABLE = " CREATE TABLE " +
             TABLE_MEALS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
@@ -106,7 +107,7 @@ public class TablesAndStrings {
             + " ( " + COLUMN_ID + ")" +
             ");";
 
-    public static final String CREATE_OTHER_TABLE = "CREATE TABLE " +
+    public static final String CREATE_OTHER_TABLE = " CREATE TABLE " +
             TABLE_OTHERS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
@@ -114,12 +115,12 @@ public class TablesAndStrings {
             + " ( " + COLUMN_ID + ")" +
             ");";
 
-    public static final String CREATE_EXERCISE_TABLE = "CREATE TABLE " +
+    public static final String CREATE_EXERCISE_TABLE = " CREATE TABLE " +
             TABLE_EXERCISES + " (  " +
-            COLUMN_ID + " INTEGER PRIMARY KEY," +
+            COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, "+
-            COLUMN_INTENSITY + "INTEGER NOT NULL, " +
+            COLUMN_INTENSITY + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
             + " ( " + COLUMN_ID + ")" +
             ");";
@@ -128,8 +129,8 @@ public class TablesAndStrings {
             TABLE_BMS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_COMPLETENESS + "INTEGER NOT NULL, " +
-            COLUMN_BRISTOL + "INTEGER NOT NULL, " +
+            COLUMN_COMPLETENESS + " INTEGER NOT NULL, " +
+            COLUMN_BRISTOL + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
             + " ( " + COLUMN_ID + ")" +
             ");";
@@ -137,14 +138,14 @@ public class TablesAndStrings {
             TABLE_RATINGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_AFTER + "INTEGER NOT NULL, " +
+            COLUMN_AFTER + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
             + " ( " + COLUMN_ID + ")" +
             ");";
     public static final String CREATE_EVENTS_TEMPLATE_TABLE = "CREATE TABLE " +
             TABLE_EVENTSTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_NAME + " TEXT NOT NULL UNIQUE ," +
+            COLUMN_NAME + " TEXT NOT NULL UNIQUE, " +
             " FOREIGN KEY( " + COLUMN_ID + ") REFERENCES " + TABLE_EVENTSTEMPLATEEVENTS
             + " ( " + COLUMN_EVENTSTEMPLATE + ")" +
             ");";

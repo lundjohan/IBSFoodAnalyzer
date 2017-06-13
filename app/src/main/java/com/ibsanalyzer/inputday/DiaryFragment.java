@@ -125,7 +125,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         super.onCreate(savedInstanceState);
 
 
-
+        //only for developing mode
+        DBHandler dbHandler = new DBHandler(this.getContext());
+        dbHandler.deleteAllTablesRows();
 
         //starts as invisible appBarLayout but when user marks something this pops up
         tabsLayoutSwitcher = (ViewSwitcher) callback.getTabsLayoutSwitcher();
@@ -136,7 +138,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         if (savedInstanceState == null || !savedInstanceState.containsKey("eventList")) {
             //populate array, this will be added to when button is pressed
             //===================================================================
-            populateList();
+          //  populateList();
 
 
             //=====================================================
@@ -496,8 +498,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     public void refillEventListWithNewDatabase() {
         DBHandler dbHandler = new DBHandler(((Activity)callback).getApplicationContext());
-        eventList = dbHandler.getAllEventsSorted();
-        addDateEventsToList(eventList);
+
+        //see here why reference just cant be changed. notifyDataSetChanged won't work in that case.
+        //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from-custom-adapter
+        eventList.clear();
+        eventList.addAll(dbHandler.getAllEventsSorted());
+       // addDateEventsToList(eventList);
         adapter.notifyDataSetChanged();
     }
 }

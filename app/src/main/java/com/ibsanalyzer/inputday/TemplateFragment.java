@@ -47,7 +47,7 @@ public class TemplateFragment extends Fragment {
         layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
         recyclerView.setLayoutManager(layoutManager);
 
-        DBHandler dbHandler = new DBHandler(getActivity(), null, null,1);
+        DBHandler dbHandler = new DBHandler(getActivity());
         Cursor cursor = dbHandler.getCursorToEventsTemplates();
         adapter = new EventsTemplateAdapter(getActivity(), cursor, width);
         recyclerView.setAdapter(adapter);

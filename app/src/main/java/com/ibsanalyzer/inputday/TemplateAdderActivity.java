@@ -40,7 +40,7 @@ public class TemplateAdderActivity extends AppCompatActivity {
     }
     private void saveToDB(String name) {
         EventsTemplate et = new EventsTemplate(events, name);
-        DBHandler dbHandler = new DBHandler(this, null, null,1);
+        DBHandler dbHandler = new DBHandler(this);
         dbHandler.addEventsTemplate(et);
         Log.d("Debug","Inside TemplateAdderActivity: EventsTemplate "+et.getNameOfTemplate() + "has been added to database");
     }
