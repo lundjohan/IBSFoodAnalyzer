@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.util.SortedList;
 import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
@@ -11,12 +12,14 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.ibsanalyzer.inputday.R.id.dateMarker;
 import static java.util.Collections.sort;
 
 /**
@@ -84,18 +87,16 @@ public class Util {
         //return (int)(dpWidth/mNoOfColumns);
     }
 
-    //returns position where insertion took place
-    //could perhaps be more effective in case the right index to insert was found first.
+    //instead of sorting this should use addEventAtRightPlace for insertion of event
     public static InsertPositions insertEventWithDayMarker(List<Event> events, Event event) {
         //add event to list
+        //this feels bad. better to add it at the right index straight away...
         events.add(event);
+
         LocalDate dateOfEvent = event.getTime().toLocalDate();
         //1. Is there a DateMarkerEvent already with the same day as event?
-        DateMarkerEvent dateMarker = null;
-        if (!dateMarkerExists(events, dateOfEvent)) {
-            dateMarker = new DateMarkerEvent(dateOfEvent);
-            events.add(dateMarker);
-        }
+        DateMarkerEvent dateMarker = addDateMarkerIfNotExists(dateOfEvent, events);
+
         //3. Sort list
         Collections.sort(events);
 
@@ -113,10 +114,55 @@ public class Util {
 
         return insertPositions;
     }
+    public static DateMarkerEvent addDateMarkerIfNotExists(LocalDate dateOfEvent, List<Event> events) {
+        DateMarkerEvent dateMarker = null;
+        if (!dateMarkerExists(events, dateOfEvent)) {
+            dateMarker = new DateMarkerEvent(dateOfEvent);
+            addEventAtRightPlace(dateMarker, events);
+        }
+        return dateMarker;
+    }
+
+    /**
+     *
+     * @param event
+     * @param events
+     * @return -1 on failure
+     */
+    //TODO Change to if (events.size()<10) and Implement else
+    //TODO ugly method, works, but should be total remake over.
+    private static int addEventAtRightPlace(Event event, List<Event> events) {
+        int indexOfInsertion = -1;
+        if (events.isEmpty()){
+            events.add(event);
+            indexOfInsertion = 0;
+        }
+        else if (events.size()>0){
+            for (int i = 0; i< events.size();i++){
+                if (events.get(i).getTime().isBefore(event.getTime()))
+                    continue;
+                else{
+                    events.add(i, event);
+                    indexOfInsertion = i;
+                    break;
+                }
+
+            }
+        }
+        //do some more effective algorithm
+        else{
+
+        }
+        //no event has been added => means that it should be added last (see in loop above why so). This is ugly but works.
+        if (indexOfInsertion == -1)
+            events.add(event);
+        return indexOfInsertion;
+    }
 
     private static boolean dateMarkerExists(List<Event>events, LocalDate dateOfMarkerEvent){
         DateMarkerEvent dateMarker = new DateMarkerEvent(dateOfMarkerEvent);
         return events.indexOf(dateMarker)> -1;
     }
+
 
 }

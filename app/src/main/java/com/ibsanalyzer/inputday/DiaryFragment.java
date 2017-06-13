@@ -33,6 +33,7 @@ import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
@@ -503,7 +504,20 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from-custom-adapter
         eventList.clear();
         eventList.addAll(dbHandler.getAllEventsSorted());
-       // addDateEventsToList(eventList);
+        addDateEventsToList(eventList);
         adapter.notifyDataSetChanged();
+    }
+
+    private void addDateEventsToList(List<Event> eventList) {
+        LocalDate lastDate= null;
+        for (int i = 0; i<eventList.size();i++){
+            LocalDateTime ldt = eventList.get(i).getTime();
+            //no point in trying to figure out adding datemarker more times than one for same date
+            if (i>0 && ldt.toLocalDate().isEqual(lastDate)){
+                continue;
+            }
+            lastDate = ldt.toLocalDate();
+            Util.addDateMarkerIfNotExists(lastDate, eventList);
+        }
     }
 }
