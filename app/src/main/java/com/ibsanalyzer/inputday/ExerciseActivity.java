@@ -14,6 +14,7 @@ import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
 
 public class ExerciseActivity extends EventActivity {
@@ -71,10 +72,9 @@ public class ExerciseActivity extends EventActivity {
         if (requestCode != TAGS_TO_ADD) {
             return;
         }
-        Gson gson = new Gson();
-        if (data.hasExtra("returnTagTemplateJSON")) {
-            String tagJSONData = data.getExtras().getString("returnTagTemplateJSON");
-            TagTemplate tagTemplate = gson.fromJson(tagJSONData, TagTemplate.class);
+
+        if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
+            TagTemplate tagTemplate = (TagTemplate) data.getExtras().getSerializable(RETURN_TAG_TEMPLATE_SERIALIZABLE);
             typeOfExercise.setText(tagTemplate.get_tagname());
         }
     }
