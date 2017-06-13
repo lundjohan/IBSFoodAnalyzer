@@ -92,8 +92,6 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.context = context;
             tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
             tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
-            Log.d("Debug", "Inside InputEventViewHolder, tagNamesLayout.toString() " +
-                    tagNamesLayout.toString());
         }
     }
 
@@ -315,7 +313,11 @@ class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder
             tagHolder) {
         setTime(inputEvent, tagHolder);
-        List<String> tagStrings = new ArrayList<>();
+
+        //clearing up, because recyclerview remembers cache. Problems with to many tags in imports of files otherwise
+        tagHolder.tagQuantsLayout.removeAllViews();
+        tagHolder.tagNamesLayout.removeAllViews();
+
         for (Tag tag : inputEvent.getTags()) {
             TextView tagQuant = new TextView(tagHolder.tagQuantsLayout.getContext());
             tagQuant.setText('X' + Double.toString(tag.getSize()));

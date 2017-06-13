@@ -63,7 +63,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+    EventAdapter adapter;
 
     List<Event> eventList = new ArrayList<>();
 
@@ -82,7 +82,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 //==================================================================================================
 
     DiaryFragmentListener callback;
-
 
 
     // Container Activity must implement this interface
@@ -139,7 +138,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         if (savedInstanceState == null || !savedInstanceState.containsKey("eventList")) {
             //populate array, this will be added to when button is pressed
             //===================================================================
-          //  populateList();
+            //  populateList();
 
 
             //=====================================================
@@ -268,39 +267,41 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
                     //add to database
                     event = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
-                    dbHandler.addMeal((Meal)event);
+                    dbHandler.addMeal((Meal) event);
                 }
                 break;
             case NEW_OTHER:
                 if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
                     event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
-                    dbHandler.addOther((Other)event);
+                    dbHandler.addOther((Other) event);
                 }
                 break;
             case NEW_EXERCISE:
                 if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
                     event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
-                    dbHandler.addExercise((Exercise)event);
+                    dbHandler.addExercise((Exercise) event);
                 }
                 break;
             case NEW_BM:
                 if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
                     event = (Bm) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
-                    dbHandler.addBm((Bm)event);
+                    dbHandler.addBm((Bm) event);
                 }
                 break;
             case NEW_SCORE:
                 if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
                     event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
-                    dbHandler.addRating((Rating)event);
+                    dbHandler.addRating((Rating) event);
                 }
                 break;
         }
         addEventToList(eventList, event, adapter);
 
     }
+
     //adds also DateMarkerEvent if appropriate
-    private static void addEventToList(List<Event>events, Event event, RecyclerView.Adapter adapter){
+    private static void addEventToList(List<Event> events, Event event, RecyclerView.Adapter
+            adapter) {
         InsertPositions insertPositions = Util.insertEventWithDayMarker(events, event);
         adapter.notifyItemInserted(insertPositions.getPosInserted());
         if (insertPositions.isDateMarkerAdded()) {
@@ -371,7 +372,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     @Override
     public void onItemClicked(View v, int position) {
         final Event pressedEvent = eventList.get(position);
-        if (pressedEvent instanceof DateMarkerEvent){
+        if (pressedEvent instanceof DateMarkerEvent) {
             return;
         }
         Log.d("Debug", "inside fragment, item was clicked");
@@ -388,7 +389,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public boolean onItemLongClicked(final View v, final int position) {
         final Event pressedEvent = eventList.get(position);
         //it should not be possible to press a DateMarkerEvent
-        if (pressedEvent instanceof DateMarkerEvent){
+        if (pressedEvent instanceof DateMarkerEvent) {
             return false;
         }
         if (!markingModeIsOn()) {
@@ -401,34 +402,31 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             MenuItem breakItem = menu.findItem(R.id.insertBreakMenuItem);
             MenuItem unBreakItem = menu.findItem(R.id.removeBreakMenuItem);
 
-            if (pressedEvent.hasBreak()){
+            if (pressedEvent.hasBreak()) {
                 breakItem.setVisible(false);
                 unBreakItem.setVisible(true);
-            }
-            else{
+            } else {
                 breakItem.setVisible(true);
                 unBreakItem.setVisible(false);
             }
 
 
-
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     //marking for templates, copy etc
-                    if (item.getItemId() == R.id.markedMenuItem){
+                    if (item.getItemId() == R.id.markedMenuItem) {
                         eventsMarked.add(position);
                         v.setBackgroundColor(BACKGROUND_COLOR);
                         changeToMarkedMenu();
                     }
 
                     //options down here for break/ unbreak
-                    else if (item.getItemId() == R.id.insertBreakMenuItem){
+                    else if (item.getItemId() == R.id.insertBreakMenuItem) {
                         //1. make that event in item have a break true
                         pressedEvent.setBreak(true);
                         //2. update adapter for that position
                         adapter.notifyItemChanged(position);
-                    }
-                    else if (item.getItemId() == R.id.removeBreakMenuItem){
+                    } else if (item.getItemId() == R.id.removeBreakMenuItem) {
                         //1. make that event in item lose break
                         pressedEvent.setBreak(false);
                         //2. update adapter for that position
@@ -443,6 +441,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
         return false;
     }
+
     //same actions for short and long clicks
     // given: markingModeIsOn
     private void clickHelper(View v, int position) {
@@ -498,10 +497,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
     public void refillEventListWithNewDatabase() {
-        DBHandler dbHandler = new DBHandler(((Activity)callback).getApplicationContext());
+        DBHandler dbHandler = new DBHandler(((Activity) callback).getApplicationContext());
 
         //see here why reference just cant be changed. notifyDataSetChanged won't work in that case.
-        //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from-custom-adapter
+        //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from
+        // -custom-adapter
         eventList.clear();
         eventList.addAll(dbHandler.getAllEventsSorted());
         addDateEventsToList(eventList);
@@ -509,11 +509,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     }
 
     private void addDateEventsToList(List<Event> eventList) {
-        LocalDate lastDate= null;
-        for (int i = 0; i<eventList.size();i++){
+        LocalDate lastDate = null;
+        for (int i = 0; i < eventList.size(); i++) {
             LocalDateTime ldt = eventList.get(i).getTime();
             //no point in trying to figure out adding datemarker more times than one for same date
-            if (i>0 && ldt.toLocalDate().isEqual(lastDate)){
+            if (i > 0 && ldt.toLocalDate().isEqual(lastDate)) {
                 continue;
             }
             lastDate = ldt.toLocalDate();
