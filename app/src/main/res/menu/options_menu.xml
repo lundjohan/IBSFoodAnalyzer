@@ -3,6 +3,9 @@
     <item
         android:id="@+id/importMenuItem"
         android:title="Import from file"/>
+    <item
+        android:id="@+id/importFromTxtMenuItem"
+        android:title="Import from txt file"/>
 
     <item
         android:id="@+id/exportMenuItem"

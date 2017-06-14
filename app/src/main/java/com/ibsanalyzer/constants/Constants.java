@@ -9,6 +9,10 @@ import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
  */
 
 public class Constants {
+    //reading from txt files
+    public final static String DELIMETER = "|";
+
+
     //Database operations
     public final static String CURRENT_DB_PATH = "//data//" + BuildConfig.APPLICATION_ID + "//databases//" +
             DATABASE_NAME;

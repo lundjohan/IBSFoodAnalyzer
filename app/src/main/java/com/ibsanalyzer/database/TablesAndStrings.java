@@ -1,7 +1,5 @@
 package com.ibsanalyzer.database;
 
-import static android.media.tv.TvContract.Channels.COLUMN_TYPE;
-
 /**
  * Created by Johan on 2017-05-15.
  */

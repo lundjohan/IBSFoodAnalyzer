@@ -15,6 +15,7 @@ import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.constants.Constants;
+import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.database.ExternalStorageHandler;
 
 import java.io.Serializable;
@@ -53,6 +54,18 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
                 }
 
 
+                return true;
+            case R.id.importFromTxtMenuItem:
+                List<Event>events = ExternalStorageHandler.importEventsFromTxt("someFilePathstr");
+                DBHandler db = new DBHandler(this);
+                db.addEventsWithUnknownTagTemplates(events);
+                try {
+                    adapter.getDiaryFragment().refillEventListWithNewDatabase();
+
+                }
+                catch(Exception e){
+                    Log.d("Debug","Adapter could not be updated after replacement of database");
+                }
                 return true;
             case R.id.exportMenuItem:
                 ExternalStorageHandler.saveDBToExtStorage(this);

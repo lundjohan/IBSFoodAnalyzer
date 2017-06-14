@@ -12,13 +12,21 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.importer.Importer;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.CURRENT_DB_PATH;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
@@ -214,6 +222,32 @@ public class ExternalStorageHandler {
         }
 
 
+    }
+
+    /**
+     * This method reads events from a txt file
+     * and store them (together with TagTemplates)
+     * in database
+     */
+    public static List<Event> importEventsFromTxt(String filePath) {
+        List<Event>importedEvents = new ArrayList<>();
+
+        //get permissions to area
+
+        //open file
+        File file = new File(filePath);
+        //read in each row
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+            for(String line; (line = br.readLine()) != null; ) {
+                Event event = Importer.lineToEvent(line);
+                importedEvents.add(event);
+            }
+            // line is not visible here.
+        }
+        catch (Exception e){
+            Log.e("Error", "Something went wrong when reading from file");
+        }
+        return importedEvents;
     }
 
 }
