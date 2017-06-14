@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.CURRENT_DB_PATH;
+import static com.ibsanalyzer.constants.Constants.NAME_OF_TXT_FILE;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 
@@ -190,7 +191,6 @@ public class ExternalStorageHandler {
     }*/
 
     public static void replaceDBWithExtStorageFile(Activity activity) {
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         //get current path to internal storage db file
         File data = Environment.getDataDirectory();
         File pathToCurrentDB = new File(data, CURRENT_DB_PATH);
@@ -229,13 +229,17 @@ public class ExternalStorageHandler {
      * and store them (together with TagTemplates)
      * in database
      */
-    public static List<Event> importEventsFromTxt(String filePath) {
+    public static List<Event> importEventsFromTxt() {
         List<Event>importedEvents = new ArrayList<>();
 
         //get permissions to area
-
-        //open file
-        File file = new File(filePath);
+        File sd = Environment.getExternalStoragePublicDirectory(Environment
+                .DIRECTORY_DOWNLOADS);
+        String pathToTxtFile = NAME_OF_TXT_FILE;
+        if (!isExternalStorageAccessable()) {
+            //try to fix it
+        }
+        File file = new File(sd, pathToTxtFile);
         //read in each row
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             for(String line; (line = br.readLine()) != null; ) {

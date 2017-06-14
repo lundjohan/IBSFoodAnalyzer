@@ -34,12 +34,14 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -48,24 +50,28 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
                 try {
                     adapter.getDiaryFragment().refillEventListWithNewDatabase();
 
-                }
-                catch(Exception e){
-                    Log.d("Debug","Adapter could not be updated after replacement of database");
+                } catch (Exception e) {
+                    Log.d("Debug", "Adapter could not be updated after replacement of database");
                 }
 
 
                 return true;
             case R.id.importFromTxtMenuItem:
-                List<Event>events = ExternalStorageHandler.importEventsFromTxt("someFilePathstr");
-                DBHandler db = new DBHandler(this);
+                final DBHandler db = new DBHandler(this);
+                List<Event> events = ExternalStorageHandler.importEventsFromTxt();
+                db.deleteAllTablesRows();
                 db.addEventsWithUnknownTagTemplates(events);
+
                 try {
                     adapter.getDiaryFragment().refillEventListWithNewDatabase();
 
+                } catch (Exception e) {
+                    Log.d("Debug", "Adapter could not be updated after replacement of " +
+                            "database");
+
                 }
-                catch(Exception e){
-                    Log.d("Debug","Adapter could not be updated after replacement of database");
-                }
+
+
                 return true;
             case R.id.exportMenuItem:
                 ExternalStorageHandler.saveDBToExtStorage(this);
@@ -76,7 +82,9 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
             default:
                 return super.onOptionsItemSelected(item);
         }
+
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,10 +118,12 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
         });
 
     }
+
     @Override
     public ViewSwitcher getTabsLayoutSwitcher() {
         return (ViewSwitcher) findViewById(R.id.tabLayoutSwitcher);
     }
+
     public void changeToTemplateFragment() {
         viewPager.setCurrentItem(0);
     }
@@ -139,9 +149,11 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
             case REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Permission Granted!", Toast.LENGTH_SHORT)
+                            .show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Permission Denied!", Toast.LENGTH_SHORT)
+                            .show();
                 }
         }
     }
