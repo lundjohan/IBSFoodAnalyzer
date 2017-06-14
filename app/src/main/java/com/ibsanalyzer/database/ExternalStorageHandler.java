@@ -239,8 +239,13 @@ public class ExternalStorageHandler {
         //read in each row
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             for(String line; (line = br.readLine()) != null; ) {
-                Event event = Importer.lineToEvent(line);
-                importedEvents.add(event);
+                try {
+                    Event event = Importer.lineToEvent(line);
+                    importedEvents.add(event);
+                }
+                catch(Exception e){
+                    Log.e("Error","One event could not be imported, skipping row.");
+                }
             }
             // line is not visible here.
         }
