@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ViewSwitcher;
 
+import com.ibsanalyzer.adapters.EventAdapter;
 import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;

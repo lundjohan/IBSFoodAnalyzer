@@ -1,10 +1,14 @@
-package com.ibsanalyzer.inputday;
+package com.ibsanalyzer.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
+
+import com.ibsanalyzer.inputday.DiaryFragment;
+import com.ibsanalyzer.inputday.StatFragment;
+import com.ibsanalyzer.inputday.TemplateFragment;
 
 /**
  * Created by Johan on 2017-04-18.

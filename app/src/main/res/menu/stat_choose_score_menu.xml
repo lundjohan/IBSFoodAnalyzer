@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/avgScoreMenuItem"
+        android:title="Average Score"/>
+    <item
+        android:id="@+id/blueZoneMenuItem"
+        android:title="Blue Zone Score"
+        />
+    <item
+        android:id="@+id/completeMenuItem"
+        android:title="Complete BM Score"
+        />
+    <item
+        android:id="@+id/bristolMenuItem"
+        android:title="Bristol Score"
+        />
+    <item
+        android:id="@+id/updateScoreMenuItem"
+        android:icon="@android:drawable/stat_notify_sync"
+        android:title="Update"
+        />
+</menu>

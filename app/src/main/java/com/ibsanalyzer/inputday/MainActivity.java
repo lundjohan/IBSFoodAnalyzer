@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.ibsanalyzer.adapters.TabPagerAdapter;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;

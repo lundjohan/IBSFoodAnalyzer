@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/tagname"
+        app:layout_constraintRight_toLeftOf="@+id/stattagname"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_constraintLeft_creator="1"
@@ -28,7 +28,7 @@
         tools:layout_constraintTop_creator="1" />
 
     <TextView
-        android:id="@+id/tagname"
+        android:id="@+id/stattagname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

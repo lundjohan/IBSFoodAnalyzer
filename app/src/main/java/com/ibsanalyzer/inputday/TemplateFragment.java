@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ibsanalyzer.adapters.EventsTemplateAdapter;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.util.Util;

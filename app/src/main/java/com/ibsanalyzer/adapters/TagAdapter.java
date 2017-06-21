@@ -1,4 +1,4 @@
-package com.ibsanalyzer.inputday;
+package com.ibsanalyzer.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.inputday.TagEventActivity;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
  * Created by Johan on 2017-05-13.
  */
 
-class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Tag>tagsList;
     private Activity parentActivity;
     public TagAdapter(List<Tag> tagsList, TagEventActivity tagEventActivity) {
@@ -50,7 +52,7 @@ class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             quantity = (TextView) itemView.findViewById(R.id.tag_quantity);
-            tagName = (TextView) itemView.findViewById(R.id.tagname);
+            tagName = (TextView) itemView.findViewById(R.id.stattagname);
         }
     }
 }

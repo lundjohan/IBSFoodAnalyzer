@@ -1,4 +1,4 @@
-package com.ibsanalyzer.inputday;
+package com.ibsanalyzer.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ibsanalyzer.inputday.R;
 
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_NAME;
 

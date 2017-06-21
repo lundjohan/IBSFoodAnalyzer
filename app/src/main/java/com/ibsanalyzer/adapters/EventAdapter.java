@@ -1,8 +1,7 @@
-package com.ibsanalyzer.inputday;
+package com.ibsanalyzer.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,8 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
+import com.ibsanalyzer.inputday.DiaryFragment;
+import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 
 import org.threeten.bp.LocalDate;
@@ -40,7 +41,7 @@ import static com.ibsanalyzer.inputday.R.id.tagQuantities;
  * Created by Johan on 2017-04-10.
  */
 
-class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> events = new ArrayList<>();
     private DiaryFragment usingFragment;
 
