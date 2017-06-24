@@ -9,12 +9,16 @@ import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.Exercise;
+import com.ibsanalyzer.base_classes.InputEvent;
+import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -164,5 +168,21 @@ public class Util {
         return events.indexOf(dateMarker)> -1;
     }
 
-
+    /**
+     * tags exist in Meal, Other and Exercise events.
+     * @param events
+     * @return
+     */
+    public static List<Tag> getTags(List<Event>events) {
+        List<Tag> tags = new ArrayList<>();
+        for (Event e : events) {
+            if (e instanceof InputEvent) {
+                tags.addAll(((InputEvent)e).getInputTags());
+            }
+            else if (e instanceof Exercise){
+                tags.add(((Exercise)e).getTypeOfExercise());
+            }
+        }
+        return tags;
+    }
 }

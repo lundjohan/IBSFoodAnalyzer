@@ -1,16 +1,13 @@
 package stat_classes;
 
-import java.time.LocalDateTime;
+import com.ibsanalyzer.base_classes.Chunk;
+
+import org.threeten.bp.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import base_classes.Chunk;
-import base_classes.Divider;
-import base_classes.Tag;
-import util.IBSUtil;
-import util.TimePeriod;
 
 public class TagPointScoreZonesHandler {
 	/*
@@ -50,7 +47,7 @@ public class TagPointScoreZonesHandler {
 	 *         - hoursNeededAhead>
 	 */
 	public static List<TimePeriod> retrieveScorePeriods(List<Chunk> chunks, double scoreFrom, double scoreTo,
-			long hoursNeededAhead) {
+														long hoursNeededAhead) {
 		List<TimePeriod> timePeriods = new ArrayList<>();
 		for (Chunk ch : chunks) {
 			//without this if program will crash in retrieveScorePeriods
@@ -140,7 +137,7 @@ public class TagPointScoreZonesHandler {
 	 * @param scorePeriods
 	 */
 	public static void addTagsInScoreZones(Map<String, TagPoint> tagPoints, List<Chunk> chunks,
-			List<TimePeriod> timePeriods) {
+										   List<TimePeriod> timePeriods) {
 		Map<String, Double> scoreZonesFreq = new HashMap<>();
 		for (TimePeriod tp : timePeriods) {
 			List<Tag> tags = TimePeriod.retrieveTagsForPeriod(chunks, tp);

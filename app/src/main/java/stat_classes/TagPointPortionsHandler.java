@@ -1,13 +1,12 @@
 package stat_classes;
 
-import java.time.LocalDateTime;
+import com.ibsanalyzer.base_classes.Chunk;
+import com.ibsanalyzer.base_classes.Meal;
+
+import org.threeten.bp.LocalDateTime;
+
 import java.util.List;
 import java.util.Map;
-
-import base_classes.Chunk;
-import base_classes.Meal;
-import constants.Constants;
-import util.TPUtil;
 
 public class TagPointPortionsHandler {
 
@@ -32,7 +31,7 @@ public class TagPointPortionsHandler {
 	 * @throws Exception
 	 */
 	static void addPortionScore(Chunk chunk, Map<String, TagPoint> tagPoints,
-			long hours, long portionSize) throws Exception {
+								long hours, long portionSize) throws Exception {
 		List<Meal> meals = chunk.getMeals();
 		if (meals.size()<1){
 			return;

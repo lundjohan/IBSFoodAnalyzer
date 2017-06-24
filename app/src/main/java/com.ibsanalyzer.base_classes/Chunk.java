@@ -1,5 +1,7 @@
 package com.ibsanalyzer.base_classes;
 
+import com.ibsanalyzer.util.Util;
+
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 
@@ -8,92 +10,58 @@ import java.util.List;
 //class solely in use for legacy reasons with TagPoints.
 
 public class Chunk {
-	List<Day> days = new ArrayList<>();
-	public Chunk(List<Day> days) {
-		this.days = days;
-	}
+	List<Event> events = new ArrayList<>();
 
 	public Chunk(List<Event> events) {
-
+        this.events = events;
 	}
 
 	public List<Rating> getDivs() {
-		List<Rating> divs = new ArrayList<>();
-		for (Day day : days) {
-			divs.addAll(day.getDividers());
+		List<Rating> ratings = new ArrayList<>();
+		for (Event e : events) {
+			if (e instanceof Rating) {
+                ratings.add((Rating)e);
+            }
 		}
-		return divs;
+		return ratings;
 	}
 
 	public List<Bm> getBMs() {
 		List<Bm> bms = new ArrayList<>();
-		for (Day d : days) {
-			bms.addAll(d.getBMs());
-		}
+        for (Event e : events) {
+            if (e instanceof Bm) {
+                bms.add((Bm) e);
+            }
+        }
 		return bms;
 	}
+	//tags exist in Meal, Other and Exercise events.
 	public List<Tag> getTags() {
-		List<Tag> tags = new ArrayList<>();
-		for (Day day:this.days) {
-			tags.addAll(day.getInputTags());
-		}
-		return tags;
+		return Util.getTags(events);
 	}
 
 	/**
 	 * @return tags from start time of chunk to (endtime of chunk - hours)
+     * Preequisite: events are sorted by time (latest last)
 	 */
 	public List<Tag> getTags(int hours) {
 		List<Tag> tags = new ArrayList<>();
+        if (events.isEmpty()){
+            return tags;
+        }
+        LocalDateTime lastTime = events.get(events.size()-1).getTime();
+        LocalDateTime lastValidTime = lastTime.minusHours(hours);
 
-		int hoursToCut = hours == 0?0:hours % 24;
-		int daysToCut = hours == 0?0:hours / 24;
-		daysToCut += hoursToCut>0?1:0;
-
-		if (days.size() <= daysToCut) {
-			return tags;
-		}
-
-		for (int i = 0; i < days.size() - daysToCut; i++) {
-			tags.addAll(days.get(i).getInputTags());
-		}
-		if (hoursToCut > 0) {
-			Day dayToGetLastTagsFrom = days.get((days.size() - 1) - daysToCut);
-			tags.addAll(dayToGetLastTagsFrom.getTags(hoursToCut));
-		}
-
-		return tags;
-	}
-
-	//copy-pastat från ovan, inte så snyggt
-	public List<Tag> getTagsTruncatedEnds(int hours){
-		List<Tag> tags = new ArrayList<>();
-
-		int hoursToCutAtEnd = hours == 0?0:hours % 24;
-		int daysToCutAtEnd = hours == 0?0:hours / 24;
-		daysToCutAtEnd += hoursToCutAtEnd>0?1:0;
-
-		if (days.size() <= daysToCutAtEnd*2) {
-			return tags;
-		}
-
-		//add hours in front
-		if (hoursToCutAtEnd > 0) {
-			Day dayToGetFirstTagsFrom = days.get(daysToCutAtEnd);
-			tags.addAll(dayToGetFirstTagsFrom.getTags(-hoursToCutAtEnd));
-		}
-		//add days in middle
-		for (int i = daysToCutAtEnd; i < days.size() - daysToCutAtEnd; i++) {
-			tags.addAll(days.get(i).getInputTags());
-		}
-
-		//add hours in end
-		if (hoursToCutAtEnd > 0) {
-			Day dayToGetLastTagsFrom = days.get(days.size() -1 -daysToCutAtEnd);
-			tags.addAll(dayToGetLastTagsFrom.getTags(hoursToCutAtEnd));
-		}
-
-		return tags;
+        //loop backwards
+        List<Event>remainingEvents = new ArrayList<>();
+        for (int i=events.size()-1;i>=0;i--){
+            //if event is before or equal to time limit
+            if (!events.get(i).getTime().isAfter(lastValidTime)){
+                remainingEvents = events.subList(0, i+1); //+1 since 2nd parameter in subList is excl
+                break;
+            }
+        }
+		return Util.getTags(remainingEvents);
 	}
 
 	/**
@@ -173,10 +141,6 @@ public class Chunk {
         //uncomment below, when stream is ok
 	//	days.forEach(d -> meals.addAll(d.getMeals()));
 		return meals;
-	}
-
-	public List<Day> getDays() {
-		return days;
 	}
 
 	public static List<Chunk> makeChunksFromEvents(List<Event>events){

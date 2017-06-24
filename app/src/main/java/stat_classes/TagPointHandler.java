@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 public class TagPointHandler {
-
+/*
 	public static Map<String, TagPoint> retrieveTagPoints(String fileName) throws Exception {
 		List<Chunk> chunks = Importer.parseToChunks(fileName);
 		for (Chunk ch: chunks) {
@@ -28,5 +28,5 @@ public class TagPointHandler {
 		TagPointPortionsHandler.addPortionScore(chunks, tagPoints, Constants.HOURS_COHERENT_TIME_FOR_PORTIONS, Constants.THREE_PORTIONS);
 		TagPointPortionsHandler.addPortionScore(chunks, tagPoints, Constants.HOURS_COHERENT_TIME_FOR_PORTIONS, Constants.FOUR_PORTIONS);
 		return tagPoints;
-	}
+	}*/
 }

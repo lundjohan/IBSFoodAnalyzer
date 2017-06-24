@@ -1,35 +1,36 @@
 package stat_classes;
 
+import com.ibsanalyzer.base_classes.Bm;
+import com.ibsanalyzer.base_classes.Chunk;
+import com.ibsanalyzer.base_classes.Tag;
+
 import java.util.List;
 import java.util.Map;
 
-import base_classes.BM;
-import base_classes.Chunk;
-import base_classes.Tag;
 /**
  * This class is special in that it does not add quantity to tags.
- * Instead of quantity it uses TagPoint.sumBMs
+ * Instead of quantity it uses TagPoint.sumBms
  * @author Johan Lund
  *
  */
-public class TagPointBMHandler {
+public class TagPointBmHandler {
 
-	public static void addBMScore(Chunk chunk, Map<String, TagPoint> tagPoints,
-			long hoursAheadForBM) {
+	public static void addBmScore(Chunk chunk, Map<String, TagPoint> tagPoints,
+								  long hoursAheadForBm) {
 		List<Tag> allTags = chunk.getTags();
 		for (Tag t : allTags) {
-			List<BM> bmsAhead = chunk.getBMsAfterTime(chunk, t.getTime(),
-					hoursAheadForBM);
+			List<Bm> bmsAhead = chunk.getBMsAfterTime(chunk, t.getTime(),
+					hoursAheadForBm);
 			int completeness = 0;
 			double sumBristol = 0;
-			for (BM bm : bmsAhead) {
-				completeness += bm.getCompleteness();
+			for (Bm bm : bmsAhead) {
+				completeness += bm.getComplete();
 				sumBristol += bm.getBristol();
 			}
 			String name = t.getName();
 			TagPoint tp = tagPoints.get(name);
 			if (tp == null) {
-				//add no quantity. BM operates by sumBristol
+				//add no quantity. Bm operates by sumBristol
 				tp = new TagPoint(name, 0);
 				tagPoints.put(name, tp);
 			}
@@ -41,10 +42,10 @@ public class TagPointBMHandler {
 
 	}
 
-	public static void addBMScore(List<Chunk> chunks,
-			Map<String, TagPoint> tagPoints, long hoursAheadForBM) {
+	public static void addBmScore(List<Chunk> chunks,
+			Map<String, TagPoint> tagPoints, long hoursAheadForBm) {
 		for (Chunk chunk : chunks) {
-			addBMScore(chunk, tagPoints, hoursAheadForBM);
+			addBmScore(chunk, tagPoints, hoursAheadForBm);
 		}
 	}
 
