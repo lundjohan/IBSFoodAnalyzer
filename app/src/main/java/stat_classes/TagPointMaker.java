@@ -2,6 +2,7 @@ package stat_classes;
 
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.HashMap;
 import java.util.List;

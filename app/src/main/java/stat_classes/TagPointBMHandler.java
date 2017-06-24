@@ -3,6 +3,7 @@ package stat_classes;
 import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.List;
 import java.util.Map;

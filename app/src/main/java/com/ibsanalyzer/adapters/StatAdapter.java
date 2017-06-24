@@ -11,12 +11,7 @@ import com.ibsanalyzer.inputday.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import stat_classes.TagPoint;
-
-import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
-import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
-import static com.ibsanalyzer.constants.Constants.BRISTOL_SCORE;
-import static com.ibsanalyzer.constants.Constants.COMPLETENESS_SCORE;
+import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 /**
  * Created by Johan on 2017-06-21.
@@ -28,6 +23,14 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public StatAdapter(List<TagPoint> tagPoints, int typeOfScore) {
         this.tagPoints = tagPoints;
+        this.typeOfScore = typeOfScore;
+    }
+
+    public int getTypeOfScore() {
+        return typeOfScore;
+    }
+
+    public void setTypeOfScore(int typeOfScore) {
         this.typeOfScore = typeOfScore;
     }
 
@@ -45,29 +48,12 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TagPoint tp = tagPoints.get(position);
         viewHolder.tagName.setText(tp.getName());
         viewHolder.quantity.setText(Double.toString(tp.getQuantity()));
-        if (typeOfScore == AVG_SCORE) {
-            viewHolder.scoreField.setText(Double.toString(tp.getAdjustedAvgScore()));
-        } else if (typeOfScore == BLUE_ZONE_SCORE) {
-            viewHolder.scoreField.setText(Double.toString(tp.getBlueZonesQuant()));
-        } else if (typeOfScore == COMPLETENESS_SCORE) {
-            viewHolder.scoreField.setText(Double.toString(tp.getCompleteAvg()));
-        } else if (typeOfScore == BRISTOL_SCORE) {
-            viewHolder.scoreField.setText(Double.toString(tp.getAvgBristol()));
-        }
-
-    }
-
-    public int getTypeOfScore() {
-        return typeOfScore;
+        viewHolder.scoreField.setText(Double.toString(tp.getScore()));
     }
 
     @Override
     public int getItemCount() {
         return tagPoints.size();
-    }
-
-    public void setTypeOfScore(int typeOfScore) {
-        this.typeOfScore = typeOfScore;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -2,6 +2,7 @@ package stat_classes;
 
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.tagpoint_classes.TagPoint;
 import com.ibsanalyzer.util.TPUtil;
 
 import org.threeten.bp.LocalDateTime;

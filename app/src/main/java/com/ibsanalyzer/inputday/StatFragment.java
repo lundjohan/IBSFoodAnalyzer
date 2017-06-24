@@ -7,33 +7,28 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
-import com.ibsanalyzer.adapters.EventAdapter;
 import com.ibsanalyzer.adapters.StatAdapter;
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.constants.Constants;
-import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 
 import java.util.List;
 
-import stat_classes.TagPoint;
-import stat_classes.TagPointMaker;
+import com.ibsanalyzer.tagpoint_classes.TagPoint;
+
+import stat_classes.TagPointHandler;
 
 import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
 import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
 import static com.ibsanalyzer.constants.Constants.BRISTOL_SCORE;
 import static com.ibsanalyzer.constants.Constants.COMPLETENESS_SCORE;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
-import static com.ibsanalyzer.inputday.DiaryFragment.BACKGROUND_COLOR;
 
 
 /**
@@ -74,13 +69,6 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         PopupMenu popup = new PopupMenu(getActivity(), v);
         //Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.stat_choose_score_menu, popup.getMenu());
-        Menu menu = popup.getMenu();
-        MenuItem avgItem = menu.findItem(R.id.avgScoreMenuItem);
-        MenuItem blueZoneItem = menu.findItem(R.id.blueZoneMenuItem);
-        MenuItem completeBmItem = menu.findItem(R.id.completeMenuItem);
-        MenuItem bristolItem = menu.findItem(R.id.bristolMenuItem);
-        MenuItem updateItem = menu.findItem(R.id.updateScoreMenuItem);
-
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 int typeOfScore = getTypeOfScore(item.getItemId());
@@ -116,27 +104,27 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         }
         return type;
     }
+
+    /**
+     * This method is called when user has demanded a different stat type to be shown.
+     * OR if update is demanded.
+     * @param typeOfScore
+     */
     private void changeSetup(int typeOfScore){
         tagPoints.clear();
         List<Event> events = callback.retrieveEvents();
         List<Chunk>chunks = Chunk.makeChunksFromEvents(events);
         //here create new tagPoints
         if (typeOfScore == AVG_SCORE) {
-            tagPoints = TagPointMaker.doBasicScore(chunks, Constants.HOURS);
+            tagPoints = TagPointHandler.retrieveAvgScoreTP(chunks, Constants.HOURS);
         } else if (typeOfScore == BLUE_ZONE_SCORE) {
-            type = BLUE_ZONE_SCORE;
+            tagPoints = TagPointHandler.retrieveBlueZoneScoreTP(chunks, Constants.SCORE_ABOVE_ARE_BLUEZONES, Constants.BUFFERT_HOURS_BLUEZONES);
         } else if (typeOfScore == COMPLETENESS_SCORE) {
-            type = COMPLETENESS_SCORE;
-        } else if (typeOfScore == R.id.bristolMenuItem) {
-            type = BRISTOL_SCORE;
+            tagPoints = TagPointHandler.retrieveCompleteScoreTP(chunks, HOURS_AHEAD_FOR_BM);
         } else if (typeOfScore == BRISTOL_SCORE) {
-            type = UPDATE;
+            tagPoints = TagPointHandler.retrieveBristolScoreTP(chunks, HOURS_AHEAD_FOR_BRISTOL);
         }
-        
-        tagPoints.addAll(dbHandler.getAllEventsSorted());
-        adapter.setTypeOfScore(typeOfScore);
         adapter.notifyDataSetChanged();
-        adapter = new StatAdapter(tagPoints,typeOfScore);
     }
 
     private boolean isAlreadyRightView(int typeOfScoreClicked) {

@@ -3,6 +3,7 @@ package stat_classes;
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.tagpoint_classes.TagPoint;
 import com.ibsanalyzer.util.IBSUtil;
 import com.ibsanalyzer.util.TimePeriod;
 

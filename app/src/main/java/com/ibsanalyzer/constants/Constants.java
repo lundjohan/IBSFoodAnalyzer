@@ -93,6 +93,7 @@ public class Constants {
     static final double JUMP_MIN_SCORE_DIFF = 0.5;
 
     public static final int HOURS = 24; //in hours
+    public static final int BLUE_ZONE_BUFFERT_HOURS = 24; //in hours
     static final double PLUS_MINUS_QUOTIENT = 1;
     static final double MAX_SCORE = 5;
     static final double MIN_SCORE = 0;
