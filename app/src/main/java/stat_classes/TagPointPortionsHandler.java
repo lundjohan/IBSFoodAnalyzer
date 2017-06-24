@@ -2,11 +2,13 @@ package stat_classes;
 
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.util.TPUtil;
 
 import org.threeten.bp.LocalDateTime;
-
 import java.util.List;
 import java.util.Map;
+
+import static com.ibsanalyzer.constants.Constants.ZONE_ID;
 
 public class TagPointPortionsHandler {
 
@@ -53,8 +55,8 @@ public class TagPointPortionsHandler {
 			if (endOfScorePeriod == null){
 				break;
 			}
-			double durationInMinutesOfScorePeriod = ((endOfScorePeriod.atZone(Constants.ZONE_ID).toEpochSecond() -
-					startOfScorePeriod.atZone(Constants.ZONE_ID).toEpochSecond())/60.);
+			double durationInMinutesOfScorePeriod = ((endOfScorePeriod.atZone(ZONE_ID).toEpochSecond() -
+					startOfScorePeriod.atZone(ZONE_ID).toEpochSecond())/60.);
 			if (durationInMinutesOfScorePeriod > 0){
 				quantity += durationInMinutesOfScorePeriod;
 				score += TPUtil.calcAccumulatedScoreFromToTime(chunk, startOfScorePeriod, (long)durationInMinutesOfScorePeriod);

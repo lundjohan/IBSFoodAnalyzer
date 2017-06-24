@@ -1,8 +1,11 @@
 package com.ibsanalyzer.base_classes;
 
+import com.ibsanalyzer.util.IBSUtil;
+import com.ibsanalyzer.util.TimePeriod;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
 
 import java.util.ArrayList;
@@ -16,7 +19,11 @@ public class Chunk {
         this.events = events;
 	}
 
-	public List<Rating> getDivs() {
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public List<Rating> getDivs() {
 		List<Rating> ratings = new ArrayList<>();
 		for (Event e : events) {
 			if (e instanceof Rating) {
@@ -154,5 +161,25 @@ public class Chunk {
 		}
 		return chunks;
 	}
+    /**
+     * Prerequisite events>0
+     * @return
+     */
+    public LocalDateTime getLastTime() {
+        Event e = events.get(events.size()-1);
+        return e.getTime();
+    }
 
+    /**
+     * Prerequisite events>0
+     * @return
+     */
+    public LocalDateTime getStartTime() {
+        return events.get(0).getTime();
+    }
+
+    public List<Tag> getTagsForPeriod(TimePeriod tp) {
+        List<Event>trimmedEvents = IBSUtil.trimEventsToPeriod(getEvents(), tp);
+        return Util.getTags(trimmedEvents);
+    }
 }

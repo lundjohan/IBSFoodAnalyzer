@@ -2,6 +2,8 @@ package com.ibsanalyzer.constants;
 
 import com.ibsanalyzer.inputday.BuildConfig;
 
+import org.threeten.bp.ZoneId;
+
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 
 /**
@@ -94,5 +96,9 @@ public class Constants {
     static final double PLUS_MINUS_QUOTIENT = 1;
     static final double MAX_SCORE = 5;
     static final double MIN_SCORE = 0;
+
+    //=================================TIME ZONE===================================
+    ZoneId zoneId = ZoneId.systemDefault();
+    public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
 }

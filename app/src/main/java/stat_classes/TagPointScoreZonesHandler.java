@@ -1,6 +1,10 @@
 package stat_classes;
 
 import com.ibsanalyzer.base_classes.Chunk;
+import com.ibsanalyzer.base_classes.Rating;
+import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.util.IBSUtil;
+import com.ibsanalyzer.util.TimePeriod;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -51,7 +55,7 @@ public class TagPointScoreZonesHandler {
 		List<TimePeriod> timePeriods = new ArrayList<>();
 		for (Chunk ch : chunks) {
 			//without this if program will crash in retrieveScorePeriods
-			if (ch.getDays().isEmpty()) {
+			if (ch.getEvents().isEmpty()) {
 				continue;
 			}
 			List<TimePeriod> tps = retrieveScorePeriods(ch, scoreFrom, scoreTo, hoursNeededAhead);
@@ -82,7 +86,7 @@ public class TagPointScoreZonesHandler {
 	 * @return
 	 */
 	private static List<TimePeriod> retrieveScorePeriods(Chunk ch, double scoreFrom, double scoreTo) {
-		List<Divider> divs = ch.getDivs();
+		List<Rating> divs = ch.getDivs();
 		IBSUtil.addLastDiv(ch, divs);
 		return retrieveScorePeriods(divs, scoreFrom, scoreTo);
 	}
@@ -94,7 +98,7 @@ public class TagPointScoreZonesHandler {
 	 * @return the full timePeriods that occurs if in between scoreFrom and
 	 *         scoreTo
 	 */
-	private static List<TimePeriod> retrieveScorePeriods(List<Divider> divs, double scoreFrom, double scoreTo) {
+	private static List<TimePeriod> retrieveScorePeriods(List<Rating> divs, double scoreFrom, double scoreTo) {
 		// 0. create empty list of TimePeriods
 		List<TimePeriod> timePeriods = new ArrayList<>();
 		// 1. loop through divs, creating TimePeriod for period with score
@@ -103,7 +107,7 @@ public class TagPointScoreZonesHandler {
 		boolean buildingTimePeriod = false;
 		LocalDateTime start = null;
 		for (int i = 0; i < divs.size(); i++) {
-			Divider div = divs.get(i);
+			Rating div = divs.get(i);
 			if (!buildingTimePeriod) {
 				if (div.getAfter() >= scoreFrom && div.getAfter() <= scoreTo) {
 					start = div.getTime();
@@ -134,7 +138,7 @@ public class TagPointScoreZonesHandler {
 	 * 
 	 * @param tagPoints
 	 * @param chunks
-	 * @param scorePeriods
+	 * @param timePeriods
 	 */
 	public static void addTagsInScoreZones(Map<String, TagPoint> tagPoints, List<Chunk> chunks,
 										   List<TimePeriod> timePeriods) {
