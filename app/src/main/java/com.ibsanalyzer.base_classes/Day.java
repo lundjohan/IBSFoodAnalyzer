@@ -5,7 +5,10 @@ import org.threeten.bp.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-;
+/**
+ * class solely in use for legacy reasons with TagPoints (via Chunk).
+ */
+
 
 public class Day {
     private LocalDate date;

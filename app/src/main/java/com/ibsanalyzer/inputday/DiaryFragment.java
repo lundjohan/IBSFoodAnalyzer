@@ -521,4 +521,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             Util.addDateMarkerIfNotExists(lastDate, eventList);
         }
     }
+    public List<Event>getEvents(){
+        return eventList;
+    }
 }

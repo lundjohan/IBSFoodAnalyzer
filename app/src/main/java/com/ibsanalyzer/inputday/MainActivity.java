@@ -20,13 +20,13 @@ import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.database.ExternalStorageHandler;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
-public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener
-        /*TemplateAdderActivity.TemplateAdderListener*/ {
+public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener, StatFragment.StatFragmentListener{
     TabLayout tabLayout;
     ViewPager viewPager;
     TabPagerAdapter adapter;
@@ -157,6 +157,17 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
                             .show();
                 }
         }
+    }
+
+    @Override
+    public List<Event> retrieveEvents() {
+        List<Event>events = new ArrayList<>();
+        //1. Access Diary Fragment
+        DiaryFragment diary = (DiaryFragment)adapter.getRegisteredFragment(1);
+        //2 Retrieve events from it
+        events = diary.getEvents();
+        //TODO 3. if this fails, retrieve events from database instead.
+        return events;
     }
 }
 

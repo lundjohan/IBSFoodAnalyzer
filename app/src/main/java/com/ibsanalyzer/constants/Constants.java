@@ -15,7 +15,8 @@ public class Constants {
 
 
     //Database operations
-    public final static String CURRENT_DB_PATH = "//data//" + BuildConfig.APPLICATION_ID + "//databases//" +
+    public final static String CURRENT_DB_PATH = "//data//" + BuildConfig.APPLICATION_ID +
+            "//databases//" +
             DATABASE_NAME;
     public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
     public static String PACKAGE_NAME;
@@ -56,5 +57,42 @@ public class Constants {
     //used in various cases
     public static final int MEAL = 0, OTHER = 1, EXERCISE = 2, BM = 3, RATING = 4, DATE_MARKER = 5;
 
+    //***************************************STATISTICS*********************************************
+    //for StatFragment and its adapter
+    public static final int AVG_SCORE = 0, BLUE_ZONE_SCORE = 1, COMPLETENESS_SCORE = 2,
+            BRISTOL_SCORE = 3, UPDATE = 4;
+
+    //Rating 6 == Great, Rating 7 == Phenomenal
+    public static final int BLUE_ZONE_RATING_LIMIT_INCLUSIVE = 6;
+
+    //==================== HEURISTIC FLAGS======================================
+    static final boolean DO_RELATIONS = true;
+    static final boolean DO_JUMP = true;
+    static final boolean DO_BM_COMPLETES = true;
+    //====================FOR HEURISTIC TOOLS=================================
+    //Blue Zones
+    static final int BUFFERT_HOURS_BLUEZONES = 24;
+    static final double SCORE_ABOVE_ARE_BLUEZONES = 4.8;
+    //In future perhaps this is better
+    static final int PERCENTS_THAT_ARE_BLUEZONES = 5;
+
+    //Portions
+    static final long HOURS_COHERENT_TIME_FOR_PORTIONS = 30;
+    static final long ONE_PORTION = 1;
+    static final long TWO_PORTIONS = 2;
+    static final long THREE_PORTIONS = 3;
+    static final long FOUR_PORTIONS = 4;
+
+    //BM
+    static final long HOURS_AHEAD_FOR_BM = 30;
+
+    //Jump
+    static final int JUMP_HOURS_LIMIT = 2;
+    static final double JUMP_MIN_SCORE_DIFF = 0.5;
+
+    public static final int HOURS = 24; //in hours
+    static final double PLUS_MINUS_QUOTIENT = 1;
+    static final double MAX_SCORE = 5;
+    static final double MIN_SCORE = 0;
 
 }

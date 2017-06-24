@@ -5,12 +5,16 @@ import org.threeten.bp.ZoneId;
 
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.stream.Collectors; Fix streams for Android!
+//class solely in use for legacy reasons with TagPoints.
 
 public class Chunk {
 	List<Day> days = new ArrayList<>();
 	public Chunk(List<Day> days) {
 		this.days = days;
+	}
+
+	public Chunk(List<Event> events) {
+
 	}
 
 	public List<Rating> getDivs() {
@@ -173,6 +177,18 @@ public class Chunk {
 
 	public List<Day> getDays() {
 		return days;
+	}
+
+	public static List<Chunk> makeChunksFromEvents(List<Event>events){
+		List<Chunk>chunks = new ArrayList<>();
+		int lastStartIndex = 0;
+		for (int i = 0;i<events.size(); i++){
+			if (events.get(i).hasBreak()){
+				Chunk ch = new Chunk(events.subList(lastStartIndex,i ));
+				chunks.add(ch);
+			}
+		}
+		return chunks;
 	}
 
 }

@@ -35,7 +35,7 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tagName = (TextView) view.findViewById(R.id.tagName);
+        TextView tagName = (TextView) view.findViewById(R.id.tagname_stat);
         TextView inherits = (TextView) view.findViewById(R.id.inherits);
 
         String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TAGNAME));
