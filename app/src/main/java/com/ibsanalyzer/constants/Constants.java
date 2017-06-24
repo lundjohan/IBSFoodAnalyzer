@@ -73,30 +73,30 @@ public class Constants {
     static final boolean DO_BM_COMPLETES = true;
     //====================FOR HEURISTIC TOOLS=================================
     //Blue Zones
-    static final int BUFFERT_HOURS_BLUEZONES = 24;
-    static final double SCORE_ABOVE_ARE_BLUEZONES = 4.8;
+
+    public static final double SCORE_BLUEZONES_FROM = 6;
+    public static final double SCORE_BLUEZONES_TO = 7;
     //In future perhaps this is better
     static final int PERCENTS_THAT_ARE_BLUEZONES = 5;
 
     //Portions
-    static final long HOURS_COHERENT_TIME_FOR_PORTIONS = 30;
-    static final long ONE_PORTION = 1;
-    static final long TWO_PORTIONS = 2;
-    static final long THREE_PORTIONS = 3;
-    static final long FOUR_PORTIONS = 4;
+    public static final long HOURS_COHERENT_TIME_FOR_PORTIONS = 30;
+    public static final long ONE_PORTION = 1;
+    public static final long TWO_PORTIONS = 2;
+    public static final long THREE_PORTIONS = 3;
+    public static final long FOUR_PORTIONS = 4;
 
     //BM
     static final long HOURS_AHEAD_FOR_BM = 30;
 
-    //Jump
-    static final int JUMP_HOURS_LIMIT = 2;
-    static final double JUMP_MIN_SCORE_DIFF = 0.5;
+    public static final int HOURS_AHEAD_FOR_AVG = 24; //in hours
+    public static final int HOURS_AHEAD_FOR_BLUEZONES = 24; //in hours
+    public static final int HOURS_AHEAD_FOR_COMPLETE = 30; //in hours
+    public static final int HOURS_AHEAD_FOR_BRISTOL = 30; //in hours
 
-    public static final int HOURS = 24; //in hours
-    public static final int BLUE_ZONE_BUFFERT_HOURS = 24; //in hours
-    static final double PLUS_MINUS_QUOTIENT = 1;
-    static final double MAX_SCORE = 5;
-    static final double MIN_SCORE = 0;
+    public static final double PLUS_MINUS_QUOTIENT = 1;
+    public static final double MAX_SCORE = 7;
+    public static final double MIN_SCORE = 1;
 
     //=================================TIME ZONE===================================
     ZoneId zoneId = ZoneId.systemDefault();

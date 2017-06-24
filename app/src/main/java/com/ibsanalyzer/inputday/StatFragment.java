@@ -28,6 +28,12 @@ import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
 import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
 import static com.ibsanalyzer.constants.Constants.BRISTOL_SCORE;
 import static com.ibsanalyzer.constants.Constants.COMPLETENESS_SCORE;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_AVG;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BLUEZONES;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BRISTOL;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
+import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_FROM;
+import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_TO;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
 
 
@@ -116,11 +122,11 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         List<Chunk>chunks = Chunk.makeChunksFromEvents(events);
         //here create new tagPoints
         if (typeOfScore == AVG_SCORE) {
-            tagPoints = TagPointHandler.retrieveAvgScoreTP(chunks, Constants.HOURS);
+            tagPoints = TagPointHandler.retrieveAvgScoreTP(chunks, HOURS_AHEAD_FOR_AVG);
         } else if (typeOfScore == BLUE_ZONE_SCORE) {
-            tagPoints = TagPointHandler.retrieveBlueZoneScoreTP(chunks, Constants.SCORE_ABOVE_ARE_BLUEZONES, Constants.BUFFERT_HOURS_BLUEZONES);
+            tagPoints = TagPointHandler.retrieveBlueZoneScoreTP(chunks, SCORE_BLUEZONES_FROM, SCORE_BLUEZONES_TO, HOURS_AHEAD_FOR_BLUEZONES);
         } else if (typeOfScore == COMPLETENESS_SCORE) {
-            tagPoints = TagPointHandler.retrieveCompleteScoreTP(chunks, HOURS_AHEAD_FOR_BM);
+            tagPoints = TagPointHandler.retrieveCompleteScoreTP(chunks, HOURS_AHEAD_FOR_COMPLETE);
         } else if (typeOfScore == BRISTOL_SCORE) {
             tagPoints = TagPointHandler.retrieveBristolScoreTP(chunks, HOURS_AHEAD_FOR_BRISTOL);
         }

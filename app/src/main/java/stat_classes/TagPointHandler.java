@@ -30,4 +30,17 @@ public class TagPointHandler {
 		TagPointPortionsHandler.addPortionScore(chunks, tagPoints, Constants.HOURS_COHERENT_TIME_FOR_PORTIONS, Constants.FOUR_PORTIONS);
 		return tagPoints;
 	}
+
+    public static List<TagPoint> retrieveAvgScoreTP(List<Chunk> chunks, int hoursAheadForAvg) {
+    }
+
+	public static List<TagPoint> retrieveBlueZoneScoreTP(List<Chunk> chunks, double scoreBluezonesFrom, 
+											   double scoreBluezonesTo, int hoursAheadForBluezones) {
+	}
+
+	public static List<TagPoint> retrieveCompleteScoreTP(List<Chunk> chunks, int hoursAheadForComplete) {
+	}
+
+	public static List<TagPoint> retrieveBristolScoreTP(List<Chunk> chunks, int hoursAheadForBristol) {
+	}
 }
