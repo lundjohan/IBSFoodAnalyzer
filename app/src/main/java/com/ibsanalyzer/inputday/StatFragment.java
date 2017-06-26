@@ -25,16 +25,24 @@ import java.util.List;
 import java.util.Map;
 
 import com.ibsanalyzer.calc_score_classes.AvgScoreWrapper;
+import com.ibsanalyzer.calc_score_classes.BlueScoreWrapper;
+import com.ibsanalyzer.calc_score_classes.BristolScoreWrapper;
+import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import stat_classes.TagPointMaker;
 
+import static android.R.attr.type;
 import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
 import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
 import static com.ibsanalyzer.constants.Constants.BRISTOL_SCORE;
 import static com.ibsanalyzer.constants.Constants.COMPLETENESS_SCORE;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_AVG;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BLUEZONES;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BRISTOL;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
+import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_FROM;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
 
 
@@ -46,6 +54,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     LinearLayoutManager layoutManager;
     StatAdapter adapter;
     StatFragmentListener callback;
+    TextView statType;
 
     //Scores
     Map<String, TagPoint> tagPoints = new HashMap<String, TagPoint>();
@@ -70,7 +79,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stat, container, false);
-        TextView statType = (TextView) view.findViewById(R.id.stattype);
+        statType = (TextView) view.findViewById(R.id.stattype);
         statType.setOnClickListener(this);
 
 
@@ -100,6 +109,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
                 if (typeOfScore == UPDATE) {
                     update(adapter.getTypeOfScore());
                 } else if (!isAlreadyRightView(typeOfScore)) {
+                    changeTypeText(typeOfScore);
                     adapter.setTypeOfScore(typeOfScore);
                     changeSetup(typeOfScore);
                 }
@@ -133,6 +143,22 @@ public class StatFragment extends Fragment implements View.OnClickListener {
             type = UPDATE;
         }
         return type;
+    }
+    private void changeTypeText(int typeOfScore){
+            switch (typeOfScore) {
+                case AVG_SCORE:
+                    statType.setText("Avg Score");
+                    break;
+                case BLUE_ZONE_SCORE:
+                    statType.setText("Blue Zone Score");
+                    break;
+                case COMPLETENESS_SCORE:
+                    statType.setText("Completeness Score");
+                    break;
+                case BRISTOL_SCORE:
+                    statType.setText("Bristol");
+                    break;
+        }
     }
 
     /**
@@ -174,13 +200,13 @@ public class StatFragment extends Fragment implements View.OnClickListener {
                 scoreWrapper = new AvgScoreWrapper(HOURS_AHEAD_FOR_AVG);
                 break;
             case BLUE_ZONE_SCORE:
-                //  scoreWrapper = new BlueScore(HOURS_AHEAD_FOR_BLUEZONES);
+                  scoreWrapper = new BlueScoreWrapper(HOURS_AHEAD_FOR_BLUEZONES, SCORE_BLUEZONES_FROM);
                 break;
             case COMPLETENESS_SCORE:
-                //  scoreWrapper = new CompleteScore(HOURS_AHEAD_FOR_COMPLETE);
+                  scoreWrapper = new CompleteScoreWrapper(HOURS_AHEAD_FOR_COMPLETE);
                 break;
             case BRISTOL_SCORE:
-                // scoreWrapper = new BristolScore(HOURS_AHEAD_FOR_BRISTOL);
+                 scoreWrapper = new BristolScoreWrapper(HOURS_AHEAD_FOR_BRISTOL);
                 break;
         }
         return scoreWrapper;

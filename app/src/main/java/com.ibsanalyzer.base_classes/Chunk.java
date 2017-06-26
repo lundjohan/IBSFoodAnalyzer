@@ -5,11 +5,11 @@ import com.ibsanalyzer.util.TimePeriod;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
 
 import java.util.ArrayList;
 import java.util.List;
+
 //class solely in use for legacy reasons with TagPoints.
 
 public class Chunk {
@@ -137,8 +137,15 @@ public class Chunk {
 
 	public List<Bm> getBMsAfterTime(Chunk chunk, LocalDateTime time,
                                     long hoursAhead) {
-		return null; //change to under, when stream is ok
-        /*return getBMs().stream().
+        List<Bm>filteredBms = new ArrayList<>();
+		List<Bm>bms = getBMs();
+		for (Bm bm:bms){
+			if (bm.getTime().isAfter(time) && bm.getTime().isBefore(time.plusHours(hoursAhead))){
+				filteredBms.add(bm);
+			}
+		}
+		return filteredBms;
+		/*return getBMs().stream().
 				filter(bm-> bm.getTime().isAfter(time) && bm.getTime().isBefore(time.plusHours(hoursAhead))).
 				collect(Collectors.toList());*/
 	}

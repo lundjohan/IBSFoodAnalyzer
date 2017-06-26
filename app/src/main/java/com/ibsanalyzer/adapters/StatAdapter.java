@@ -16,10 +16,15 @@ import java.util.Map;
 
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
+import static android.R.attr.value;
 import static android.media.CamcorderProfile.get;
 
 /**
  * Created by Johan on 2017-06-21.
+ * <p>
+ * tagPoints should perhaps be an ArrayList instead of a map.
+ * A bit surprising that it goes so fast, even though onBindListener calls HashMap.values => is
+ * this equivalent of a get, or is a list created every time?
  */
 
 public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -35,6 +40,7 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getTypeOfScore() {
         return typeOfScore;
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_stat, parent,
@@ -46,11 +52,12 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        List<TagPoint> tagPointsList =  new ArrayList<TagPoint>(tagPoints.values());
+        List<TagPoint> tagPointsList = new ArrayList<TagPoint>(tagPoints.values());
         TagPoint tp = tagPointsList.get(position);
         viewHolder.tagName.setText(tp.getName());
-        viewHolder.quantity.setText(Double.toString(tp.getQuantity()));
-        viewHolder.scoreField.setText(Double.toString(scoreWrapper.getScore(tp)));
+        viewHolder.scoreField.setText(String.format("%.1f",scoreWrapper.getScore(tp)));
+        viewHolder.quantity.setText(String.format("%.1f", tp.getQuantity()));
+
     }
 
     @Override

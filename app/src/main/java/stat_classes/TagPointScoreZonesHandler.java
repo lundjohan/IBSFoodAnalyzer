@@ -143,7 +143,7 @@ public class TagPointScoreZonesHandler {
 	 * @param chunks
 	 * @param timePeriods
 	 */
-	public static void addTagsInScoreZones(Map<String, TagPoint> tagPoints, List<Chunk> chunks,
+	public static Map<String, TagPoint> addTagsInScoreZones(Map<String, TagPoint> tagPoints, List<Chunk> chunks,
 										   List<TimePeriod> timePeriods) {
 		Map<String, Double> scoreZonesFreq = new HashMap<>();
 		for (TimePeriod tp : timePeriods) {
@@ -153,6 +153,7 @@ public class TagPointScoreZonesHandler {
 		// This one will change when i make seperate class for timePeriods (no
 		// more TagPoint used for BlueZones and other score intervals).
 		mergeBlueZonesToTP(tagPoints, scoreZonesFreq);
+        return tagPoints;
 	}
 
 	private static void addTagsQuant(Map<String, Double> scoreZonesFreq, List<Tag> tags) {
@@ -198,10 +199,10 @@ public class TagPointScoreZonesHandler {
 	 * @param scoreAboveAreBluezones
 	 * @param buffertHoursBluezones
 	 */
-	public static void addBlueZonesScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints,
+	public static Map<String, TagPoint> addBlueZonesScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints,
 			double scoreAboveAreBluezones, int buffertHoursBluezones) {
 		List<TimePeriod> scorePeriods = TagPointScoreZonesHandler.retrieveScorePeriods(chunks, scoreAboveAreBluezones,MAX_RATING_SCORE, buffertHoursBluezones);
-		TagPointScoreZonesHandler.addTagsInScoreZones(tagPoints, chunks, scorePeriods);
+		return TagPointScoreZonesHandler.addTagsInScoreZones(tagPoints, chunks, scorePeriods);
 		
 	}
 }
