@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +17,11 @@ import android.widget.TextView;
 import com.ibsanalyzer.adapters.StatAdapter;
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.constants.Constants;
 
 import java.util.List;
 
+import com.ibsanalyzer.calc_score_classes.AvgScore;
+import com.ibsanalyzer.calc_score_classes.CalcScore;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import stat_classes.TagPointHandler;
@@ -32,8 +34,6 @@ import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_AVG;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BLUEZONES;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BRISTOL;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
-import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_FROM;
-import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_TO;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
 
 
@@ -47,6 +47,13 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     StatAdapter adapter;
     StatFragmentListener callback;
 
+    //Scores
+    List<TagPoint> avgScoreTPs;
+    List<TagPoint> blueZonesScoreTPs;
+    List<TagPoint> completeScoreTPs;
+    List<TagPoint> bristolScoreTPs;
+
+
     public StatFragment() {
         // Required empty public constructor
     }
@@ -56,6 +63,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         List<Event> retrieveEvents();
 
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -78,10 +86,9 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 int typeOfScore = getTypeOfScore(item.getItemId());
-                if (typeOfScore == UPDATE){
+                if (typeOfScore == UPDATE) {
                     update(adapter.getTypeOfScore());
-                }
-                else if (!isAlreadyRightView(typeOfScore)) {
+                } else if (!isAlreadyRightView(typeOfScore)) {
                     changeSetup(typeOfScore);
                 }
                 return true;
@@ -92,7 +99,12 @@ public class StatFragment extends Fragment implements View.OnClickListener {
 
     private void update(int typeOfScore) {
         //in case other solution for changeSetup happens this have to change
-        changeSetup(typeOfScore);
+        try {
+            changeAndRefreshSetup(typeOfScore);
+        } catch (Exception e) {
+            Log.d("Error","Update could not be performed");
+            e.printStackTrace();
+        }
     }
 
     private int getTypeOfScore(int itemId) {
@@ -114,29 +126,74 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     /**
      * This method is called when user has demanded a different stat type to be shown.
      * OR if update is demanded.
+     * <p>
+     * Notice that new TagPoints should only be created when scorestat is used first time (empty
+     * list) or update is pressed
+     *
      * @param typeOfScore
      */
-    private void changeSetup(int typeOfScore){
+    private void changeAndRefreshSetup(int typeOfScore){
         tagPoints.clear();
         List<Event> events = callback.retrieveEvents();
-        List<Chunk>chunks = Chunk.makeChunksFromEvents(events);
+        List<Chunk> chunks = Chunk.makeChunksFromEvents(events);
+        CalcScore calcScore = null;
+
         //here create new tagPoints
-        if (typeOfScore == AVG_SCORE) {
-            tagPoints = TagPointHandler.retrieveAvgScoreTP(chunks, HOURS_AHEAD_FOR_AVG);
-        } else if (typeOfScore == BLUE_ZONE_SCORE) {
-            tagPoints = TagPointHandler.retrieveBlueZoneScoreTP(chunks, SCORE_BLUEZONES_FROM, SCORE_BLUEZONES_TO, HOURS_AHEAD_FOR_BLUEZONES);
-        } else if (typeOfScore == COMPLETENESS_SCORE) {
-            tagPoints = TagPointHandler.retrieveCompleteScoreTP(chunks, HOURS_AHEAD_FOR_COMPLETE);
-        } else if (typeOfScore == BRISTOL_SCORE) {
-            tagPoints = TagPointHandler.retrieveBristolScoreTP(chunks, HOURS_AHEAD_FOR_BRISTOL);
+        switch (typeOfScore) {
+            case AVG_SCORE:
+                calcScore = new AvgScore(HOURS_AHEAD_FOR_AVG);
+                break;
+            case BLUE_ZONE_SCORE:
+                calcScore = new BlueScore(HOURS_AHEAD_FOR_BLUEZONES);
+                break;
+            case COMPLETENESS_SCORE:
+                calcScore = new CompleteScore(HOURS_AHEAD_FOR_COMPLETE);
+                break;
+            case BRISTOL_SCORE:
+                calcScore = new BristolScore(HOURS_AHEAD_FOR_BRISTOL);
+                break;
         }
+        tagPoints = TagPointHandler.retrieveTagPoints(chunks, calcScore);
         adapter.notifyDataSetChanged();
+    }
+
+
+    /**
+     * Changes tagPoints to other type.
+     * Calls changeAndRefresh if tagPoints turns out to be empty (could be a sign that it never
+     * has been initiated for Tagpoint type).
+     *
+     * @param typeOfScore
+     */
+    private void changeSetup(int typeOfScore) {
+        tagPoints.clear();
+
+        //here create new tagPoints
+        switch (typeOfScore) {
+            case AVG_SCORE:
+                tagPoints = avgScoreTPs;
+                break;
+            case BLUE_ZONE_SCORE:
+                tagPoints = blueZonesScoreTPs;
+                break;
+            case COMPLETENESS_SCORE:
+                tagPoints = completeScoreTPs;
+                break;
+            case BRISTOL_SCORE:
+                tagPoints = bristolScoreTPs;
+                break;
+        }
+        if (tagPoints.isEmpty()) {
+            changeAndRefreshSetup(typeOfScore);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private boolean isAlreadyRightView(int typeOfScoreClicked) {
         return adapter.getTypeOfScore() == typeOfScoreClicked;
     }
-    
+
 
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override

@@ -2,8 +2,6 @@ package com.ibsanalyzer.tagpoint_classes;
 
 import com.ibsanalyzer.model.TagTemplate;
 
-import java.util.List;
-
 /**
  * Keep this class simple! Used for statistics
  */
@@ -31,6 +29,4 @@ public abstract class TagPoint {
 	//this method returns the score of the implemented TagPoint class.
 	public abstract double getScore();
 
-	//this method returns the score of the implemented TagPoint class.
-	public abstract void calculate();
 }

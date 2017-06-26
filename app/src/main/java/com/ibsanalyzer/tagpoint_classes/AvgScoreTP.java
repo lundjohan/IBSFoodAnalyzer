@@ -11,4 +11,9 @@ public class AvgScoreTP extends TagPoint {
     public double getScore() {
         return 0;
     }
+
+    @Override
+    public void calculate() {
+
+    }
 }
