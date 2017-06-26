@@ -152,11 +152,12 @@ public class Chunk {
 
 	public static List<Chunk> makeChunksFromEvents(List<Event>events){
 		List<Chunk>chunks = new ArrayList<>();
-		int lastStartIndex = 0;
+		int lastEndIndex = 0;
 		for (int i = 0;i<events.size(); i++){
-			if (events.get(i).hasBreak()){
-				Chunk ch = new Chunk(events.subList(lastStartIndex,i ));
+			if (events.get(i).hasBreak() || i == events.size()-1){
+				Chunk ch = new Chunk(events.subList(lastEndIndex,i ));
 				chunks.add(ch);
+				lastEndIndex = i;
 			}
 		}
 		return chunks;

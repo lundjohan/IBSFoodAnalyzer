@@ -4,6 +4,7 @@ package com.ibsanalyzer.inputday;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -14,26 +15,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ibsanalyzer.adapters.EventAdapter;
 import com.ibsanalyzer.adapters.StatAdapter;
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.ibsanalyzer.calc_score_classes.AvgScore;
-import com.ibsanalyzer.calc_score_classes.CalcScore;
+import com.ibsanalyzer.calc_score_classes.AvgScoreWrapper;
+import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
-import stat_classes.TagPointHandler;
+import stat_classes.TagPointMaker;
 
 import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
 import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
 import static com.ibsanalyzer.constants.Constants.BRISTOL_SCORE;
 import static com.ibsanalyzer.constants.Constants.COMPLETENESS_SCORE;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_AVG;
-import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BLUEZONES;
-import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BRISTOL;
-import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
 
 
@@ -41,18 +42,13 @@ import static com.ibsanalyzer.constants.Constants.UPDATE;
  * A simple {@link Fragment} subclass.
  */
 public class StatFragment extends Fragment implements View.OnClickListener {
-    List<TagPoint> tagPoints;
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     StatAdapter adapter;
     StatFragmentListener callback;
 
     //Scores
-    List<TagPoint> avgScoreTPs;
-    List<TagPoint> blueZonesScoreTPs;
-    List<TagPoint> completeScoreTPs;
-    List<TagPoint> bristolScoreTPs;
-
+    Map<String, TagPoint> tagPoints = new HashMap<String, TagPoint>();
 
     public StatFragment() {
         // Required empty public constructor
@@ -76,6 +72,20 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_stat, container, false);
         TextView statType = (TextView) view.findViewById(R.id.stattype);
         statType.setOnClickListener(this);
+
+
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.stat_table);
+        layoutManager = new LinearLayoutManager((Context) this.callback, LinearLayoutManager
+                .VERTICAL, true);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new StatAdapter(tagPoints);
+        recyclerView.setAdapter(adapter);
+        //add line separator
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
+                .getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(mDividerItemDecoration);
         return view;
     }
 
@@ -102,7 +112,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         try {
             changeAndRefreshSetup(typeOfScore);
         } catch (Exception e) {
-            Log.d("Error","Update could not be performed");
+            Log.d("Error", "Update could not be performed");
             e.printStackTrace();
         }
     }
@@ -132,32 +142,15 @@ public class StatFragment extends Fragment implements View.OnClickListener {
      *
      * @param typeOfScore
      */
-    private void changeAndRefreshSetup(int typeOfScore){
+    private void changeAndRefreshSetup(int typeOfScore) {
         tagPoints.clear();
         List<Event> events = callback.retrieveEvents();
         List<Chunk> chunks = Chunk.makeChunksFromEvents(events);
-        CalcScore calcScore = null;
-
-        //here create new tagPoints
-        switch (typeOfScore) {
-            case AVG_SCORE:
-                calcScore = new AvgScore(HOURS_AHEAD_FOR_AVG);
-                break;
-            case BLUE_ZONE_SCORE:
-                calcScore = new BlueScore(HOURS_AHEAD_FOR_BLUEZONES);
-                break;
-            case COMPLETENESS_SCORE:
-                calcScore = new CompleteScore(HOURS_AHEAD_FOR_COMPLETE);
-                break;
-            case BRISTOL_SCORE:
-                calcScore = new BristolScore(HOURS_AHEAD_FOR_BRISTOL);
-                break;
-        }
-        tagPoints = TagPointHandler.retrieveTagPoints(chunks, calcScore);
+        ScoreWrapper scoreWrapper = makeScoreWrapper(typeOfScore);
+        tagPoints = scoreWrapper.calcScore(chunks, tagPoints);
+        adapter.setScoreWrapper(scoreWrapper);
         adapter.notifyDataSetChanged();
     }
-
-
     /**
      * Changes tagPoints to other type.
      * Calls changeAndRefresh if tagPoints turns out to be empty (could be a sign that it never
@@ -167,27 +160,28 @@ public class StatFragment extends Fragment implements View.OnClickListener {
      */
     private void changeSetup(int typeOfScore) {
         tagPoints.clear();
+        ScoreWrapper scoreWrapper = makeScoreWrapper(typeOfScore);
+        adapter.setScoreWrapper(scoreWrapper);
+        adapter.notifyDataSetChanged();
+    }
 
-        //here create new tagPoints
+    private ScoreWrapper makeScoreWrapper(int typeOfScore) {
+        ScoreWrapper scoreWrapper = null;
         switch (typeOfScore) {
             case AVG_SCORE:
-                tagPoints = avgScoreTPs;
+                scoreWrapper = new AvgScoreWrapper(HOURS_AHEAD_FOR_AVG);
                 break;
             case BLUE_ZONE_SCORE:
-                tagPoints = blueZonesScoreTPs;
+                //  scoreWrapper = new BlueScore(HOURS_AHEAD_FOR_BLUEZONES);
                 break;
             case COMPLETENESS_SCORE:
-                tagPoints = completeScoreTPs;
+                //  scoreWrapper = new CompleteScore(HOURS_AHEAD_FOR_COMPLETE);
                 break;
             case BRISTOL_SCORE:
-                tagPoints = bristolScoreTPs;
+                // scoreWrapper = new BristolScore(HOURS_AHEAD_FOR_BRISTOL);
                 break;
         }
-        if (tagPoints.isEmpty()) {
-            changeAndRefreshSetup(typeOfScore);
-        } else {
-            adapter.notifyDataSetChanged();
-        }
+        return scoreWrapper;
     }
 
     private boolean isAlreadyRightView(int typeOfScoreClicked) {

@@ -38,8 +38,7 @@ public class TagPointMaker {
 		makeTagPoints(chunk, hours, tagPoints);
 		return tagPoints;
 	}
-	public static Map<String, TagPoint> doBasicScore(List<Chunk> chunks, int hours){
-		Map<String, TagPoint> tagPoints = new HashMap<>();
+	public static Map<String, TagPoint> doAvgScore(List<Chunk> chunks, int hours, Map<String, TagPoint> tagPoints){
 		for (Chunk chunk:chunks){
 			makeTagPoints(chunk, hours, tagPoints);
 		}

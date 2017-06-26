@@ -75,7 +75,7 @@ public class Constants {
     //Blue Zones
 
     public static final double SCORE_BLUEZONES_FROM = 6;
-    public static final double SCORE_BLUEZONES_TO = 7;
+    public static final double MAX_RATING_SCORE = 7;
     //In future perhaps this is better
     static final int PERCENTS_THAT_ARE_BLUEZONES = 5;
 

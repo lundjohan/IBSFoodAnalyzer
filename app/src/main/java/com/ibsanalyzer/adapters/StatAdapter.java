@@ -6,10 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.inputday.R;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
@@ -18,20 +19,11 @@ import com.ibsanalyzer.tagpoint_classes.TagPoint;
  */
 
 public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<TagPoint> tagPoints = new ArrayList<>();
-    private int typeOfScore;
+    private Map<String, TagPoint> tagPoints = new HashMap<>();
+    private ScoreWrapper scoreWrapper;
 
-    public StatAdapter(List<TagPoint> tagPoints, int typeOfScore) {
+    public StatAdapter(Map<String, TagPoint> tagPoints) {
         this.tagPoints = tagPoints;
-        this.typeOfScore = typeOfScore;
-    }
-
-    public int getTypeOfScore() {
-        return typeOfScore;
-    }
-
-    public void setTypeOfScore(int typeOfScore) {
-        this.typeOfScore = typeOfScore;
     }
 
     @Override
@@ -46,14 +38,20 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         TagPoint tp = tagPoints.get(position);
-        viewHolder.tagName.setText(tp.getName());
-        viewHolder.quantity.setText(Double.toString(tp.getQuantity()));
-        viewHolder.scoreField.setText(Double.toString(tp.getScore()));
+        if (tp!=null) {
+            viewHolder.tagName.setText(tp.getName());
+            viewHolder.quantity.setText(Double.toString(tp.getQuantity()));
+            viewHolder.scoreField.setText(Double.toString(scoreWrapper.getScore(tp)));
+        }
     }
 
     @Override
     public int getItemCount() {
         return tagPoints.size();
+    }
+
+    public void setScoreWrapper(ScoreWrapper scoreWrapper) {
+        this.scoreWrapper = scoreWrapper;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

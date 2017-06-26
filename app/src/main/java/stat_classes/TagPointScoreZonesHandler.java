@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ibsanalyzer.constants.Constants.MAX_RATING_SCORE;
+
 public class TagPointScoreZonesHandler {
 	/*
 	 * public static void addBlueZonesScore(List<Chunk> chunks, Map<String,
@@ -159,11 +161,8 @@ public class TagPointScoreZonesHandler {
 			if (!scoreZonesFreq.containsKey(t.getName())) {
 				scoreZonesFreq.put(t.getName(), t.getSize());
 			} else {
-				scoreZonesFreq.merge(t.getName(), t.getSize(), Double::sum);// same
-																			// as
-																			// (d1,
-																			// d2)->
-																			// d1+d2));
+				Double d = scoreZonesFreq.get(t.getName());
+				scoreZonesFreq.put(t.getName(), d+(Double)t.getSize());
 			}
 		}
 	}
@@ -185,7 +184,12 @@ public class TagPointScoreZonesHandler {
 				tagPoints.put(key, new TagPoint(key,value));
 				
 			}
-			tagPoints.computeIfPresent(key, (keyName, v) -> v.addBlueZonesQuant(value));
+			TagPoint tp = tagPoints.get(key);
+            tp.addBlueZonesQuant(value);
+            tagPoints.put(key, tp);
+
+            //replace above 3 lines with this if lambda is allowed
+            //tagPoints.computeIfPresent(key, (keyName, v) -> v.addBlueZonesQuant(value));
 		}
 	}
 	/**
@@ -196,7 +200,7 @@ public class TagPointScoreZonesHandler {
 	 */
 	public static void addBlueZonesScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints,
 			double scoreAboveAreBluezones, int buffertHoursBluezones) {
-		List<TimePeriod> scorePeriods = TagPointScoreZonesHandler.retrieveScorePeriods(chunks, scoreAboveAreBluezones,5.0, buffertHoursBluezones);
+		List<TimePeriod> scorePeriods = TagPointScoreZonesHandler.retrieveScorePeriods(chunks, scoreAboveAreBluezones,MAX_RATING_SCORE, buffertHoursBluezones);
 		TagPointScoreZonesHandler.addTagsInScoreZones(tagPoints, chunks, scorePeriods);
 		
 	}
