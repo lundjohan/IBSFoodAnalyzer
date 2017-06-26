@@ -21,11 +21,16 @@ import com.ibsanalyzer.tagpoint_classes.TagPoint;
 public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Map<String, TagPoint> tagPoints = new HashMap<>();
     private ScoreWrapper scoreWrapper;
+    private int typeOfScore;
 
     public StatAdapter(Map<String, TagPoint> tagPoints) {
         this.tagPoints = tagPoints;
     }
 
+
+    public int getTypeOfScore() {
+        return typeOfScore;
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_stat, parent,
@@ -38,11 +43,9 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         TagPoint tp = tagPoints.get(position);
-        if (tp!=null) {
-            viewHolder.tagName.setText(tp.getName());
-            viewHolder.quantity.setText(Double.toString(tp.getQuantity()));
-            viewHolder.scoreField.setText(Double.toString(scoreWrapper.getScore(tp)));
-        }
+        viewHolder.tagName.setText(tp.getName());
+        viewHolder.quantity.setText(Double.toString(tp.getQuantity()));
+        viewHolder.scoreField.setText(Double.toString(scoreWrapper.getScore(tp)));
     }
 
     @Override
@@ -52,6 +55,10 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setScoreWrapper(ScoreWrapper scoreWrapper) {
         this.scoreWrapper = scoreWrapper;
+    }
+
+    public void setTypeOfScore(int typeOfScore) {
+        this.typeOfScore = typeOfScore;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -96,6 +96,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 int typeOfScore = getTypeOfScore(item.getItemId());
+                adapter.setTypeOfScore(typeOfScore);
                 if (typeOfScore == UPDATE) {
                     update(adapter.getTypeOfScore());
                 } else if (!isAlreadyRightView(typeOfScore)) {
