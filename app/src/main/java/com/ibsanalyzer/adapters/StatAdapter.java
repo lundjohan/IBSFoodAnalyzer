@@ -8,11 +8,15 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.inputday.R;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
+
+import static android.media.CamcorderProfile.get;
 
 /**
  * Created by Johan on 2017-06-21.
@@ -42,7 +46,8 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        TagPoint tp = tagPoints.get(position);
+        List<TagPoint> tagPointsList =  new ArrayList<TagPoint>(tagPoints.values());
+        TagPoint tp = tagPointsList.get(position);
         viewHolder.tagName.setText(tp.getName());
         viewHolder.quantity.setText(Double.toString(tp.getQuantity()));
         viewHolder.scoreField.setText(Double.toString(scoreWrapper.getScore(tp)));
