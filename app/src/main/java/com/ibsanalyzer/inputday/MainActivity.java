@@ -17,7 +17,7 @@ import com.ibsanalyzer.adapters.TabPagerAdapter;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
-import com.ibsanalyzer.database.ExternalStorageHandler;
+import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 
 import java.io.Serializable;
 import java.util.ArrayList;

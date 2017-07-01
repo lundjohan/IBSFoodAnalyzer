@@ -298,18 +298,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void setTime(Event event, EventViewHolder holder) {
         LocalDateTime time = event.getTime();
-        LocalDate ld = time.toLocalDate();
         LocalTime lt = time.toLocalTime();
 
-
-        holder.time.setText(DateTimeFormat.toTextViewFormat(ld) + " " + DateTimeFormat
+        holder.time.setText(DateTimeFormat
                 .toTextViewFormat(lt));
     }
-
-   /* private String formatTime(LocalDateTime ldt) {
-        return DateTimeFormat.toTextViewFormat(ldt.toLocalTime());//String.format("%02d", ldt
-        .getHour()) + ':' + String.format("%02d", ldt.getMinute());
-    }*/
 
     private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder
             tagHolder) {
