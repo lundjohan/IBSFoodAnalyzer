@@ -314,8 +314,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (c != null) {
             if (c.moveToFirst()) {
                 int intensity = c.getInt(c.getColumnIndex(COLUMN_INTENSITY));
-                String tagName = getTagname(c.getColumnIndex(COLUMN_TAGTEMPLATE));
-                Tag tag = new Tag (ldt, tagName, 1);
+                Tag tag = getTagsWithEventId(eventId).get(0);
                 exercise = new Exercise(ldt, tag, intensity);
             }
         }
@@ -415,15 +414,6 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_PORTIONS, meal.getPortions());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_MEALS, DATABASE_NAME, values);
-
-
-        //testing if anything has been put in
-        String count = "SELECT count(*) FROM " + TABLE_MEALS;
-        Cursor mcursor = db.rawQuery(count, null);
-        mcursor.moveToFirst();
-        int icount = mcursor.getInt(0);
-
-        //OK! icount == 1
         db.close();
     }
 
@@ -433,7 +423,6 @@ public class DBHandler extends SQLiteOpenHelper {
     // diary list.
     public Meal retrieveMealByTime(LocalDateTime ldt) {
 
-        Meal returnMeal = null;
         //select from meals where its event has time ...
         final String QUERY = "SELECT " + "a." + COLUMN_PORTIONS + ", a."
                 + COLUMN_EVENT + " FROM " +
@@ -478,10 +467,9 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addExercise(Exercise exercise) {
         //first create event and obtain its id
         long eventId = addEvent(exercise, EXERCISE);
+        addTag(exercise.getTypeOfExercise(), eventId);
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
-        long tagTemplateId = getTagTemplateId(exercise.getTypeOfExercise().getName());
-        values.put(COLUMN_TAGTEMPLATE, tagTemplateId);
         values.put(COLUMN_INTENSITY, (long)exercise.getIntensity());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_EXERCISES, DATABASE_NAME, values);
