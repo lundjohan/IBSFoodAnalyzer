@@ -29,25 +29,15 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:text="10:00"
-        app:layout_constraintLeft_toRightOf="@+id/textView6"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="-1dp"
         app:layout_constraintRight_toLeftOf="@+id/tagNames"
-        app:layout_constraintHorizontal_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Time:"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.0"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
