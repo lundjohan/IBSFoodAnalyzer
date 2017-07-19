@@ -18,11 +18,13 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
+import com.ibsanalyzer.external_storage.SaveDBIntentService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.data;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.importMenuItem:
+                //AsyncTask
                 ExternalStorageHandler.replaceDBWithExtStorageFile(this);
                 try {
                     adapter.getDiaryFragment().refillEventListWithNewDatabase();
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
 
                 return true;
             case R.id.importFromTxtMenuItem:
+                //AsyncTask
                 final DBHandler db = new DBHandler(this);
                 List<Event> events = ExternalStorageHandler.importEventsFromTxt();
                 db.deleteAllTablesRows();
@@ -75,7 +79,13 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
 
                 return true;
             case R.id.exportMenuItem:
-                ExternalStorageHandler.saveDBToExtStorage(this);
+                //ok, write to file? Otherwise ask for permission
+                ExternalStorageHandler.showWritablePermission(this);
+                //IntentService
+                Intent intent = new Intent(this, SaveDBIntentService.class);
+                startService(intent);
+
+
                 return true;
             case R.id.settingsMenuItem:
                 //TODO

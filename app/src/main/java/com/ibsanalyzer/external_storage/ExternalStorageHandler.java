@@ -75,7 +75,7 @@ public class ExternalStorageHandler {
 
     //https://stackoverflow.com/questions/35484767/activitycompat-requestpermissions-not-showing
     // -dialog-box
-    private static void showWritablePermission(Activity activity) {
+    public static void showWritablePermission(Activity activity) {
         int permissionCheck = ContextCompat.checkSelfPermission(
                 activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -117,7 +117,7 @@ public class ExternalStorageHandler {
                 new String[]{permissionName}, permissionRequestCode);
     }
 
-    public static void saveDBToExtStorage(Activity activity) {
+    public static void saveDBToExtStorage() {
         //from https://stackoverflow.com/questions/1995320/how-do-i-backup-a-database-file-to-the
         // -sd-card-on-android
 
@@ -126,7 +126,8 @@ public class ExternalStorageHandler {
             File sd = Environment.getExternalStoragePublicDirectory(Environment
                     .DIRECTORY_DOWNLOADS);
             File data = Environment.getDataDirectory();
-            showWritablePermission(activity);
+           //this has been lifted out to outer class to make this method independent on outer class
+            // showWritablePermission(activity);
             String backupDBPath = DATABASE_NAME;
             File currentDB = new File(data, CURRENT_DB_PATH);
             if (!isExternalStorageAccessable()) {

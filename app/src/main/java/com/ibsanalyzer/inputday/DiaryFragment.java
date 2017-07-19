@@ -507,6 +507,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         eventList.addAll(dbHandler.getAllEventsSorted());
         addDateEventsToList(eventList);
         adapter.notifyDataSetChanged();
+        //place focus at top (otherwise user has to scroll up, which make time sizeable time for
+        // large imports).
+        recyclerView.scrollToPosition(eventList.size() - 1);
     }
 
     private void addDateEventsToList(List<Event> eventList) {
@@ -521,7 +524,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             Util.addDateMarkerIfNotExists(lastDate, eventList);
         }
     }
-    public List<Event>getEvents(){
+
+    public List<Event> getEvents() {
         return eventList;
     }
 }

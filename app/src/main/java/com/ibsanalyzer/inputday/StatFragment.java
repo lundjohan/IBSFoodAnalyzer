@@ -19,17 +19,16 @@ import android.widget.TextView;
 import com.ibsanalyzer.adapters.StatAdapter;
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.ibsanalyzer.calc_score_classes.AvgScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.BlueScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.BristolScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
 import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
@@ -233,6 +232,8 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
+     * This inner class is responisble for putting calculations of stats in new thread
+     *
      * A bit of Spaghetti code (onPostExecute accepts scoreWrapper which seems a little bit odd for example), but it works.
      */
     private class StatAsyncTask extends AsyncTask<Object, Void, ScoreWrapper> {
@@ -250,6 +251,8 @@ public class StatFragment extends Fragment implements View.OnClickListener {
             ScoreWrapper wrapper = (ScoreWrapper) params[0];
             List<Chunk> chunks = (List<Chunk>) params[1];
             tagPoints = wrapper.calcScore(chunks, tagPoints);
+            //sort tagPoints here
+
             return wrapper;
         }
         @Override
