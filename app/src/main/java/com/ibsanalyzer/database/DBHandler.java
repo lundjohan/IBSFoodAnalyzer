@@ -245,7 +245,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
                     String date = c.getString(c.getColumnIndex(COLUMN_DATE));
                     LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
-                    int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));  //här kraschar det.
+                    int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
                     Event event = getEvent(eventId, ldt, typeOfEvent);
                     eventList.add(event);
                     c.moveToNext();

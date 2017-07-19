@@ -33,8 +33,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         dbHandler = new DBHandler(this);
 
         //only in developing mode
-        dbHandler.deleteAllTagTemplates();
-        dbHandler.createSomeTagTemplates();
+        /*dbHandler.deleteAllTagTemplates();
+        dbHandler.createSomeTagTemplates();*/
 
         tagSearch = (SearchView) findViewById(R.id.searchTags);
         tagsList = (ListView)findViewById(R.id.listOfTags);
