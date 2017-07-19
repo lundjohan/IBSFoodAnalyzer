@@ -69,8 +69,6 @@ import static com.ibsanalyzer.database.TablesAndStrings.TABLE_OTHERS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_RATINGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGTEMPLATES;
-import static com.ibsanalyzer.inputday.R.drawable.meal;
-
 
 /**
  * Created by Johan on 2017-05-06.

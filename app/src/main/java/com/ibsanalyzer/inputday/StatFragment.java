@@ -2,6 +2,7 @@ package com.ibsanalyzer.inputday;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ibsanalyzer.adapters.EventAdapter;
 import com.ibsanalyzer.adapters.StatAdapter;
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
@@ -31,9 +31,6 @@ import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
-import stat_classes.TagPointMaker;
-
-import static android.R.attr.type;
 import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
 import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
 import static com.ibsanalyzer.constants.Constants.BRISTOL_SCORE;
@@ -50,6 +47,7 @@ import static com.ibsanalyzer.constants.Constants.UPDATE;
  * A simple {@link Fragment} subclass.
  */
 public class StatFragment extends Fragment implements View.OnClickListener {
+    static final String  TAG = "STAT_FRAGMENT";
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     StatAdapter adapter;
@@ -169,15 +167,22 @@ public class StatFragment extends Fragment implements View.OnClickListener {
      * list) or update is pressed
      *
      * @param typeOfScore
+     *
+     * uses an AsyncTask to create separate thread where calculations are made.
+     * all different stat calculations classes extent ScoreWrapper
+     *
      */
     private void changeAndRefreshSetup(int typeOfScore) {
         tagPoints.clear();
         List<Event> events = callback.retrieveEvents();
         List<Chunk> chunks = Chunk.makeChunksFromEvents(events);
         ScoreWrapper scoreWrapper = makeScoreWrapper(typeOfScore);
-        tagPoints = scoreWrapper.calcScore(chunks, tagPoints);
-        adapter.setScoreWrapper(scoreWrapper);
-        adapter.notifyDataSetChanged();
+        //tagPoints = scoreWrapper.calcScore(chunks, tagPoints);
+        Log.d(TAG, "Inside Main Thread, before asyncTask");
+        StatAsyncTask asyncThread = new StatAsyncTask();
+        asyncThread.execute(scoreWrapper,chunks);
+        Log.d(TAG, "Inside Main Thread, 'after' asyncTask");
+
     }
     /**
      * Changes tagPoints to other type.
@@ -224,6 +229,33 @@ public class StatFragment extends Fragment implements View.OnClickListener {
             case R.id.stattype:
                 doScorePopupMenu(v);
                 break;
+        }
+    }
+
+    /**
+     * A bit of Spaghetti code (onPostExecute accepts scoreWrapper which seems a little bit odd for example), but it works.
+     */
+    private class StatAsyncTask extends AsyncTask<Object, Void, ScoreWrapper> {
+        final String  TAG = this.getClass().getName();
+        public StatAsyncTask() {
+        }
+        /**
+         * @param params should be in order. (implementation of) ScoreWrapper, List<Chunk>,
+         *               Map<String, TagPoint>
+         * @return
+         */
+        @Override
+        protected ScoreWrapper doInBackground(Object... params) {
+            Log.d(TAG, "Inside doInBackground");
+            ScoreWrapper wrapper = (ScoreWrapper) params[0];
+            List<Chunk> chunks = (List<Chunk>) params[1];
+            tagPoints = wrapper.calcScore(chunks, tagPoints);
+            return wrapper;
+        }
+        @Override
+        protected void onPostExecute(ScoreWrapper scoreWrapper) {
+            adapter.setScoreWrapper(scoreWrapper);
+            adapter.notifyDataSetChanged();
         }
     }
 
