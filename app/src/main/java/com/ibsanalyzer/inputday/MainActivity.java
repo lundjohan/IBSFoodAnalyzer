@@ -2,6 +2,7 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -14,7 +15,9 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.adapters.TabPagerAdapter;
+import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
@@ -49,19 +52,13 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.importMenuItem:
-                //AsyncTask
-                ExternalStorageHandler.replaceDBWithExtStorageFile(this);
-                try {
-                    adapter.getDiaryFragment().refillEventListWithNewDatabase();
-
-                } catch (Exception e) {
-                    Log.d("Debug", "Adapter could not be updated after replacement of database");
-                }
-
-
+                ImportDBAsyncTask asyncThread = new ImportDBAsyncTask();
+                asyncThread.execute(0);
                 return true;
+
+            //THIS OPTION WILL BE REMOVED IN PRODUCTION CODE!!!
+            //No effort is therefore to put it in thread etc
             case R.id.importFromTxtMenuItem:
-                //AsyncTask
                 final DBHandler db = new DBHandler(this);
                 List<Event> events = ExternalStorageHandler.importEventsFromTxt();
                 db.deleteAllTablesRows();
@@ -178,6 +175,27 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
         events = diary.getEvents();
         //TODO 3. if this fails, retrieve events from database instead.
         return events;
+    }
+
+    private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
+        final String  TAG = this.getClass().getName();
+        public ImportDBAsyncTask() {
+        }
+
+        @Override
+        protected Void doInBackground(Integer... notUsedParams) {
+            ExternalStorageHandler.replaceDBWithExtStorageFile();
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void notUsed) {
+            try {
+                adapter.getDiaryFragment().refillEventListWithNewDatabase();
+
+            } catch (Exception e) {
+                Log.d(TAG, "Adapter could not be updated after replacement of database");
+            }
+        }
     }
 }
 

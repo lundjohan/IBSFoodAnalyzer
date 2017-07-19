@@ -188,7 +188,7 @@ public class ExternalStorageHandler {
         mInput.close();
     }*/
 
-    public static void replaceDBWithExtStorageFile(Activity activity) {
+    public static void replaceDBWithExtStorageFile() {
         //get current path to internal storage db file
         File data = Environment.getDataDirectory();
         File pathToCurrentDB = new File(data, CURRENT_DB_PATH);
