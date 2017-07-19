@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabItem;
 import android.support.v4.app.Fragment;
@@ -23,12 +24,13 @@ import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.adapters.EventAdapter;
 import com.ibsanalyzer.base_classes.Bm;
+import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
-import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
@@ -36,7 +38,6 @@ import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.Month;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,6 @@ import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
-import static com.ibsanalyzer.inputday.R.drawable.meal;
 
 
 /**
@@ -122,13 +122,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
-
         super.onCreate(savedInstanceState);
-
-
-        //only for developing mode
-        DBHandler dbHandler = new DBHandler(this.getContext());
-        dbHandler.deleteAllTablesRows();
 
         //starts as invisible appBarLayout but when user marks something this pops up
         tabsLayoutSwitcher = (ViewSwitcher) callback.getTabsLayoutSwitcher();
@@ -146,6 +140,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
             //   eventList = savedInstanceState.getParcelableArrayList("eventList");
         }
+        //fill recyclerView from database
+        fillEventListWithDatabase();
         return view;
     }
 
@@ -194,64 +190,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         recyclerView.addItemDecoration(mDividerItemDecoration);
         //==========================================================================================
     }
-
-    private void populateList() {
-        LocalDateTime ldt = LocalDateTime.of(2016, Month.APRIL, 3, 8, 0);
-        //rating morgon
-        Rating rating = new Rating(ldt, 6);
-
-        //frukost
-        LocalDateTime ldt2 = LocalDateTime.of(2016, Month.APRIL, 3, 9, 0);
-        Tag t1 = new Tag(ldt, "milk", 2);
-        Tag t2 = new Tag(ldt, "yoghurt", 1);
-        List<Tag> tagList = new ArrayList<>();
-        tagList.add(t1);
-        tagList.add(t2);
-        Meal meal1 = new Meal(ldt2, tagList, 2.);
-
-        //execercise
-        LocalDateTime ldt3 = LocalDateTime.of(2016, Month.APRIL, 3, 12, 0);
-        Exercise exercise = new Exercise(ldt3, new Tag(ldt3, "running", 1), 4);
-
-        //Bm
-        LocalDateTime ldt4 = LocalDateTime.of(2016, Month.APRIL, 3, 14, 20);
-        Bm bm = new Bm(ldt4, 3, 5);
-
-        //Other
-        LocalDateTime ldtx = LocalDateTime.of(2016, Month.APRIL, 3, 14, 30);
-        Tag t3 = new Tag(ldt, "sleep", 1);
-        List<Tag> tagList2 = new ArrayList<>();
-        tagList2.add(t3);
-        Other other = new Other(ldtx, tagList2);
-
-        //rating kväll
-        LocalDateTime ldt5 = LocalDateTime.of(2016, Month.APRIL, 3, 18, 30);
-        Rating rating2 = new Rating(ldt5, 5);
-
-
-        addEventToList(eventList, rating, adapter);
-        addEventToList(eventList, meal1, adapter);
-        addEventToList(eventList, exercise, adapter);
-        addEventToList(eventList, bm, adapter);
-        addEventToList(eventList, other, adapter);
-        addEventToList(eventList, rating2, adapter);
-    }
-   /* public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("Debug", "isnide onCreateOptionsMenu inside DiaryFragment"); //kallas aldrig.
-        MenuInflater inflater = callBack.getMenuInflater();
-        inflater.inflate(R.menu.cancel_done_menu, menu);
-        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
-        .OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                sendEventsForTemplate(null);
-                return true;
-            }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
-        return true;
-    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -497,7 +435,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         return eventsMarked.contains(position);
     }
 
-    public void refillEventListWithNewDatabase() {
+    public void fillEventListWithDatabase() {
         DBHandler dbHandler = new DBHandler(((Activity) callback).getApplicationContext());
 
         //see here why reference just cant be changed. notifyDataSetChanged won't work in that case.

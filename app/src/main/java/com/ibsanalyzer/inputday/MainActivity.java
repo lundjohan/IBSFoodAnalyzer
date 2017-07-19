@@ -15,9 +15,7 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.adapters.TabPagerAdapter;
-import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
@@ -27,7 +25,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.data;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
@@ -65,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
                 db.addEventsWithUnknownTagTemplates(events);
 
                 try {
-                    adapter.getDiaryFragment().refillEventListWithNewDatabase();
+                    adapter.getDiaryFragment().fillEventListWithDatabase();
 
                 } catch (Exception e) {
                     Log.d("Debug", "Adapter could not be updated after replacement of " +
@@ -190,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
         @Override
         protected void onPostExecute(Void notUsed) {
             try {
-                adapter.getDiaryFragment().refillEventListWithNewDatabase();
+                adapter.getDiaryFragment().fillEventListWithDatabase();
 
             } catch (Exception e) {
                 Log.d(TAG, "Adapter could not be updated after replacement of database");
