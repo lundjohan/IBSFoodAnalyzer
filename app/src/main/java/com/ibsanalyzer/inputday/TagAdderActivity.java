@@ -79,8 +79,6 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         adapter.getFilter().filter(newText.toString());
         return true;
     }
-
-    //TODO
     @Override
     public void finish() {
         TagTemplate tagTemplate = chosenTagTemplate;
