@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.util.SortedList;
 import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
@@ -15,7 +14,6 @@ import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ibsanalyzer.inputday.R.id.dateMarker;
 import static java.util.Collections.sort;
 
 /**
@@ -91,7 +88,7 @@ public class Util {
         //return (int)(dpWidth/mNoOfColumns);
     }
 
-    //instead of sorting this should use addEventAtRightPlace for insertion of event
+    //instead of sorting this should use addDateEventAtRightPlace for insertion of event
     public static InsertPositions insertEventWithDayMarker(List<Event> events, Event event) {
         //add event to list
         //this feels bad. better to add it at the right index straight away...
@@ -118,7 +115,27 @@ public class Util {
 
         return insertPositions;
     }
-    public static DateMarkerEvent addDateMarkerIfNotExists(LocalDate dateOfEvent, List<Event> events) {
+    /**
+     * Prerequisite: position is the place to add DateEvent.
+     *  OR if position == size of list, it is DateEvent is added last in list
+     * @param dateOfEvent
+     * @param eventList
+     * @param position
+     */
+    public static void addDateEventToList(LocalDate dateOfEvent, List<Event> eventList, int position) {
+        DateMarkerEvent dateMarker = new DateMarkerEvent(dateOfEvent);
+
+        if (position == eventList.size()){
+            eventList.add(dateMarker);
+        }
+        else{
+            eventList.add(position,dateMarker );
+        }
+    }
+
+
+    public static DateMarkerEvent addDateMarkerIfNotExists(LocalDate dateOfEvent, List<Event>
+            events) {
         DateMarkerEvent dateMarker = null;
         if (!dateMarkerExists(events, dateOfEvent)) {
             dateMarker = new DateMarkerEvent(dateOfEvent);
@@ -128,13 +145,14 @@ public class Util {
     }
 
     /**
-     *
      * @param event
      * @param events
      * @return -1 on failure
      */
     //TODO Change to if (events.size()<10) and Implement else
     //TODO ugly method, works, but should be total remake over.
+    //ineffective method, but doesnt matter since it is inly used when ONE event is added.
+    //(other methods are used to add much )
     private static int addEventAtRightPlace(Event event, List<Event> events) {
         int indexOfInsertion = -1;
         if (events.isEmpty()){
@@ -163,26 +181,28 @@ public class Util {
         return indexOfInsertion;
     }
 
-    private static boolean dateMarkerExists(List<Event>events, LocalDate dateOfMarkerEvent){
+    private static boolean dateMarkerExists(List<Event> events, LocalDate dateOfMarkerEvent) {
         DateMarkerEvent dateMarker = new DateMarkerEvent(dateOfMarkerEvent);
-        return events.indexOf(dateMarker)> -1;
+        return events.indexOf(dateMarker) > -1;
     }
 
     /**
      * tags exist in Meal, Other and Exercise events.
+     *
      * @param events
      * @return
      */
-    public static List<Tag> getTags(List<Event>events) {
+    public static List<Tag> getTags(List<Event> events) {
         List<Tag> tags = new ArrayList<>();
         for (Event e : events) {
             if (e instanceof InputEvent) {
-                tags.addAll(((InputEvent)e).getInputTags());
-            }
-            else if (e instanceof Exercise){
-                tags.add(((Exercise)e).getTypeOfExercise());
+                tags.addAll(((InputEvent) e).getInputTags());
+            } else if (e instanceof Exercise) {
+                tags.add(((Exercise) e).getTypeOfExercise());
             }
         }
         return tags;
     }
+
+
 }

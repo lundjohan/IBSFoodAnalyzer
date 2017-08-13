@@ -158,6 +158,43 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
+
+
+
+    @Override
+    public int getItemCount() {
+        return events.size();
+    }
+
+    private void setTime(Event event, EventViewHolder holder) {
+        LocalDateTime time = event.getTime();
+        LocalTime lt = time.toLocalTime();
+
+        holder.time.setText(DateTimeFormat
+                .toTextViewFormat(lt));
+    }
+
+    private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder
+            tagHolder) {
+        setTime(inputEvent, tagHolder);
+
+        //clearing up, because recyclerview remembers cache. Problems with to many tags in imports of files otherwise
+        tagHolder.tagQuantsLayout.removeAllViews();
+        tagHolder.tagNamesLayout.removeAllViews();
+
+        for (Tag tag : inputEvent.getTags()) {
+            TextView tagQuant = new TextView(tagHolder.tagQuantsLayout.getContext());
+            tagQuant.setText('X' + Double.toString(tag.getSize()));
+            tagHolder.tagQuantsLayout.addView(tagQuant);
+
+            TextView tagName = new TextView(tagHolder.tagNamesLayout.getContext());
+            tagName.setText(tag.getName());
+            tagHolder.tagNamesLayout.addView(tagName);
+        }
+    }
+
+
+
     /*method implemented with help from https://guides.codepath
     .com/android/Heterogenous-Layouts-inside-RecyclerView#viewholder2-java*/
     @Override
@@ -287,39 +324,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 dateMarkerViewHolder.dateView.setText(DateTimeFormat.toTextViewFormat(dateMarker
                         .getDate()));
                 break;
-        }
-    }
-
-
-    @Override
-    public int getItemCount() {
-        return events.size();
-    }
-
-    private void setTime(Event event, EventViewHolder holder) {
-        LocalDateTime time = event.getTime();
-        LocalTime lt = time.toLocalTime();
-
-        holder.time.setText(DateTimeFormat
-                .toTextViewFormat(lt));
-    }
-
-    private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder
-            tagHolder) {
-        setTime(inputEvent, tagHolder);
-
-        //clearing up, because recyclerview remembers cache. Problems with to many tags in imports of files otherwise
-        tagHolder.tagQuantsLayout.removeAllViews();
-        tagHolder.tagNamesLayout.removeAllViews();
-
-        for (Tag tag : inputEvent.getTags()) {
-            TextView tagQuant = new TextView(tagHolder.tagQuantsLayout.getContext());
-            tagQuant.setText('X' + Double.toString(tag.getSize()));
-            tagHolder.tagQuantsLayout.addView(tagQuant);
-
-            TextView tagName = new TextView(tagHolder.tagNamesLayout.getContext());
-            tagName.setText(tag.getName());
-            tagHolder.tagNamesLayout.addView(tagName);
         }
     }
 }

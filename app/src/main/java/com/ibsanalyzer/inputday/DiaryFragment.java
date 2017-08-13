@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabItem;
 import android.support.v4.app.Fragment;
@@ -24,13 +23,11 @@ import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.adapters.EventAdapter;
 import com.ibsanalyzer.base_classes.Bm;
-import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
-import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
@@ -48,6 +45,7 @@ import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static java.util.Collections.addAll;
 
 
 /**
@@ -60,6 +58,23 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public static final int NEW_EXERCISE = 1002;
     public static final int NEW_BM = 1003;
     public static final int NEW_SCORE = 1004;
+
+    public static final String TAG = "DebuggingDiaryFragment";
+    //===========================================================================================
+    //timer used for tracking start time of app.
+    public static long startTime = 0;
+
+    //runs without a timer by reposting this handler at the end of the runnable
+    private synchronized void logTimePassed() {
+        long nanos = System.nanoTime() - startTime;
+       /* int seconds = (int) (millis / 1000);
+        int minutes = seconds / 60;
+        seconds = seconds % 60;*/
+
+        Log.d(TAG, "Time passed in ms: " + nanos/1000000);
+
+    }
+    //=============================================================================================
 
 
     RecyclerView recyclerView;
@@ -120,6 +135,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //=====================TIMER================================================================
+        Log.d(TAG, "BEFORE TIMER STARTS (DIARYFRAGMENT STARTS)");
+        startTime = System.nanoTime();
+        logTimePassed();
+        //==========================================================================================
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
         super.onCreate(savedInstanceState);
@@ -142,6 +164,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
         //fill recyclerView from database
         fillEventListWithDatabase();
+        //=====================TIMER================================================================
+        Log.d(TAG, "BEFORE quiting onCreateView");
+        logTimePassed();
+        //==========================================================================================
         return view;
     }
 
@@ -238,10 +264,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     }
 
-    //adds also DateMarkerEvent if appropriate
+    //also adds DateMarkerEvent if appropriate
     private static void addEventToList(List<Event> events, Event event, RecyclerView.Adapter
             adapter) {
         InsertPositions insertPositions = Util.insertEventWithDayMarker(events, event);
+
+        //notify RecyclerView of changes
         adapter.notifyItemInserted(insertPositions.getPosInserted());
         if (insertPositions.isDateMarkerAdded()) {
             adapter.notifyItemInserted(insertPositions.getPosDateMarker());
@@ -442,26 +470,60 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from
         // -custom-adapter
         eventList.clear();
-        eventList.addAll(dbHandler.getAllEventsSorted());
+        //=====================TIMER================================================================
+        Log.d(TAG, "BEFORE dbHandler.getAllEventsSorted()");
+        logTimePassed();
+        //==========================================================================================
+        List<Event>sortedEvents =dbHandler.getAllEventsSorted();
+        //=====================TIMER================================================================
+        Log.d(TAG, "BEFORE eventList.addAll()");
+        logTimePassed();
+        //==========================================================================================
+        eventList.addAll(sortedEvents);
+        //=====================TIMER================================================================
+        Log.d(TAG, "BEFORE addDateEventsToList");
+        logTimePassed();
+        //==========================================================================================
         addDateEventsToList(eventList);
+        //=====================TIMER================================================================
+        Log.d(TAG, "BEFORE adapter.notifyDataSetChanged");
+        logTimePassed();
+        //==========================================================================================
         adapter.notifyDataSetChanged();
         //place focus at top (otherwise user has to scroll up, which make time sizeable time for
         // large imports).
+        //=====================TIMER================================================================
+        Log.d(TAG, "BEFORE recyclerView.scrollToPosition");
+        logTimePassed();
+        //==========================================================================================
         recyclerView.scrollToPosition(eventList.size() - 1);
     }
 
+    /**
+     * Method used in beginning when list has been filled with events
+     *
+     * @param eventList
+     */
     private void addDateEventsToList(List<Event> eventList) {
-        LocalDate lastDate = null;
+        LocalDate date = null;
         for (int i = 0; i < eventList.size(); i++) {
-            LocalDateTime ldt = eventList.get(i).getTime();
-            //no point in trying to figure out adding datemarker more times than one for same date
-            if (i > 0 && ldt.toLocalDate().isEqual(lastDate)) {
-                continue;
-            }
-            lastDate = ldt.toLocalDate();
-            Util.addDateMarkerIfNotExists(lastDate, eventList);
+            date = eventList.get(i).getTime().toLocalDate();
+            i = stepForwardUntilNewDateOrEndOfList(eventList, date, i);
+            Util.addDateEventToList(date, eventList, i);
         }
     }
+
+
+    private static int stepForwardUntilNewDateOrEndOfList(List<Event> eventList, LocalDate ld,
+                                                          int startPos) {
+        int i = ++startPos;
+        if (startPos >= eventList.size() || !eventList.get(i).getTime().toLocalDate().equals(ld))
+            return i;
+        else {
+            return stepForwardUntilNewDateOrEndOfList(eventList, ld, i);
+        }
+    }
+
 
     public List<Event> getEvents() {
         return eventList;
