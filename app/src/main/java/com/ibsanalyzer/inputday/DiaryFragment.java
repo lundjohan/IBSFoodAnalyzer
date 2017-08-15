@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.os.Build.VERSION_CODES.M;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
@@ -399,6 +400,15 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                         //2. update adapter for that position
                         adapter.notifyItemChanged(position);
                     }
+                    else if (item.getItemId() == R.id.deleteEvent) {
+                        //1. remove event from database
+                        DBHandler dbHandler = new DBHandler(getContext());
+                        dbHandler.deleteEvent(pressedEvent);
+                        //2 remove event from eventList
+                        eventList.remove(position);
+                        //3. update adapter for that position
+                        adapter.notifyItemChanged(position);
+                    }
                     return true;
                 }
             });
@@ -471,10 +481,15 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         // -custom-adapter
         eventList.clear();
         //=====================TIMER================================================================
-        Log.d(TAG, "BEFORE dbHandler.getAllEventsSorted()");
+        Log.d(TAG, "1. starting sortedEvents");
+        Log.d(TAG, "2. BEFORE dbHandler.getAllEventsSorted()");
         logTimePassed();
         //==========================================================================================
+
         List<Event>sortedEvents =dbHandler.getAllEventsSorted();
+       // Log.d(TAG, "3. sortedEvents.size()" + sortedEvents.size());
+        logTimePassed();
+        Log.d(TAG, "(4) 5. ended sortedEvents");
         //=====================TIMER================================================================
         Log.d(TAG, "BEFORE eventList.addAll()");
         logTimePassed();

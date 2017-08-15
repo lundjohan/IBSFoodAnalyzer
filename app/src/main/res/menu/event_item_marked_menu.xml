@@ -9,6 +9,9 @@
         android:visible="false"/>
     <item
         android:id="@+id/removeBreakMenuItem"
-        android:title="remove Break"
+        android:title="Remove Break"
         android:visible="false"/>
+    <item
+        android:id="@+id/deleteEvent"
+        android:title="Delete Event"/>
 </menu>
