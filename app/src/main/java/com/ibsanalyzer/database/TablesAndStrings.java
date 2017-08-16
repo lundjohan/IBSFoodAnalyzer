@@ -7,7 +7,7 @@ package com.ibsanalyzer.database;
 public class TablesAndStrings {
     //NO_INHERITANCE is used to say: "TagTemplate is not inheriting"
     public static final String NO_INHERITANCE = "0Null0";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -18,7 +18,8 @@ public class TablesAndStrings {
     //TagTemplate
     public static final String TABLE_TAGTEMPLATES = "tag_templates";
     public static final String COLUMN_TAGNAME = "_tagname"; //this should be unique
-    public static final String COLUMN_IS_A = "_is_a1";      //make it point to parent TagName and not to id, it make it possible to display in listview after filtering.
+    public static final String COLUMN_IS_A = "_is_a1";      //make it point to parent TagName and
+    // not to id, it make it possible to display in listview after filtering.
 
 
     //Tag
@@ -63,7 +64,8 @@ public class TablesAndStrings {
 
     //EventsTemplate => many-to-many => Events
     public static final String TABLE_EVENTSTEMPLATEEVENTS = "event_template_events";
-    public static final String COLUMN_EVENTSTEMPLATE = "events_template";   //denna => unknown column?
+    public static final String COLUMN_EVENTSTEMPLATE = "events_template";   //denna => unknown
+    // column?
 
     // see https://sqlite.org/foreignkeys.html for creation of foreign keys.
     public static final String CREATE_TAGTEMPLATE_TABLE = "CREATE TABLE " +
@@ -74,18 +76,18 @@ public class TablesAndStrings {
             " FOREIGN KEY( " + COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_TAGNAME + ")" +
             ");";
-     public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
+    public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
             TABLE_TAGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
-             //perhaps should be COLUMN TAG INSTEAD... but this works...
+            //perhaps should be COLUMN TAG INSTEAD... but this works...
             COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
             COLUMN_SIZE + " REAL NOT NULL, " +
             COLUMN_DATE + " TEXT NOT NULL, " +
-            COLUMN_EVENT       + " INTEGER NOT NULL, " +
+            COLUMN_EVENT + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_ID + ")" +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ")" +
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
 
 
@@ -93,7 +95,7 @@ public class TablesAndStrings {
             TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_DATE + " TEXT NOT NULL, " +
-            COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL "+
+            COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL " +
             ");";
 
     public static final String CREATE_MEAL_TABLE = " CREATE TABLE " +
@@ -102,7 +104,7 @@ public class TablesAndStrings {
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_PORTIONS + " REAL NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ")" +
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
 
     public static final String CREATE_OTHER_TABLE = " CREATE TABLE " +
@@ -110,7 +112,7 @@ public class TablesAndStrings {
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ")" +
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
 
     public static final String CREATE_EXERCISE_TABLE = " CREATE TABLE " +
@@ -119,7 +121,7 @@ public class TablesAndStrings {
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_INTENSITY + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ")" +
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
 
     public static final String CREATE_BM_TABLE = "CREATE TABLE " +
@@ -129,7 +131,7 @@ public class TablesAndStrings {
             COLUMN_COMPLETENESS + " INTEGER NOT NULL, " +
             COLUMN_BRISTOL + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ")" +
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
     public static final String CREATE_RATING_TABLE = "CREATE TABLE " +
             TABLE_RATINGS + " (  " +
@@ -137,23 +139,24 @@ public class TablesAndStrings {
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_AFTER + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ")" +
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
+    //This table refers to the Template class that stores one event or more for later copying.
     public static final String CREATE_EVENTS_TEMPLATE_TABLE = "CREATE TABLE " +
             TABLE_EVENTSTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_NAME + " TEXT NOT NULL UNIQUE, " +
-            " FOREIGN KEY( " + COLUMN_ID + ") REFERENCES " + TABLE_EVENTSTEMPLATEEVENTS
-            + " ( " + COLUMN_EVENTSTEMPLATE + ")" +
+            COLUMN_NAME + " TEXT NOT NULL UNIQUE " +
             ");";
+    //Maps events to templates
     public static final String CREATE_EVENTS_TEMPLATE_TO_EVENT_TABLE = "CREATE TABLE " +
             TABLE_EVENTSTEMPLATEEVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             COLUMN_EVENTSTEMPLATE + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ") " +
+            + " ( " + COLUMN_ID + ") " + " ON DELETE CASCADE, " +
             " FOREIGN KEY( " + COLUMN_EVENTSTEMPLATE + " ) REFERENCES " + TABLE_EVENTSTEMPLATES
             + " ( " + COLUMN_ID + ")" +
+            " ON DELETE CASCADE " +
             ");";
 }
