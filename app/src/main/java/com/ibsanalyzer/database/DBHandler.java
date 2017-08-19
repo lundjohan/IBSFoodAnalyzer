@@ -168,7 +168,6 @@ public class DBHandler extends SQLiteOpenHelper {
     public void deleteAllTablesRows() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TAGTEMPLATES, null, null);
-        //deleteAllTagTemplates();
         db.delete(TABLE_TAGS, null, null);
         db.delete(TABLE_EVENTS, null, null);
         db.delete(TABLE_RATINGS, null, null);
@@ -179,22 +178,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_EVENTSTEMPLATES, null, null);
         db.delete(TABLE_EVENTSTEMPLATEEVENTS, null, null);
         db.close();
-    }
-
-    /**
-     * Text down is irrevelant => ON DELETE SET NULL is what I wanted.
-     *
-     * Deleting a tagTemplate is a bit more complicated than other tables.
-     * The complication is that it is referencing to itself through _is_a.
-     * <p>
-     * If cheese has lacteo as _is_a and you remove lacteo, you don't want cheese to be removed
-     * (as it would in case of CASCADING). You want that _is_a to be set to Null or equivalent.
-     */
-    private void deleteAllTagTemplates() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int doneDelete = db.delete(TABLE_TAGTEMPLATES, null, null);
-        db.close();
-       // return doneDelete > 0;
     }
 
     //==============================================================================================

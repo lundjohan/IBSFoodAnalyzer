@@ -404,7 +404,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                         //2 remove event from eventList
                         eventList.remove(position);
                         //3. update adapter for that position
-                        adapter.notifyItemChanged(position);
+                        adapter.notifyItemRemoved(position);
                     }
                     return true;
                 }

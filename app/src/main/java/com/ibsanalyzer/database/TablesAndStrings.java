@@ -67,7 +67,7 @@ public class TablesAndStrings {
     public static final String COLUMN_EVENTSTEMPLATE = "events_template";   //denna => unknown
     // column?
 
-    // see https://sqlite.org/foreignkeys.html for creation of foreign keys.
+    // is_a is set to null when parent tag template is deleted
     public static final String CREATE_TAGTEMPLATE_TABLE = "CREATE TABLE " +
             TABLE_TAGTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
