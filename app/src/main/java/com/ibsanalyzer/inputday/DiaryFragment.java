@@ -402,8 +402,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                         DBHandler dbHandler = new DBHandler(getContext());
                         dbHandler.deleteEvent(pressedEvent);
                         //2 remove event from eventList
-                        eventList.remove(position);
-                        //3. update adapter for that position
+                        int removedDateMarker = Util.removeEventAndAlsoDateMarkerIfLast(eventList, position);
+
+                        //3 notify RecyclerView of changes
+                        //3.1 DateMarkerPos is last in list and should be removed first
+                        if (removedDateMarker != -1) {
+                            adapter.notifyItemRemoved(removedDateMarker);
+                        }
+                        //3.2 Pos of removed normal event
                         adapter.notifyItemRemoved(position);
                     }
                     return true;

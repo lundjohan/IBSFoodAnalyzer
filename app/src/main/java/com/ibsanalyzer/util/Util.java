@@ -87,7 +87,66 @@ public class Util {
         return (int) (dpWidth);
         //return (int)(dpWidth/mNoOfColumns);
     }
+    //==============================================================================================
+    //Removal of events from list.
+    // (possible removal of datemarkers must be in consideration)
+    //==============================================================================================
 
+    /**
+     * @param eventList
+     * @param position
+     * @return position of removed DateMarker. If no DateMarker was removed (due to there are still
+     * other events that day)-1 is returned
+     */
+    public static int removeEventAndAlsoDateMarkerIfLast(List<Event> events, int position) {
+        int origPosOfDateMarker = -1;
+        LocalDate dateOfEvent = events.get(position).getTime().toLocalDate();
+
+        events.remove(position);
+        //possibly remove datemarker
+        //position has moved to be on step later in list (notice t)
+        //N.B. another event could have been before removed event so it is not so banal.
+        if (dateMarkerIsSoleEventOneDay(events, dateOfEvent, position)) {
+            //position is now upheld by DateMarker (since list has been contracted by events
+            // .remove above)
+            events.remove(position);
+            origPosOfDateMarker = ++position;
+        }
+        return origPosOfDateMarker;
+    }
+
+    /**
+     * Is is understated that DateMarkerEvent occupies last position in list for that date.
+     *
+     * Uses position to sort faster.
+     *
+     *
+     * <p>
+     * Requires sorted list.
+     * <p>
+     *
+     *
+     * @param events
+     * @param dateOfEvent
+     * @param position => is either a normal event that day, or a datemarker that day. Used for optimization
+     * @return
+     */
+    private static boolean dateMarkerIsSoleEventOneDay(List<Event> events, LocalDate dateOfEvent, int position) {
+        //check at position
+        if (events.get(position).getClass() != DateMarkerEvent.class){
+            return false;
+        }
+        //check before position
+        if (position>0 && events.get(position-1).getTime().toLocalDate().isEqual(dateOfEvent)){
+            return false;
+        }
+        //Check after position is not needed since datemarker should always be placed last for day.
+        return true;
+    }
+    //==============================================================================================
+    //Adding of events from list.
+    // (possible adding of datemarkers must be in consideration)
+    //==============================================================================================
     //instead of sorting this should use addDateEventAtRightPlace for insertion of event
     public static InsertPositions insertEventWithDayMarker(List<Event> events, Event event) {
         //add event to list
@@ -117,7 +176,6 @@ public class Util {
     }
 
 
-
     public static DateMarkerEvent addDateMarkerIfNotExists(LocalDate dateOfEvent, List<Event>
             events) {
         DateMarkerEvent dateMarker = null;
@@ -139,15 +197,14 @@ public class Util {
     //(other methods are used to add much )
     private static int addEventAtRightPlace(Event event, List<Event> events) {
         int indexOfInsertion = -1;
-        if (events.isEmpty()){
+        if (events.isEmpty()) {
             events.add(event);
             indexOfInsertion = 0;
-        }
-        else if (events.size()>0){
-            for (int i = 0; i< events.size();i++){
+        } else if (events.size() > 0) {
+            for (int i = 0; i < events.size(); i++) {
                 if (events.get(i).getTime().isBefore(event.getTime()))
                     continue;
-                else{
+                else {
                     events.add(i, event);
                     indexOfInsertion = i;
                     break;
@@ -156,10 +213,11 @@ public class Util {
             }
         }
         //do some more effective algorithm
-        else{
+        else {
 
         }
-        //no event has been added => means that it should be added last (see in loop above why so). This is ugly but works.
+        //no event has been added => means that it should be added last (see in loop above why
+        // so). This is ugly but works.
         if (indexOfInsertion == -1)
             events.add(event);
         return indexOfInsertion;
@@ -201,23 +259,26 @@ public class Util {
             Util.addDateEventToList(date, eventList, i);
         }
     }
+
     /**
      * Prerequisite: position is the place to add DateEvent.
-     *  OR if position == size of list, it is DateEvent is added last in list
+     * OR if position == size of list, it is DateEvent is added last in list
+     *
      * @param dateOfEvent
      * @param eventList
      * @param position
      */
-    public static void addDateEventToList(LocalDate dateOfEvent, List<Event> eventList, int position) {
+    public static void addDateEventToList(LocalDate dateOfEvent, List<Event> eventList, int
+            position) {
         DateMarkerEvent dateMarker = new DateMarkerEvent(dateOfEvent);
 
-        if (position == eventList.size()){
+        if (position == eventList.size()) {
             eventList.add(dateMarker);
-        }
-        else{
-            eventList.add(position,dateMarker );
+        } else {
+            eventList.add(position, dateMarker);
         }
     }
+
     public static int stepForwardUntilNewDateOrEndOfList(List<Event> eventList, LocalDate ld,
                                                          int startPos) {
         int i = ++startPos;
@@ -227,4 +288,6 @@ public class Util {
             return stepForwardUntilNewDateOrEndOfList(eventList, ld, i);
         }
     }
+
+
 }
