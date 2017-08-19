@@ -168,6 +168,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void deleteAllTablesRows() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TAGTEMPLATES, null, null);
+        //deleteAllTagTemplates();
         db.delete(TABLE_TAGS, null, null);
         db.delete(TABLE_EVENTS, null, null);
         db.delete(TABLE_RATINGS, null, null);
@@ -178,6 +179,22 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_EVENTSTEMPLATES, null, null);
         db.delete(TABLE_EVENTSTEMPLATEEVENTS, null, null);
         db.close();
+    }
+
+    /**
+     * Text down is irrevelant => ON DELETE SET NULL is what I wanted.
+     *
+     * Deleting a tagTemplate is a bit more complicated than other tables.
+     * The complication is that it is referencing to itself through _is_a.
+     * <p>
+     * If cheese has lacteo as _is_a and you remove lacteo, you don't want cheese to be removed
+     * (as it would in case of CASCADING). You want that _is_a to be set to Null or equivalent.
+     */
+    private void deleteAllTagTemplates() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int doneDelete = db.delete(TABLE_TAGTEMPLATES, null, null);
+        db.close();
+       // return doneDelete > 0;
     }
 
     //==============================================================================================
@@ -243,41 +260,42 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     public void deleteEvent(Event event) {
         long eventId = getEventId(event);
-        if (eventId <0){
+        if (eventId < 0) {
             throw new RuntimeException("Trying to delete event with invalid eventId");
         }
         deleteEvent(getEventId(event));
     }
 
     /**
-     *
      * @param eventId should exist in database!
      */
     private void deleteEvent(long eventId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_EVENTS,COLUMN_ID +"=?",new String[]{String.valueOf(eventId)});     //delete also all type of events that is referencing, and all normal Tags but not Template Tags...
+        db.delete(TABLE_EVENTS, COLUMN_ID + "=?", new String[]{String.valueOf(eventId)});
+        //delete also all type of events that is referencing, and all normal Tags but not
+        // Template Tags...
         db.close();
     }
 
     //-----------------------------------------------------------------------------------
     //gets
     //-----------------------------------------------------------------------------------
-    private long getEventId(Event event){
+    private long getEventId(Event event) {
         int type = getTypeOfEvent(event);
         String date = DateTimeFormat.toSqLiteFormat(event.getTime());
         return getEventId(type, date);
     }
 
     /**
-     *
      * @param typeOfEvent
      * @param date
      * @return returns -1 if no such event exists
      */
-    private long getEventId(int typeOfEvent, String date){
+    private long getEventId(int typeOfEvent, String date) {
         long eventId = -1;
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT "+ COLUMN_ID +" FROM " + TABLE_EVENTS + " WHERE " + COLUMN_TYPE_OF_EVENT +
+        final String QUERY = "SELECT " + COLUMN_ID + " FROM " + TABLE_EVENTS + " WHERE " +
+                COLUMN_TYPE_OF_EVENT +
                 " = ? AND " + COLUMN_DATE + " = ?";
         Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(typeOfEvent), date});
         if (c != null) {
@@ -288,6 +306,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return eventId;
     }
+
     public List<Event> getAllEventsSorted() {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATE + "" +
@@ -734,12 +753,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return tagTemplates;
     }
 
-    public boolean deleteAllTagTemplates() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int doneDelete = db.delete(TABLE_TAGTEMPLATES, null, null);
-        db.close();
-        return doneDelete > 0;
-    }
 
     public void createSomeTagTemplates() {
         addTagTemplate(new TagTemplate("dairy"));

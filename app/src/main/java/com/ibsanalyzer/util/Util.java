@@ -115,23 +115,7 @@ public class Util {
 
         return insertPositions;
     }
-    /**
-     * Prerequisite: position is the place to add DateEvent.
-     *  OR if position == size of list, it is DateEvent is added last in list
-     * @param dateOfEvent
-     * @param eventList
-     * @param position
-     */
-    public static void addDateEventToList(LocalDate dateOfEvent, List<Event> eventList, int position) {
-        DateMarkerEvent dateMarker = new DateMarkerEvent(dateOfEvent);
 
-        if (position == eventList.size()){
-            eventList.add(dateMarker);
-        }
-        else{
-            eventList.add(position,dateMarker );
-        }
-    }
 
 
     public static DateMarkerEvent addDateMarkerIfNotExists(LocalDate dateOfEvent, List<Event>
@@ -204,5 +188,43 @@ public class Util {
         return tags;
     }
 
+    /**
+     * Methods used by DiaryFragment at start of app after list has been filled with events
+     *
+     * @param eventList
+     */
+    public static void addDateEventsToList(List<Event> eventList) {
+        LocalDate date;
+        for (int i = 0; i < eventList.size(); i++) {
+            date = eventList.get(i).getTime().toLocalDate();
+            i = Util.stepForwardUntilNewDateOrEndOfList(eventList, date, i);
+            Util.addDateEventToList(date, eventList, i);
+        }
+    }
+    /**
+     * Prerequisite: position is the place to add DateEvent.
+     *  OR if position == size of list, it is DateEvent is added last in list
+     * @param dateOfEvent
+     * @param eventList
+     * @param position
+     */
+    public static void addDateEventToList(LocalDate dateOfEvent, List<Event> eventList, int position) {
+        DateMarkerEvent dateMarker = new DateMarkerEvent(dateOfEvent);
 
+        if (position == eventList.size()){
+            eventList.add(dateMarker);
+        }
+        else{
+            eventList.add(position,dateMarker );
+        }
+    }
+    public static int stepForwardUntilNewDateOrEndOfList(List<Event> eventList, LocalDate ld,
+                                                         int startPos) {
+        int i = ++startPos;
+        if (startPos >= eventList.size() || !eventList.get(i).getTime().toLocalDate().equals(ld))
+            return i;
+        else {
+            return stepForwardUntilNewDateOrEndOfList(eventList, ld, i);
+        }
+    }
 }

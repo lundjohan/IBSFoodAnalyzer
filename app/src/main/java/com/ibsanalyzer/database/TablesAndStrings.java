@@ -6,8 +6,8 @@ package com.ibsanalyzer.database;
 
 public class TablesAndStrings {
     //NO_INHERITANCE is used to say: "TagTemplate is not inheriting"
-    public static final String NO_INHERITANCE = "0Null0";
-    public static final int DATABASE_VERSION = 8;
+    public static final String NO_INHERITANCE = null;
+    public static final int DATABASE_VERSION = 11;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -74,7 +74,7 @@ public class TablesAndStrings {
             COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE ON CONFLICT IGNORE, " +
             COLUMN_IS_A + " TEXT CHECK( " + COLUMN_IS_A + " != " + COLUMN_TAGNAME + "),  " +
             " FOREIGN KEY( " + COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
-            + " ( " + COLUMN_TAGNAME + ")" +
+            + " ( " + COLUMN_TAGNAME + ")" + " ON DELETE SET NULL " +
             ");";
     public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
             TABLE_TAGS + " (  " +

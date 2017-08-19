@@ -34,19 +34,16 @@ import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static android.os.Build.VERSION_CODES.M;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
-import static java.util.Collections.addAll;
 
 
 /**
@@ -164,7 +161,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             //   eventList = savedInstanceState.getParcelableArrayList("eventList");
         }
         //fill recyclerView from database
-        fillEventListWithDatabase();
+//        fillEventListWithDatabase();
         //=====================TIMER================================================================
         Log.d(TAG, "BEFORE quiting onCreateView");
         logTimePassed();
@@ -499,7 +496,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         Log.d(TAG, "BEFORE addDateEventsToList");
         logTimePassed();
         //==========================================================================================
-        addDateEventsToList(eventList);
+        Util.addDateEventsToList(eventList);
         //=====================TIMER================================================================
         Log.d(TAG, "BEFORE adapter.notifyDataSetChanged");
         logTimePassed();
@@ -514,30 +511,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         recyclerView.scrollToPosition(eventList.size() - 1);
     }
 
-    /**
-     * Method used in beginning when list has been filled with events
-     *
-     * @param eventList
-     */
-    private void addDateEventsToList(List<Event> eventList) {
-        LocalDate date = null;
-        for (int i = 0; i < eventList.size(); i++) {
-            date = eventList.get(i).getTime().toLocalDate();
-            i = stepForwardUntilNewDateOrEndOfList(eventList, date, i);
-            Util.addDateEventToList(date, eventList, i);
-        }
-    }
 
-
-    private static int stepForwardUntilNewDateOrEndOfList(List<Event> eventList, LocalDate ld,
-                                                          int startPos) {
-        int i = ++startPos;
-        if (startPos >= eventList.size() || !eventList.get(i).getTime().toLocalDate().equals(ld))
-            return i;
-        else {
-            return stepForwardUntilNewDateOrEndOfList(eventList, ld, i);
-        }
-    }
 
 
     public List<Event> getEvents() {

@@ -1,6 +1,7 @@
 package com.ibsanalyzer.inputday;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
@@ -70,5 +71,42 @@ public class UtilTest {
         assertTrue(events.get(2) instanceof DateMarkerEvent);
         assertEquals(rating, events.get(0));
         assertEquals(rating, events.get(1));
+    }
+
+    @Test
+    public void addDateEventToListTest(){
+        //Create 4 Rating events, with 3 different dates.
+        // => 3 DateMarkerEvent should be insserted
+
+        LocalDateTime ldt1 = LocalDateTime.of(2017, Month.AUGUST, 1, 14, 0);
+        LocalDateTime ldt2 = LocalDateTime.of(2017, Month.AUGUST, 4, 14, 0);
+        LocalDateTime ldt3 = LocalDateTime.of(2017, Month.AUGUST, 10, 14, 0);
+        //1. Rating
+        Rating r1 = new Rating(ldt1, 4);
+        Rating r2 = new Rating(ldt1, 4);
+        Rating r3 = new Rating(ldt2, 4);
+        Rating r4 = new Rating(ldt3, 4);
+
+        List<Event>eventList = new ArrayList<>();
+        eventList.add(r1);
+        eventList.add(r2);
+        eventList.add(r3);
+        eventList.add(r4);
+
+        Util.addDateEventsToList(eventList);
+
+        //size ok?
+        //4 rating + 3 datemarkers = 7 events
+        assertEquals(eventList.size(), 7);
+
+        //at right place? DateMarkers comes at latest place of day (just before 24:00)
+        assertEquals(eventList.size(), 7);
+
+        //index 0, 1 are rating events
+        assertEquals(eventList.get(2).getClass(), DateMarkerEvent.class);
+        //3 rating event
+        assertEquals(eventList.get(4).getClass(), DateMarkerEvent.class);
+        //5 rating event
+        assertEquals(eventList.get(6).getClass(), DateMarkerEvent.class);
     }
 }
