@@ -44,6 +44,7 @@ import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static com.ibsanalyzer.util.Util.removeEventAndAlsoDateMarkerIfLast;
 
 
 /**
@@ -69,7 +70,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         int minutes = seconds / 60;
         seconds = seconds % 60;*/
 
-        Log.d(TAG, "Time passed in ms: " + nanos/1000000);
+        Log.d(TAG, "Time passed in ms: " + nanos / 1000000);
 
     }
     //=============================================================================================
@@ -396,21 +397,34 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                         pressedEvent.setBreak(false);
                         //2. update adapter for that position
                         adapter.notifyItemChanged(position);
-                    }
-                    else if (item.getItemId() == R.id.deleteEvent) {
+                    } else if (item.getItemId() == R.id.deleteEvent) {
                         //1. remove event from database
                         DBHandler dbHandler = new DBHandler(getContext());
                         dbHandler.deleteEvent(pressedEvent);
                         //2 remove event from eventList
-                        int removedDateMarker = Util.removeEventAndAlsoDateMarkerIfLast(eventList, position);
+                        boolean dateMarkerWasLastEventForDay = Util
+                                .removeEventAndAlsoDateMarkerIfLast(eventList, position);
 
+
+                        //uncommented text below looks great but sadly does not work.
+                        // RecyclerView seem to be not perfectly implemented.
+                        
                         //3 notify RecyclerView of changes
-                        //3.1 DateMarkerPos is last in list and should be removed first
-                        if (removedDateMarker != -1) {
-                            adapter.notifyItemRemoved(removedDateMarker);
-                        }
-                        //3.2 Pos of removed normal event
-                        adapter.notifyItemRemoved(position);
+                        //3.1 Remove for normal event
+
+
+                        // adapter.notifyItemRemoved(position);
+
+                        //3.2 Possible remove for DateMarkerPos (also position since recyclerview
+                        // has been contracted one after event was removed above)
+
+
+                        /*if (dateMarkerWasLastEventForDay) {
+                            adapter.notifyItemRemoved(position);
+                        }*/
+
+
+                        adapter.notifyDataSetChanged();
                     }
                     return true;
                 }
@@ -489,8 +503,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         logTimePassed();
         //==========================================================================================
 
-        List<Event>sortedEvents =dbHandler.getAllEventsSorted();
-       // Log.d(TAG, "3. sortedEvents.size()" + sortedEvents.size());
+        List<Event> sortedEvents = dbHandler.getAllEventsSorted();
+        // Log.d(TAG, "3. sortedEvents.size()" + sortedEvents.size());
         logTimePassed();
         Log.d(TAG, "(4) 5. ended sortedEvents");
         //=====================TIMER================================================================
@@ -516,8 +530,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //==========================================================================================
         recyclerView.scrollToPosition(eventList.size() - 1);
     }
-
-
 
 
     public List<Event> getEvents() {

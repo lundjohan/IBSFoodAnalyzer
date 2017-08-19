@@ -93,13 +93,11 @@ public class Util {
     //==============================================================================================
 
     /**
-     * @param eventList
+     * @param events
      * @param position
-     * @return position of removed DateMarker. If no DateMarker was removed (due to there are still
-     * other events that day)-1 is returned
+     * @return true if a DateMarker was last for day and therefore removed.
      */
-    public static int removeEventAndAlsoDateMarkerIfLast(List<Event> events, int position) {
-        int origPosOfDateMarker = -1;
+    public static boolean removeEventAndAlsoDateMarkerIfLast(List<Event> events, int position) {
         LocalDate dateOfEvent = events.get(position).getTime().toLocalDate();
 
         events.remove(position);
@@ -110,9 +108,9 @@ public class Util {
             //position is now upheld by DateMarker (since list has been contracted by events
             // .remove above)
             events.remove(position);
-            origPosOfDateMarker = ++position;
+            return true;
         }
-        return origPosOfDateMarker;
+        return false;
     }
 
     /**
