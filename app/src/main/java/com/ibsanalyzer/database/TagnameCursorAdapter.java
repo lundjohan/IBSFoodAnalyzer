@@ -14,7 +14,6 @@ import com.ibsanalyzer.inputday.R;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_IS_A;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
-import static com.ibsanalyzer.database.TablesAndStrings.NO_INHERITANCE;
 
 /**
  * Created by Johan on 2017-05-10.
@@ -41,7 +40,7 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TAGNAME));
         String inheritanceOne = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IS_A));
         tagName.setText(name);
-        if (inheritanceOne.equals(NO_INHERITANCE)){
+        if (inheritanceOne == null){
             inherits.setText("");
             return;
         }

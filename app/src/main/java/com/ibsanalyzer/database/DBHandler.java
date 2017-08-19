@@ -26,8 +26,6 @@ import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.name;
-import static android.R.attr.type;
 import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.MEAL;
@@ -61,7 +59,6 @@ import static com.ibsanalyzer.database.TablesAndStrings.CREATE_TAG_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_VERSION;
 import static com.ibsanalyzer.database.TablesAndStrings.ENABLE_FOREIGN_KEYS;
-import static com.ibsanalyzer.database.TablesAndStrings.NO_INHERITANCE;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_BMS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTSTEMPLATEEVENTS;
@@ -614,7 +611,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_TAGNAME, tagTemplate.get_tagname());
         TagTemplate parent = tagTemplate.get_is_a1();
         if (parent == null) {
-            values.put(COLUMN_IS_A, NO_INHERITANCE); //OK MED -1???
+            values.putNull(COLUMN_IS_A);
         } else {
             values.put(COLUMN_IS_A, tagTemplate.get_is_a1().get_tagname());
         }
@@ -670,7 +667,7 @@ public class DBHandler extends SQLiteOpenHelper {
         tt.set_id(cursor.getInt(0));
         tt.set_tagname(cursor.getString(1));
         TagTemplate parentTag;
-        if (cursor.getString(2) == NO_INHERITANCE) {
+        if (cursor.getString(2) == null) {
             parentTag = null;
         } else {
             parentTag = findTagTemplate(cursor.getString(2));

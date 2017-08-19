@@ -5,8 +5,6 @@ package com.ibsanalyzer.database;
  */
 
 public class TablesAndStrings {
-    //NO_INHERITANCE is used to say: "TagTemplate is not inheriting"
-    public static final String NO_INHERITANCE = null;
     public static final int DATABASE_VERSION = 11;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
