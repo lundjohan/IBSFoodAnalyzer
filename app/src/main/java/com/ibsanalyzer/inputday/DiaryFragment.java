@@ -328,7 +328,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 }
                 break;
         }
-        changeEventInList(event, posInList);
+        changeEventInList(eventList, event, adapter, posInList);
     }
 
     //also adds DateMarkerEvent if appropriate
@@ -342,11 +342,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             adapter.notifyItemInserted(insertPositions.getPosDateMarker());
         }
     }
-    private void changeEventInList(Event e, int pos){
-        //change value in list
-        eventList.set(pos,e);
-        //change graphically
-        adapter.notifyItemChanged(pos);
+    //first remove event from list
+    //then adds a new
+    private void changeEventInList(List<Event> events, Event e, RecyclerView.Adapter
+            adapter, int pos){
+        eventList.remove(pos);
+        //this line is needed, otherwise adapter cannot handle it.
+        adapter.notifyItemRemoved(pos);
+        addEventToList(events, e, adapter);
     }
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
