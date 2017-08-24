@@ -68,7 +68,7 @@ public class RatingActivity extends EventActivity {
         Intent intent = getIntent();
         if (intent.hasExtra(EVENT_TO_CHANGE)){
             Rating rating = (Rating)intent.getSerializableExtra(EVENT_TO_CHANGE);
-            scoreBar.setProgress(rating.getAfter()+1);
+            scoreBar.setProgress(rating.getAfter()-1);
         }
     }
 

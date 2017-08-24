@@ -63,7 +63,7 @@ public class ExerciseActivity extends EventActivity {
         if (intent.hasExtra(EVENT_TO_CHANGE)){
             Exercise exercise = (Exercise)intent.getSerializableExtra(EVENT_TO_CHANGE);
             intensityBar.setProgress(exercise.getIntensity()-1);
-            intensityName.setText(Exercise.intensityLevelToText(intensity));
+            intensityName.setText(Exercise.intensityLevelToText(exercise.getIntensity()));
             String type = exercise.getTypeOfExercise().getName();
             typeOfExercise.setText(type);
         }
