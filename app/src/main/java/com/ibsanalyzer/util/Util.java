@@ -11,6 +11,7 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.inputday.EventActivity;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 
 import org.threeten.bp.LocalDate;
@@ -21,6 +22,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
+import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
+import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT_RETURNED;
 import static java.util.Collections.sort;
 
 /**
@@ -46,8 +50,14 @@ public class Util {
         usingActivity.setResult(RESULT_OK, data);
     }
 
-    public static void serializableReturn(Serializable serializable, String putExtraString,
-                                          Activity usingActivity) {
+    /**
+     * Method used by MealActivity etc as part of creating a new Event.
+     * @param serializable
+     * @param putExtraString
+     * @param usingActivity
+     */
+    public static void returnNewEvent(Serializable serializable, String putExtraString,
+                                      Activity usingActivity) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(putExtraString, serializable);
         Intent data = new Intent();
@@ -55,6 +65,21 @@ public class Util {
         usingActivity.setResult(RESULT_OK, data);
     }
 
+    /**
+     * Method used my MealActivity etc as part of CHANGING an Event.
+     * @param serializable
+     * @param eventId
+     */
+    public static void returnChangedEvent(Serializable serializable, String putExtraString, EventActivity usingActivity, long eventId, int posInList) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(putExtraString, serializable);
+        bundle.putLong(ID_OF_EVENT_RETURNED, eventId);
+        bundle.putInt(POS_OF_EVENT_RETURNED, posInList);
+        bundle.putBoolean(CHANGED_EVENT, true);
+        Intent data = new Intent();
+        data.putExtras(bundle);
+        usingActivity.setResult(RESULT_OK, data);
+    }
 
     public static void dataComingBackFromTagAdder() {
 
@@ -286,6 +311,7 @@ public class Util {
             return stepForwardUntilNewDateOrEndOfList(eventList, ld, i);
         }
     }
+
 
 
 }

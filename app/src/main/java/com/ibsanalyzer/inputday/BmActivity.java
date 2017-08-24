@@ -1,13 +1,17 @@
 package com.ibsanalyzer.inputday;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Bm;
+import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.util.Util;
 
+import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -89,6 +93,15 @@ public class BmActivity extends EventActivity {
             }
 
         }
+        //event to be changed?
+        Intent intent = getIntent();
+        if (intent.hasExtra(EVENT_TO_CHANGE)){
+            Bm bm = (Bm)intent.getSerializableExtra(EVENT_TO_CHANGE);
+            bristolBar.setProgress(bm.getBristol()-1);
+            bristolName.setText((Bm.bristolToText(bm.getBristol())));
+            completeBar.setProgress(bm.getComplete()-1);
+            completeName.setText((Bm.bristolToText(bm.getComplete())));
+        }
     }
 
     @Override
@@ -97,7 +110,6 @@ public class BmActivity extends EventActivity {
         int complete = completeBar.getProgress() + 1;
         int bristol = bristolBar.getProgress() + 1;
         Bm bm = new Bm(getLocalDateTime(), complete, bristol);
-        Util.serializableReturn(bm,RETURN_BM_SERIALIZABLE, this);
-        super.finish();
+        returnEvent(bm, RETURN_BM_SERIALIZABLE);
     }
 }

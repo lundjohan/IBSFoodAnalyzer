@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
@@ -18,7 +19,11 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.Exercise;
+import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DateTimeFormat;
+import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -26,29 +31,42 @@ import org.threeten.bp.LocalTime;
 
 import java.util.Calendar;
 
+import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
+import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
+
 /**
  * Created by Johan on 2017-05-03.
- *
+ * <p>
  * Generic class for all the Activities where user puts in data for Events.
- *
+ * <p>
  * http://stackoverflow.com/questions/36970142/how-to-display-layout-of-child-activity
  */
 
 public abstract class EventActivity extends AppCompatActivity implements
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     TextView dateView;
     TextView timeView;
     Button dateBtn;
     Button timeBtn;
-   /* LocalTime lt = null;
-    LocalDate ld= null;
-    LocalDateTime datetime;*/
 
+    //variables used for changing events.
+    //Connected to isChangingEvent. The variable is later used
+    // in database to know which event to be changed.
+    protected long eventId = -1;
+
+    //position in eventList (in DiaryFragment) for changing event
+    protected int posOfEvent = -1;
+
+    protected boolean isChangingEvent() {
+        return eventId > -1;
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.cancel_done_menu, menu);
-        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
+                .OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -58,10 +76,12 @@ public abstract class EventActivity extends AppCompatActivity implements
         });
         return true;
     }
+
     protected abstract int getLayoutRes();
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("localDateStr",(String) dateView.getText());
+        outState.putString("localDateStr", (String) dateView.getText());
         outState.putString("localTimeStr", (String) timeView.getText());
         super.onSaveInstanceState(outState);
     }
@@ -71,29 +91,45 @@ public abstract class EventActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
         ViewGroup content = (ViewGroup) findViewById(R.id.appendingLayout);
-        getLayoutInflater().inflate(getLayoutRes(),content,true);
+        getLayoutInflater().inflate(getLayoutRes(), content, true);
         dateBtn = (Button) findViewById(R.id.dateBtn);
         timeBtn = (Button) findViewById(R.id.timeBtn);
         dateView = (TextView) findViewById(R.id.date);
         timeView = (TextView) findViewById(R.id.time);
-        setDateView(LocalDate.now());
-        setTimeView(LocalTime.now());
+
+        //is the event mean to be changed (as opposition to new event to be created)?
+        Intent intent = getIntent();
+        if (intent.hasExtra(EVENT_TO_CHANGE)) {
+            Event e = (Event) intent.getSerializableExtra(EVENT_TO_CHANGE);
+            DBHandler dbHandler = new DBHandler(getApplicationContext());
+            eventId = dbHandler.getEventId(e);
+            posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
+            setDateView(e.getTime().toLocalDate());
+            setTimeView(e.getTime().toLocalTime());
+        } else {
+            setDateView(LocalDate.now());
+            setTimeView(LocalTime.now());
+        }
 
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey("localDateStr")){
-                LocalDate localDate = LocalDate.parse((CharSequence) savedInstanceState.get("localDateStr"));
+            if (savedInstanceState.containsKey("localDateStr")) {
+                LocalDate localDate = LocalDate.parse((CharSequence) savedInstanceState.get
+                        ("localDateStr"));
                 setDateView(localDate);
             }
-            if (savedInstanceState.containsKey("localTimeStr")){
-                LocalTime localTime = LocalTime.parse((CharSequence) savedInstanceState.get("localTimeStr"));
+            if (savedInstanceState.containsKey("localTimeStr")) {
+                LocalTime localTime = LocalTime.parse((CharSequence) savedInstanceState.get
+                        ("localTimeStr"));
                 setTimeView(localTime);
             }
         }
     }
+
     public void doneClicked(View view) {
         finish();
         super.finish();
     }
+
     public void startTimePicker(View view) {
         DialogFragment newFragment = new RatingActivity.TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
@@ -107,24 +143,27 @@ public abstract class EventActivity extends AppCompatActivity implements
         newFragment.show(getFragmentManager(), "datePicker");
 
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Log.d("Debug", "inuti RatingActivity.onDateSet");
 
         //month datepicker +1 == LocalDate.Month
-        LocalDate ld = LocalDate.of(year, month+1, dayOfMonth);
+        LocalDate ld = LocalDate.of(year, month + 1, dayOfMonth);
         setDateView(ld);
     }
+
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         LocalTime lt = LocalTime.of(hourOfDay, minute);
         setTimeView(lt);
     }
 
-    private void setDateView(LocalDate ld){
+    private void setDateView(LocalDate ld) {
         dateView.setText(DateTimeFormat.toTextViewFormat(ld));
     }
-    private void setTimeView(LocalTime lt){
+
+    private void setTimeView(LocalTime lt) {
         timeView.setText(DateTimeFormat.toTextViewFormat(lt));
     }
 
@@ -150,7 +189,9 @@ public abstract class EventActivity extends AppCompatActivity implements
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            //see http://stackoverflow.com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted answer.
+            //see http://stackoverflow
+            // .com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted
+            // answer.
             ((TimePickerDialog.OnTimeSetListener) getActivity()).onTimeSet(view, hourOfDay, minute);
 
         }
@@ -181,10 +222,13 @@ public abstract class EventActivity extends AppCompatActivity implements
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            //see http://stackoverflow.com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted answer.
+            //see http://stackoverflow
+            // .com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted
+            // answer.
             ((DatePickerDialog.OnDateSetListener) getActivity()).onDateSet(view, year, month, day);
             //  localDate = LocalDate.of(year,month,day);
-            // dateView.setText(Integer.valueOf(ld.getYear())+" "+ld.getMonth().toString()+" "+Integer.valueOf(ld.getDayOfMonth()));
+            // dateView.setText(Integer.valueOf(ld.getYear())+" "+ld.getMonth().toString()+"
+            // "+Integer.valueOf(ld.getDayOfMonth()));
         }
        /* public LocalDate getLocalDate (){
             return localDate;
@@ -194,12 +238,24 @@ public abstract class EventActivity extends AppCompatActivity implements
     }
 
     //keep this method instead of local variables, it keeps it much less error prone
-    protected LocalDateTime getLocalDateTime(){
-        String ldStr = (String)dateView.getText();
-        String ltStr = (String)timeView.getText();
+    protected LocalDateTime getLocalDateTime() {
+        String ldStr = (String) dateView.getText();
+        String ltStr = (String) timeView.getText();
         LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);
         LocalTime lt = DateTimeFormat.fromTextViewTimeFormat(ltStr);
-        return LocalDateTime.of(ld,lt);
+        return LocalDateTime.of(ld, lt);
     }
+
+    //If it doesnt' work it can be because <this> in parameter to returnChangedEvent should be
+    // MealActivity etc and not this Activity
+    protected void returnEvent(Event event, String returnString) {
+        if (isChangingEvent()) {
+            Util.returnChangedEvent(event, returnString, this, eventId, posOfEvent);
+        } else {
+            Util.returnNewEvent(event, returnString, this);
+        }
+    }
+
+    ;
 
 }

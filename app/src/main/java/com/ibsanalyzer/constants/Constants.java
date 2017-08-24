@@ -39,6 +39,20 @@ public class Constants {
     public final static String RETURN_BM_SERIALIZABLE = "returnBmSer";
     public final static String RETURN_RATING_SERIALIZABLE = "returnRatingSer";
 
+
+    //sent to new Event activities if all you want to do is change an event
+    public final static String EVENT_TO_CHANGE = "eventToChange";
+    //changed event or new event?
+    public final static String CHANGED_EVENT = "changedEvent";
+
+    //position of event in list, same position but used at different places.
+    public final static String EVENT_POSITION = "eventPosition";
+    public final static String POS_OF_EVENT_RETURNED = "eventPositionReturned";
+
+    //same id but used at different places.
+    public final static String ID_OF_EVENT = "idOfEvent";
+    public final static String ID_OF_EVENT_RETURNED = "idOfEventReturned";
+
     public final static String MARKED_EVENTS_JSON = "markedEventsJson";
 
 

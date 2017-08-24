@@ -260,7 +260,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     //gets
     //-----------------------------------------------------------------------------------
-    private long getEventId(Event event) {
+    public long getEventId(Event event) {
         int type = getTypeOfEvent(event);
         String date = DateTimeFormat.toSqLiteFormat(event.getTime());
         return getEventId(type, date);
@@ -285,6 +285,33 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         db.close();
         return eventId;
+    }
+
+    /**
+     * Changes a Meal in database to toMeal (id:s doesn't have to be the same afterwards).
+     * @param eventId
+     * @param toMeal
+     * @return
+     */
+    public void changeMeal(long eventId, Meal toMeal){
+        deleteEvent(eventId);
+        addMeal(toMeal);
+    }
+    public void changeOther(long eventId, Other toOther){
+        deleteEvent(eventId);
+        addOther(toOther);
+    }
+    public void changeExercise(long eventId, Exercise toExercise){
+        deleteEvent(eventId);
+        addExercise(toExercise);
+    }
+    public void changeBm(long eventId, Bm toBm){
+        deleteEvent(eventId);
+        addBm(toBm);
+    }
+    public void changeRating(long eventId, Rating toRating){
+        deleteEvent(eventId);
+        addRating(toRating);
     }
 
     public List<Event> getAllEventsSorted() {

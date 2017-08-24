@@ -1,14 +1,21 @@
 package com.ibsanalyzer.inputday;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.util.Util;
 
+import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static com.ibsanalyzer.inputday.R.id.bristolName;
+import static com.ibsanalyzer.inputday.R.id.completeBar;
+import static com.ibsanalyzer.inputday.R.id.completeName;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -57,6 +64,12 @@ public class RatingActivity extends EventActivity {
                 scoreBar.setProgress(savedInstanceState.getInt("seekBar"));
             }
         }
+        //event to be changed?
+        Intent intent = getIntent();
+        if (intent.hasExtra(EVENT_TO_CHANGE)){
+            Rating rating = (Rating)intent.getSerializableExtra(EVENT_TO_CHANGE);
+            scoreBar.setProgress(rating.getAfter()+1);
+        }
     }
 
     @Override
@@ -64,7 +77,7 @@ public class RatingActivity extends EventActivity {
         //scoreBar starts from zero
         int after = scoreBar.getProgress() + 1;
         Rating rating = new Rating(getLocalDateTime(), after);
-        Util.serializableReturn(rating,RETURN_RATING_SERIALIZABLE, this);
+        returnEvent(rating, RETURN_RATING_SERIALIZABLE);
 
     }
 }

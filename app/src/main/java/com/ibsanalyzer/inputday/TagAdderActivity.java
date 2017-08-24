@@ -82,7 +82,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     @Override
     public void finish() {
         TagTemplate tagTemplate = chosenTagTemplate;
-        Util.serializableReturn(tagTemplate, Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, this);
+        Util.returnNewEvent(tagTemplate, Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, this);
         super.finish();
     }
 

@@ -33,18 +33,25 @@ import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
-import org.threeten.bp.LocalDate;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.data;
 import static android.app.Activity.RESULT_OK;
+import static android.media.CamcorderProfile.get;
+import static android.provider.CalendarContract.Instances.EVENT_ID;
+import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
+import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
+import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT;
+import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT_RETURNED;
+import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
-import static com.ibsanalyzer.util.Util.removeEventAndAlsoDateMarkerIfLast;
 
 
 /**
@@ -56,7 +63,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public static final int NEW_OTHER = 1001;
     public static final int NEW_EXERCISE = 1002;
     public static final int NEW_BM = 1003;
-    public static final int NEW_SCORE = 1004;
+    public static final int NEW_RATING = 1004;
+    public static final int CHANGED_MEAL = 1010;
+    public static final int CHANGED_OTHER = 1011;
+    public static final int CHANGED_EXERCISE = 1012;
+    public static final int CHANGED_BM = 1013;
+    public static final int CHANGED_RATING = 1014;
 
     public static final String TAG = "DebuggingDiaryFragment";
     //===========================================================================================
@@ -221,6 +233,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         if (resultCode != RESULT_OK) {
             return;
         }
+        if (data.hasExtra(CHANGED_EVENT)) {
+            executeChangedEvent(requestCode, data);
+        } else {
+            executeNewEvent(requestCode, data);
+        }
+    }
+
+    private void executeNewEvent(int requestCode, Intent data) {
         //common for all
         DBHandler dbHandler = new DBHandler(getContext());
         Event event = null;
@@ -252,7 +272,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                     dbHandler.addBm((Bm) event);
                 }
                 break;
-            case NEW_SCORE:
+            case NEW_RATING:
                 if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
                     event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
                     dbHandler.addRating((Rating) event);
@@ -260,7 +280,55 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
                 break;
         }
         addEventToList(eventList, event, adapter);
+    }
+    private void executeChangedEvent(int requestCode, Intent data) {
+        int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
+        long eventId = data.getLongExtra(ID_OF_EVENT_RETURNED, -1);
+        if (posInList == -1){
+            throw new RuntimeException ("Received no EVENT POSITION from New/Changed Event Activity (MealActivity etc)");
+        }
+        else if (eventId == -1){
+            throw new RuntimeException ("Received no EVENT ID from New/Changed Event Activity (MealActivity etc)");
+        }
+        DBHandler dbHandler = new DBHandler(getContext());
+        Event event = null;
+        
+        
+        switch (requestCode) {
 
+            case CHANGED_MEAL:
+                if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
+                    //add to database
+                    event = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
+                    dbHandler.changeMeal(eventId, (Meal) event);
+                }
+                break;
+            case CHANGED_OTHER:
+                if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
+                    event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
+                    dbHandler.changeOther(eventId, (Other) event);
+                }
+                break;
+            case CHANGED_EXERCISE:
+                if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
+                    event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
+                    dbHandler.changeExercise(eventId, (Exercise) event);
+                }
+                break;
+            case CHANGED_BM:
+                if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
+                    event = (Bm) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
+                    dbHandler.changeBm(eventId, (Bm) event);
+                }
+                break;
+            case CHANGED_RATING:
+                if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
+                    event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
+                    dbHandler.changeRating(eventId, (Rating) event);
+                }
+                break;
+        }
+        changeEventInList(event, posInList);
     }
 
     //also adds DateMarkerEvent if appropriate
@@ -274,7 +342,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
             adapter.notifyItemInserted(insertPositions.getPosDateMarker());
         }
     }
-
+    private void changeEventInList(Event e, int pos){
+        //change value in list
+        eventList.set(pos,e);
+        //change graphically
+        adapter.notifyItemChanged(pos);
+    }
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
     public void onClick(View v) {
@@ -323,8 +396,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     public void newScoreItem(View view) {
         Intent intent = new Intent((Activity) this.callback, RatingActivity.class);
-        startActivityForResult(intent, NEW_SCORE);
+        startActivityForResult(intent, NEW_RATING);
     }
+
 
 
     /*
@@ -408,7 +482,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
                         //uncommented text below looks great but sadly does not work.
                         // RecyclerView seem to be not perfectly implemented.
-                        
+
                         //3 notify RecyclerView of changes
                         //3.1 Remove for normal event
 
@@ -482,10 +556,47 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         return eventsMarked.size() > 0;
     }
 
+    /**
+     * This method is called when user want to CHANGE an event as opposed to create a new one.
+     * @param position
+     */
     private void editEvent(int position) {
-        //TODO
-    }
+        Intent intent = null;
+        Event event = eventList.get(position);
+        Class c = event.getClass();
+        if (c.equals(Meal.class)) {
+            changeEventActivity(event, MealActivity.class, CHANGED_MEAL, position);
+        } else if (c.equals(Other.class)) {
+            changeEventActivity(event, OtherActivity.class, CHANGED_OTHER, position);
+        } else if (c.equals(Exercise.class)) {
+            changeEventActivity(event, ExerciseActivity.class, CHANGED_EXERCISE, position);
+        } else if (c.equals(Bm.class)) {
+            changeEventActivity(event, BmActivity.class, CHANGED_BM, position);
+        } else if (c.equals(Rating.class)) {
+            changeEventActivity(event, RatingActivity.class, CHANGED_RATING, position);
+        }
 
+        //TODO
+        //2. Use intent put extra to store serialized event object
+        // 1. Which type of Event has been clicked.
+        //3. Start that Activity (e.g. Meal Activity ) => let that Activity first check if there 
+        // is an serialized event object sent to it (means that event should be changed)start up 
+        // with properties filled from serialized event object
+        //4. Receive changed object from Activity in onActivityForResult (Activity has put data
+        // .putExtra boolean that shows changed = true)=> 1. change database 2. change eventList 
+        // 3. Change RecyclerView's adapter.
+        //pretty easy.
+    }
+    //user requests to change event
+    private void changeEventActivity(Event event, Class activityClass, int valueToReturn, int posInList) {
+        Intent intent = new Intent((Activity) this.callback, activityClass);
+        intent.putExtra(EVENT_TO_CHANGE, (Serializable) event);
+        intent.putExtra(EVENT_POSITION, posInList);
+        DBHandler dbHandler = new DBHandler(getContext());
+        long eventId = dbHandler.getEventId(event);
+        intent.putExtra(ID_OF_EVENT, eventId);
+        startActivityForResult(intent, valueToReturn);
+    }
     private boolean eventIsMarked(int position) {
         return eventsMarked.contains(position);
     }

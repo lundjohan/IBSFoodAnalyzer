@@ -4,6 +4,7 @@ import org.threeten.bp.LocalDateTime;
 
 public class Exercise extends Event {
 	private Tag typeOfExercise;
+	//from 1 to 5
 	private int intensity;
 
 	public Exercise(LocalDateTime time, Tag typeOfExercise, int intensity){

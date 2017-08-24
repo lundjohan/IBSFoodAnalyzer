@@ -10,12 +10,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ibsanalyzer.adapters.TagAdapter;
+import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.TagTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
+import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
 
@@ -44,6 +49,14 @@ public abstract class TagEventActivity extends EventActivity {
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
+
+        //is the event mean to be changed (as opposition to new event to be created)?
+        Intent intent = getIntent();
+        if (intent.hasExtra(EVENT_TO_CHANGE)) {
+            InputEvent e = (InputEvent) intent.getSerializableExtra(EVENT_TO_CHANGE);
+            tagsList.addAll(e.getTags());
+            adapter.notifyDataSetChanged();
+        }
     }
     protected void notifyItemInserted(){
         adapter.notifyItemInserted(tagsList.size() - 1);

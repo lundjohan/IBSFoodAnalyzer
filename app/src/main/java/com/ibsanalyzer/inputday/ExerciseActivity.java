@@ -7,20 +7,23 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.util.Util;
 
+import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
+import static com.ibsanalyzer.inputday.R.id.intensity;
 
 public class ExerciseActivity extends EventActivity {
     TextView typeOfExercise;
     TextView intensityName;
     SeekBar intensityBar;
+
+
 
     @Override
     protected int getLayoutRes() {
@@ -56,6 +59,14 @@ public class ExerciseActivity extends EventActivity {
                 intensityBar.setProgress(savedInstanceState.getInt("seekBar"));
             }
         }
+        Intent intent = getIntent();
+        if (intent.hasExtra(EVENT_TO_CHANGE)){
+            Exercise exercise = (Exercise)intent.getSerializableExtra(EVENT_TO_CHANGE);
+            intensityBar.setProgress(exercise.getIntensity()-1);
+            intensityName.setText(Exercise.intensityLevelToText(intensity));
+            String type = exercise.getTypeOfExercise().getName();
+            typeOfExercise.setText(type);
+        }
     }
 
     public void newTagAdderActivity(View view) {
@@ -85,7 +96,7 @@ public class ExerciseActivity extends EventActivity {
         //scoreBar starts from zero
         int intensity = intensityBar.getProgress() + 1;
         Tag typeOfExercise = new Tag(getLocalDateTime(), (String) this.typeOfExercise.getText(), 1.0);
-        Exercise exercise = new Exercise(getLocalDateTime(), typeOfExercise, intensity);
-        Util.serializableReturn(exercise,RETURN_EXERCISE_SERIALIZABLE, this);
+        Exercise event = new Exercise(getLocalDateTime(), typeOfExercise, intensity);
+        returnEvent(event, RETURN_EXERCISE_SERIALIZABLE);
     }
 }
