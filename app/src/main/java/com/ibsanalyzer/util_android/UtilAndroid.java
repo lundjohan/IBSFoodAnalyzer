@@ -1,6 +1,8 @@
 package com.ibsanalyzer.util_android;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.util.InsertPositions;
@@ -19,5 +21,8 @@ public class UtilAndroid {
         if (insertPositions.isDateMarkerAdded()) {
             adapter.notifyItemInserted(insertPositions.getPosDateMarker());
         }
+    }
+    public static void doneClicked(Activity activity) {
+        activity.finish();
     }
 }

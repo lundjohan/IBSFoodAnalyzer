@@ -25,6 +25,8 @@ public class Constants {
 
     //Other
     public final static int TAGS_TO_ADD = 4444;
+    public final static int TAGTEMPLATE_TO_ADD = 4445;
+
    /* public final static String RETURN_MEAL_JSON = "returnMealJSON";
     public final static String RETURN_OTHER_JSON = "returnOtherJSON";
     public final static String RETURN_EXERCISE_JSON = "returnExerciseJSON";

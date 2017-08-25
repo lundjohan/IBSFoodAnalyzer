@@ -1,9 +1,13 @@
 package com.ibsanalyzer.inputday;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
@@ -19,6 +23,9 @@ import com.ibsanalyzer.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
+import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
+
 public class TagAdderActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     SearchView tagSearch;
     ListView tagsList;
@@ -26,6 +33,21 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     private List<String> tagNames = new ArrayList<>();
     DBHandler dbHandler;
     TagTemplate chosenTagTemplate =null;
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_tagtemplate_menu, menu);
+        menu.findItem(R.id.menu_add_new).setOnMenuItemClickListener(new MenuItem
+                .OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                doneClickedNew(null);
+                return true;
+            }
+        });
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,5 +107,9 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         Util.returnNewEvent(tagTemplate, Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, this);
         super.finish();
     }
+    public void doneClickedNew(View view) {
+        Intent intent = new Intent(this, TagTemplateAdderActivity.class);
+        startActivityForResult(intent, TAGTEMPLATE_TO_ADD);
 
+    }
 }

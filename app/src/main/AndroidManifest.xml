@@ -80,6 +80,13 @@
             android:name="com.ibsanalyzer.external_storage.SaveDBIntentService"
             android:exported="false">
         </service>
+
+        <activity android:name=".TagTemplateAdderActivity"
+            android:parentActivityName=".TagAdderActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TagAdderActivity"/>
+        </activity>
     </application>
 
 </manifest>
