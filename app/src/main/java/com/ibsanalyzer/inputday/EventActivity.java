@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.util.Util;
@@ -33,7 +32,6 @@ import java.util.Calendar;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-03.
@@ -64,7 +62,7 @@ public abstract class EventActivity extends AppCompatActivity implements
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.cancel_done_menu, menu);
+        inflater.inflate(R.menu.done_menu, menu);
         menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
                 .OnMenuItemClickListener() {
 
