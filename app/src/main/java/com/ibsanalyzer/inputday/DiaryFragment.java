@@ -37,10 +37,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.data;
 import static android.app.Activity.RESULT_OK;
-import static android.media.CamcorderProfile.get;
-import static android.provider.CalendarContract.Instances.EVENT_ID;
 import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
@@ -71,9 +68,47 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
     public static final int CHANGED_RATING = 1014;
 
     public static final String TAG = "DebuggingDiaryFragment";
+    static final int BACKGROUND_COLOR = Color.YELLOW;
     //===========================================================================================
     //timer used for tracking start time of app.
     public static long startTime = 0;
+    //=============================================================================================
+    RecyclerView recyclerView;
+    LinearLayoutManager layoutManager;
+    EventAdapter adapter;
+
+    List<Event> eventList = new ArrayList<>();
+
+    //for pinning/ marking events, this must be cleaned when user quits application or app
+    // crashes etc
+    List<Integer> eventsMarked = new ArrayList<>();
+    //switcher tab and it's tabs
+    ViewSwitcher tabsLayoutSwitcher;
+    TabItem toTemplateTab;
+    DiaryFragmentListener callback;
+
+//==================================================================================================
+    //as recommended for communication between Fragment to Activity.
+    //https://developer.android.com/training/basics/fragments/communicating.html
+//==================================================================================================
+
+    public DiaryFragment() {
+
+        Bundle b = getArguments();
+
+    }
+
+    //also adds DateMarkerEvent if appropriate
+    private static void addEventToList(List<Event> events, Event event, RecyclerView.Adapter
+            adapter) {
+        InsertPositions insertPositions = Util.insertEventWithDayMarker(events, event);
+
+        //notify RecyclerView of changes
+        adapter.notifyItemInserted(insertPositions.getPosInserted());
+        if (insertPositions.isDateMarkerAdded()) {
+            adapter.notifyItemInserted(insertPositions.getPosDateMarker());
+        }
+    }
 
     //runs without a timer by reposting this handler at the end of the runnable
     private synchronized void logTimePassed() {
@@ -85,40 +120,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         Log.d(TAG, "Time passed in ms: " + nanos / 1000000);
 
     }
-    //=============================================================================================
-
-
-    RecyclerView recyclerView;
-    LinearLayoutManager layoutManager;
-    EventAdapter adapter;
-
-    List<Event> eventList = new ArrayList<>();
-
-    //for pinning/ marking events, this must be cleaned when user quits application or app
-    // crashes etc
-    List<Integer> eventsMarked = new ArrayList<>();
-    static final int BACKGROUND_COLOR = Color.YELLOW;
-
-    //switcher tab and it's tabs
-    ViewSwitcher tabsLayoutSwitcher;
-    TabItem toTemplateTab;
-
 //==================================================================================================
-    //as recommended for communication between Fragment to Activity.
-    //https://developer.android.com/training/basics/fragments/communicating.html
-//==================================================================================================
-
-    DiaryFragmentListener callback;
-
-
-    // Container Activity must implement this interface
-    public interface DiaryFragmentListener {
-        ViewSwitcher getTabsLayoutSwitcher();
-
-        void doEventsTemplateAdder(List<Event> events);
-
-    }
-
 
     @Override
     public void onAttach(Context context) {
@@ -127,13 +129,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
         Bundle args = getArguments();
         setHasOptionsMenu(true);
-    }
-//==================================================================================================
-
-    public DiaryFragment() {
-
-        Bundle b = getArguments();
-
     }
 
     //p. 121 Android Essentials
@@ -281,19 +276,21 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
         addEventToList(eventList, event, adapter);
     }
+
     private void executeChangedEvent(int requestCode, Intent data) {
         int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
         long eventId = data.getLongExtra(ID_OF_EVENT_RETURNED, -1);
-        if (posInList == -1){
-            throw new RuntimeException ("Received no EVENT POSITION from New/Changed Event Activity (MealActivity etc)");
-        }
-        else if (eventId == -1){
-            throw new RuntimeException ("Received no EVENT ID from New/Changed Event Activity (MealActivity etc)");
+        if (posInList == -1) {
+            throw new RuntimeException("Received no EVENT POSITION from New/Changed Event " +
+                    "Activity (MealActivity etc)");
+        } else if (eventId == -1) {
+            throw new RuntimeException("Received no EVENT ID from New/Changed Event Activity " +
+                    "(MealActivity etc)");
         }
         DBHandler dbHandler = new DBHandler(getContext());
         Event event = null;
-        
-        
+
+
         switch (requestCode) {
 
             case CHANGED_MEAL:
@@ -331,26 +328,16 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         changeEventInList(eventList, event, adapter, posInList);
     }
 
-    //also adds DateMarkerEvent if appropriate
-    private static void addEventToList(List<Event> events, Event event, RecyclerView.Adapter
-            adapter) {
-        InsertPositions insertPositions = Util.insertEventWithDayMarker(events, event);
-
-        //notify RecyclerView of changes
-        adapter.notifyItemInserted(insertPositions.getPosInserted());
-        if (insertPositions.isDateMarkerAdded()) {
-            adapter.notifyItemInserted(insertPositions.getPosDateMarker());
-        }
-    }
     //first remove event from list
     //then adds a new
     private void changeEventInList(List<Event> events, Event e, RecyclerView.Adapter
-            adapter, int pos){
+            adapter, int pos) {
         eventList.remove(pos);
         //this line is needed, otherwise adapter cannot handle it.
         adapter.notifyItemRemoved(pos);
         addEventToList(events, e, adapter);
     }
+
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
     public void onClick(View v) {
@@ -373,7 +360,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
         //do other buttons here
     }
-
 
     //dessa metoder ska istället skapa fragments.
     //ska de skapas inifrån denna fragment (vad jag tror) eller från callBack
@@ -402,13 +388,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         startActivityForResult(intent, NEW_RATING);
     }
 
-
-
-    /*
-    see http://stackoverflow.com/questions/27945078/onlongitemclick-in-recyclerview
-    These are for clicks on items in RecyclerView
-     */
-
     /*
     Obs krasch om man klickar för snabbt, i alla fall vid adapter.notifyItemRemoved!
      */
@@ -426,6 +405,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         }
     }
 
+
+
+    /*
+    see http://stackoverflow.com/questions/27945078/onlongitemclick-in-recyclerview
+    These are for clicks on items in RecyclerView
+     */
 
     //put in smaller methods to make clearer
     @Override
@@ -561,6 +546,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
 
     /**
      * This method is called when user want to CHANGE an event as opposed to create a new one.
+     *
      * @param position
      */
     private void editEvent(int position) {
@@ -582,16 +568,18 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         //TODO
         //2. Use intent put extra to store serialized event object
         // 1. Which type of Event has been clicked.
-        //3. Start that Activity (e.g. Meal Activity ) => let that Activity first check if there 
-        // is an serialized event object sent to it (means that event should be changed)start up 
+        //3. Start that Activity (e.g. Meal Activity ) => let that Activity first check if there
+        // is an serialized event object sent to it (means that event should be changed)start up
         // with properties filled from serialized event object
         //4. Receive changed object from Activity in onActivityForResult (Activity has put data
-        // .putExtra boolean that shows changed = true)=> 1. change database 2. change eventList 
+        // .putExtra boolean that shows changed = true)=> 1. change database 2. change eventList
         // 3. Change RecyclerView's adapter.
         //pretty easy.
     }
+
     //user requests to change event
-    private void changeEventActivity(Event event, Class activityClass, int valueToReturn, int posInList) {
+    private void changeEventActivity(Event event, Class activityClass, int valueToReturn, int
+            posInList) {
         Intent intent = new Intent((Activity) this.callback, activityClass);
         intent.putExtra(EVENT_TO_CHANGE, (Serializable) event);
         intent.putExtra(EVENT_POSITION, posInList);
@@ -600,6 +588,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         intent.putExtra(ID_OF_EVENT, eventId);
         startActivityForResult(intent, valueToReturn);
     }
+
     private boolean eventIsMarked(int position) {
         return eventsMarked.contains(position);
     }
@@ -645,8 +634,16 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, Eve
         recyclerView.scrollToPosition(eventList.size() - 1);
     }
 
-
     public List<Event> getEvents() {
         return eventList;
+    }
+
+
+    // Container Activity must implement this interface
+    public interface DiaryFragmentListener {
+        ViewSwitcher getTabsLayoutSwitcher();
+
+        void doEventsTemplateAdder(List<Event> events);
+
     }
 }

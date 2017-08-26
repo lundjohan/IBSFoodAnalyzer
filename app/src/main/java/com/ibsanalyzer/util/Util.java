@@ -51,13 +51,13 @@ public class Util {
     }
 
     /**
-     * Method used by MealActivity etc as part of creating a new Event.
+     * Method used by MealActivity, TagAdderActivity etc as part of creating a new Event.
      * @param serializable
      * @param putExtraString
      * @param usingActivity
      */
-    public static void returnNewEvent(Serializable serializable, String putExtraString,
-                                      Activity usingActivity) {
+    public static void returnSerializable(Serializable serializable, String putExtraString,
+                                          Activity usingActivity) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(putExtraString, serializable);
         Intent data = new Intent();

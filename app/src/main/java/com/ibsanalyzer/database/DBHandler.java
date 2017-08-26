@@ -39,7 +39,6 @@ import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENT;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENTSTEMPLATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_INTENSITY;
-import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_IS_A;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_NAME;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_PORTIONS;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_SIZE;
@@ -59,6 +58,8 @@ import static com.ibsanalyzer.database.TablesAndStrings.CREATE_TAG_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_VERSION;
 import static com.ibsanalyzer.database.TablesAndStrings.ENABLE_FOREIGN_KEYS;
+import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
+import static com.ibsanalyzer.database.TablesAndStrings.SECOND_COLUMN_IS_A;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_BMS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTSTEMPLATEEVENTS;
@@ -69,6 +70,7 @@ import static com.ibsanalyzer.database.TablesAndStrings.TABLE_OTHERS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_RATINGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGTEMPLATES;
+import static com.ibsanalyzer.database.TablesAndStrings.THIRD_COLUMN_IS_A;
 
 /**
  * Created by Johan on 2017-05-06.
@@ -143,12 +145,12 @@ public class DBHandler extends SQLiteOpenHelper {
         if (inputText == null || inputText.length() == 0) {
 
             mCursor = db.query(TABLE_TAGTEMPLATES, new String[]{COLUMN_ID,
-                            COLUMN_TAGNAME, COLUMN_IS_A},
+                            COLUMN_TAGNAME, FIRST_COLUMN_IS_A, SECOND_COLUMN_IS_A, THIRD_COLUMN_IS_A},
                     null, null, null, null, null);
 
         } else {
             mCursor = db.query(true, TABLE_TAGTEMPLATES, new String[]{COLUMN_ID,
-                            COLUMN_TAGNAME, COLUMN_IS_A},
+                            COLUMN_TAGNAME, FIRST_COLUMN_IS_A, SECOND_COLUMN_IS_A, THIRD_COLUMN_IS_A},
                     COLUMN_TAGNAME + " like '%" + inputText + "%'", null,
                     null, null, null, null);
         }
@@ -289,27 +291,32 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * Changes a Meal in database to toMeal (id:s doesn't have to be the same afterwards).
+     *
      * @param eventId
      * @param toMeal
      * @return
      */
-    public void changeMeal(long eventId, Meal toMeal){
+    public void changeMeal(long eventId, Meal toMeal) {
         deleteEvent(eventId);
         addMeal(toMeal);
     }
-    public void changeOther(long eventId, Other toOther){
+
+    public void changeOther(long eventId, Other toOther) {
         deleteEvent(eventId);
         addOther(toOther);
     }
-    public void changeExercise(long eventId, Exercise toExercise){
+
+    public void changeExercise(long eventId, Exercise toExercise) {
         deleteEvent(eventId);
         addExercise(toExercise);
     }
-    public void changeBm(long eventId, Bm toBm){
+
+    public void changeBm(long eventId, Bm toBm) {
         deleteEvent(eventId);
         addBm(toBm);
     }
-    public void changeRating(long eventId, Rating toRating){
+
+    public void changeRating(long eventId, Rating toRating) {
         deleteEvent(eventId);
         addRating(toRating);
     }
@@ -634,19 +641,37 @@ public class DBHandler extends SQLiteOpenHelper {
     //TagTemplate
     //===================================================================================
     public void addTagTemplate(TagTemplate tagTemplate) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_TAGNAME, tagTemplate.get_tagname());
-        TagTemplate parent = tagTemplate.get_is_a1();
-        if (parent == null) {
-            values.putNull(COLUMN_IS_A);
-        } else {
-            values.put(COLUMN_IS_A, tagTemplate.get_is_a1().get_tagname());
-        }
+        ContentValues values = makeTagTemplateContentValues(tagTemplate);
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_TAGTEMPLATES, null, values);
         db.close();
         //Log.d("Debug", "addTagTemplate completed! TagTemplate " + tagTemplate.get_tagname() + "
         // with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
+    }
+
+    public void editTagTemplate(TagTemplate tagTemplate, int idOfTagTemplate) {
+        ContentValues values = makeTagTemplateContentValues(tagTemplate);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_TAGTEMPLATES, values, "_id=" + idOfTagTemplate, null);
+        db.close();
+    }
+
+    private ContentValues makeTagTemplateContentValues(TagTemplate tagTemplate) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TAGNAME, tagTemplate.get_tagname());
+        actOnTagTemplateChild(values, tagTemplate.get_is_a1(), FIRST_COLUMN_IS_A);
+        actOnTagTemplateChild(values, tagTemplate.get_is_a2(), SECOND_COLUMN_IS_A);
+        actOnTagTemplateChild(values, tagTemplate.get_is_a3(), THIRD_COLUMN_IS_A);
+        return values;
+    }
+
+    private void actOnTagTemplateChild(ContentValues values, TagTemplate child, String
+            childColumn) {
+        if (child == null) {
+            values.putNull(childColumn);
+        } else {
+            values.put(childColumn, child.get_tagname());
+        }
     }
 
     public List<TagTemplate> getAllTagTemplates() {
@@ -691,7 +716,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private TagTemplate findTagTemplateHelper2(Cursor cursor) {
         TagTemplate tt = new TagTemplate();
-        tt.set_id(cursor.getInt(0));
         tt.set_tagname(cursor.getString(1));
         TagTemplate parentTag;
         if (cursor.getString(2) == null) {
@@ -748,7 +772,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 // jag inte.
 
                 TagTemplate tagTemplate = new TagTemplate("");
-                tagTemplate.set_id(Integer.parseInt(cursor.getString(0)));
                 tagTemplate.set_tagname(cursor.getString(1));
                 tagTemplates.add(tagTemplate);
                 cursor.moveToNext();
@@ -763,13 +786,13 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void createSomeTagTemplates() {
         addTagTemplate(new TagTemplate("dairy"));
-        addTagTemplate(new TagTemplate("yoghurt", findTagTemplate("dairy")));
+        addTagTemplate(new TagTemplate("yoghurt", findTagTemplate("dairy"), null, null));
         addTagTemplate(new TagTemplate("wheat"));
         addTagTemplate(new TagTemplate("running"));
         addTagTemplate(new TagTemplate("sleep"));
         addTagTemplate(new TagTemplate("sugar"));
         addTagTemplate(new TagTemplate("honey"));
-        addTagTemplate(new TagTemplate("pizza", findTagTemplate("wheat")));
+        addTagTemplate(new TagTemplate("pizza", findTagTemplate("wheat"), null, null));
     }
 
     //===================================================================================
@@ -840,5 +863,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return returnVal;
     }
+
+
 }
 

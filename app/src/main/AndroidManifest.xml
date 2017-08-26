@@ -81,11 +81,16 @@
             android:exported="false">
         </service>
 
-        <activity android:name=".TagTemplateAdderActivity"
+        <activity
+            android:name=".TagTemplateAdderActivity"
             android:parentActivityName=".TagAdderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".TagAdderActivity"/>
+        </activity>
+        <activity android:name=".TagTemplateActivity">
+        </activity>
+        <activity android:name=".TagTemplateEditActivity">
         </activity>
     </application>
 

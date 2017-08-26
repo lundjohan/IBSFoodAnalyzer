@@ -12,14 +12,15 @@ import android.widget.TextView;
 import com.ibsanalyzer.inputday.R;
 
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
-import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_IS_A;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
+import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
 
 /**
  * Created by Johan on 2017-05-10.
  */
 
-//based on https://github.com/codepath/android_guides/wiki/Populating-a-ListView-with-a-CursorAdapter
+//based on https://github.com/codepath/android_guides/wiki/Populating-a-ListView-with-a
+// -CursorAdapter
 public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
 
 
@@ -38,9 +39,9 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         TextView inherits = (TextView) view.findViewById(R.id.inherits);
 
         String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TAGNAME));
-        String inheritanceOne = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IS_A));
+        String inheritanceOne = cursor.getString(cursor.getColumnIndexOrThrow(FIRST_COLUMN_IS_A));
         tagName.setText(name);
-        if (inheritanceOne == null){
+        if (inheritanceOne == null) {
             inherits.setText("");
             return;
         }
@@ -54,11 +55,11 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
     }
 
     //temporarily, inefficient and bad solution. Prefer to use database instead of looping cursor
-    private String getTagNameFromId(Cursor cursor, int id){
+    private String getTagNameFromId(Cursor cursor, int id) {
         cursor.moveToFirst();
         String tagName = "";
         while (!cursor.isAfterLast()) {
-            if (cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))==id){
+            if (cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)) == id) {
                 tagName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TAGNAME));
                 break;
             }

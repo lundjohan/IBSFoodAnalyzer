@@ -250,7 +250,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         if (isChangingEvent()) {
             Util.returnChangedEvent(event, returnString, this, eventId, posOfEvent);
         } else {
-            Util.returnNewEvent(event, returnString, this);
+            Util.returnSerializable(event, returnString, this);
         }
     }
 

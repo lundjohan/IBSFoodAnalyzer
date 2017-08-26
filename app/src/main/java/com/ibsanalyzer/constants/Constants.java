@@ -35,6 +35,18 @@ public class Constants {
     public final static String RETURN_TAGTEMPLATE_JSON = "returnTagTemplateJSON";*/
 
     public final static String RETURN_TAG_TEMPLATE_SERIALIZABLE = "returnTagTemplateSer";
+    public final static String TAGTEMPLATE_ID= "id_of_tagtemplate";
+    public final static int TYPE_OF_1 = 1;
+    public final static int TYPE_OF_2 = 2;
+    public final static int TYPE_OF_3 = 3;
+    public final static String WHICH_TYPE_OF = "whichOfTheThreeTypes";
+    public final static String WHICH_TYPE = "whichOfTheTypes";
+    public final static String PUT_TAG_TEMPLATE = "tagTemplateToBeSent";
+    public final static int NEW_TYPE_FOR_TAGTEMPLATE = 8888;
+
+
+
+
     public final static String RETURN_MEAL_SERIALIZABLE = "returnMealSer";
     public final static String RETURN_OTHER_SERIALIZABLE = "returnOtherSer";
     public final static String RETURN_EXERCISE_SERIALIZABLE = "returnExerciseSer";
