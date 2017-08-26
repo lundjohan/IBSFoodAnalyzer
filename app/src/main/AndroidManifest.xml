@@ -88,8 +88,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".TagAdderActivity"/>
         </activity>
-        <activity android:name=".TagTemplateActivity">
-        </activity>
         <activity android:name=".TagTemplateEditActivity">
         </activity>
     </application>

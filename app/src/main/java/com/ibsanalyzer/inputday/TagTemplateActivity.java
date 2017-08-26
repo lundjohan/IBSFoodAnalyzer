@@ -56,7 +56,7 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
         }
         Intent data = new Intent();
         data.putExtra(PUT_TAG_TEMPLATE, (Serializable) tagTemplate);
-        this.setResult(RESULT_OK, data);
+        setResult(RESULT_OK, data);
         finish();
     }
 
@@ -132,12 +132,15 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
             switch (whichType) {
                 case TYPE_OF_1:
                     is_a_1 = tagTemplateChild;
+                    type_of_1.setText(is_a_1.get_tagname());
                     break;
                 case TYPE_OF_2:
                     is_a_2 = tagTemplateChild;
+                    type_of_2.setText(is_a_2.get_tagname());
                     break;
                 case TYPE_OF_3:
                     is_a_3 = tagTemplateChild;
+                    type_of_3.setText(is_a_3.get_tagname());
                     break;
             }
         }

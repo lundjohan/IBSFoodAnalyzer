@@ -61,7 +61,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
         //handle type of request
         Intent intent = getIntent();
-        if (intent.hasExtra(WHICH_TYPE)){
+        if (intent.hasExtra(WHICH_TYPE_OF)){
             typeOf = intent.getIntExtra(WHICH_TYPE_OF,-1);
         }
 

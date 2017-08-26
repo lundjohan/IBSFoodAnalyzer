@@ -11,6 +11,9 @@ import com.ibsanalyzer.model.TagTemplate;
 import java.io.Serializable;
 
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.TYPE_OF_1;
+import static com.ibsanalyzer.constants.Constants.TYPE_OF_2;
+import static com.ibsanalyzer.constants.Constants.TYPE_OF_3;
 
 /**
  * This Activity can be used to edit or create a new TagTemplate.
@@ -29,6 +32,7 @@ public class TagTemplateAdderActivity extends TagTemplateActivity {
 
     public void doneClicked() {
         super.finishDoneClicked(-1);
+        finish();
 
     }
 
