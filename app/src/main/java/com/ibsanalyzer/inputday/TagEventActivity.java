@@ -1,8 +1,10 @@
 package com.ibsanalyzer.inputday;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,16 +12,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ibsanalyzer.adapters.TagAdapter;
-import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Tag;
-import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.TagTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
@@ -83,6 +82,36 @@ public abstract class TagEventActivity extends EventActivity {
         Intent intent = new Intent(this, TagAdderActivity.class);
         startActivityForResult(intent, TAGS_TO_ADD);
     }
+
+
+    public void onTagItemDeleteClicked(View v, final int position) {
+        String nameOfTag = tagsList.get(position).getName();
+        //here. Should be a pop up ("Removed item okra")
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Confirm remove");
+        builder.setMessage("Remove item "+nameOfTag+"?");
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        tagsList.remove(position);
+                        adapter.notifyItemRemoved(position);
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
 
 
 }

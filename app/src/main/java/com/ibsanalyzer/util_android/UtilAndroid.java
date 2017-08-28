@@ -1,8 +1,10 @@
 package com.ibsanalyzer.util_android;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.util.InsertPositions;
@@ -25,4 +27,6 @@ public class UtilAndroid {
     public static void doneClicked(Activity activity) {
         activity.finish();
     }
+
+
 }
