@@ -5,12 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,7 +27,7 @@ import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
  * Created by Johan on 2017-05-13.
  */
 
-public abstract class TagEventActivity extends EventActivity  {
+public abstract class TagEventActivity extends EventActivity {
     private Button addTagsBtn;
 
     protected List<Tag> tagsList;
@@ -86,7 +83,8 @@ public abstract class TagEventActivity extends EventActivity  {
         startActivityForResult(intent, TAGS_TO_ADD);
     }
 
-    public void onTagItemDeleteClicked(final int position) {
+
+    public void onTagItemDeleteClicked(View v, final int position) {
         String nameOfTag = tagsList.get(position).getName();
         //here. Should be a pop up ("Removed item okra")
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -115,6 +113,5 @@ public abstract class TagEventActivity extends EventActivity  {
     }
 
 
-    public void onTagItemEditClicked(int position) {
-    }
+
 }

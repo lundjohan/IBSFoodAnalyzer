@@ -16,9 +16,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:text="quantity"
-        android:background="@drawable/frame"
-        android:clickable="true"
-        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,8 +39,8 @@
         android:layout_marginLeft="8dp"
         />
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/threeDotsMenu"
+    <ImageView
+        android:id="@+id/deleteTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
@@ -56,6 +53,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/three_dots"/>
+        app:srcCompat="@drawable/ic_close_black_24dp"/>
 
 </android.support.constraint.ConstraintLayout>
