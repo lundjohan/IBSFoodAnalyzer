@@ -22,7 +22,10 @@
         app:layout_constraintVertical_bias="0.0"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"/>
+        tools:layout_constraintTop_creator="1"
+        android:background="@drawable/frame"
+        android:clickable="true"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/stattagname"
