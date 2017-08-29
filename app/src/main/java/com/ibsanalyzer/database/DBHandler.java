@@ -34,7 +34,7 @@ import static com.ibsanalyzer.constants.Constants.RATING;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_AFTER;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_BRISTOL;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_COMPLETENESS;
-import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATE;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATETIME;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENT;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENTSTEMPLATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
@@ -194,7 +194,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         for (Event e : et.getEvents()) {
             ContentValues eventValue = new ContentValues();
-            eventValue.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(e.getTime()));
+            eventValue.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(e.getTime()));
             long event_id = db.insert(TABLE_EVENTS, null, eventValue);
 
             //insert into many-to-many table
@@ -221,7 +221,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     private long addEvent(Event event, long typeOfEvent) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(event.getTime()));
+        values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
         SQLiteDatabase db = this.getWritableDatabase();
         long eventId = db.insert(TABLE_EVENTS, DATABASE_NAME, values);
@@ -278,7 +278,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT " + COLUMN_ID + " FROM " + TABLE_EVENTS + " WHERE " +
                 COLUMN_TYPE_OF_EVENT +
-                " = ? AND " + COLUMN_DATE + " = ?";
+                " = ? AND " + COLUMN_DATETIME + " = ?";
         Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(typeOfEvent), date});
         if (c != null) {
             if (c.moveToFirst()) {
@@ -323,7 +323,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public List<Event> getAllEventsSorted() {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATE + "" +
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATETIME + "" +
                 " ASC";
         Cursor c = db.rawQuery(QUERY, null);
         List<Event> eventList = new ArrayList<>();
@@ -331,7 +331,7 @@ public class DBHandler extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 while (!c.isAfterLast()) {
                     long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                    String date = c.getString(c.getColumnIndex(COLUMN_DATE));
+                    String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
                     LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
                     int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
                     Event event = getEvent(eventId, ldt, typeOfEvent);
@@ -451,14 +451,14 @@ public class DBHandler extends SQLiteOpenHelper {
 
     LocalDateTime getDateFromEvent(long eventId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT " + COLUMN_DATE + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ID
+        String query = "SELECT " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ID
                 + " = ?";
 
         Cursor c = db.rawQuery(query, new String[]{String.valueOf(eventId)});
         LocalDateTime ldt = null;
         if (c != null) {
             if (c.moveToFirst()) {
-                String date = c.getString(c.getColumnIndex(COLUMN_DATE));
+                String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
                 ldt = DateTimeFormat.fromSqLiteFormat(date);
 
 
@@ -521,7 +521,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 TABLE_MEALS + " a "
                 + " INNER JOIN " + TABLE_EVENTS + " b ON " + " a." + COLUMN_EVENT + " = b." +
                 COLUMN_ID; //+
-        //  " WHERE " + "b."+ COLUMN_DATE + " =?";
+        //  " WHERE " + "b."+ COLUMN_DATETIME + " =?";
 
         //retrieve portions and event_id
         SQLiteDatabase db = this.getWritableDatabase();
@@ -608,7 +608,7 @@ public class DBHandler extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
 
                 while (!cursor.isAfterLast()) {
-                    String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                    String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATETIME));
                     LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
                     double size = cursor.getDouble(cursor.getColumnIndex(COLUMN_SIZE));
                     long tagTemplateId = cursor.getLong(cursor.getColumnIndex(COLUMN_TAGTEMPLATE));
@@ -627,7 +627,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private void addTag(Tag t, long eventId) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
-        values.put(COLUMN_DATE, DateTimeFormat.toSqLiteFormat(t.getTime()));
+        values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(t.getTime()));
         values.put(COLUMN_SIZE, t.getSize());
 
         long tagTemplateId = getTagTemplateId(t.getName());

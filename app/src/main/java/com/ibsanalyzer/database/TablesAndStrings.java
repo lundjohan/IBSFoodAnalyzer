@@ -26,7 +26,7 @@ public class TablesAndStrings {
     public static final String TABLE_TAGS = "tags";
     public static final String COLUMN_TAGTEMPLATE = "tagtemplate";
     public static final String COLUMN_SIZE = "size";
-    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_DATETIME = "date";
     public static final String COLUMN_EVENT = "event";
 
     //Event
@@ -85,10 +85,9 @@ public class TablesAndStrings {
     public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
             TABLE_TAGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
-            //perhaps should be COLUMN TAG INSTEAD... but this works...
             COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
             COLUMN_SIZE + " REAL NOT NULL, " +
-            COLUMN_DATE + " TEXT NOT NULL, " +
+            COLUMN_DATETIME + " TEXT NOT NULL, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_ID + ")" +
@@ -100,7 +99,7 @@ public class TablesAndStrings {
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE " +
             TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
-            COLUMN_DATE + " TEXT NOT NULL, " +
+            COLUMN_DATETIME + " TEXT NOT NULL, " +
             COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL " +
             ");";
 
