@@ -333,9 +333,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
             clickHelper(v, position);
         }
     }
-
-
-
     /*
     see http://stackoverflow.com/questions/27945078/onlongitemclick-in-recyclerview
     These are for clicks on items in RecyclerView
@@ -541,6 +538,5 @@ public class DiaryFragment extends Fragment implements EventsContainer
         ViewSwitcher getTabsLayoutSwitcher();
 
         void doEventsTemplateAdder(List<Event> events);
-
     }
 }
