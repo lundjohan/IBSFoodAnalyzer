@@ -76,7 +76,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         getLayoutInflater().inflate(getLayoutRes(), upperPart, true);
 
         // Inflate the the same layout as in DiaryFragment (will be used differently though).
-        ViewGroup lowerPart = (ViewGroup) findViewById(R.id.eventsLayout);
+        ViewGroup lowerPart = (ViewGroup) findViewById(R.id.lowerPart);
         View view = getLayoutInflater().inflate(R.layout.fragment_diary, lowerPart, true);
 
         Intent intent = getIntent();
@@ -85,8 +85,9 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
             ec.eventList = (List<Event>) intent.getSerializableExtra(LIST_OF_EVENTS);
         }
 
-        ec.setUpEventButtons(lowerPart.getRootView());
+        ec.setUpEventButtons(lowerPart);
         ec.initiateRecyclerView(view, this);
+        ec.adapter.notifyDataSetChanged();
 
     }
 
