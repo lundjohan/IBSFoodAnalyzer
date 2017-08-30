@@ -92,6 +92,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         getLayoutInflater().inflate(getLayoutRes(), content, true);
         dateBtn = (Button) findViewById(R.id.dateBtn);
         timeBtn = (Button) findViewById(R.id.timeBtn);
+
         dateView = (TextView) findViewById(R.id.date);
         timeView = (TextView) findViewById(R.id.time);
 
@@ -254,6 +255,11 @@ public abstract class EventActivity extends AppCompatActivity implements
         }
     }
 
-    ;
-
+    /**
+     *
+     */
+    public void makeDateInvisible(){
+        dateView.setVisibility(View.INVISIBLE);
+        dateBtn.setVisibility(View.INVISIBLE);
+    }
 }

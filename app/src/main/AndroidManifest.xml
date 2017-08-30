@@ -69,7 +69,7 @@
                 android:value=".MainActivity"/>
         </activity>
         <activity
-            android:name=".TemplateAdderActivity"
+            android:name=".SavingEventsTemplateActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -89,6 +89,8 @@
                 android:value=".TagAdderActivity"/>
         </activity>
         <activity android:name=".TagTemplateEditActivity">
+        </activity>
+        <activity android:name=".EventsTemplateActivity">
         </activity>
     </application>
 

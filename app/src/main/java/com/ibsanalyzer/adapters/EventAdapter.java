@@ -28,6 +28,7 @@ import org.threeten.bp.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.fragment;
 import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.DATE_MARKER;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
@@ -43,21 +44,18 @@ import static com.ibsanalyzer.inputday.R.id.tagQuantities;
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> events = new ArrayList<>();
-    private DiaryFragment usingFragment;
+    private EventAdapterUser usingEntity;
 
-    public EventAdapter(List<Event> events, DiaryFragment fragment) {
+    public EventAdapter(List<Event> events, EventAdapterUser usingEntity) {
         this.events = events;
-        this.usingFragment = fragment;
+        this.usingEntity = usingEntity;
     }
 
     /*
     Click Listeners
      */
-    public interface OnItemClickListener {
+    public interface EventAdapterUser{
         public void onItemClicked(View v, int position);
-    }
-
-    public interface OnItemLongClickListener {
         public boolean onItemLongClicked(View v, int position);
     }
 
@@ -268,13 +266,13 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usingFragment.onItemClicked(v, position);
+                usingEntity.onItemClicked(v, position);
             }
         });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                usingFragment.onItemLongClicked(v, position);
+                usingEntity.onItemLongClicked(v, position);
                 return true;
             }
         });

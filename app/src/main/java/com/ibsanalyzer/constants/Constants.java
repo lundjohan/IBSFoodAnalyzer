@@ -71,7 +71,7 @@ public class Constants {
 
 
     public final static String LIST_OF_EVENTS = "listOfEvents";
-
+    public static String SHOULD_HAVE_DATE = "shouldHaveDate";
     //this is saved, so that user can come back to same positition (=same date) in DiaryFragment
     // as when he left
     public final static String POSITION_IN_DIARY = "position_in_diary";
@@ -125,6 +125,7 @@ public class Constants {
     public static final double PLUS_MINUS_QUOTIENT = 1;
     public static final double MAX_SCORE = 7;
     public static final double MIN_SCORE = 1;
+
 
     //=================================TIME ZONE===================================
     ZoneId zoneId = ZoneId.systemDefault();

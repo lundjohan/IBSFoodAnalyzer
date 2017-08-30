@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     //this method gets marked events from DiaryFragment and calls EventsTemplateAdder to store them.
     @Override
     public void doEventsTemplateAdder(List<Event> events) {
-        Intent intent = new Intent(this, TemplateAdderActivity.class);
+        Intent intent = new Intent(this, SavingEventsTemplateActivity.class);
         //Gson gson = new Gson();
         //String objAsJSON = gson.toJson(events);
         intent.putExtra(LIST_OF_EVENTS, (Serializable) events);
