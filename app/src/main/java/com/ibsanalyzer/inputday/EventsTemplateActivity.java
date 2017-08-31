@@ -77,14 +77,14 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         getLayoutInflater().inflate(getLayoutRes(), upperPart, true);
 
         RecyclerView recyclerView = (RecyclerView)  findViewById(R.id.recyclerView);
-
+        View buttons =  findViewById(R.id.buttons);
         Intent intent = getIntent();
         ec = new EventsContainer(this);
         if (intent.hasExtra(LIST_OF_EVENTS)) {
             ec.eventList = (List<Event>) intent.getSerializableExtra(LIST_OF_EVENTS);
         }
 
-        //ec.setUpEventButtons(lowerPart);
+        ec.setUpEventButtons(buttons);
         ec.initiateRecyclerView(recyclerView, this);
         ec.adapter.notifyDataSetChanged();
 
