@@ -68,9 +68,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+        <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
         <activity
             android:name=".SavingEventsTemplateActivity"
-            android:parentActivityName=".MainActivity">
+            android:windowSoftInputMode="adjustPan"
+        android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
@@ -89,8 +91,6 @@
                 android:value=".TagAdderActivity"/>
         </activity>
         <activity android:name=".TagTemplateEditActivity">
-        </activity>
-        <activity android:name=".EventsTemplateActivity">
         </activity>
     </application>
 
