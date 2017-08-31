@@ -3,6 +3,7 @@ package com.ibsanalyzer.inputday;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -75,9 +76,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ViewGroup upperPart = (ViewGroup) findViewById(R.id.upperPart);
         getLayoutInflater().inflate(getLayoutRes(), upperPart, true);
 
-        // Inflate the the same layout as in DiaryFragment (will be used differently though).
-        ViewGroup lowerPart = (ViewGroup) findViewById(R.id.lowerPart);
-        View view = getLayoutInflater().inflate(R.layout.fragment_diary, lowerPart, true);
+        RecyclerView recyclerView = (RecyclerView)  findViewById(R.id.recyclerView);
 
         Intent intent = getIntent();
         ec = new EventsContainer(this);
@@ -85,8 +84,8 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
             ec.eventList = (List<Event>) intent.getSerializableExtra(LIST_OF_EVENTS);
         }
 
-        ec.setUpEventButtons(lowerPart);
-        ec.initiateRecyclerView(view, this);
+        //ec.setUpEventButtons(lowerPart);
+        ec.initiateRecyclerView(recyclerView, this);
         ec.adapter.notifyDataSetChanged();
 
     }

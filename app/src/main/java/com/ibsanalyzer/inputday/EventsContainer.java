@@ -129,9 +129,9 @@ public class EventsContainer {
     }
 
 
-    public void initiateRecyclerView(View v, Context layoutInitiator) {
+    public void initiateRecyclerView(RecyclerView recyclerView, Context layoutInitiator) {
         //==========================================================================================
-        recyclerView = (RecyclerView) v.findViewById(R.id.events_layout);
+
         layoutManager = new LinearLayoutManager(layoutInitiator, LinearLayoutManager
                 .VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);

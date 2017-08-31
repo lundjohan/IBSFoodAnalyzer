@@ -149,7 +149,8 @@ public class DiaryFragment extends Fragment implements EventsContainer
         tabsLayoutSwitcher = (ViewSwitcher) callback.getTabsLayoutSwitcher();
         ec = new EventsContainer(this);
         ec.setUpEventButtons(view);
-        ec.initiateRecyclerView(view, this.getContext());
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
+        ec.initiateRecyclerView(recyclerView, this.getContext());
 
         setUpMenu();
         if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventList")) {
