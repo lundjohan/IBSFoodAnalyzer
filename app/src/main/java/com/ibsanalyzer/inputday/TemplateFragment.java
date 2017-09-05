@@ -13,17 +13,10 @@ import android.view.ViewGroup;
 
 import com.ibsanalyzer.adapters.EventsTemplateAdapter;
 import com.ibsanalyzer.database.DBHandler;
-import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.util.Util;
 
-import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class TemplateFragment extends Fragment {
-    private List<EventsTemplate> eventsTemplate;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -44,7 +37,7 @@ public class TemplateFragment extends Fragment {
 
         int mNoOfColumns = Util.calculateNoOfColumns(getActivity().getApplicationContext(), 180);
         int width = Util.calculateWidthOfItem(getActivity().getApplicationContext(), mNoOfColumns);
-        Log.d("Debug","width of item in GridLayout: "+width);
+        Log.d("Debug", "width of item in GridLayout: " + width);
         layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
         recyclerView.setLayoutManager(layoutManager);
 

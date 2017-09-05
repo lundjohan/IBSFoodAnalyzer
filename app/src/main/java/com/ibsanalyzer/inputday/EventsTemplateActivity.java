@@ -19,6 +19,7 @@ import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -92,6 +93,22 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
     protected abstract int getLayoutRes();
 
+/*
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("eventList", (Serializable) ec.eventList);
+        outState.putString("someVarB", someVarB);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        someVarA = savedInstanceState.getInt("someVarA");
+        someVarB = savedInstanceState.getString("someVarB");
+    }*/
+
+
     /**
      * Not that date should not be an issue here, only time of day.
      * <p>
@@ -100,6 +117,11 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
      *
      * @param event
      */
+
+
+
+
+
     @Override
     public void addEventToList(Event event) {
         ec.eventList.add(event);

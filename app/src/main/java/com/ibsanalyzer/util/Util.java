@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
+import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.InputEvent;
+import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.base_classes.Other;
+import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.inputday.EventActivity;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
@@ -22,10 +26,15 @@ import java.util.Collections;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
-import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
+import static com.ibsanalyzer.constants.Constants.DATE_MARKER;
+import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT_RETURNED;
-import static java.util.Collections.sort;
+import static com.ibsanalyzer.constants.Constants.MEAL;
+import static com.ibsanalyzer.constants.Constants.OTHER;
+import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
+import static com.ibsanalyzer.constants.Constants.RATING;
 
 /**
  * Created by Johan on 2017-05-14.
@@ -310,6 +319,25 @@ public class Util {
         else {
             return stepForwardUntilNewDateOrEndOfList(eventList, ld, i);
         }
+    }
+
+    public static int getTypeOfEvent (Event e){
+        if (e instanceof Meal) {
+            return MEAL;
+        } else if (e instanceof Other) {
+            return OTHER;
+        } else if (e instanceof Exercise) {
+            return EXERCISE;
+        } else if (e instanceof Bm) {
+            return BM;
+        } else if (e instanceof Rating) {
+            return RATING;
+        } else if (e instanceof DateMarkerEvent) {
+            return DATE_MARKER;
+        }
+
+        throw new RuntimeException("unknown class");
+
     }
 
 

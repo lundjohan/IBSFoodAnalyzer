@@ -20,6 +20,7 @@ import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.inputday.DiaryFragment;
 import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
+import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -197,21 +198,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     .com/android/Heterogenous-Layouts-inside-RecyclerView#viewholder2-java*/
     @Override
     public int getItemViewType(int position) {
-        if (events.get(position) instanceof Meal) {
-            return MEAL;
-        } else if (events.get(position) instanceof Other) {
-            return OTHER;
-        } else if (events.get(position) instanceof Exercise) {
-            return EXERCISE;
-        } else if (events.get(position) instanceof Bm) {
-            return BM;
-        } else if (events.get(position) instanceof Rating) {
-            return RATING;
-        } else if (events.get(position) instanceof DateMarkerEvent) {
-            return DATE_MARKER;
-        }
-
-        throw new RuntimeException("unknown class");
+        Event e = events.get(position);
+        return Util.getTypeOfEvent(e);
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
+import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -195,6 +196,7 @@ public class DBHandler extends SQLiteOpenHelper {
         for (Event e : et.getEvents()) {
             ContentValues eventValue = new ContentValues();
             eventValue.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(e.getTime()));
+            eventValue.put(COLUMN_TYPE_OF_EVENT, Util.getTypeOfEvent(e));
             long event_id = db.insert(TABLE_EVENTS, null, eventValue);
 
             //insert into many-to-many table
@@ -263,7 +265,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //gets
     //-----------------------------------------------------------------------------------
     public long getEventId(Event event) {
-        int type = getTypeOfEvent(event);
+        int type = Util.getTypeOfEvent(event);
         String date = DateTimeFormat.toSqLiteFormat(event.getTime());
         return getEventId(type, date);
     }
@@ -835,35 +837,5 @@ public class DBHandler extends SQLiteOpenHelper {
             addTagTemplate(new TagTemplate(t.getName()));
         }
     }
-    //========================================================
-    //Util database
-    //========================================================
-
-    /**
-     * @param event (DateMarker is not valid)
-     * @return -1 on failure
-     */
-
-    private int getTypeOfEvent(Event event) {
-        if (event.getClass() == DateMarkerEvent.class) {
-            throw new RuntimeException("Error! DateMarkerEvent should not be an argument to " +
-                    "getTypeOfEvent");
-        }
-        int returnVal = -1;
-        if (event.getClass() == Meal.class) {
-            returnVal = MEAL;
-        } else if (event.getClass() == Other.class) {
-            returnVal = OTHER;
-        } else if (event.getClass() == Exercise.class) {
-            returnVal = EXERCISE;
-        } else if (event.getClass() == Bm.class) {
-            returnVal = BM;
-        } else if (event.getClass() == Rating.class) {
-            returnVal = RATING;
-        }
-        return returnVal;
-    }
-
-
 }
 
