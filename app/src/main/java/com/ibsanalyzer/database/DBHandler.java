@@ -721,17 +721,31 @@ public class DBHandler extends SQLiteOpenHelper {
         return tt;
     }
 
-    private TagTemplate findTagTemplateHelper2(Cursor cursor) {
+    private TagTemplate findTagTemplateHelper2(Cursor c) {
         TagTemplate tt = new TagTemplate();
-        tt.set_tagname(cursor.getString(1));
-        TagTemplate parentTag;
-        if (cursor.getString(2) == null) {
-            parentTag = null;
-        } else {
-            parentTag = findTagTemplate(cursor.getString(2));
-        }
-        tt.set_is_a1(parentTag);
+        tt.set_tagname(c.getString(c.getColumnIndex(COLUMN_TAGNAME)));
+
+        //sets nulls or parent tagtemplates
+        tt.set_is_a1( retrieveOneParentToTagTemplate(c, FIRST_COLUMN_IS_A));
+        tt.set_is_a2( retrieveOneParentToTagTemplate(c, SECOND_COLUMN_IS_A));
+        tt.set_is_a3( retrieveOneParentToTagTemplate(c, THIRD_COLUMN_IS_A));
         return tt;
+    }
+
+    /**
+     *
+     * @param c
+     * @param columnName
+     * @return null if parent doesn't exist, otherwise return the parent
+     */
+    private TagTemplate retrieveOneParentToTagTemplate(Cursor c, String columnName){
+        TagTemplate parent;
+        if (c.isNull(c.getColumnIndex(columnName))) {
+            parent = null;
+        } else {
+            parent = findTagTemplate(c.getColumnIndex(columnName));
+        }
+        return parent;
     }
 
     public String getTagname(long id) {

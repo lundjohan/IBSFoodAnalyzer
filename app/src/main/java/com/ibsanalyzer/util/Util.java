@@ -168,7 +168,7 @@ public class Util {
         if (events.get(position).getClass() != DateMarkerEvent.class){
             return false;
         }
-        //check before position
+        //check before position if there are other events that day
         if (position>0 && events.get(position-1).getTime().toLocalDate().isEqual(dateOfEvent)){
             return false;
         }
