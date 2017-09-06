@@ -526,6 +526,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         Log.d(TAG, "BEFORE recyclerView.scrollToPosition");
         logTimePassed();
         //==========================================================================================
+        //ec.recyclerview är null.
         ec.recyclerView.scrollToPosition(ec.eventList.size() - 1);
     }
 

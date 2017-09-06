@@ -131,7 +131,7 @@ public class EventsContainer {
 
     public void initiateRecyclerView(RecyclerView recyclerView, Context layoutInitiator) {
         //==========================================================================================
-
+        this.recyclerView = recyclerView;
         layoutManager = new LinearLayoutManager(layoutInitiator, LinearLayoutManager
                 .VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);

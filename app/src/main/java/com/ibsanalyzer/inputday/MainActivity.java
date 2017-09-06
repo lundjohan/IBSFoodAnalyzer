@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
                     adapter.getDiaryFragment().fillEventListWithDatabase();
 
                 } catch (Exception e) {
-                    Log.d("Debug", "Adapter could not be updated after replacement of " +
+                    Log.e("Error", "Adapter could not be updated after replacement of " +
                             "database");
+                    Log.e("Error", e.getStackTrace().toString());
 
                 }
 
@@ -191,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
 
             } catch (Exception e) {
                 Log.d(TAG, "Adapter could not be updated after replacement of database");
+                e.printStackTrace();
             }
         }
     }

@@ -61,6 +61,7 @@ public class Util {
 
     /**
      * Method used by MealActivity, TagAdderActivity etc as part of creating a new Event.
+     *
      * @param serializable
      * @param putExtraString
      * @param usingActivity
@@ -76,10 +77,13 @@ public class Util {
 
     /**
      * Method used my MealActivity etc as part of CHANGING an Event.
+     *
      * @param serializable
      * @param eventId
      */
-    public static void returnChangedEvent(Serializable serializable, String putExtraString, EventActivity usingActivity, long eventId, int posInList) {
+    public static void returnChangedEvent(Serializable serializable, String putExtraString,
+                                          EventActivity usingActivity, long eventId, int
+                                                  posInList) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(putExtraString, serializable);
         bundle.putLong(ID_OF_EVENT_RETURNED, eventId);
@@ -149,32 +153,34 @@ public class Util {
 
     /**
      * Is is understated that DateMarkerEvent occupies last position in list for that date.
-     *
+     * <p>
      * Uses position to sort faster.
-     *
-     *
+     * <p>
+     * <p>
      * <p>
      * Requires sorted list.
      * <p>
      *
-     *
      * @param events
      * @param dateOfEvent
-     * @param position => is either a normal event that day, or a datemarker that day. Used for optimization
+     * @param position    => is either a normal event that day, or a datemarker that day. Used
+     *                    for optimization
      * @return
      */
-    private static boolean dateMarkerIsSoleEventOneDay(List<Event> events, LocalDate dateOfEvent, int position) {
+    private static boolean dateMarkerIsSoleEventOneDay(List<Event> events, LocalDate dateOfEvent,
+                                                       int position) {
         //check at position
-        if (events.get(position).getClass() != DateMarkerEvent.class){
+        if (events.get(position).getClass() != DateMarkerEvent.class) {
             return false;
         }
         //check before position if there are other events that day
-        if (position>0 && events.get(position-1).getTime().toLocalDate().isEqual(dateOfEvent)){
+        if (position > 0 && events.get(position - 1).getTime().toLocalDate().isEqual(dateOfEvent)) {
             return false;
         }
         //Check after position is not needed since datemarker should always be placed last for day.
         return true;
     }
+
     //==============================================================================================
     //Adding of events from list.
     // (possible adding of datemarkers must be in consideration)
@@ -321,7 +327,11 @@ public class Util {
         }
     }
 
-    public static int getTypeOfEvent (Event e){
+    /**
+     * @param e not allowed to be null or other classes than listed in conditionals here.
+     * @return
+     */
+    public static int getTypeOfEvent(Event e) {
         if (e instanceof Meal) {
             return MEAL;
         } else if (e instanceof Other) {
@@ -334,12 +344,11 @@ public class Util {
             return RATING;
         } else if (e instanceof DateMarkerEvent) {
             return DATE_MARKER;
+        } else if (e == null) {
+            throw new NullPointerException("Event should not be null here");
         }
-
-        throw new RuntimeException("unknown class");
-
+        return -1;
     }
-
 
 
 }
