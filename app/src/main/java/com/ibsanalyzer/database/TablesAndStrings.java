@@ -34,8 +34,6 @@ public class TablesAndStrings {
     public static final String COLUMN_TAGS = "tags";
 
     //Event => many-to-many =>  Tags
-    public static final String TABLE_EVENTTAGS = "event_tags";
-    public static final String COLUMN_TAG = "tag";
     public static final String COLUMN_TYPE_OF_EVENT = "type_of_event";
 
     //Meals
