@@ -67,6 +67,13 @@ public class Constants {
     public final static String ID_OF_EVENT = "idOfEvent";
     public final static String ID_OF_EVENT_RETURNED = "idOfEventReturned";
 
+
+    //changed eventsTempalte or new eventsTemplate?
+    public final static int CHANGED_EVENTSTEMPLATE = 1234;
+    //sent to Activity handling changing of an EventsTemplate
+    public final static String EVENTSTEMPLATE_TO_CHANGE = "eventsTemplateToChange";
+    public final static String ID_OF_EVENTSTEMPLATE = "idOfEventsTemplate";
+
     public final static String MARKED_EVENTS_JSON = "markedEventsJson";
 
 

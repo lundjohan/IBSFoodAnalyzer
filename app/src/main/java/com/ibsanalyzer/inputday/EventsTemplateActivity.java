@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
@@ -18,6 +19,7 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.model.EventsTemplate;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -49,7 +51,9 @@ import static com.ibsanalyzer.inputday.EventsContainer.NEW_RATING;
  */
 public abstract class EventsTemplateActivity extends AppCompatActivity implements EventsContainer
         .EventsContainerUser {
-    EventsContainer ec;
+
+    TextView nameView;
+    protected EventsContainer ec;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -59,14 +63,19 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                doneClicked();
+                EventsTemplate toReturn = createEventsTemplate();
+                saveToDB(toReturn);
+                finish();
                 return true;
             }
         });
         return true;
     }
 
-    protected abstract void doneClicked();
+    private EventsTemplate createEventsTemplate() {
+        String nameOfTemplate = nameView.getText().toString();
+        return new EventsTemplate(ec.eventList, nameOfTemplate);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +85,14 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         //inflate specifics for heritating class
         ViewGroup upperPart = (ViewGroup) findViewById(R.id.upperPart);
         getLayoutInflater().inflate(getLayoutRes(), upperPart, true);
+        nameView = (TextView)findViewById(R.id.template_name);
+        nameView.setText(getStartingName());
+
+        ec = new EventsContainer(this);
+        ec.eventList = getStartingEvents();
 
         RecyclerView recyclerView = (RecyclerView)  findViewById(R.id.recyclerView);
         View buttons =  findViewById(R.id.buttons);
-        Intent intent = getIntent();
-        ec = new EventsContainer(this);
-        if (intent.hasExtra(LIST_OF_EVENTS)) {
-            ec.eventList = (List<Event>) intent.getSerializableExtra(LIST_OF_EVENTS);
-        }
 
         ec.setUpEventButtons(buttons);
         ec.initiateRecyclerView(recyclerView, this);
@@ -92,6 +101,9 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     }
 
     protected abstract int getLayoutRes();
+    protected abstract String getStartingName();
+    protected abstract List<Event> getStartingEvents();
+    protected abstract void saveToDB(EventsTemplate et);
 
 /*
     @Override

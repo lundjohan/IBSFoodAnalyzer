@@ -19,7 +19,6 @@ import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.model.TagTemplate;
-import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDateTime;
@@ -27,6 +26,7 @@ import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.type;
 import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.DATE_MARKER;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
@@ -49,7 +49,6 @@ import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGTEMPLATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TYPE_OF_EVENT;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_BM_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EVENTS_TEMPLATE_TABLE;
-import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EVENTS_TEMPLATE_TO_EVENT_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EVENT_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_EXERCISE_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.CREATE_MEAL_TABLE;
@@ -107,7 +106,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_RATING_TABLE);
 
         db.execSQL(CREATE_EVENTS_TEMPLATE_TABLE);
-        db.execSQL(CREATE_EVENTS_TEMPLATE_TO_EVENT_TABLE);
     }
 
     @Override
@@ -177,7 +175,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_OTHERS, null, null);
         db.delete(TABLE_MEALS, null, null);
         db.delete(TABLE_EVENTSTEMPLATES, null, null);
-        db.delete(TABLE_EVENTSTEMPLATEEVENTS, null, null);
         db.close();
     }
 
@@ -188,37 +185,102 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, et.getNameOfTemplate());
         SQLiteDatabase db = this.getWritableDatabase();
-
-        //https://sqlite.org/c3ref/last_insert_rowid.html
-        //insert returns rowId => If the table has a column of type INTEGER PRIMARY KEY then that
-        // column is another alias for the rowid.
         long template_id = db.insert(TABLE_EVENTSTEMPLATES, null, values);
-
+        db.close();
         for (Event e : et.getEvents()) {
-            ContentValues eventValue = new ContentValues();
-            eventValue.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(e.getTime()));
             int type = Util.getTypeOfEvent(e);
             if (type == DATE_MARKER){
-                throw new RuntimeException("Error! DateMarkerEvent should have been possible to add to an EventsTemplate. Some restriction has not been added.");
+                throw new RuntimeException("Error! DateMarkerEvent should not have been possible to add to an EventsTemplate. Some restriction has not been added.");
             }
-            eventValue.put(COLUMN_TYPE_OF_EVENT, type);
-            long event_id = db.insert(TABLE_EVENTS, null, eventValue);
-
-            //insert into many-to-many table
-            ContentValues eventsTemplateToEvent = new ContentValues();
-            values.put(COLUMN_EVENT, event_id);
-            values.put(COLUMN_EVENTSTEMPLATE, template_id);
+            long idOfEventAdded = addEventToRefEventsTemplate(e, type, template_id);
+            Log.d("Debug", "id of event added to EventsTemplate: "+idOfEventAdded);
+            addToChildrenOfEventTables(idOfEventAdded, e, type);
+            }
         }
-        db.close();
-        //Log.d("Debug", "addTagTemplate completed! TagTemplate " + tagTemplate.get_tagname() + "
-        // with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
-
+    /**
+     * Call this method after event table has been added and Meal, Other etc Tables should be added next
+     */
+    private void addToChildrenOfEventTables(long idOfEvent, Event e, int type) {
+        //here: add Meal, Other etc based on above
+        switch (type) {
+            case MEAL: {
+                addToMealTable(idOfEvent, (Meal) e);
+                break;
+            }
+            case OTHER: {
+                addToOtherTable(idOfEvent, (Other) e);
+                break;
+            }
+            case EXERCISE: {
+                addToExerciseTable(idOfEvent, (Exercise) e);
+                break;
+            }
+            case BM: {
+                addToBmTable(idOfEvent, (Bm) e);
+                break;
+            }
+            case RATING: {
+                addToRatingTable(idOfEvent, (Rating) e);
+                break;
+            }
+        }
     }
-
+    //if you want position in using list to remain the same, this have to be implemented differently
+    public void editEventsTemplate(long id, EventsTemplate changedET) {
+        deleteEventsTemplate(id);
+        addEventsTemplate(changedET);
+    }
+    private void deleteEventsTemplate(long eventsTemplateId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EVENTSTEMPLATES, COLUMN_ID + "=?", new String[]{String.valueOf(eventsTemplateId)});
+        db.close();
+    }
     public Cursor getCursorToEventsTemplates() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT  * FROM " + TABLE_EVENTSTEMPLATES, null);
     }
+    public EventsTemplate getEventsTemplate(long id) {
+        String name ="";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT " + COLUMN_NAME + " FROM " + TABLE_EVENTSTEMPLATES + " WHERE " +
+                COLUMN_ID + " = ?";
+        Cursor c1 = db.rawQuery(QUERY, new String[]{String.valueOf(id)});
+        if (c1 != null) {
+            if (c1.moveToFirst()) {
+                name = c1.getString(c1.getColumnIndex(COLUMN_NAME));
+            }
+        }
+        db.close();
+        EventsTemplate toReturn = getEventsTemplate(id, name);
+        return toReturn;
+    }
+    private EventsTemplate getEventsTemplate(long eventsTemplateId, String name) {
+        List<Event>events = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY_EVENTS = "SELECT * FROM " + TABLE_EVENTS + " WHERE " +
+                COLUMN_EVENTSTEMPLATE + " = ?";
+        Cursor c = db.rawQuery(QUERY_EVENTS, new String[]{String.valueOf(eventsTemplateId)});
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                    Log.d("Debug", "eventId loaded from inside an EventsTemplate: "+eventId);
+                    Event e = getEvent(eventId);
+                    events.add(e); //här: e == null
+                    c.moveToNext();
+                }
+            }
+        }
+        c.close();
+        db.close();
+        EventsTemplate toReturn = new EventsTemplate(events, name);
+
+
+        return toReturn;
+    }
+
+
 
     //===================================================================================
     //Event
@@ -226,10 +288,29 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     //add
     //-----------------------------------------------------------------------------------
+    /**
+    This is used when creating Events inside an EventsTemplate
+
+     returns id of event added
+     */
+    private long addEventToRefEventsTemplate(Event event, long typeOfEvent, long idOfEventsTemplate) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
+        values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
+        values.put(COLUMN_EVENTSTEMPLATE, idOfEventsTemplate);
+        return addEventHelper(event, values);
+    }
+    /**
+     This is used when creating Events NOT inside an EventsTemplate.
+     This is the "normal" use case.
+     */
     private long addEvent(Event event, long typeOfEvent) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
+        return addEventHelper(event, values);
+    }
+    private long addEventHelper(Event event, ContentValues values){
         SQLiteDatabase db = this.getWritableDatabase();
         long eventId = db.insert(TABLE_EVENTS, DATABASE_NAME, values);
         //if inputEvent => add tags
@@ -261,8 +342,6 @@ public class DBHandler extends SQLiteOpenHelper {
     private void deleteEvent(long eventId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_EVENTS, COLUMN_ID + "=?", new String[]{String.valueOf(eventId)});
-        //delete also all type of events that is referencing, and all normal Tags but not
-        // Template Tags...
         db.close();
     }
 
@@ -352,6 +431,22 @@ public class DBHandler extends SQLiteOpenHelper {
         return eventList;
     }
 
+    private Event getEvent(long eventId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Event e = null;
+        final String QUERY = "SELECT *  FROM " + TABLE_EVENTS + " WHERE " +
+                COLUMN_ID + " = ?";
+        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        if (c != null) {
+            if (c.moveToFirst()) {
+                String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                int type = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
+                e = getEvent(eventId,DateTimeFormat.fromSqLiteFormat(datetime), type);
+            }
+        }
+        db.close();
+        return e;
+    }
     private Event getEvent(long eventId, LocalDateTime ldt, int typeOfEvent) {
         Event event = null;
         switch (typeOfEvent) {
@@ -371,6 +466,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 event = retrieveRating(eventId, ldt);
                 break;
         }
+        if (event == null){
+            throw new NullPointerException("Event should not be null here");
+        }
         return event;
     }
 
@@ -386,6 +484,9 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         c.close();
         this.close();
+        if (meal == null) {
+            throw new NullPointerException("Meal event should not be null here");
+        }
         return meal;
     }
 
@@ -393,13 +494,16 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor c = retrieveHelper(eventId, TABLE_OTHERS);
         Other other = null;
         if (c != null) {
-            if (c.moveToFirst()) {
+            if (c.moveToFirst()) {  //k
                 List<Tag> tags = getTagsWithEventId(eventId);
                 other = new Other(ldt, tags);
             }
         }
         c.close();
         this.close();
+        if (other == null) {
+            throw new NullPointerException("Other event should not be null here");
+        }
         return other;
     }
 
@@ -415,6 +519,9 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         c.close();
         this.close();
+        if (exercise == null) {
+            throw new NullPointerException("Exercise event should not be null here");
+        }
         return exercise;
     }
 
@@ -430,6 +537,9 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         c.close();
         this.close();
+        if (bm == null) {
+            throw new NullPointerException("Bm event should not be null here");
+        }
         return bm;
     }
 
@@ -444,6 +554,9 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         c.close();
         this.close();
+        if (rating == null) {
+            throw new NullPointerException("Rating event should not be null here");
+        }
         return rating;
     }
 
@@ -471,6 +584,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
             }
         }
+        c.close();
         db.close();
         return ldt;
     }
@@ -507,7 +621,10 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addMeal(Meal meal) {
         //first create event and obtain its id
         long eventId = addEvent(meal, MEAL);
-        //now create meal
+        addToMealTable(eventId, meal);
+
+    }
+    private void addToMealTable(long eventId, Meal meal){
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
         values.put(COLUMN_PORTIONS, meal.getPortions());
@@ -555,13 +672,15 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addOther(Other other) {
         //first create event and obtain its id
         long eventId = addEvent(other, OTHER);
+        addToOtherTable(eventId, other);
+    }
+    private void addToOtherTable(long eventId, Other other){
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_OTHERS, DATABASE_NAME, values);
         db.close();
     }
-
     //==============================================================================================
     // Exercise
     //==============================================================================================
@@ -569,6 +688,9 @@ public class DBHandler extends SQLiteOpenHelper {
         //first create event and obtain its id
         long eventId = addEvent(exercise, EXERCISE);
         addTag(exercise.getTypeOfExercise(), eventId);
+        addToExerciseTable(eventId, exercise);
+    }
+    private void addToExerciseTable(long eventId, Exercise exercise){
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
         values.put(COLUMN_INTENSITY, (long) exercise.getIntensity());
@@ -583,6 +705,9 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addBm(Bm bm) {
         //first create event and obtain its id
         long eventId = addEvent(bm, BM);
+        addToBmTable(eventId, bm);
+    }
+    private void addToBmTable(long eventId, Bm bm){
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
         values.put(COLUMN_BRISTOL, bm.getBristol());
@@ -591,9 +716,14 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_BMS, DATABASE_NAME, values);
         db.close();
     }
-
+    //==============================================================================================
+    // RATING
+    //==============================================================================================
     public void addRating(Rating rating) {
         long eventId = addEvent(rating, RATING);
+        addToRatingTable(eventId, rating);
+    }
+    private void addToRatingTable(long eventId, Rating rating){
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
         values.put(COLUMN_AFTER, (long) rating.getAfter());
@@ -601,7 +731,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_RATINGS, DATABASE_NAME, values);
         db.close();
     }
-
     //==================================================================================================
     //TAGS
     //==================================================================================================
@@ -856,5 +985,8 @@ public class DBHandler extends SQLiteOpenHelper {
             addTagTemplate(new TagTemplate(t.getName()));
         }
     }
+
+
+
 }
 

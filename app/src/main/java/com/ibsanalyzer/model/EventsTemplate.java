@@ -2,13 +2,14 @@ package com.ibsanalyzer.model;
 
 import com.ibsanalyzer.base_classes.Event;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Johan on 2017-05-15.
  */
 
-public class EventsTemplate {
+public class EventsTemplate implements Serializable {
     String nameOfTemplate;
     List<Event> events;
 

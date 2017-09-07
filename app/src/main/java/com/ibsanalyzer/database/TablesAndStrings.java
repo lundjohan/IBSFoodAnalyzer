@@ -5,7 +5,7 @@ package com.ibsanalyzer.database;
  */
 
 public class TablesAndStrings {
-    public static final int DATABASE_VERSION = 13;
+    public static final int DATABASE_VERSION = 17;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -100,7 +100,11 @@ public class TablesAndStrings {
             TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_DATETIME + " TEXT NOT NULL, " +
-            COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL " +
+            COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL, " +
+            //this column is only used when event is inside a EventsTemplate, otherwise null
+            COLUMN_EVENTSTEMPLATE + " INTEGER, " +
+            " FOREIGN KEY( " + COLUMN_EVENTSTEMPLATE + " ) REFERENCES " + TABLE_EVENTSTEMPLATES
+            + " ( " + COLUMN_ID + ") ON DELETE CASCADE " +
             ");";
 
     public static final String CREATE_MEAL_TABLE = " CREATE TABLE " +
@@ -151,17 +155,5 @@ public class TablesAndStrings {
             TABLE_EVENTSTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_NAME + " TEXT NOT NULL UNIQUE " +
-            ");";
-    //Maps events to templates
-    public static final String CREATE_EVENTS_TEMPLATE_TO_EVENT_TABLE = "CREATE TABLE " +
-            TABLE_EVENTSTEMPLATEEVENTS + " (  " +
-            COLUMN_ID + " INTEGER PRIMARY KEY, " +
-            COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_EVENTSTEMPLATE + " INTEGER NOT NULL, " +
-            " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ") " + " ON DELETE CASCADE, " +
-            " FOREIGN KEY( " + COLUMN_EVENTSTEMPLATE + " ) REFERENCES " + TABLE_EVENTSTEMPLATES
-            + " ( " + COLUMN_ID + ")" +
-            " ON DELETE CASCADE " +
             ");";
 }

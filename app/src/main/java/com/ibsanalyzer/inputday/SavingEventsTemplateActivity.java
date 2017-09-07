@@ -2,10 +2,6 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Event;
@@ -18,25 +14,11 @@ import java.util.List;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 
 public class SavingEventsTemplateActivity extends EventsTemplateActivity {
-    String nameOfTemplate;
-    TextView nameView;
 
-    @Override
-    protected void doneClicked() {
-        nameOfTemplate = (String) nameView.getText().toString();
-        saveToDB(nameOfTemplate);
-        finish();
-    }
-
-    private void saveToDB(String name) {
-        EventsTemplate et = new EventsTemplate(ec.eventList, name);
-        DBHandler dbHandler = new DBHandler(this);
-        dbHandler.addEventsTemplate(et);
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        nameView = (TextView)findViewById(R.id.template_name);
+
     }
 
     @Override
@@ -44,5 +26,24 @@ public class SavingEventsTemplateActivity extends EventsTemplateActivity {
         return R.layout.activity_save_events_templates;
     }
 
+    @Override
+    protected String getStartingName() {
+        return "";
+    }
 
+    @Override
+    protected List<Event> getStartingEvents() {
+        List<Event>events = new ArrayList<>();
+        Intent intent = getIntent();
+        if (intent.hasExtra(LIST_OF_EVENTS)) {
+            events = (List<Event>) intent.getSerializableExtra(LIST_OF_EVENTS);
+        }
+        return events;
+    }
+
+    @Override
+    protected void saveToDB(EventsTemplate et) {
+        DBHandler dbHandler = new DBHandler(this);
+        dbHandler.addEventsTemplate(et);
+    }
 }
