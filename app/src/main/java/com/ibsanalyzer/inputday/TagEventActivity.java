@@ -28,12 +28,12 @@ import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
  */
 
 public abstract class TagEventActivity extends EventActivity {
-    private Button addTagsBtn;
-
     protected List<Tag> tagsList;
+    private Button addTagsBtn;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private TagAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +45,8 @@ public abstract class TagEventActivity extends EventActivity {
         adapter = new TagAdapter(tagsList, this);
         recyclerView.setAdapter(adapter);
         //add line separator
-        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
+                .getContext(),
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
@@ -57,9 +58,11 @@ public abstract class TagEventActivity extends EventActivity {
             adapter.notifyDataSetChanged();
         }
     }
-    protected void notifyItemInserted(){
+
+    protected void notifyItemInserted() {
         adapter.notifyItemInserted(tagsList.size() - 1);
     }
+
     //data coming back from TagAdder
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -70,7 +73,8 @@ public abstract class TagEventActivity extends EventActivity {
             return;
         }
         if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
-            TagTemplate tagTemplate = (TagTemplate) data.getExtras().getSerializable(RETURN_TAG_TEMPLATE_SERIALIZABLE);
+            TagTemplate tagTemplate = (TagTemplate) data.getExtras().getSerializable
+                    (RETURN_TAG_TEMPLATE_SERIALIZABLE);
 
             //create a new Tag
             Tag tag = new Tag(getLocalDateTime(), tagTemplate.get_tagname(), 1.0);
@@ -78,6 +82,7 @@ public abstract class TagEventActivity extends EventActivity {
         }
         notifyItemInserted();
     }
+
     public void newTagAdderActivity(View view) {
         Intent intent = new Intent(this, TagAdderActivity.class);
         startActivityForResult(intent, TAGS_TO_ADD);
@@ -90,7 +95,7 @@ public abstract class TagEventActivity extends EventActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("Confirm remove");
-        builder.setMessage("Remove item "+nameOfTag+"?");
+        builder.setMessage("Remove item " + nameOfTag + "?");
         builder.setPositiveButton("Confirm",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -111,7 +116,6 @@ public abstract class TagEventActivity extends EventActivity {
 
 
     }
-
 
 
 }

@@ -28,7 +28,8 @@ import java.util.List;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
-public class MainActivity extends AppCompatActivity implements DiaryFragment.DiaryFragmentListener, StatFragment.StatFragmentListener{
+public class MainActivity extends AppCompatActivity implements DiaryFragment
+        .DiaryFragmentListener, StatFragment.StatFragmentListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     TabPagerAdapter adapter;
@@ -166,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
 
     @Override
     public List<Event> retrieveEvents() {
-        List<Event>events = new ArrayList<>();
+        List<Event> events = new ArrayList<>();
         //1. Access Diary Fragment
-        DiaryFragment diary = (DiaryFragment)adapter.getRegisteredFragment(1);
+        DiaryFragment diary = (DiaryFragment) adapter.getRegisteredFragment(1);
         //2 Retrieve events from it
         events = diary.getEvents();
         //TODO 3. if this fails, retrieve events from database instead.
@@ -176,7 +177,8 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
     }
 
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
-        final String  TAG = this.getClass().getName();
+        final String TAG = this.getClass().getName();
+
         public ImportDBAsyncTask() {
         }
 
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment.Dia
             ExternalStorageHandler.replaceDBWithExtStorageFile();
             return null;
         }
+
         @Override
         protected void onPostExecute(Void notUsed) {
             try {

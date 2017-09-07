@@ -19,13 +19,14 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     int tabCount;
     SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
-    public TabPagerAdapter(FragmentManager fm, int nrOfTabs){
+    public TabPagerAdapter(FragmentManager fm, int nrOfTabs) {
         super(fm);
         this.tabCount = nrOfTabs;
     }
+
     @Override
     public Fragment getItem(int position) {
-        switch(position){
+        switch (position) {
             case 0:
                 TemplateFragment tabT = new TemplateFragment();
                 return tabT;
@@ -39,10 +40,10 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
-    public DiaryFragment getDiaryFragment(){
-        return (DiaryFragment)getRegisteredFragment(1);
-    }
 
+    public DiaryFragment getDiaryFragment() {
+        return (DiaryFragment) getRegisteredFragment(1);
+    }
 
 
     @Override

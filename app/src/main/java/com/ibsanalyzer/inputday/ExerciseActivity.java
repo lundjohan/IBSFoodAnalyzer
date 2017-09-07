@@ -10,19 +10,16 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.model.TagTemplate;
-import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
-import static com.ibsanalyzer.inputday.R.id.intensity;
 
 public class ExerciseActivity extends EventActivity {
     TextView typeOfExercise;
     TextView intensityName;
     SeekBar intensityBar;
-
 
 
     @Override
@@ -33,7 +30,7 @@ public class ExerciseActivity extends EventActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        typeOfExercise = (TextView)findViewById(R.id.exercise_type);
+        typeOfExercise = (TextView) findViewById(R.id.exercise_type);
         intensityName = (TextView) findViewById(R.id.intensityName);
         intensityBar = (SeekBar) findViewById(R.id.intensityBar);
         intensityBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -54,15 +51,16 @@ public class ExerciseActivity extends EventActivity {
             }
         });
 
-        if (savedInstanceState != null) {//startvalue is set to 5 if no value exists in savedInstance
+        if (savedInstanceState != null) {//startvalue is set to 5 if no value exists in
+            // savedInstance
             if (savedInstanceState.containsKey("seekBar")) {
                 intensityBar.setProgress(savedInstanceState.getInt("seekBar"));
             }
         }
         Intent intent = getIntent();
-        if (intent.hasExtra(EVENT_TO_CHANGE)){
-            Exercise exercise = (Exercise)intent.getSerializableExtra(EVENT_TO_CHANGE);
-            intensityBar.setProgress(exercise.getIntensity()-1);
+        if (intent.hasExtra(EVENT_TO_CHANGE)) {
+            Exercise exercise = (Exercise) intent.getSerializableExtra(EVENT_TO_CHANGE);
+            intensityBar.setProgress(exercise.getIntensity() - 1);
             intensityName.setText(Exercise.intensityLevelToText(exercise.getIntensity()));
             String type = exercise.getTypeOfExercise().getName();
             typeOfExercise.setText(type);
@@ -85,7 +83,8 @@ public class ExerciseActivity extends EventActivity {
         }
 
         if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
-            TagTemplate tagTemplate = (TagTemplate) data.getExtras().getSerializable(RETURN_TAG_TEMPLATE_SERIALIZABLE);
+            TagTemplate tagTemplate = (TagTemplate) data.getExtras().getSerializable
+                    (RETURN_TAG_TEMPLATE_SERIALIZABLE);
             typeOfExercise.setText(tagTemplate.get_tagname());
         }
     }
@@ -95,7 +94,8 @@ public class ExerciseActivity extends EventActivity {
     public void finish() {
         //scoreBar starts from zero
         int intensity = intensityBar.getProgress() + 1;
-        Tag typeOfExercise = new Tag(getLocalDateTime(), (String) this.typeOfExercise.getText(), 1.0);
+        Tag typeOfExercise = new Tag(getLocalDateTime(), (String) this.typeOfExercise.getText(),
+                1.0);
         Exercise event = new Exercise(getLocalDateTime(), typeOfExercise, intensity);
         returnEvent(event, RETURN_EXERCISE_SERIALIZABLE);
     }

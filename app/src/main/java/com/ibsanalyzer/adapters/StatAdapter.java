@@ -8,16 +8,12 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.ibsanalyzer.tagpoint_classes.TagPoint;
-
-import static android.R.attr.value;
-import static android.media.CamcorderProfile.get;
 
 /**
  * Created by Johan on 2017-06-21.
@@ -41,6 +37,10 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return typeOfScore;
     }
 
+    public void setTypeOfScore(int typeOfScore) {
+        this.typeOfScore = typeOfScore;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_stat, parent,
@@ -55,7 +55,7 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         List<TagPoint> tagPointsList = new ArrayList<TagPoint>(tagPoints.values());
         TagPoint tp = tagPointsList.get(position);
         viewHolder.tagName.setText(tp.getName());
-        viewHolder.scoreField.setText(String.format("%.1f",scoreWrapper.getScore(tp)));
+        viewHolder.scoreField.setText(String.format("%.1f", scoreWrapper.getScore(tp)));
         viewHolder.quantity.setText(String.format("%.1f", tp.getQuantity()));
 
     }
@@ -67,10 +67,6 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setScoreWrapper(ScoreWrapper scoreWrapper) {
         this.scoreWrapper = scoreWrapper;
-    }
-
-    public void setTypeOfScore(int typeOfScore) {
-        this.typeOfScore = typeOfScore;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

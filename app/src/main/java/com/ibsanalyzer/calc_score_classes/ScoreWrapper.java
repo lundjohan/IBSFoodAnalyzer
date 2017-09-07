@@ -1,7 +1,6 @@
 package com.ibsanalyzer.calc_score_classes;
 
 import com.ibsanalyzer.base_classes.Chunk;
-import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.List;
@@ -21,5 +20,6 @@ public abstract class ScoreWrapper {
 
     public abstract double getScore(TagPoint tp);
 
-    public abstract Map<String,TagPoint> calcScore(List<Chunk>chunks,Map<String, TagPoint>tagPoint);
+    public abstract Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint>
+            tagPoint);
 }

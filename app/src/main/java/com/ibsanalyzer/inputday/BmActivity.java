@@ -6,12 +6,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Bm;
-import com.ibsanalyzer.base_classes.Meal;
-import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -84,7 +81,8 @@ public class BmActivity extends EventActivity {
             }
         });
 
-        if (savedInstanceState != null) {//startvalue is set to 5 if no value exists in savedInstance
+        if (savedInstanceState != null) {//startvalue is set to 5 if no value exists in
+            // savedInstance
             if (savedInstanceState.containsKey("bristolBar")) {
                 bristolBar.setProgress(savedInstanceState.getInt("bristolBar"));
             }
@@ -95,11 +93,11 @@ public class BmActivity extends EventActivity {
         }
         //event to be changed?
         Intent intent = getIntent();
-        if (intent.hasExtra(EVENT_TO_CHANGE)){
-            Bm bm = (Bm)intent.getSerializableExtra(EVENT_TO_CHANGE);
-            bristolBar.setProgress(bm.getBristol()-1);
+        if (intent.hasExtra(EVENT_TO_CHANGE)) {
+            Bm bm = (Bm) intent.getSerializableExtra(EVENT_TO_CHANGE);
+            bristolBar.setProgress(bm.getBristol() - 1);
             bristolName.setText((Bm.bristolToText(bm.getBristol())));
-            completeBar.setProgress(bm.getComplete()-1);
+            completeBar.setProgress(bm.getComplete() - 1);
             completeName.setText((Bm.bristolToText(bm.getComplete())));
         }
     }

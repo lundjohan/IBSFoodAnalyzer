@@ -42,20 +42,20 @@ public class TagTemplate implements Serializable {
         return _is_a1;
     }
 
-    public TagTemplate get_is_a2() {
-        return _is_a2;
-    }
-
-    public TagTemplate get_is_a3() {
-        return _is_a3;
-    }
-
     public void set_is_a1(TagTemplate _is_a1) {
         this._is_a1 = _is_a1;
     }
 
+    public TagTemplate get_is_a2() {
+        return _is_a2;
+    }
+
     public void set_is_a2(TagTemplate _is_a2) {
         this._is_a2 = _is_a2;
+    }
+
+    public TagTemplate get_is_a3() {
+        return _is_a3;
     }
 
     public void set_is_a3(TagTemplate _is_a3) {

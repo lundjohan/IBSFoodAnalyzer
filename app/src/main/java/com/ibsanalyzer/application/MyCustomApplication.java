@@ -11,6 +11,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 
 public class MyCustomApplication extends Application {
     private static final boolean DEVELOPER_MODE = false;
+
     @Override
     public void onCreate() {
         if (DEVELOPER_MODE) {
@@ -29,7 +30,6 @@ public class MyCustomApplication extends Application {
         }
 
         super.onCreate();
-
 
 
         AndroidThreeTen.init(this);

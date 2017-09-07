@@ -59,6 +59,8 @@ import static org.hamcrest.Matchers.allOf;
 @LargeTest
 public class MainActivityNewEventsTests {
 
+    @Rule
+    public IntentsTestRule<MainActivity> intentsRule = new IntentsTestRule<>(MainActivity.class);
     List<Tag> tags = new ArrayList<>();
     LocalDateTime ldt;
 
@@ -73,9 +75,6 @@ public class MainActivityNewEventsTests {
         intending(IntentMatchers.
                 hasComponent(hasClassName(className))).respondWith(result);
     }
-
-    @Rule
-    public IntentsTestRule<MainActivity> intentsRule = new IntentsTestRule<>(MainActivity.class);
 
     @Test
     public void testReturnValueFromMealActivity() {

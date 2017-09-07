@@ -2,7 +2,6 @@ package com.ibsanalyzer.external_storage;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 import android.support.annotation.Nullable;
 
 /**
@@ -20,6 +19,7 @@ public class SaveDBIntentService extends IntentService {
     public SaveDBIntentService() {
         super("SaveDBIntentService");
     }
+
     public SaveDBIntentService(String name) {
         super(name);
     }

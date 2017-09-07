@@ -126,7 +126,7 @@ public class ExternalStorageHandler {
             File sd = Environment.getExternalStoragePublicDirectory(Environment
                     .DIRECTORY_DOWNLOADS);
             File data = Environment.getDataDirectory();
-           //this has been lifted out to outer class to make this method independent on outer class
+            //this has been lifted out to outer class to make this method independent on outer class
             // showWritablePermission(activity);
             String backupDBPath = DATABASE_NAME;
             File currentDB = new File(data, CURRENT_DB_PATH);
@@ -228,7 +228,7 @@ public class ExternalStorageHandler {
      * in database
      */
     public static List<Event> importEventsFromTxt() {
-        List<Event>importedEvents = new ArrayList<>();
+        List<Event> importedEvents = new ArrayList<>();
 
         //get permissions to area
         File sd = Environment.getExternalStoragePublicDirectory(Environment
@@ -239,19 +239,17 @@ public class ExternalStorageHandler {
         }
         File file = new File(sd, pathToTxtFile);
         //read in each row
-        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
-            for(String line; (line = br.readLine()) != null; ) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            for (String line; (line = br.readLine()) != null; ) {
                 try {
                     Event event = Importer.lineToEvent(line);
                     importedEvents.add(event);
-                }
-                catch(Exception e){
-                    Log.e("Error","One event could not be imported, skipping row.");
+                } catch (Exception e) {
+                    Log.e("Error", "One event could not be imported, skipping row.");
                 }
             }
             // line is not visible here.
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.e("Error", "Something went wrong when reading from file");
         }
         return importedEvents;

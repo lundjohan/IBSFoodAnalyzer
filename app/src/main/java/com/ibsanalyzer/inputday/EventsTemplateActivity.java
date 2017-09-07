@@ -21,14 +21,12 @@ import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.EventsTemplate;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT;
-import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
@@ -52,8 +50,8 @@ import static com.ibsanalyzer.inputday.EventsContainer.NEW_RATING;
 public abstract class EventsTemplateActivity extends AppCompatActivity implements EventsContainer
         .EventsContainerUser {
 
-    TextView nameView;
     protected EventsContainer ec;
+    TextView nameView;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -85,14 +83,14 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         //inflate specifics for heritating class
         ViewGroup upperPart = (ViewGroup) findViewById(R.id.upperPart);
         getLayoutInflater().inflate(getLayoutRes(), upperPart, true);
-        nameView = (TextView)findViewById(R.id.template_name);
+        nameView = (TextView) findViewById(R.id.template_name);
         nameView.setText(getStartingName());
 
         ec = new EventsContainer(this);
         ec.eventList = getStartingEvents();
 
-        RecyclerView recyclerView = (RecyclerView)  findViewById(R.id.recyclerView);
-        View buttons =  findViewById(R.id.buttons);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        View buttons = findViewById(R.id.buttons);
 
         ec.setUpEventButtons(buttons);
         ec.initiateRecyclerView(recyclerView, this);
@@ -101,8 +99,11 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     }
 
     protected abstract int getLayoutRes();
+
     protected abstract String getStartingName();
+
     protected abstract List<Event> getStartingEvents();
+
     protected abstract void saveToDB(EventsTemplate et);
 
 /*
@@ -129,9 +130,6 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
      *
      * @param event
      */
-
-
-
 
 
     @Override

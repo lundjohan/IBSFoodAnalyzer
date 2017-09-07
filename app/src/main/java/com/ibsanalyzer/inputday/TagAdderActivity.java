@@ -18,11 +18,9 @@ import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.database.TagnameCursorAdapter;
 import com.ibsanalyzer.model.TagTemplate;
-import com.ibsanalyzer.util.Util;
 
 import java.io.Serializable;
 
-import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
@@ -31,13 +29,12 @@ import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
 public class TagAdderActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     SearchView tagSearch;
     ListView tagsList;
-    private TagnameCursorAdapter adapter;
     DBHandler dbHandler;
     TagTemplate chosenTagTemplate = null;
-
     //if calling Activity is a TagTemplateActivity that requests a "type-of" TagTemplate, then
     // this int stores which of type_of is meant. Default is -1 (<0 means other request than above).
-    int typeOf  = -1;
+    int typeOf = -1;
+    private TagnameCursorAdapter adapter;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -61,8 +58,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
         //handle type of request
         Intent intent = getIntent();
-        if (intent.hasExtra(WHICH_TYPE_OF)){
-            typeOf = intent.getIntExtra(WHICH_TYPE_OF,-1);
+        if (intent.hasExtra(WHICH_TYPE_OF)) {
+            typeOf = intent.getIntExtra(WHICH_TYPE_OF, -1);
         }
 
         dbHandler = new DBHandler(this);
@@ -120,9 +117,9 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     @Override
     public void finish() {
         Intent data = new Intent();
-        data.putExtra( Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable)chosenTagTemplate);
-        if (typeOf>=0){
-            data.putExtra(WHICH_TYPE,typeOf);
+        data.putExtra(Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable) chosenTagTemplate);
+        if (typeOf >= 0) {
+            data.putExtra(WHICH_TYPE, typeOf);
         }
         setResult(RESULT_OK, data);
         super.finish();
@@ -136,6 +133,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
     /**
      * Has gotten result from clicked new (plus button) for adding new TagTemplate
+     *
      * @param requestCode
      * @param resultCode
      * @param data

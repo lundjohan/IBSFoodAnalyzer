@@ -18,8 +18,9 @@ import java.util.List;
  */
 
 public class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<Tag>tagsList;
+    List<Tag> tagsList;
     private TagEventActivity parentActivity;
+
     public TagAdapter(List<Tag> tagsList, TagEventActivity tagEventActivity) {
         this.tagsList = tagsList;
         parentActivity = tagEventActivity;
@@ -28,14 +29,14 @@ public class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //s. 355
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag, parent, false);
         RecyclerView.ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ViewHolder viewHolder = (ViewHolder)holder;
+        ViewHolder viewHolder = (ViewHolder) holder;
         Tag t = tagsList.get(position);
         viewHolder.quantity.setText(Double.toString(t.getSize()));
         viewHolder.tagName.setText(t.getName());
@@ -51,7 +52,8 @@ public class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemCount() {
         return tagsList.size();
     }
-    class ViewHolder extends RecyclerView.ViewHolder{
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         public TextView quantity;
         public TextView tagName;
         public ImageView deleteTag;

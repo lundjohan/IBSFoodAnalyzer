@@ -72,9 +72,12 @@ public class TablesAndStrings {
             TABLE_TAGTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE ON CONFLICT IGNORE, " +
-            FIRST_COLUMN_IS_A + " INTEGER CHECK( " + FIRST_COLUMN_IS_A + " != " + COLUMN_ID + "),  " +
-            SECOND_COLUMN_IS_A + " INTEGER CHECK( " + SECOND_COLUMN_IS_A + " != " + COLUMN_ID + "),  " +
-            THIRD_COLUMN_IS_A + " INTEGER CHECK( " + THIRD_COLUMN_IS_A + " != " + COLUMN_ID + "),  " +
+            FIRST_COLUMN_IS_A + " INTEGER CHECK( " + FIRST_COLUMN_IS_A + " != " + COLUMN_ID + ")," +
+            "  " +
+            SECOND_COLUMN_IS_A + " INTEGER CHECK( " + SECOND_COLUMN_IS_A + " != " + COLUMN_ID +
+            "),  " +
+            THIRD_COLUMN_IS_A + " INTEGER CHECK( " + THIRD_COLUMN_IS_A + " != " + COLUMN_ID + ")," +
+            "  " +
             " FOREIGN KEY( " + FIRST_COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_ID + ")" + " ON DELETE SET NULL " +
             " FOREIGN KEY( " + SECOND_COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES

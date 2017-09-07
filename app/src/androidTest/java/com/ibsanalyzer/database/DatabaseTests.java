@@ -5,7 +5,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Tag;
-import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.TagTemplate;
 
 import org.junit.Before;
@@ -104,6 +103,7 @@ public class DatabaseTests {
         assertNotNull(ldtRetrieved);
         assertEquals(ldtRetrieved, LocalDateTime.of(2017, Month.JUNE, 1, 18, 46));
     }
+
     @Test
     public void testGetAllMeals() {
         //add some meals to database
@@ -119,7 +119,7 @@ public class DatabaseTests {
         dbHandler.addMeal(meal2);
         dbHandler.addMeal(meal3);
 
-        List<Meal>meals = dbHandler.getAllMeals();
+        List<Meal> meals = dbHandler.getAllMeals();
 
         assertEquals(3, meals.size());
         //perhaps some more tests here that confirms that each unique meal has come back

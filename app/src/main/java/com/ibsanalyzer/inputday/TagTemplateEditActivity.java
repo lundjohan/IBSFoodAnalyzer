@@ -2,7 +2,6 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_ID;
 

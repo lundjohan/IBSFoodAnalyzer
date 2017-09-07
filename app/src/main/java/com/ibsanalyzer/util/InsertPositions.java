@@ -8,7 +8,7 @@ package com.ibsanalyzer.util;
  * posInserted refers to the REAL Event being inserted.
  * posDateMarker refers to DateMarkerEvent (fake or psuedo event only used for graphics in app)
  * been inserted
- *
+ * <p>
  * If posDateMarker is -1, it means that no DateMarkerEvent has been added.
  */
 

@@ -2,7 +2,6 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
@@ -33,7 +32,7 @@ public class SavingEventsTemplateActivity extends EventsTemplateActivity {
 
     @Override
     protected List<Event> getStartingEvents() {
-        List<Event>events = new ArrayList<>();
+        List<Event> events = new ArrayList<>();
         Intent intent = getIntent();
         if (intent.hasExtra(LIST_OF_EVENTS)) {
             events = (List<Event>) intent.getSerializableExtra(LIST_OF_EVENTS);

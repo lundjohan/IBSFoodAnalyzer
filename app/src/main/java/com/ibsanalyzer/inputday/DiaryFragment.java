@@ -29,7 +29,6 @@ import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -286,12 +285,12 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
 
 
-
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
     public void onClick(View v) {
         ec.doOnClick(v);
     }
+
     public void newMealActivity(View view) {
         Intent intent = new Intent((Activity) this.callback, MealActivity.class);
         startActivityForResult(intent, NEW_MEAL);
@@ -469,7 +468,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
     private boolean markingModeIsOn() {
         return eventsMarked.size() > 0;
     }
-
 
 
     //user requests to change event

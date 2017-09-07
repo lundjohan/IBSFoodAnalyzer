@@ -17,19 +17,16 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
-import com.ibsanalyzer.inputday.DiaryFragment;
 import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.Util;
 
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.fragment;
 import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.DATE_MARKER;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
@@ -52,114 +49,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.usingEntity = usingEntity;
     }
 
-    /*
-    Click Listeners
-     */
-    public interface EventAdapterUser{
-        public void onItemClicked(View v, int position);
-        public boolean onItemLongClicked(View v, int position);
-    }
-
-    abstract class EventViewHolder extends RecyclerView.ViewHolder {
-        public View itemView;
-        public TextView time;
-
-        public EventViewHolder(View itemView) {
-            super(itemView);
-            this.itemView = itemView;
-            time = (TextView) itemView.findViewById(R.id.time);
-        }
-
-        public void setBreakLayout() {
-          //TODO Problem in below is that it takes makes competition with marked_event
-            //=> solution seems to be to implement some top id in every item and then make it visible here or similiar
-            //  itemView.setBackgroundResource(R.drawable.frame_top_bold);
-
-        }
-    }
-
-    //this is for tags
-    abstract class InputEventViewHolder extends EventViewHolder {
-        public LinearLayout tagQuantsLayout;
-        public LinearLayout tagNamesLayout;
-        public Context context;
-       /* public List<String>tagQuantsList;
-        public List<String>tagNamesList;*/
-
-        public InputEventViewHolder(View itemView, Context context) {
-            super(itemView);
-            //used for initation of textViews for lists
-            this.context = context;
-            tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
-            tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
-        }
-    }
-
-    class MealViewHolder extends InputEventViewHolder {
-        public TextView portions;
-
-        public MealViewHolder(View itemView, Context context) {
-            super(itemView, context);
-            portions = (TextView) itemView.findViewById(R.id.portions);
-        }
-    }
-
-    class OtherViewHolder extends InputEventViewHolder {
-
-        public OtherViewHolder(View itemView, Context context) {
-
-            super(itemView, context);
-        }
-    }
-
-    class ExerciseViewHolder extends EventViewHolder {
-        public TextView typeOfExcercise;
-        public TextView intensity;
-
-        public ExerciseViewHolder(View itemView) {
-
-            super(itemView);
-            typeOfExcercise = (TextView) itemView.findViewById(R.id.exercise_type);
-            intensity = (TextView) itemView.findViewById(R.id.intensity);
-        }
-    }
-
-    class BmViewHolder extends EventViewHolder {
-        public TextView bristol;
-        public TextView completeness;
-
-        public BmViewHolder(View itemView) {
-            super(itemView);
-            bristol = (TextView) itemView.findViewById(R.id.bristol);
-            completeness = (TextView) itemView.findViewById(R.id.completeness);
-        }
-    }
-
-    class ScoreViewHolder extends EventViewHolder {
-        public TextView toTime;
-        public TextView afterScore;
-
-        public ScoreViewHolder(View itemView) {
-            super(itemView);
-            afterScore = (TextView) itemView.findViewById(R.id.scoreAfter);
-        }
-    }
-
-    //special case -> this one is not a REAL event. Its only purpose is to show start (actually
-    // placed at the end)of Day
-    class DateMarkerViewHolder extends RecyclerView.ViewHolder {
-        public TextView dateView;
-
-        public DateMarkerViewHolder(View itemView) {
-            super(itemView);
-            this.dateView = (TextView) itemView.findViewById(R.id.dateMarker);
-        }
-    }
-
-
-
-
-
     @Override
     public int getItemCount() {
         return events.size();
@@ -177,7 +66,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tagHolder) {
         setTime(inputEvent, tagHolder);
 
-        //clearing up, because recyclerview remembers cache. Problems with to many tags in imports of files otherwise
+        //clearing up, because recyclerview remembers cache. Problems with to many tags in
+        // imports of files otherwise
         tagHolder.tagQuantsLayout.removeAllViews();
         tagHolder.tagNamesLayout.removeAllViews();
 
@@ -191,8 +81,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tagHolder.tagNamesLayout.addView(tagName);
         }
     }
-
-
 
     /*method implemented with help from https://guides.codepath
     .com/android/Heterogenous-Layouts-inside-RecyclerView#viewholder2-java*/
@@ -310,6 +198,112 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 dateMarkerViewHolder.dateView.setText(DateTimeFormat.toTextViewFormat(dateMarker
                         .getDate()));
                 break;
+        }
+    }
+
+    /*
+    Click Listeners
+     */
+    public interface EventAdapterUser {
+        public void onItemClicked(View v, int position);
+
+        public boolean onItemLongClicked(View v, int position);
+    }
+
+    abstract class EventViewHolder extends RecyclerView.ViewHolder {
+        public View itemView;
+        public TextView time;
+
+        public EventViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+            time = (TextView) itemView.findViewById(R.id.time);
+        }
+
+        public void setBreakLayout() {
+            //TODO Problem in below is that it takes makes competition with marked_event
+            //=> solution seems to be to implement some top id in every item and then make it
+            // visible here or similiar
+            //  itemView.setBackgroundResource(R.drawable.frame_top_bold);
+
+        }
+    }
+
+    //this is for tags
+    abstract class InputEventViewHolder extends EventViewHolder {
+        public LinearLayout tagQuantsLayout;
+        public LinearLayout tagNamesLayout;
+        public Context context;
+       /* public List<String>tagQuantsList;
+        public List<String>tagNamesList;*/
+
+        public InputEventViewHolder(View itemView, Context context) {
+            super(itemView);
+            //used for initation of textViews for lists
+            this.context = context;
+            tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
+            tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
+        }
+    }
+
+    class MealViewHolder extends InputEventViewHolder {
+        public TextView portions;
+
+        public MealViewHolder(View itemView, Context context) {
+            super(itemView, context);
+            portions = (TextView) itemView.findViewById(R.id.portions);
+        }
+    }
+
+    class OtherViewHolder extends InputEventViewHolder {
+
+        public OtherViewHolder(View itemView, Context context) {
+
+            super(itemView, context);
+        }
+    }
+
+    class ExerciseViewHolder extends EventViewHolder {
+        public TextView typeOfExcercise;
+        public TextView intensity;
+
+        public ExerciseViewHolder(View itemView) {
+
+            super(itemView);
+            typeOfExcercise = (TextView) itemView.findViewById(R.id.exercise_type);
+            intensity = (TextView) itemView.findViewById(R.id.intensity);
+        }
+    }
+
+    class BmViewHolder extends EventViewHolder {
+        public TextView bristol;
+        public TextView completeness;
+
+        public BmViewHolder(View itemView) {
+            super(itemView);
+            bristol = (TextView) itemView.findViewById(R.id.bristol);
+            completeness = (TextView) itemView.findViewById(R.id.completeness);
+        }
+    }
+
+    class ScoreViewHolder extends EventViewHolder {
+        public TextView toTime;
+        public TextView afterScore;
+
+        public ScoreViewHolder(View itemView) {
+            super(itemView);
+            afterScore = (TextView) itemView.findViewById(R.id.scoreAfter);
+        }
+    }
+
+    //special case -> this one is not a REAL event. Its only purpose is to show start (actually
+    // placed at the end)of Day
+    class DateMarkerViewHolder extends RecyclerView.ViewHolder {
+        public TextView dateView;
+
+        public DateMarkerViewHolder(View itemView) {
+            super(itemView);
+            this.dateView = (TextView) itemView.findViewById(R.id.dateMarker);
         }
     }
 }

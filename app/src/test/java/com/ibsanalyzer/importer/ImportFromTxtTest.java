@@ -6,18 +6,12 @@ import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
-import com.ibsanalyzer.importer.Importer;
 
 import org.junit.Test;
-import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
 import java.util.List;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static com.ibsanalyzer.importer.Importer.bm;
-import static com.ibsanalyzer.importer.Importer.exercise;
-import static com.ibsanalyzer.importer.Importer.other;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -29,7 +23,8 @@ public class ImportFromTxtTest {
     //2017-04-28T10:50|0.9|2017-04-28T10:50|spenat|1.0|2017-04-28T10:50|ris|1.0
     @Test
     public void mealIsCreatedFromLineTest() {
-        String mealLine = "2017-04-28T10:50|0.9|2017-04-28T10:50|spenat|1.0|2017-04-28T10:50|ris|1.0";
+        String mealLine = "2017-04-28T10:50|0.9|2017-04-28T10:50|spenat|1.0|2017-04-28T10:50|ris" +
+                "|1.0";
         Meal meal = Importer.lineToMeal(mealLine);
         assertEquals(50, meal.getTime().getMinute());
         assertEquals(0.9, meal.getPortions());
@@ -41,6 +36,7 @@ public class ImportFromTxtTest {
         Tag ris = tags.get(1);
         assertEquals(50, ris.getTime().getMinute());
     }
+
     //2017-04-27T09:30|2017-04-27T09:30|myntate|1.0|2017-04-27T09:30|ört_te|1.0
     @Test
     public void otherIsCreatedFromLineTest() {
@@ -53,6 +49,7 @@ public class ImportFromTxtTest {
         assertEquals(2017, örtte.getTime().getYear());
         assertEquals(1.0, örtte.getSize());
     }
+
     //2017-04-27T18:30|2017-04-27T18:30|springer|1.0
     @Test
     public void exerciseIsCreatedFromLineTest() {
@@ -65,6 +62,7 @@ public class ImportFromTxtTest {
         assertEquals(2017, t.getTime().getYear());
         assertEquals(1, exercise.getIntensity());
     }
+
     //2017-04-27T17:00|7|3
     @Test
     public void bmIsCreatedFromLineTest() {
@@ -76,11 +74,12 @@ public class ImportFromTxtTest {
         int bristol = bm.getBristol();
         assertEquals(7, bristol);
     }
+
     //2017-05-01T17:00|5
     @Test
     public void ratingIsCreatedFromLineTest() {
         String line = "2017-05-01T17:00|5";
-        Rating rating= Importer.lineToRating(line);
+        Rating rating = Importer.lineToRating(line);
         assertEquals(Month.MAY, rating.getTime().getMonth());
         int after = rating.getAfter();
         assertEquals(5, after);

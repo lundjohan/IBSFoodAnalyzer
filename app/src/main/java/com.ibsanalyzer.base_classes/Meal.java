@@ -7,20 +7,20 @@ import java.util.List;
 ;
 
 public class Meal extends InputEvent {
-	private double portions;
+    private double portions;
 
-	public Meal(LocalDateTime time, List<Tag> tags, double portions) {
-		super(time, tags);
-		this.portions = portions;
-	}
+    public Meal(LocalDateTime time, List<Tag> tags, double portions) {
+        super(time, tags);
+        this.portions = portions;
+    }
 
-	public double getPortions() {
-		return portions;
-	}
+    public double getPortions() {
+        return portions;
+    }
 
 
-	//parceable methods
-	/*@Override
+    //parceable methods
+    /*@Override
 	public void writeToParcel(Parcel out, int flags) {
 		super.writeToParcel(out, flags);
 		out.writeDouble(portions);

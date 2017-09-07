@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ibsanalyzer.inputday.R;
-
 /**
  * Created by Johan on 2017-08-09.
  */
@@ -40,15 +38,6 @@ public class EventAdapter2 extends RecyclerView.Adapter<EventAdapter2.ViewHolder
         };*/
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        View v1;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-          //  v1 = itemView.findViewById(R.id.v1);
-        }
-    }
-
     @Override
     public int getItemCount() {
         return mCursorAdapter.getCount();
@@ -57,7 +46,8 @@ public class EventAdapter2 extends RecyclerView.Adapter<EventAdapter2.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Passing the binding operation to cursor loader
-        mCursorAdapter.getCursor().moveToPosition(position); //EDITED: added this line as suggested in the comments below, thanks :)
+        mCursorAdapter.getCursor().moveToPosition(position); //EDITED: added this line as
+        // suggested in the comments below, thanks :)
         mCursorAdapter.bindView(holder.itemView, mContext, mCursorAdapter.getCursor());
 
     }
@@ -67,5 +57,14 @@ public class EventAdapter2 extends RecyclerView.Adapter<EventAdapter2.ViewHolder
         // Passing the inflater job to the cursor-adapter
         View v = mCursorAdapter.newView(mContext, mCursorAdapter.getCursor(), parent);
         return new ViewHolder(v);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        View v1;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            //  v1 = itemView.findViewById(R.id.v1);
+        }
     }
 }

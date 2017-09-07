@@ -46,7 +46,7 @@ import static com.ibsanalyzer.constants.Constants.UPDATE;
  * A simple {@link Fragment} subclass.
  */
 public class StatFragment extends Fragment implements View.OnClickListener {
-    static final String  TAG = "STAT_FRAGMENT";
+    static final String TAG = "STAT_FRAGMENT";
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     StatAdapter adapter;
@@ -58,12 +58,6 @@ public class StatFragment extends Fragment implements View.OnClickListener {
 
     public StatFragment() {
         // Required empty public constructor
-    }
-
-    // Container Activity must implement this interface
-    public interface StatFragmentListener {
-        List<Event> retrieveEvents();
-
     }
 
     @Override
@@ -78,7 +72,6 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_stat, container, false);
         statType = (TextView) view.findViewById(R.id.stattype);
         statType.setOnClickListener(this);
-
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.stat_table);
@@ -141,20 +134,21 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         }
         return type;
     }
-    private void changeTypeText(int typeOfScore){
-            switch (typeOfScore) {
-                case AVG_SCORE:
-                    statType.setText("Avg Score");
-                    break;
-                case BLUE_ZONE_SCORE:
-                    statType.setText("Blue Zone Score");
-                    break;
-                case COMPLETENESS_SCORE:
-                    statType.setText("Completeness Score");
-                    break;
-                case BRISTOL_SCORE:
-                    statType.setText("Bristol");
-                    break;
+
+    private void changeTypeText(int typeOfScore) {
+        switch (typeOfScore) {
+            case AVG_SCORE:
+                statType.setText("Avg Score");
+                break;
+            case BLUE_ZONE_SCORE:
+                statType.setText("Blue Zone Score");
+                break;
+            case COMPLETENESS_SCORE:
+                statType.setText("Completeness Score");
+                break;
+            case BRISTOL_SCORE:
+                statType.setText("Bristol");
+                break;
         }
     }
 
@@ -165,11 +159,8 @@ public class StatFragment extends Fragment implements View.OnClickListener {
      * Notice that new TagPoints should only be created when scorestat is used first time (empty
      * list) or update is pressed
      *
-     * @param typeOfScore
-     *
-     * uses an AsyncTask to create separate thread where calculations are made.
-     * all different stat calculations classes extent ScoreWrapper
-     *
+     * @param typeOfScore uses an AsyncTask to create separate thread where calculations are made.
+     *                    all different stat calculations classes extent ScoreWrapper
      */
     private void changeAndRefreshSetup(int typeOfScore) {
         tagPoints.clear();
@@ -179,10 +170,11 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         //tagPoints = scoreWrapper.calcScore(chunks, tagPoints);
         Log.d(TAG, "Inside Main Thread, before asyncTask");
         StatAsyncTask asyncThread = new StatAsyncTask();
-        asyncThread.execute(scoreWrapper,chunks);
+        asyncThread.execute(scoreWrapper, chunks);
         Log.d(TAG, "Inside Main Thread, 'after' asyncTask");
 
     }
+
     /**
      * Changes tagPoints to other type.
      * Calls changeAndRefresh if tagPoints turns out to be empty (could be a sign that it never
@@ -204,13 +196,14 @@ public class StatFragment extends Fragment implements View.OnClickListener {
                 scoreWrapper = new AvgScoreWrapper(HOURS_AHEAD_FOR_AVG);
                 break;
             case BLUE_ZONE_SCORE:
-                  scoreWrapper = new BlueScoreWrapper(HOURS_AHEAD_FOR_BLUEZONES, SCORE_BLUEZONES_FROM);
+                scoreWrapper = new BlueScoreWrapper(HOURS_AHEAD_FOR_BLUEZONES,
+                        SCORE_BLUEZONES_FROM);
                 break;
             case COMPLETENESS_SCORE:
-                  scoreWrapper = new CompleteScoreWrapper(HOURS_AHEAD_FOR_COMPLETE);
+                scoreWrapper = new CompleteScoreWrapper(HOURS_AHEAD_FOR_COMPLETE);
                 break;
             case BRISTOL_SCORE:
-                 scoreWrapper = new BristolScoreWrapper(HOURS_AHEAD_FOR_BRISTOL);
+                scoreWrapper = new BristolScoreWrapper(HOURS_AHEAD_FOR_BRISTOL);
                 break;
         }
         return scoreWrapper;
@@ -219,7 +212,6 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     private boolean isAlreadyRightView(int typeOfScoreClicked) {
         return adapter.getTypeOfScore() == typeOfScoreClicked;
     }
-
 
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
@@ -231,15 +223,25 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+
+    // Container Activity must implement this interface
+    public interface StatFragmentListener {
+        List<Event> retrieveEvents();
+
+    }
+
     /**
      * This inner class is responisble for putting calculations of stats in new thread
-     *
-     * A bit of Spaghetti code (onPostExecute accepts scoreWrapper which seems a little bit odd for example), but it works.
+     * <p>
+     * A bit of Spaghetti code (onPostExecute accepts scoreWrapper which seems a little bit odd
+     * for example), but it works.
      */
     private class StatAsyncTask extends AsyncTask<Object, Void, ScoreWrapper> {
-        final String  TAG = this.getClass().getName();
+        final String TAG = this.getClass().getName();
+
         public StatAsyncTask() {
         }
+
         /**
          * @param params should be in order. (implementation of) ScoreWrapper, List<Chunk>,
          *               Map<String, TagPoint>
@@ -255,6 +257,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
 
             return wrapper;
         }
+
         @Override
         protected void onPostExecute(ScoreWrapper scoreWrapper) {
             adapter.setScoreWrapper(scoreWrapper);

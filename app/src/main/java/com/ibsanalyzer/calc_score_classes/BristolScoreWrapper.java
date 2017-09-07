@@ -14,9 +14,10 @@ import stat_classes.TagPointBmHandler;
 
 public class BristolScoreWrapper extends ScoreWrapper {
 
-    public BristolScoreWrapper(int hoursAheadForBm ){
+    public BristolScoreWrapper(int hoursAheadForBm) {
         super(hoursAheadForBm);
     }
+
     @Override
     public double getScore(TagPoint tp) {
         return tp.getAvgBristol();

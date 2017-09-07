@@ -6,16 +6,10 @@ import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Rating;
-import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
-import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
-import static com.ibsanalyzer.inputday.R.id.bristolName;
-import static com.ibsanalyzer.inputday.R.id.completeBar;
-import static com.ibsanalyzer.inputday.R.id.completeName;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -35,6 +29,7 @@ public class RatingActivity extends EventActivity {
         outState.putInt("seekBar", scoreBar.getProgress());
         super.onSaveInstanceState(outState);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,16 +54,17 @@ public class RatingActivity extends EventActivity {
             }
         });
 
-        if (savedInstanceState != null) {//startvalue is set to 5 if no value exists in savedInstance
+        if (savedInstanceState != null) {//startvalue is set to 5 if no value exists in
+            // savedInstance
             if (savedInstanceState.containsKey("seekBar")) {
                 scoreBar.setProgress(savedInstanceState.getInt("seekBar"));
             }
         }
         //event to be changed?
         Intent intent = getIntent();
-        if (intent.hasExtra(EVENT_TO_CHANGE)){
-            Rating rating = (Rating)intent.getSerializableExtra(EVENT_TO_CHANGE);
-            scoreBar.setProgress(rating.getAfter()-1);
+        if (intent.hasExtra(EVENT_TO_CHANGE)) {
+            Rating rating = (Rating) intent.getSerializableExtra(EVENT_TO_CHANGE);
+            scoreBar.setProgress(rating.getAfter() - 1);
         }
     }
 

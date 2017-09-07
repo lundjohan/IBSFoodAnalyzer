@@ -3,9 +3,7 @@ package com.ibsanalyzer.inputday;
 import android.os.Bundle;
 
 import com.ibsanalyzer.base_classes.Other;
-import com.ibsanalyzer.util.Util;
 
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 
 public class OtherActivity extends TagEventActivity {
@@ -19,6 +17,7 @@ public class OtherActivity extends TagEventActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public void finish() {
         //create event

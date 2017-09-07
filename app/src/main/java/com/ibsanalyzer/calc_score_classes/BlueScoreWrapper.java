@@ -6,16 +6,16 @@ import com.ibsanalyzer.tagpoint_classes.TagPoint;
 import java.util.List;
 import java.util.Map;
 
-import stat_classes.TagPointMaker;
 import stat_classes.TagPointScoreZonesHandler;
 
 /**
  * Created by Johan on 2017-06-26.
  */
 
-public class BlueScoreWrapper extends ScoreWrapper{
+public class BlueScoreWrapper extends ScoreWrapper {
     double scoreAboveAreBluezones;
-    public BlueScoreWrapper(int hoursAheadForBlueZones,double scoreAboveAreBluezones ){
+
+    public BlueScoreWrapper(int hoursAheadForBlueZones, double scoreAboveAreBluezones) {
         super(hoursAheadForBlueZones);
         this.scoreAboveAreBluezones = scoreAboveAreBluezones;
     }
@@ -28,6 +28,6 @@ public class BlueScoreWrapper extends ScoreWrapper{
     @Override
     public Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints) {
         return TagPointScoreZonesHandler.addBlueZonesScore(chunks, tagPoints,
-        scoreAboveAreBluezones, hoursAhead);
+                scoreAboveAreBluezones, hoursAhead);
     }
 }

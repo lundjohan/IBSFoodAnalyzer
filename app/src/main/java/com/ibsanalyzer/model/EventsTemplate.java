@@ -14,8 +14,6 @@ public class EventsTemplate implements Serializable {
     List<Event> events;
 
 
-
-
     public EventsTemplate(List<Event> events, String name) {
         this.events = events;
         this.nameOfTemplate = name;
@@ -24,10 +22,12 @@ public class EventsTemplate implements Serializable {
     public List<Event> getEvents() {
         return events;
     }
-    public String getNameOfTemplate() {
-        return nameOfTemplate;
-    }
+
     public void setEvents(List<Event> events) {
         this.events = events;
+    }
+
+    public String getNameOfTemplate() {
+        return nameOfTemplate;
     }
 }

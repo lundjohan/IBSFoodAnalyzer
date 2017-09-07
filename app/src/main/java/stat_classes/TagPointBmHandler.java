@@ -44,7 +44,8 @@ public class TagPointBmHandler {
     }
 
     public static Map<String, TagPoint> addBmScore(List<Chunk> chunks,
-                                                   Map<String, TagPoint> tagPoints, long hoursAheadForBm) {
+                                                   Map<String, TagPoint> tagPoints, long
+                                                           hoursAheadForBm) {
         for (Chunk chunk : chunks) {
             addBmScore(chunk, tagPoints, hoursAheadForBm);
         }

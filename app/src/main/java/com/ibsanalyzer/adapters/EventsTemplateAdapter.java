@@ -1,6 +1,5 @@
 package com.ibsanalyzer.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,17 +21,10 @@ import com.ibsanalyzer.model.EventsTemplate;
 
 import java.io.Serializable;
 
-import static android.R.attr.name;
-import static com.ibsanalyzer.constants.Constants.CHANGED_EVENTSTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.EVENTSTEMPLATE_TO_CHANGE;
-import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENTSTEMPLATE;
-import static com.ibsanalyzer.constants.Constants.UPDATE;
-import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATETIME;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_NAME;
-import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TYPE_OF_EVENT;
-import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTS;
 
 /**
  * Created by Johan on 2017-05-17.
@@ -122,24 +114,13 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return mCursorAdapter.getCount();
     }
 
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView nameOfTemplate;
-        public ImageView three_dots;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            nameOfTemplate = (TextView) itemView.findViewById(R.id.template_title);
-            three_dots = (ImageView) itemView.findViewById(R.id.three_dots);
-        }
-    }
     public void doPopupMenu(View v, final int position) {
         PopupMenu popup = new PopupMenu(mContext, v);
         //Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.events_template_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.menu_edit){
+                if (item.getItemId() == R.id.menu_edit) {
                     Cursor c = mCursorAdapter.getCursor();
                     c.moveToPosition(position);
                     long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
@@ -154,8 +135,7 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     mContext.startActivity(intent);
                     mCursorAdapter.notifyDataSetChanged();
 
-                }
-                else if (item.getItemId() == R.id.menu_delete){
+                } else if (item.getItemId() == R.id.menu_delete) {
 
                 }
                 return true;
@@ -164,9 +144,19 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         popup.show();
     }
 
-
     private EventsTemplate retrieveEventsTemplate(long id) {
         DBHandler dbHandler = new DBHandler(mContext);
         return dbHandler.getEventsTemplate(id);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView nameOfTemplate;
+        public ImageView three_dots;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            nameOfTemplate = (TextView) itemView.findViewById(R.id.template_title);
+            three_dots = (ImageView) itemView.findViewById(R.id.three_dots);
+        }
     }
 }

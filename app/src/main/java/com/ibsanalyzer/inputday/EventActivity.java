@@ -43,18 +43,16 @@ import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 
 public abstract class EventActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-    TextView dateView;
-    TextView timeView;
-    Button dateBtn;
-    Button timeBtn;
-
     //variables used for changing events.
     //Connected to isChangingEvent. The variable is later used
     // in database to know which event to be changed.
     protected long eventId = -1;
-
     //position in eventList (in DiaryFragment) for changing event
     protected int posOfEvent = -1;
+    TextView dateView;
+    TextView timeView;
+    Button dateBtn;
+    Button timeBtn;
 
     protected boolean isChangingEvent() {
         return eventId > -1;
@@ -166,6 +164,33 @@ public abstract class EventActivity extends AppCompatActivity implements
         timeView.setText(DateTimeFormat.toTextViewFormat(lt));
     }
 
+    //keep this method instead of local variables, it keeps it much less error prone
+    protected LocalDateTime getLocalDateTime() {
+        String ldStr = (String) dateView.getText();
+        String ltStr = (String) timeView.getText();
+        LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);
+        LocalTime lt = DateTimeFormat.fromTextViewTimeFormat(ltStr);
+        return LocalDateTime.of(ld, lt);
+    }
+
+    //If it doesnt' work it can be because <this> in parameter to returnChangedEvent should be
+    // MealActivity etc and not this Activity
+    protected void returnEvent(Event event, String returnString) {
+        if (isChangingEvent()) {
+            Util.returnChangedEvent(event, returnString, this, eventId, posOfEvent);
+        } else {
+            Util.returnSerializable(event, returnString, this);
+        }
+    }
+
+    /**
+     *
+     */
+    public void makeDateInvisible() {
+        dateView.setVisibility(View.INVISIBLE);
+        dateBtn.setVisibility(View.INVISIBLE);
+    }
+
     /**
      * INNER PICKER CLASSES
      */
@@ -234,32 +259,5 @@ public abstract class EventActivity extends AppCompatActivity implements
         }*/
 
 
-    }
-
-    //keep this method instead of local variables, it keeps it much less error prone
-    protected LocalDateTime getLocalDateTime() {
-        String ldStr = (String) dateView.getText();
-        String ltStr = (String) timeView.getText();
-        LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);
-        LocalTime lt = DateTimeFormat.fromTextViewTimeFormat(ltStr);
-        return LocalDateTime.of(ld, lt);
-    }
-
-    //If it doesnt' work it can be because <this> in parameter to returnChangedEvent should be
-    // MealActivity etc and not this Activity
-    protected void returnEvent(Event event, String returnString) {
-        if (isChangingEvent()) {
-            Util.returnChangedEvent(event, returnString, this, eventId, posOfEvent);
-        } else {
-            Util.returnSerializable(event, returnString, this);
-        }
-    }
-
-    /**
-     *
-     */
-    public void makeDateInvisible(){
-        dateView.setVisibility(View.INVISIBLE);
-        dateBtn.setVisibility(View.INVISIBLE);
     }
 }

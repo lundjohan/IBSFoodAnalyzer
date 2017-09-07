@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.DELIMETER;
-import static com.ibsanalyzer.inputday.R.id.completeness;
-import static com.ibsanalyzer.inputday.R.id.portions;
-import static java.lang.Integer.parseInt;
 
 /**
  * Created by Johan on 2017-06-14.
@@ -71,25 +68,28 @@ public class Importer {
         List<Tag> tags = lineToTags(line);
         return new Other(ldt, tags);
     }
+
     //2017-04-27T18:30|2017-04-27T18:30|springer|1.0
     static Exercise lineToExercise(String line) {
         LocalDateTime ldt = lineToTime(line);
         line = line.substring(DATE_LENGTH + DELIMETER.length());
         Tag t = lineToTag(line);
         int lastDel = line.lastIndexOf(DELIMETER);
-        double intensity = lineToIntensity(line.substring(lastDel+1));
+        double intensity = lineToIntensity(line.substring(lastDel + 1));
         return new Exercise(ldt, t, (int) intensity);
     }
+
     //2017-04-27T17:00|7|3
     static Bm lineToBm(String line) {
         LocalDateTime ldt = lineToTime(line);
         line = line.substring(DATE_LENGTH + DELIMETER.length());
         //not very safe but should work, in production below must be made safer of course
         //7|3
-        int bristol = Integer.parseInt(line.substring(0,1));
+        int bristol = Integer.parseInt(line.substring(0, 1));
         int completeness = Integer.parseInt(line.substring(2));
-        return new Bm(ldt,completeness, bristol);
+        return new Bm(ldt, completeness, bristol);
     }
+
     //2017-05-01T17:00|5
     static Rating lineToRating(String line) {
         LocalDateTime ldt = lineToTime(line);
@@ -127,6 +127,7 @@ public class Importer {
         tags.add(new Tag(ldt, tagName, tagSize));
         return tagSizeEnd == endOfFile ? "" : line.substring(tagSizeEnd + 1);
     }
+
     private static Tag lineToTag(String line) {
         LocalDateTime ldt = lineToTime(line);
         line = line.substring(DATE_LENGTH + DELIMETER.length());
@@ -146,6 +147,7 @@ public class Importer {
         int portionEndInd = line.indexOf(DELIMETER);
         return Double.parseDouble(line.substring(0, portionEndInd));
     }
+
     private static double lineToIntensity(String line) {
         int portionEndInd = line.indexOf(DELIMETER);
         return Double.parseDouble(line);

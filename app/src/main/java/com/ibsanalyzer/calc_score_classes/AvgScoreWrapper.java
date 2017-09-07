@@ -23,7 +23,7 @@ public class AvgScoreWrapper extends ScoreWrapper {
     }
 
     @Override
-    public Map<String, TagPoint> calcScore(List<Chunk>chunks, Map<String, TagPoint>tagPoints) {
+    public Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints) {
         return TagPointMaker.doAvgScore(chunks, hoursAhead, tagPoints);
     }
 }

@@ -5,8 +5,8 @@ import org.threeten.bp.LocalDateTime;
 //write for example spinach@green_leaves => 2 tags: spinach &
 //green_leaves
 public class TagModel {
-    private int _id;
     protected LocalDateTime time;
+    private int _id;
     private TagTemplate tagTemplate; //fk Hur gör jag?
     private double size;
 

@@ -10,51 +10,48 @@ import java.io.Serializable;
 //baseclass only exists to avoid duplication of code.
 //implemts serializable so it can be passed in putExtra to Fragments
 public abstract class Event implements Comparable<Event>, Serializable {
-	protected LocalDateTime time;
-	protected boolean isBreak;
+    protected LocalDateTime time;
+    protected boolean isBreak;
 
-	public LocalDateTime getTime() {
-		return time;
-	}
+    public Event(LocalDateTime time) {
+        this.time = time;
+    }
 
+    public LocalDateTime getTime() {
+        return time;
+    }
 
+    //compares localdatetime + DateMarkerEvent (should come last in case of same time)
+    public int compareTo(Event event2) {
+        int toReturn = this.time.compareTo(event2.time);
+        if (toReturn == 0) {
+            if (this instanceof DateMarkerEvent) {
+                toReturn = 1; //positive
+            } else if (event2 instanceof DateMarkerEvent) {
+                toReturn = -1; //negative
+            }
+        }
+        return toReturn;
+    }
 
+    @Override
+    public boolean equals(Object b) {
+        Event event2 = (Event) b;
+        if (this.getClass() == b.getClass() && this.getTime().isEqual(event2.getTime())) {
+            return true;
+        }
+        return false;
+    }
 
-	public Event(LocalDateTime time) {
-		this.time = time;
-	}
+    public boolean hasBreak() {
+        return isBreak;
+    }
 
-	//compares localdatetime + DateMarkerEvent (should come last in case of same time)
-	public int compareTo(Event event2) {
-		int toReturn = this.time.compareTo(event2.time);
-		if (toReturn == 0){
-			if (this instanceof DateMarkerEvent){
-				toReturn = 1; //positive
-			}
-			else if (event2 instanceof DateMarkerEvent){
-				toReturn = -1; //negative
-			}
-		}
-		return toReturn;
-	}
+    public void setBreak(boolean b) {
+        isBreak = b;
+    }
 
-	@Override
-	public boolean equals(Object b){
-		Event event2 = (Event)b;
-		if (this.getClass() == b.getClass() && this.getTime().isEqual(event2.getTime())){
-			return true;
-		}
-		return false;
-	}
-
-	public boolean hasBreak(){
-		return isBreak;
-	}
-	public void setBreak(boolean b){
-		isBreak = b;
-	}
-
-	//classes for parceable, most of them are implemented higher up in hierarchy.
+    //classes for parceable, most of them are implemented higher up in hierarchy.
     /*public Event(Parcel in){
         readFromParcel(in);
     }
