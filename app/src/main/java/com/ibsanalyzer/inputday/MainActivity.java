@@ -134,6 +134,9 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
     public void changeToTemplateFragment() {
         viewPager.setCurrentItem(0);
     }
+    private DiaryFragment accessDiaryFragment() {
+        return (DiaryFragment) adapter.getRegisteredFragment(1);
+    }
     //==============================================================================================
 
     //this method gets marked events from DiaryFragment and calls EventsTemplateAdder to store them.
@@ -169,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
     public List<Event> retrieveEvents() {
         List<Event> events = new ArrayList<>();
         //1. Access Diary Fragment
-        DiaryFragment diary = (DiaryFragment) adapter.getRegisteredFragment(1);
+        DiaryFragment diary = accessDiaryFragment();
         //2 Retrieve events from it
         events = diary.getEvents();
         //TODO 3. if this fails, retrieve events from database instead.
@@ -178,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
 
     @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
-        DiaryFragment diary = (DiaryFragment) adapter.getRegisteredFragment(1);
+        DiaryFragment diary = accessDiaryFragment();
         diary.addEventsToDiary(events);
     }
 

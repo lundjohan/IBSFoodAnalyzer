@@ -122,13 +122,14 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         popup.getMenuInflater().inflate(R.menu.events_template_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
+                Cursor c = mCursorAdapter.getCursor();
+                c.moveToPosition(position);
+                final long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
                 if (item.getItemId() == R.id.menu_load) {
                 //TODO code here plus lift up code from methods below that's used by all conditions
                 }
                 else if (item.getItemId() == R.id.menu_edit) {
-                    Cursor c = mCursorAdapter.getCursor();
-                    c.moveToPosition(position);
-                    long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
+
                     EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);
 
                     Intent intent = new Intent(mContext, EditEventsTemplateActivity.class);
@@ -141,9 +142,6 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     mCursorAdapter.notifyDataSetChanged();
 
                 } else if (item.getItemId() == R.id.menu_delete) {
-                    Cursor c = mCursorAdapter.getCursor();
-                    c.moveToPosition(position);
-                    final long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
                     String nameOfTemplate = c.getString(c.getColumnIndex(COLUMN_NAME));
 
                     //this code is very similar to delete pop up in other places. Place in Util?
