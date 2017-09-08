@@ -126,17 +126,16 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 c.moveToPosition(position);
                 final long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
                 if (item.getItemId() == R.id.menu_load) {
-                //TODO code here plus lift up code from methods below that's used by all conditions
-                }
-                else if (item.getItemId() == R.id.menu_edit) {
+                    //TODO code here plus lift up code from methods below that's used by all
+                    // conditions
+                } else if (item.getItemId() == R.id.menu_edit) {
 
                     EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);
 
                     Intent intent = new Intent(mContext, EditEventsTemplateActivity.class);
                     intent.putExtra(EVENTSTEMPLATE_TO_CHANGE, (Serializable) et);
                     intent.putExtra(ID_OF_EVENTSTEMPLATE, eventsTemplateId);
-
-
+                    
                     //all changes occur in database, therefore no response is needed
                     mContext.startActivity(intent);
                     mCursorAdapter.notifyDataSetChanged();
