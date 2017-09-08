@@ -3,6 +3,7 @@ package com.ibsanalyzer.inputday;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,8 @@ import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.EventsTemplate;
+import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
+import com.ibsanalyzer.util.Util;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +36,7 @@ import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static com.ibsanalyzer.inputday.DiaryFragment.BACKGROUND_COLOR;
 import static com.ibsanalyzer.inputday.DiaryFragment.CHANGED_BM;
 import static com.ibsanalyzer.inputday.DiaryFragment.CHANGED_EXERCISE;
 import static com.ibsanalyzer.inputday.DiaryFragment.CHANGED_MEAL;
@@ -97,10 +101,12 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec.adapter.notifyDataSetChanged();
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ec.onActivityResult(requestCode, resultCode, data);
     }
+
     protected abstract int getLayoutRes();
 
     protected abstract String getStartingName();
@@ -271,11 +277,22 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec.editEvent(position);
     }
 
-    /**
-     * Of no use here but has to be implemented...
-     */
     @Override
     public boolean onItemLongClicked(final View v, final int position) {
+        //initiate pop-up menu
+        PopupMenu popup = new PopupMenu(this, v);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.event_delete_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.deleteEventForEventsTemplate) {
+                    ec.eventList.remove(position);
+                    ec.adapter.notifyDataSetChanged();
+                }
+                return true;
+            }
+        });
+        popup.show();
         return true;
     }
 

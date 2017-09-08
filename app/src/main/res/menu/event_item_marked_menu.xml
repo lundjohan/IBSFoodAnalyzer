@@ -13,5 +13,5 @@
         android:visible="false"/>
     <item
         android:id="@+id/deleteEvent"
-        android:title="Delete Event"/>
+        android:title="@string/delete_event"/>
 </menu>

@@ -339,6 +339,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
      */
 
     //put in smaller methods to make clearer
+    @Override
     public boolean onItemLongClicked(final View v, final int position) {
         final Event pressedEvent = ec.eventList.get(position);
         //it should not be possible to press a DateMarkerEvent
