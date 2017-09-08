@@ -1,6 +1,7 @@
 package com.ibsanalyzer.inputday;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,12 +19,18 @@ import com.ibsanalyzer.util.Util;
 
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
+import static com.ibsanalyzer.constants.Constants.EVENTSTEMPLATE_TO_LOAD;
+import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
+import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
+
 
 public class TemplateFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
-    TemplateFragmentListener user;
+    TemplateFragmentListener callback;
 
     public TemplateFragment() {
         // Required empty public constructor
@@ -49,15 +56,31 @@ public class TemplateFragment extends Fragment {
         Cursor cursor = dbHandler.getCursorToEventsTemplates();
         adapter = new EventsTemplateAdapter(getActivity(), cursor, width);
         recyclerView.setAdapter(adapter);
-        user = (TemplateFragmentListener) getActivity();
+        callback = (TemplateFragmentListener) getActivity();
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        List<Event>eventsToReturn = null;
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        if (resultCode != LOAD_EVENTS_FROM_EVENTSTEMPLATE) {
+            return;
+        }
+        if (data.hasExtra(EVENTS_TO_LOAD)) {
+            eventsToReturn = (List<Event>)data.getSerializableExtra(EVENTS_TO_LOAD);
+        }
+        callback.addEventsFromEventsTemplateToDiary(eventsToReturn);
     }
 
     public interface TemplateFragmentListener {
         /**
          * This method pushes events from here => MainActivity => DiaryFragment
+         *
          * @param events
          */
-        void addEventsFromEventsTemplateToDiary(List<Event>events);
+        void addEventsFromEventsTemplateToDiary(List<Event> events);
     }
 }

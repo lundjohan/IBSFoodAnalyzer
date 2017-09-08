@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
@@ -18,13 +19,17 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.inputday.EditEventsTemplateActivity;
+import com.ibsanalyzer.inputday.EventsTemplateActivity;
+import com.ibsanalyzer.inputday.LoadEventsTemplateActivity;
 import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.model.EventsTemplate;
 
 import java.io.Serializable;
 
 import static com.ibsanalyzer.constants.Constants.EVENTSTEMPLATE_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.EVENTSTEMPLATE_TO_LOAD;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENTSTEMPLATE;
+import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_NAME;
 
@@ -126,8 +131,10 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 c.moveToPosition(position);
                 final long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
                 if (item.getItemId() == R.id.menu_load) {
-                    //TODO code here plus lift up code from methods below that's used by all
-                    // conditions
+                    EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);
+                    Intent intent = new Intent(mContext, LoadEventsTemplateActivity.class);
+                    intent.putExtra(EVENTSTEMPLATE_TO_LOAD, et);
+                    mContext.startActivityForResult(intent, LOAD_EVENTS_FROM_EVENTSTEMPLATE);
                 } else if (item.getItemId() == R.id.menu_edit) {
 
                     EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);
@@ -135,9 +142,11 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     Intent intent = new Intent(mContext, EditEventsTemplateActivity.class);
                     intent.putExtra(EVENTSTEMPLATE_TO_CHANGE, (Serializable) et);
                     intent.putExtra(ID_OF_EVENTSTEMPLATE, eventsTemplateId);
-                    
+
                     //all changes occur in database, therefore no response is needed
                     mContext.startActivity(intent);
+
+                    //is this ever reached
                     mCursorAdapter.notifyDataSetChanged();
 
                 } else if (item.getItemId() == R.id.menu_delete) {

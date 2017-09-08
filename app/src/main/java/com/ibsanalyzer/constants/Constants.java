@@ -50,10 +50,17 @@ public class Constants {
     public final static String ID_OF_EVENT = "idOfEvent";
     public final static String ID_OF_EVENT_RETURNED = "idOfEventReturned";
 
- //sent to Activity handling changing of an EventsTemplate
+ //sent to Activity handling of EventsTemplates
     public final static String EVENTSTEMPLATE_TO_CHANGE = "eventsTemplateToChange";
+
+    //=>
+    public final static String EVENTSTEMPLATE_TO_LOAD = "eventsTemplateToLoad";
+
+    //<=
+    public final static String EVENTS_TO_LOAD = "eventsToLoad";
+    public final static int LOAD_EVENTS_FROM_EVENTSTEMPLATE = 9876;
+
     public final static String ID_OF_EVENTSTEMPLATE = "idOfEventsTemplate";
-    public final static String MARKED_EVENTS_JSON = "markedEventsJson";
     public final static String LIST_OF_EVENTS = "listOfEvents";
     //used in various cases
     public static final int MEAL = 0, OTHER = 1, EXERCISE = 2, BM = 3, RATING = 4, DATE_MARKER = 5;
