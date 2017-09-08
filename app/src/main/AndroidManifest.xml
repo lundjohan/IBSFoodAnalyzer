@@ -77,7 +77,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-
+        <activity android:name=".EditEventsTemplateActivity"
+                  android:parentActivityName=".MainActivity"
+                  android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
         <service
             android:name="com.ibsanalyzer.external_storage.SaveDBIntentService"
             android:exported="false">
@@ -92,8 +98,7 @@
         </activity>
         <activity android:name=".TagTemplateEditActivity">
         </activity>
-        <activity android:name=".EditEventsTemplateActivity">
-        </activity>
+
     </application>
 
 </manifest>
