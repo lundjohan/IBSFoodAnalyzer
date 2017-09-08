@@ -97,7 +97,10 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec.adapter.notifyDataSetChanged();
 
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ec.onActivityResult(requestCode, resultCode, data);
+    }
     protected abstract int getLayoutRes();
 
     protected abstract String getStartingName();
