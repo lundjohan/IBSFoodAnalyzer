@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
@@ -19,9 +18,9 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.inputday.EditEventsTemplateActivity;
-import com.ibsanalyzer.inputday.EventsTemplateActivity;
 import com.ibsanalyzer.inputday.LoadEventsTemplateActivity;
 import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.inputday.TemplateFragment;
 import com.ibsanalyzer.model.EventsTemplate;
 
 import java.io.Serializable;
@@ -48,15 +47,15 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     // for us.
     CursorAdapter mCursorAdapter;
 
-    Context mContext;
+    TemplateFragment usingFragment;
     // public final int width;
 
-    public EventsTemplateAdapter(Context context, Cursor c, int width2) {
+    public EventsTemplateAdapter(TemplateFragment context, Cursor c, int width2) {
 
-        mContext = context;
+        usingFragment = context;
         final int width = width2;
 
-        mCursorAdapter = new CursorAdapter(mContext, c, 0) {
+        mCursorAdapter = new CursorAdapter(usingFragment.getContext(), c, 0) {
 
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -96,7 +95,7 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Passing the inflater job to the cursor-adapter
-        View v = mCursorAdapter.newView(mContext, mCursorAdapter.getCursor(), parent);
+        View v = mCursorAdapter.newView(usingFragment.getContext(), mCursorAdapter.getCursor(), parent);
         return new ViewHolder(v);
     }
 
@@ -104,7 +103,7 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         mCursorAdapter.getCursor().moveToPosition(position);
-        mCursorAdapter.bindView(holder.itemView, mContext, mCursorAdapter.getCursor());
+        mCursorAdapter.bindView(holder.itemView, usingFragment.getContext(), mCursorAdapter.getCursor());
         viewHolder.three_dots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +121,7 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void doPopupMenu(View v, final int position) {
-        PopupMenu popup = new PopupMenu(mContext, v);
+        PopupMenu popup = new PopupMenu(usingFragment.getContext(), v);
         //Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.events_template_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -132,19 +131,19 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 final long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
                 if (item.getItemId() == R.id.menu_load) {
                     EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);
-                    Intent intent = new Intent(mContext, LoadEventsTemplateActivity.class);
+                    Intent intent = new Intent(usingFragment.getContext(), LoadEventsTemplateActivity.class);
                     intent.putExtra(EVENTSTEMPLATE_TO_LOAD, et);
-                    mContext.startActivityForResult(intent, LOAD_EVENTS_FROM_EVENTSTEMPLATE);
+                    usingFragment.startActivityForResult(intent, LOAD_EVENTS_FROM_EVENTSTEMPLATE);
                 } else if (item.getItemId() == R.id.menu_edit) {
 
                     EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);
 
-                    Intent intent = new Intent(mContext, EditEventsTemplateActivity.class);
+                    Intent intent = new Intent(usingFragment.getContext(), EditEventsTemplateActivity.class);
                     intent.putExtra(EVENTSTEMPLATE_TO_CHANGE, (Serializable) et);
                     intent.putExtra(ID_OF_EVENTSTEMPLATE, eventsTemplateId);
 
                     //all changes occur in database, therefore no response is needed
-                    mContext.startActivity(intent);
+                    usingFragment.getContext().startActivity(intent);
 
                     //is this ever reached
                     mCursorAdapter.notifyDataSetChanged();
@@ -153,7 +152,7 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     String nameOfTemplate = c.getString(c.getColumnIndex(COLUMN_NAME));
 
                     //this code is very similar to delete pop up in other places. Place in Util?
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(usingFragment.getContext());
                     builder.setCancelable(true);
                     builder.setTitle("Confirm remove");
                     builder.setMessage("Remove template " + nameOfTemplate + "?");
@@ -161,7 +160,7 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    DBHandler dbHandler = new DBHandler(mContext);
+                                    DBHandler dbHandler = new DBHandler(usingFragment.getContext());
                                     dbHandler.deleteEventsTemplate(eventsTemplateId);
                                     mCursorAdapter.notifyDataSetChanged();
                                 }
@@ -190,7 +189,7 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private EventsTemplate retrieveEventsTemplate(long id) {
-        DBHandler dbHandler = new DBHandler(mContext);
+        DBHandler dbHandler = new DBHandler(usingFragment.getContext());
         return dbHandler.getEventsTemplate(id);
     }
 

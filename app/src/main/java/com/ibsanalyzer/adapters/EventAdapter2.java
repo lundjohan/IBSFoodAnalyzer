@@ -23,7 +23,7 @@ public class EventAdapter2 extends RecyclerView.Adapter<EventAdapter2.ViewHolder
 
         mContext = context;
 
-     /*   mCursorAdapter = new CursorAdapter(mContext, c, 0) {
+     /*   mCursorAdapter = new CursorAdapter(usingFragment, c, 0) {
 
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {

@@ -54,12 +54,18 @@ public class TemplateFragment extends Fragment {
 
         DBHandler dbHandler = new DBHandler(getActivity());
         Cursor cursor = dbHandler.getCursorToEventsTemplates();
-        adapter = new EventsTemplateAdapter(getActivity(), cursor, width);
+        adapter = new EventsTemplateAdapter(this, cursor, width);
         recyclerView.setAdapter(adapter);
         callback = (TemplateFragmentListener) getActivity();
         return v;
     }
 
+    /**
+     * Currently only used for transfering events from EventsTemplate to MainActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         List<Event>eventsToReturn = null;
