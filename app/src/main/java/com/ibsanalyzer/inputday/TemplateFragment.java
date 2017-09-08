@@ -20,8 +20,6 @@ import com.ibsanalyzer.util.Util;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
-import static com.ibsanalyzer.constants.Constants.EVENTSTEMPLATE_TO_LOAD;
 import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
 import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 
@@ -62,13 +60,14 @@ public class TemplateFragment extends Fragment {
 
     /**
      * Currently only used for transfering events from EventsTemplate to MainActivity
+     *
      * @param requestCode
      * @param resultCode
      * @param data
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        List<Event>eventsToReturn = null;
+        List<Event> eventsToReturn = null;
         if (resultCode != RESULT_OK) {
             return;
         }
@@ -76,7 +75,7 @@ public class TemplateFragment extends Fragment {
             return;
         }
         if (data.hasExtra(EVENTS_TO_LOAD)) {
-            eventsToReturn = (List<Event>)data.getSerializableExtra(EVENTS_TO_LOAD);
+            eventsToReturn = (List<Event>) data.getSerializableExtra(EVENTS_TO_LOAD);
         }
         callback.addEventsFromEventsTemplateToDiary(eventsToReturn);
     }
