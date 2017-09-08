@@ -231,7 +231,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
         }
         addEventToList(event);
     }
-
     @Override
     public void executeChangedEvent(int requestCode, Intent data) {
         int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
@@ -283,7 +282,14 @@ public class DiaryFragment extends Fragment implements EventsContainer
         }
         ec.changeEventInList(posInList, event);
     }
+    public void addEventsToDiary(List<Event>events){
+        for (Event e: events){
+            DBHandler dbHandler = new DBHandler(getContext());
+            dbHandler.addEvent(e, Util.getTypeOfEvent(e));
 
+            addEventToList(e);
+        }
+    }
 
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override

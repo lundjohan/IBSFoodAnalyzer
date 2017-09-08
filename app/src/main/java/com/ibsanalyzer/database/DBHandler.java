@@ -317,7 +317,7 @@ public class DBHandler extends SQLiteOpenHelper {
      * This is used when creating Events NOT inside an EventsTemplate.
      * This is the "normal" use case.
      */
-    private long addEvent(Event event, long typeOfEvent) {
+    public long addEvent(Event event, long typeOfEvent) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);

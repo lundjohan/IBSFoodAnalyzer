@@ -12,14 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ibsanalyzer.adapters.EventsTemplateAdapter;
+import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.util.Util;
+
+import java.util.List;
 
 
 public class TemplateFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
+    TemplateFragmentListener user;
 
     public TemplateFragment() {
         // Required empty public constructor
@@ -45,6 +49,15 @@ public class TemplateFragment extends Fragment {
         Cursor cursor = dbHandler.getCursorToEventsTemplates();
         adapter = new EventsTemplateAdapter(getActivity(), cursor, width);
         recyclerView.setAdapter(adapter);
+        user = (TemplateFragmentListener) getActivity();
         return v;
+    }
+
+    public interface TemplateFragmentListener {
+        /**
+         * This method pushes events from here => MainActivity => DiaryFragment
+         * @param events
+         */
+        void addEventsFromEventsTemplateToDiary(List<Event>events);
     }
 }

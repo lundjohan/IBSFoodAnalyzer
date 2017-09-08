@@ -28,7 +28,7 @@ import java.util.List;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
-public class MainActivity extends AppCompatActivity implements DiaryFragment
+public class MainActivity extends AppCompatActivity implements TemplateFragment.TemplateFragmentListener, DiaryFragment
         .DiaryFragmentListener, StatFragment.StatFragmentListener {
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -174,6 +174,12 @@ public class MainActivity extends AppCompatActivity implements DiaryFragment
         events = diary.getEvents();
         //TODO 3. if this fails, retrieve events from database instead.
         return events;
+    }
+
+    @Override
+    public void addEventsFromEventsTemplateToDiary(List<Event> events) {
+        DiaryFragment diary = (DiaryFragment) adapter.getRegisteredFragment(1);
+        diary.addEventsToDiary(events);
     }
 
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
