@@ -236,7 +236,7 @@ public class DBHandler extends SQLiteOpenHelper {
         addEventsTemplate(changedET);
     }
 
-    private void deleteEventsTemplate(long eventsTemplateId) {
+    public void deleteEventsTemplate(long eventsTemplateId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_EVENTSTEMPLATES, COLUMN_ID + "=?", new String[]{String.valueOf
                 (eventsTemplateId)});

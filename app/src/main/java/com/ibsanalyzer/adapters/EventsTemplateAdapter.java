@@ -1,10 +1,12 @@
 package com.ibsanalyzer.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -136,6 +138,40 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     mCursorAdapter.notifyDataSetChanged();
 
                 } else if (item.getItemId() == R.id.menu_delete) {
+                    Cursor c = mCursorAdapter.getCursor();
+                    c.moveToPosition(position);
+                    final long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                    String nameOfTemplate = c.getString(c.getColumnIndex(COLUMN_NAME));
+
+                    //this code is very similar to delete pop up in other places. Place in Util?
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setCancelable(true);
+                    builder.setTitle("Confirm remove");
+                    builder.setMessage("Remove template " + nameOfTemplate + "?");
+                    builder.setPositiveButton("Confirm",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DBHandler dbHandler = new DBHandler(mContext);
+                                    dbHandler.deleteEventsTemplate(eventsTemplateId);
+                                    mCursorAdapter.notifyDataSetChanged();
+                                }
+                            });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface
+                            .OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    mCursorAdapter.notifyDataSetChanged();
+
+                    //these doesn't seem to have much effect on renewal of recyclerView
+                    notifyItemRemoved(position);
+                    notifyDataSetChanged();
 
                 }
                 return true;
