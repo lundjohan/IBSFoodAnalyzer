@@ -2,6 +2,7 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
@@ -13,6 +14,7 @@ import static com.ibsanalyzer.constants.Constants.EVENTSTEMPLATE_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENTSTEMPLATE;
 
 public class EditEventsTemplateActivity extends EventsTemplateActivity {
+    TextView nameView;
     EventsTemplate et;
     long id;
 
@@ -47,6 +49,17 @@ public class EditEventsTemplateActivity extends EventsTemplateActivity {
     @Override
     protected String getStartingName() {
         return et.getNameOfTemplate();
+    }
+
+    @Override
+    protected String getEndingName() {
+        return nameView.getText().toString();
+    }
+
+    @Override
+    protected void setUpNameViewIfExisting() {
+        nameView = (TextView) findViewById(R.id.template_name);
+        nameView.setText(getStartingName());
     }
 
     @Override

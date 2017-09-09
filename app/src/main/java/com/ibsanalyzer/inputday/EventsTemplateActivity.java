@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
@@ -21,8 +20,6 @@ import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.EventsTemplate;
-import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
-import com.ibsanalyzer.util.Util;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +33,6 @@ import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
-import static com.ibsanalyzer.inputday.DiaryFragment.BACKGROUND_COLOR;
 import static com.ibsanalyzer.inputday.DiaryFragment.CHANGED_BM;
 import static com.ibsanalyzer.inputday.DiaryFragment.CHANGED_EXERCISE;
 import static com.ibsanalyzer.inputday.DiaryFragment.CHANGED_MEAL;
@@ -50,12 +46,15 @@ import static com.ibsanalyzer.inputday.EventsContainer.NEW_RATING;
 
 /**
  * Reuses a lot of code from DiaryFragment.
+ * <p>
+ * Some implemenations uses a TextView for name and some (1) don't. Be aware of this! => It
+ * should be abstracted completely in this parent class.
  */
 public abstract class EventsTemplateActivity extends AppCompatActivity implements EventsContainer
         .EventsContainerUser {
 
     protected EventsContainer ec;
-    TextView nameView;
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -65,7 +64,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                EventsTemplate toReturn = createEventsTemplate();
+                EventsTemplate toReturn = createEventsTemplateForReturn();
                 saveToDB(toReturn);
                 finish();
                 return true;
@@ -74,8 +73,8 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         return true;
     }
 
-    private EventsTemplate createEventsTemplate() {
-        String nameOfTemplate = nameView.getText().toString();
+    private EventsTemplate createEventsTemplateForReturn() {
+        String nameOfTemplate = getEndingName();
         return new EventsTemplate(ec.eventList, nameOfTemplate);
     }
 
@@ -87,8 +86,8 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         //inflate specifics for heritating class
         ViewGroup upperPart = (ViewGroup) findViewById(R.id.upperPart);
         getLayoutInflater().inflate(getLayoutRes(), upperPart, true);
-        nameView = (TextView) findViewById(R.id.template_name);
-        nameView.setText(getStartingName());
+
+        setUpNameViewIfExisting();
 
         ec = new EventsContainer(this);
         ec.eventList = getStartingEvents();
@@ -102,6 +101,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ec.onActivityResult(requestCode, resultCode, data);
@@ -110,6 +110,13 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     protected abstract int getLayoutRes();
 
     protected abstract String getStartingName();
+
+    protected abstract String getEndingName();
+
+    /**
+     * As hinted, only some implemenations use a nameView.
+     */
+    protected abstract void setUpNameViewIfExisting();
 
     protected abstract List<Event> getStartingEvents();
 

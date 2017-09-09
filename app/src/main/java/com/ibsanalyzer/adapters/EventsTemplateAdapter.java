@@ -50,9 +50,9 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     TemplateFragment usingFragment;
     // public final int width;
 
-    public EventsTemplateAdapter(TemplateFragment context, Cursor c, int width2) {
+    public EventsTemplateAdapter(TemplateFragment usingFragment, Cursor c, int width2) {
 
-        usingFragment = context;
+        this.usingFragment = usingFragment;
         final int width = width2;
 
         mCursorAdapter = new CursorAdapter(usingFragment.getContext(), c, 0) {

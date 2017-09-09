@@ -2,6 +2,7 @@ package com.ibsanalyzer.base_classes;
 
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.io.Serializable;
@@ -49,6 +50,14 @@ public abstract class Event implements Comparable<Event>, Serializable {
 
     public void setBreak(boolean b) {
         isBreak = b;
+    }
+
+    /**
+     * This method only changes the date of the event, not the time
+     * @param ld
+     */
+    public void setDate(LocalDate ld){
+       time =  LocalDateTime.of(ld, time.toLocalTime());
     }
 
     //classes for parceable, most of them are implemented higher up in hierarchy.

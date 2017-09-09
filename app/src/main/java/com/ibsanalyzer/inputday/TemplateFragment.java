@@ -71,7 +71,7 @@ public class TemplateFragment extends Fragment {
         if (resultCode != RESULT_OK) {
             return;
         }
-        if (resultCode != LOAD_EVENTS_FROM_EVENTSTEMPLATE) {
+        if (requestCode != LOAD_EVENTS_FROM_EVENTSTEMPLATE) {
             return;
         }
         if (data.hasExtra(EVENTS_TO_LOAD)) {
