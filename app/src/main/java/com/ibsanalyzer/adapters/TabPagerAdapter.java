@@ -7,10 +7,8 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.ibsanalyzer.inputday.DiaryFragment;
-import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.inputday.StatFragment;
 import com.ibsanalyzer.inputday.TemplateFragment;
-import com.ibsanalyzer.settings.SettingsFragment;
 
 /**
  * Created by Johan on 2017-04-18.

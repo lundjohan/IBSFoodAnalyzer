@@ -28,7 +28,6 @@ import com.ibsanalyzer.calc_score_classes.BlueScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.BristolScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
-import com.ibsanalyzer.settings.SettingsFragment;
 import com.ibsanalyzer.settings.StatSettingsActivity;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 

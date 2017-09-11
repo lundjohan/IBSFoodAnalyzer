@@ -1,6 +1,5 @@
 package com.ibsanalyzer.inputday;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -21,7 +20,6 @@ import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
-import com.ibsanalyzer.settings.SettingsFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
