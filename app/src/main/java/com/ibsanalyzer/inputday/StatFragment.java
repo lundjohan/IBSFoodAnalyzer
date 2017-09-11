@@ -4,9 +4,11 @@ package com.ibsanalyzer.inputday;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -45,6 +47,7 @@ import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
 import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_FROM;
 import static com.ibsanalyzer.constants.Constants.SETTINGS;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
+import static java.lang.Integer.getInteger;
 
 
 /**
@@ -203,7 +206,11 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         ScoreWrapper scoreWrapper = null;
         switch (typeOfScore) {
             case AVG_SCORE:
-                scoreWrapper = new AvgScoreWrapper(HOURS_AHEAD_FOR_AVG);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String hours_ahead_for_avg = preferences.getString("avg_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_AVG));
+                int hours_ahead = Integer.valueOf(hours_ahead_for_avg);
+                Log.d("Debug", "hours_ahead: "+hours_ahead);
+                scoreWrapper = new AvgScoreWrapper(hours_ahead);
                 break;
             case BLUE_ZONE_SCORE:
                 scoreWrapper = new BlueScoreWrapper(HOURS_AHEAD_FOR_BLUEZONES,
