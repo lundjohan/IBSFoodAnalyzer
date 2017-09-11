@@ -102,6 +102,13 @@
         </activity>
         <activity android:name=".LoadEventsTemplateActivity">
         </activity>
+        <activity android:name="com.ibsanalyzer.settings.StatSettingsActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
     </application>
 
 </manifest>

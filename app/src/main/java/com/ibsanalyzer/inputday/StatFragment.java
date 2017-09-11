@@ -1,7 +1,9 @@
 package com.ibsanalyzer.inputday;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +27,7 @@ import com.ibsanalyzer.calc_score_classes.BristolScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.settings.SettingsFragment;
+import com.ibsanalyzer.settings.StatSettingsActivity;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.HashMap;
@@ -101,11 +104,8 @@ public class StatFragment extends Fragment implements View.OnClickListener {
                 if (typeOfScore == UPDATE) {
                     update(adapter.getTypeOfScore());
                 } else if (typeOfScore == SETTINGS) {
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.statFragmentContainer, new SettingsFragment())
-                            .commit();
-
-                    //callback.changeStatFragmentToSettingsFragment();
+                    Intent i = new Intent(getActivity(), StatSettingsActivity.class);
+                    ((Activity)callback).startActivity(i);
                 } else if (!isAlreadyRightView(typeOfScore)) {
                     changeTypeText(typeOfScore);
                     adapter.setTypeOfScore(typeOfScore);
