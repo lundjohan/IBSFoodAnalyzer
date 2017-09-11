@@ -46,6 +46,7 @@ import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
 import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_FROM;
 import static com.ibsanalyzer.constants.Constants.SETTINGS;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
+import static com.ibsanalyzer.inputday.R.xml.preferences;
 import static java.lang.Integer.getInteger;
 
 
@@ -201,25 +202,30 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Uses SharedPreferences (editable by users in Settings) for algorithms variables.
+     * @param typeOfScore
+     * @return
+     */
     private ScoreWrapper makeScoreWrapper(int typeOfScore) {
         ScoreWrapper scoreWrapper = null;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         switch (typeOfScore) {
             case AVG_SCORE:
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 String hours_ahead_for_avg = preferences.getString("avg_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_AVG));
-                int hours_ahead = Integer.valueOf(hours_ahead_for_avg);
-                Log.d("Debug", "hours_ahead: "+hours_ahead);
-                scoreWrapper = new AvgScoreWrapper(hours_ahead);
+                scoreWrapper = new AvgScoreWrapper(Integer.valueOf(hours_ahead_for_avg));
                 break;
             case BLUE_ZONE_SCORE:
-                scoreWrapper = new BlueScoreWrapper(HOURS_AHEAD_FOR_BLUEZONES,
-                        SCORE_BLUEZONES_FROM);
+                String hours_ahead_for_bluezones = preferences.getString("bluezones_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_BLUEZONES));
+                scoreWrapper = new BlueScoreWrapper(Integer.valueOf(hours_ahead_for_bluezones),SCORE_BLUEZONES_FROM);
                 break;
             case COMPLETENESS_SCORE:
-                scoreWrapper = new CompleteScoreWrapper(HOURS_AHEAD_FOR_COMPLETE);
+                String hours_ahead_for_complete = preferences.getString("complete_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_COMPLETE));
+                scoreWrapper = new CompleteScoreWrapper(Integer.valueOf(hours_ahead_for_complete));
                 break;
             case BRISTOL_SCORE:
-                scoreWrapper = new BristolScoreWrapper(HOURS_AHEAD_FOR_BRISTOL);
+                String hours_ahead_for_bristol = preferences.getString("bristol_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_BRISTOL));
+                scoreWrapper = new CompleteScoreWrapper(Integer.valueOf(hours_ahead_for_bristol));
                 break;
         }
         return scoreWrapper;
@@ -246,7 +252,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * This inner class is responisble for putting calculations of stats in new thread
+     * This inner class is responsible for putting calculations of stats in new thread
      * <p>
      * A bit of Spaghetti code (onPostExecute accepts scoreWrapper which seems a little bit odd
      * for example), but it works.

@@ -8,7 +8,24 @@
             android:key="avg_hours_ahead"
             android:title="Hours ahead of avg algorithm"
             android:summary="Avg Score of a tag will be influenced by Ratings x hours afterwards"
-            android:dialogTitle="Preference for statistics"/>
-
+            android:dialogTitle="Avg score, hours ahead"/>
+        <EditTextPreference
+            android:defaultValue="24"
+            android:key="bluezones_hours_ahead"
+            android:title="Hours ahead of bluezones algorithm"
+            android:summary="BlueZone Score of a tag will be influenced by Ratings x hours afterwards"
+            android:dialogTitle="Bluezones, hours ahead"/>
+        <EditTextPreference
+            android:defaultValue="30"
+            android:key="complete_hours_ahead"
+            android:title="Hours ahead of complete algorithm"
+            android:summary="Complete Score of a tag will be influenced by Ratings x hours afterwards"
+            android:dialogTitle="Complete, hours ahead"/>
+        <EditTextPreference
+            android:defaultValue="30"
+            android:key="bristol_hours_ahead"
+            android:title="Hours ahead of bristol algorithm"
+            android:summary="Bristol Score of a tag will be influenced by Ratings x hours afterwards"
+            android:dialogTitle="Bristol, hours ahead"/>
     </PreferenceCategory>
 </PreferenceScreen>
