@@ -1,31 +1,55 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:sample="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         android:title="Hours stat algoritm should take into account">
-
-        <EditTextPreference
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="24"
-            android:key="avg_hours_ahead"
-            android:title="Hours ahead of avg algorithm"
+            android:enabled="true"
+            android:key="hours_ahead_avg"
             android:summary="Avg Score of a tag will be influenced by Ratings x hours afterwards"
-            android:dialogTitle="Avg score, hours ahead"/>
-        <EditTextPreference
+            android:title="Hours ahead of avg algorithm"
+
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_maxValue="72"
+            sample:msbp_measurementUnit="h"
+            sample:msbp_minValue="1"/>
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="24"
-            android:key="bluezones_hours_ahead"
-            android:title="Hours ahead of bluezones algorithm"
+            android:enabled="true"
+            android:key="hours_ahead_bluezones"
             android:summary="BlueZone Score of a tag will be influenced by Ratings x hours afterwards"
-            android:dialogTitle="Bluezones, hours ahead"/>
-        <EditTextPreference
+            android:title="Hours ahead of bluezones algorithm"
+
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_maxValue="72"
+            sample:msbp_measurementUnit="h"
+            sample:msbp_minValue="1"/>
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="30"
-            android:key="complete_hours_ahead"
-            android:title="Hours ahead of complete algorithm"
+            android:enabled="true"
+            android:key="hours_ahead_complete"
             android:summary="Complete Score of a tag will be influenced by Ratings x hours afterwards"
-            android:dialogTitle="Complete, hours ahead"/>
-        <EditTextPreference
+            android:title="Hours ahead of complete algorithm"
+
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_maxValue="72"
+            sample:msbp_measurementUnit="h"
+            sample:msbp_minValue="1"/>
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="30"
-            android:key="bristol_hours_ahead"
-            android:title="Hours ahead of bristol algorithm"
+            android:enabled="true"
+            android:key="hours_ahead_bristol"
             android:summary="Bristol Score of a tag will be influenced by Ratings x hours afterwards"
-            android:dialogTitle="Bristol, hours ahead"/>
+            android:title="Hours ahead of bristol algorithm"
+
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_maxValue="72"
+            sample:msbp_measurementUnit="h"
+            sample:msbp_minValue="1"/>
     </PreferenceCategory>
 </PreferenceScreen>

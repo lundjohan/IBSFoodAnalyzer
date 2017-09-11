@@ -2,9 +2,12 @@ package com.ibsanalyzer.settings;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v7.preference.SeekBarPreference;
 import android.view.MenuItem;
 
 import com.ibsanalyzer.inputday.R;
+
+import static android.R.attr.id;
 
 
 public class StatSettingsActivity extends AppCompatPreferenceActivity {

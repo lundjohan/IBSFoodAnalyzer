@@ -25,7 +25,6 @@ import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.calc_score_classes.AvgScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.BlueScoreWrapper;
-import com.ibsanalyzer.calc_score_classes.BristolScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.settings.StatSettingsActivity;
@@ -46,8 +45,6 @@ import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
 import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_FROM;
 import static com.ibsanalyzer.constants.Constants.SETTINGS;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
-import static com.ibsanalyzer.inputday.R.xml.preferences;
-import static java.lang.Integer.getInteger;
 
 
 /**
@@ -212,20 +209,21 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         switch (typeOfScore) {
             case AVG_SCORE:
-                String hours_ahead_for_avg = preferences.getString("avg_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_AVG));
-                scoreWrapper = new AvgScoreWrapper(Integer.valueOf(hours_ahead_for_avg));
+                int hours_ahead_for_av = preferences.getInt("avg_hours_ahea",HOURS_AHEAD_FOR_AVG);
+                Log.d("Debug", "ahead_for_avg_score, funkar detta så funkar seekbarpreference: "+hours_ahead_for_av);
+                scoreWrapper = new AvgScoreWrapper(hours_ahead_for_av);
                 break;
             case BLUE_ZONE_SCORE:
-                String hours_ahead_for_bluezones = preferences.getString("bluezones_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_BLUEZONES));
+                int hours_ahead_for_bluezones = preferences.getInt("hours_ahead_bluezones",HOURS_AHEAD_FOR_BLUEZONES);
                 scoreWrapper = new BlueScoreWrapper(Integer.valueOf(hours_ahead_for_bluezones),SCORE_BLUEZONES_FROM);
                 break;
             case COMPLETENESS_SCORE:
-                String hours_ahead_for_complete = preferences.getString("complete_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_COMPLETE));
-                scoreWrapper = new CompleteScoreWrapper(Integer.valueOf(hours_ahead_for_complete));
+                int hours_ahead_for_complete = preferences.getInt("hours_ahead_complete",HOURS_AHEAD_FOR_COMPLETE);
+                scoreWrapper = new CompleteScoreWrapper(hours_ahead_for_complete);
                 break;
             case BRISTOL_SCORE:
-                String hours_ahead_for_bristol = preferences.getString("bristol_hours_ahead",String.valueOf(HOURS_AHEAD_FOR_BRISTOL));
-                scoreWrapper = new CompleteScoreWrapper(Integer.valueOf(hours_ahead_for_bristol));
+                int hours_ahead_for_bristol = preferences.getInt("hours_ahead_bristol",HOURS_AHEAD_FOR_BRISTOL);
+                scoreWrapper = new CompleteScoreWrapper(hours_ahead_for_bristol);
                 break;
         }
         return scoreWrapper;
