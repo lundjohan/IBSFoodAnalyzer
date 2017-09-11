@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorOrange</item>
         <item name="colorPrimaryDark">@color/colorOrangeDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="TabLayoutTextStyle">

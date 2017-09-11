@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Hours stat algoritm should take into account">
+
+        <EditTextPreference
+            android:defaultValue="24"
+            android:key="avg_hours_ahead"
+            android:title="Hours ahead of avg algorithm"
+            android:summary="Avg Score of a tag will be influenced by Ratings x hours afterwards"
+            android:dialogTitle="Preference for statsistics"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

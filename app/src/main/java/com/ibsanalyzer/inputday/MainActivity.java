@@ -1,5 +1,6 @@
 package com.ibsanalyzer.inputday;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
+import com.ibsanalyzer.settings.SettingsFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -178,6 +180,17 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
         //TODO 3. if this fails, retrieve events from database instead.
         return events;
     }
+
+   /* @Override
+    public void changeStatFragmentToSettingsFragment() {
+        getSupportFragmentManager().beginTransaction().replace(adapter.getStatFragment(), new
+                SettingsFragment()).commit();
+
+        adapter.changeStatFragmentToSettings();
+
+
+
+    }*/
 
     @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {

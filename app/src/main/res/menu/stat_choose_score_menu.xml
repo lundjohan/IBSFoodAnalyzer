@@ -20,4 +20,8 @@
         android:icon="@android:drawable/stat_notify_sync"
         android:title="Update"
         />
+    <item
+        android:id="@+id/settingsMenuItem"
+        android:title="Settings"
+        />
 </menu>

@@ -24,6 +24,7 @@ import com.ibsanalyzer.calc_score_classes.BlueScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.BristolScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
+import com.ibsanalyzer.settings.SettingsFragment;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BLUEZONES;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BRISTOL;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
 import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_FROM;
+import static com.ibsanalyzer.constants.Constants.SETTINGS;
 import static com.ibsanalyzer.constants.Constants.UPDATE;
 
 
@@ -98,6 +100,12 @@ public class StatFragment extends Fragment implements View.OnClickListener {
 
                 if (typeOfScore == UPDATE) {
                     update(adapter.getTypeOfScore());
+                } else if (typeOfScore == SETTINGS) {
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.statFragmentContainer, new SettingsFragment())
+                            .commit();
+
+                    //callback.changeStatFragmentToSettingsFragment();
                 } else if (!isAlreadyRightView(typeOfScore)) {
                     changeTypeText(typeOfScore);
                     adapter.setTypeOfScore(typeOfScore);
@@ -131,6 +139,8 @@ public class StatFragment extends Fragment implements View.OnClickListener {
             type = BRISTOL_SCORE;
         } else if (itemId == R.id.updateScoreMenuItem) {
             type = UPDATE;
+        } else if (itemId == R.id.settingsMenuItem) {
+            type = SETTINGS;
         }
         return type;
     }
@@ -227,6 +237,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     // Container Activity must implement this interface
     public interface StatFragmentListener {
         List<Event> retrieveEvents();
+    //    void changeStatFragmentToSettingsFragment();
 
     }
 

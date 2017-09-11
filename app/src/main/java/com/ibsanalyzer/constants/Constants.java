@@ -67,7 +67,7 @@ public class Constants {
     //***************************************STATISTICS*********************************************
     //for StatFragment and its adapter
     public static final int AVG_SCORE = 0, BLUE_ZONE_SCORE = 1, COMPLETENESS_SCORE = 2,
-            BRISTOL_SCORE = 3, UPDATE = 4;
+            BRISTOL_SCORE = 3, UPDATE = 4, SETTINGS = 5;
 
     //Rating 6 == Great, Rating 7 == Phenomenal
     public static final int BLUE_ZONE_RATING_LIMIT_INCLUSIVE = 6;
@@ -75,8 +75,7 @@ public class Constants {
     public static final double MAX_RATING_SCORE = 7;
     //Portions
     //====================FOR HEURISTIC TOOLS=================================
-    //Blue Zones
-    public static final int HOURS_AHEAD_FOR_AVG = 24; //in hours
+    public static int HOURS_AHEAD_FOR_AVG = 24; //in hours
     public static final int HOURS_AHEAD_FOR_BLUEZONES = 24; //in hours
     public static final int HOURS_AHEAD_FOR_COMPLETE = 30; //in hours
     public static final int HOURS_AHEAD_FOR_BRISTOL = 30; //in hours

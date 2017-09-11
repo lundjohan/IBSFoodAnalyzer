@@ -7,8 +7,10 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.ibsanalyzer.inputday.DiaryFragment;
+import com.ibsanalyzer.inputday.R;
 import com.ibsanalyzer.inputday.StatFragment;
 import com.ibsanalyzer.inputday.TemplateFragment;
+import com.ibsanalyzer.settings.SettingsFragment;
 
 /**
  * Created by Johan on 2017-04-18.
@@ -44,7 +46,9 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     public DiaryFragment getDiaryFragment() {
         return (DiaryFragment) getRegisteredFragment(1);
     }
-
+    public StatFragment getStatFragment() {
+        return (StatFragment) getRegisteredFragment(2);
+    }
 
     @Override
     public int getCount() {
@@ -68,5 +72,10 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
     public Fragment getRegisteredFragment(int position) {
         return registeredFragments.get(position);
+    }
+
+    public void changeStatFragmentToSettings(FragmentManager f){
+     /*   getSupportFragmentManager().beginTransaction().replace(R.id.pager, new
+                SettingsFragment()).commit();*/
     }
 }
