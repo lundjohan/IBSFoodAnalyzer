@@ -73,9 +73,4 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     public Fragment getRegisteredFragment(int position) {
         return registeredFragments.get(position);
     }
-
-    public void changeStatFragmentToSettings(FragmentManager f){
-     /*   getSupportFragmentManager().beginTransaction().replace(R.id.pager, new
-                SettingsFragment()).commit();*/
-    }
 }

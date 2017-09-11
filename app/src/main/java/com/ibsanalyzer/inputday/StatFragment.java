@@ -237,8 +237,6 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     // Container Activity must implement this interface
     public interface StatFragmentListener {
         List<Event> retrieveEvents();
-    //    void changeStatFragmentToSettingsFragment();
-
     }
 
     /**

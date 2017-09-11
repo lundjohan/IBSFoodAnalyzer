@@ -180,18 +180,6 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
         //TODO 3. if this fails, retrieve events from database instead.
         return events;
     }
-
-   /* @Override
-    public void changeStatFragmentToSettingsFragment() {
-        getSupportFragmentManager().beginTransaction().replace(adapter.getStatFragment(), new
-                SettingsFragment()).commit();
-
-        adapter.changeStatFragmentToSettings();
-
-
-
-    }*/
-
     @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
         DiaryFragment diary = accessDiaryFragment();
