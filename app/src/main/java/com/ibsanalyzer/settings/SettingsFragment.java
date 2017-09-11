@@ -47,4 +47,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         Log.d("Debug", "Inside onSharedPreferenceChanged after changes. HOURS_AHEAD_FOR_AVG = "
                 + HOURS_AHEAD_FOR_AVG);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+    }
+
+    @Override
+    public void onPause() {
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
 }
