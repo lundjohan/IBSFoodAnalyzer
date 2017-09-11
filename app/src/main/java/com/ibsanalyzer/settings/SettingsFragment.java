@@ -2,6 +2,7 @@ package com.ibsanalyzer.settings;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.Preference;
@@ -16,6 +17,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         .OnSharedPreferenceChangeListener {
     public SettingsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //code for making calling Fragment invisible.
+        getView().setBackgroundColor(Color.WHITE);
+        getView().setClickable(true);
     }
 
     @Override

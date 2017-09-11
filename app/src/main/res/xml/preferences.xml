@@ -8,7 +8,7 @@
             android:key="avg_hours_ahead"
             android:title="Hours ahead of avg algorithm"
             android:summary="Avg Score of a tag will be influenced by Ratings x hours afterwards"
-            android:dialogTitle="Preference for statsistics"/>
+            android:dialogTitle="Preference for statistics"/>
 
     </PreferenceCategory>
 </PreferenceScreen>
