@@ -30,6 +30,8 @@ import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
@@ -71,7 +73,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
 
     //for pinning/ marking events, this must be cleaned when user quits application or app
-    // crashes etc
+    // crashes etc. List is sorted when added in asc order.
     List<Integer> eventsMarked = new ArrayList<>();
     //switcher tab and it's tabs
     ViewSwitcher tabsLayoutSwitcher;
@@ -231,6 +233,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         }
         addEventToList(event);
     }
+
     @Override
     public void executeChangedEvent(int requestCode, Intent data) {
         int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
@@ -282,8 +285,9 @@ public class DiaryFragment extends Fragment implements EventsContainer
         }
         ec.changeEventInList(posInList, event);
     }
-    public void addEventsToDiary(List<Event>events){
-        for (Event e: events){
+
+    public void addEventsToDiary(List<Event> events) {
+        for (Event e : events) {
             DBHandler dbHandler = new DBHandler(getContext());
             dbHandler.addEvent(e, Util.getTypeOfEvent(e));
 
@@ -444,6 +448,10 @@ public class DiaryFragment extends Fragment implements EventsContainer
             }
         } else {   //markingModeIsOn but eventIsNotMarked
             eventsMarked.add(position);
+
+            /*sort the Integer List eventsMarked in ascending order. It will avoid confusion
+             later when eventsMarked will be used to retrieve a list.*/
+            Collections.sort(eventsMarked);
             v.setBackgroundColor(BACKGROUND_COLOR);
         }
     }
@@ -453,6 +461,8 @@ public class DiaryFragment extends Fragment implements EventsContainer
         for (int i : eventsMarked) {
             eventsToSend.add(ec.eventList.get(i));
         }
+        //
+
         return eventsToSend;
     }
 
