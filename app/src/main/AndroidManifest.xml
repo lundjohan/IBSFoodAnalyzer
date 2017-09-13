@@ -70,7 +70,7 @@
         </activity>
         <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
         <activity
-            android:name=".SavingEventsTemplateActivity"
+            android:name=".SaveEventsTemplateActivity"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <meta-data

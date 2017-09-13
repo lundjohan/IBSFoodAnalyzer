@@ -13,7 +13,7 @@ import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 
-public class SavingEventsTemplateActivity extends EventsTemplateActivity {
+public class SaveEventsTemplateActivity extends EventsTemplateActivity {
     TextView nameView;
 
     @Override

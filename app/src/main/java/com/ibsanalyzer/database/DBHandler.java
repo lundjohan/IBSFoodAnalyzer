@@ -327,13 +327,18 @@ public class DBHandler extends SQLiteOpenHelper {
     private long addEventHelper(Event event, ContentValues values) {
         SQLiteDatabase db = this.getWritableDatabase();
         long eventId = db.insert(TABLE_EVENTS, DATABASE_NAME, values);
-        //if inputEvent => add tags
+        //if inputEvent (Meal, Other)=> add tags
         if (event instanceof InputEvent) {
             InputEvent ie = (InputEvent) event;
             for (Tag t : ie.getTags()) {
                 addTag(t, eventId);
 
             }
+        }
+        //Exercise is does not inherit InputEvent but has one tag
+        else if (event instanceof Exercise){
+            Tag t = ((Exercise) event).getTypeOfExercise();
+            addTag(t, eventId);
         }
         db.close();
         return eventId;
