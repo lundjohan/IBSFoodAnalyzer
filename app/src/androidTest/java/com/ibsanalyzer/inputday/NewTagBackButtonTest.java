@@ -12,6 +12,8 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @LargeTest
@@ -30,8 +32,11 @@ public class NewTagBackButtonTest {
         //inside TagAdderActivity, pressing back (up) button to remove keyboard
         pressBack();
 
-        //inside TagAdderActivity, pressing back button to go back to newMealActivity
+        //inside TagAdderActivity, pressing back button to go back to MealActivity
         pressBack();
+
+        //should be back in MealActivity, check for some id there
+        onView(withId(R.id.mealContainer)).check(matches(isDisplayed()));
     }
 
 }

@@ -21,6 +21,7 @@ import com.ibsanalyzer.model.TagTemplate;
 
 import java.io.Serializable;
 
+import static android.R.attr.data;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
@@ -91,11 +92,19 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 chosenTagTemplate = dbHandler.findTagTemplate((int) id);
                 Log.d("Debug", "onItemClick position: " + position);
-                finish();
+                returnTag();
             }
         });
     }
-
+    private void returnTag(){
+        Intent data = new Intent();
+        data.putExtra(Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable) chosenTagTemplate);
+        if (typeOf >= 0) {
+            data.putExtra(WHICH_TYPE, typeOf);
+        }
+        setResult(RESULT_OK, data);
+        finish();
+    }
     private void setupSearchView() {
         tagSearch.setIconifiedByDefault(false);
         tagSearch.setOnQueryTextListener(this);
@@ -138,13 +147,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
             //return the tagTemplate that has been added.
             chosenTagTemplate = (TagTemplate) data.getSerializableExtra(PUT_TAG_TEMPLATE);
-            Intent returnData = new Intent();
-            data.putExtra(Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable) chosenTagTemplate);
-            if (typeOf >= 0) {
-                data.putExtra(WHICH_TYPE, typeOf);
-            }
-            setResult(RESULT_OK, data);
-            super.finish();
+            returnTag();
         }
     }
 }
