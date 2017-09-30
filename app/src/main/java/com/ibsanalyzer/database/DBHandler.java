@@ -175,7 +175,9 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_OTHERS, null, null);
         db.delete(TABLE_MEALS, null, null);
         db.delete(TABLE_TAGS, null, null);
-        db.delete(TABLE_TAGTEMPLATES, null, null);
+
+        //this should actually never be deleted
+        //db.delete(TABLE_TAGTEMPLATES, null, null);
         db.close();
     }
 
