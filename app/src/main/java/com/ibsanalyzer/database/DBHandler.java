@@ -166,6 +166,12 @@ public class DBHandler extends SQLiteOpenHelper {
     //for all
     //===================================================================================
     public void deleteAllTablesRows() {
+        deleteAllTablesRowsExceptTagTemplates();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TAGTEMPLATES, null, null);
+        db.close();
+    }
+    public void deleteAllTablesRowsExceptTagTemplates() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_EVENTSTEMPLATES, null, null);
         db.delete(TABLE_EVENTS, null, null);
@@ -175,9 +181,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_OTHERS, null, null);
         db.delete(TABLE_MEALS, null, null);
         db.delete(TABLE_TAGS, null, null);
-
-        //this should actually never be deleted
-        //db.delete(TABLE_TAGTEMPLATES, null, null);
         db.close();
     }
 

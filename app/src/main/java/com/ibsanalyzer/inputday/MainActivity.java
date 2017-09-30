@@ -59,9 +59,8 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
             case R.id.importFromTxtMenuItem:
                 final DBHandler db = new DBHandler(this);
                 List<Event> events = ExternalStorageHandler.importEventsFromTxt();
-                db.deleteAllTablesRows();
+                db.deleteAllTablesRowsExceptTagTemplates();
                 db.addEventsWithUnknownTagTemplates(events);
-
                 try {
                     adapter.getDiaryFragment().fillEventListWithDatabase();
 
@@ -85,6 +84,19 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
                 return true;
             case R.id.settingsMenuItem:
                 //TODO
+                return true;
+            case R.id.clearDBItem:
+                DBHandler dbHandler = new DBHandler(getApplicationContext());
+                dbHandler.deleteAllTablesRowsExceptTagTemplates();
+                try {
+                    adapter.getDiaryFragment().fillEventListWithDatabase();
+
+                } catch (Exception e) {
+                    Log.e("Error", "Adapter could not be updated after replacement of " +
+                            "database");
+                    Log.e("Error", e.getStackTrace().toString());
+
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
