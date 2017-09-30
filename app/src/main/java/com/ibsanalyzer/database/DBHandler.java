@@ -167,15 +167,15 @@ public class DBHandler extends SQLiteOpenHelper {
     //===================================================================================
     public void deleteAllTablesRows() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TAGTEMPLATES, null, null);
-        db.delete(TABLE_TAGS, null, null);
+        db.delete(TABLE_EVENTSTEMPLATES, null, null);
         db.delete(TABLE_EVENTS, null, null);
         db.delete(TABLE_RATINGS, null, null);
         db.delete(TABLE_BMS, null, null);
         db.delete(TABLE_EXERCISES, null, null);
         db.delete(TABLE_OTHERS, null, null);
         db.delete(TABLE_MEALS, null, null);
-        db.delete(TABLE_EVENTSTEMPLATES, null, null);
+        db.delete(TABLE_TAGS, null, null);
+        db.delete(TABLE_TAGTEMPLATES, null, null);
         db.close();
     }
 
