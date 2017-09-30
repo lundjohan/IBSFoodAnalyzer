@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
             case R.id.importFromTxtMenuItem:
                 final DBHandler db = new DBHandler(this);
                 List<Event> events = ExternalStorageHandler.importEventsFromTxt();
-                db.deleteAllTablesRowsExceptTagTemplates();
+                db.deleteAllTablesRows();
                 db.addEventsWithUnknownTagTemplates(events);
                 try {
                     adapter.getDiaryFragment().fillEventListWithDatabase();
@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
                 }
 
 
-                return true;
             case R.id.exportMenuItem:
                 //ok, write to file? Otherwise ask for permission
                 ExternalStorageHandler.showWritablePermission(this);
@@ -100,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
 
+        }
     }
 
     @Override

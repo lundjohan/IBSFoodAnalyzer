@@ -114,17 +114,6 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         return true;
     }
 
-    @Override
-    public void finish() {
-        Intent data = new Intent();
-        data.putExtra(Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable) chosenTagTemplate);
-        if (typeOf >= 0) {
-            data.putExtra(WHICH_TYPE, typeOf);
-        }
-        setResult(RESULT_OK, data);
-        super.finish();
-    }
-
     public void doneClickedNew(View view) {
         Intent intent = new Intent(this, TagTemplateAdderActivity.class);
         startActivityForResult(intent, TAGTEMPLATE_TO_ADD);
@@ -149,7 +138,13 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
             //return the tagTemplate that has been added.
             chosenTagTemplate = (TagTemplate) data.getSerializableExtra(PUT_TAG_TEMPLATE);
-            finish();
+            Intent returnData = new Intent();
+            data.putExtra(Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable) chosenTagTemplate);
+            if (typeOf >= 0) {
+                data.putExtra(WHICH_TYPE, typeOf);
+            }
+            setResult(RESULT_OK, data);
+            super.finish();
         }
     }
 }
