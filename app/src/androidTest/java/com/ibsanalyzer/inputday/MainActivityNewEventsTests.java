@@ -64,7 +64,7 @@ public class MainActivityNewEventsTests {
     List<Tag> tags = new ArrayList<>();
     LocalDateTime ldt;
 
-    private Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event event) {
+    public static Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event event) {
         Intent resultData = new Intent();
         resultData.putExtra(putExtraStr, event);
         return new Instrumentation.ActivityResult(Activity

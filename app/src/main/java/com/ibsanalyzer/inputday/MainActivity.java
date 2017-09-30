@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
     public void changeToTemplateFragment() {
         viewPager.setCurrentItem(0);
     }
-    private DiaryFragment accessDiaryFragment() {
+    public DiaryFragment accessDiaryFragment() {
         return (DiaryFragment) adapter.getRegisteredFragment(1);
     }
     //==============================================================================================

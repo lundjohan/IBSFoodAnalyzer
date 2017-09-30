@@ -92,7 +92,9 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     }
 
-    //also adds DateMarkerEvent if appropriate
+    /**
+     *   also adds DateMarkerEvent if appropriate
+     */
     @Override
     public void addEventToList(Event event) {
         InsertPositions insertPositions = Util.insertEventWithDayMarker(ec.eventList, event);
