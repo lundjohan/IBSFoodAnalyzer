@@ -25,6 +25,14 @@ public class RatingActivity extends EventActivity {
     }
 
     @Override
+    protected void buildEvent() {
+        //scoreBar starts from zero
+        int after = scoreBar.getProgress() + 1;
+        Rating rating = new Rating(getLocalDateTime(), after);
+        returnEvent(rating, RETURN_RATING_SERIALIZABLE);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("seekBar", scoreBar.getProgress());
         super.onSaveInstanceState(outState);
@@ -68,12 +76,4 @@ public class RatingActivity extends EventActivity {
         }
     }
 
-    @Override
-    public void finish() {
-        //scoreBar starts from zero
-        int after = scoreBar.getProgress() + 1;
-        Rating rating = new Rating(getLocalDateTime(), after);
-        returnEvent(rating, RETURN_RATING_SERIALIZABLE);
-
-    }
 }

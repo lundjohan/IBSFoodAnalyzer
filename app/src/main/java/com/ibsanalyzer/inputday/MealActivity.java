@@ -2,6 +2,7 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Meal;
@@ -29,8 +30,9 @@ public class MealActivity extends TagEventActivity {
     }
 
     @Override
-    public void finish() {
+    protected void buildEvent() {
         //create meal
+        Log.d("Debug", "finish inside MealActivity");
         double portions = Double.parseDouble((String) portionView.getText());
         Meal event = new Meal(getLocalDateTime(), tagsList, portions);
         returnEvent(event, RETURN_MEAL_SERIALIZABLE);

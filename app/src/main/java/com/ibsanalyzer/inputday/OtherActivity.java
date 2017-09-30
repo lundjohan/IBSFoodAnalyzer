@@ -14,14 +14,15 @@ public class OtherActivity extends TagEventActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void finish() {
+    protected void buildEvent() {
         //create event
         Other other = new Other(getLocalDateTime(), tagsList);
         returnEvent(other, RETURN_OTHER_SERIALIZABLE);
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
 }

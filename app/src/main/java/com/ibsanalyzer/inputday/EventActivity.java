@@ -74,6 +74,7 @@ public abstract class EventActivity extends AppCompatActivity implements
     }
 
     protected abstract int getLayoutRes();
+    protected abstract void buildEvent();
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -81,7 +82,24 @@ public abstract class EventActivity extends AppCompatActivity implements
         outState.putString("localTimeStr", (String) timeView.getText());
         super.onSaveInstanceState(outState);
     }
+    @Override
+    public void onBackPressed() {
+        Log.d("Debug","Indide EventActivity onBackPressed before finished()");
+        finish();
+    }
 
+    //in case API<21 onBackPressed is not called
+    //this is blocking natural behavoiur of backbutton
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //finish();
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,8 +141,8 @@ public abstract class EventActivity extends AppCompatActivity implements
     }
 
     public void doneClicked(View view) {
+        buildEvent();
         finish();
-        super.finish();
     }
 
     public void startTimePicker(View view) {

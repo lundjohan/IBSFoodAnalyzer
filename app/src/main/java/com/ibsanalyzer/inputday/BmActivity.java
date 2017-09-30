@@ -2,13 +2,16 @@ package com.ibsanalyzer.inputday;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Bm;
+import com.ibsanalyzer.base_classes.Meal;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -25,6 +28,14 @@ public class BmActivity extends EventActivity {
         return R.layout.activity_bm;
     }
 
+    @Override
+    protected void buildEvent() {
+        //scoreBar starts from zero
+        int complete = completeBar.getProgress() + 1;
+        int bristol = bristolBar.getProgress() + 1;
+        Bm bm = new Bm(getLocalDateTime(), complete, bristol);
+        returnEvent(bm, RETURN_BM_SERIALIZABLE);
+    }
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("bristolBar", bristolBar.getProgress());
@@ -102,12 +113,5 @@ public class BmActivity extends EventActivity {
         }
     }
 
-    @Override
-    public void finish() {
-        //scoreBar starts from zero
-        int complete = completeBar.getProgress() + 1;
-        int bristol = bristolBar.getProgress() + 1;
-        Bm bm = new Bm(getLocalDateTime(), complete, bristol);
-        returnEvent(bm, RETURN_BM_SERIALIZABLE);
-    }
+
 }

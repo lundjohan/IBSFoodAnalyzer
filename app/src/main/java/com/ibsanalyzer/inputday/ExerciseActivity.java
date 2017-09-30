@@ -7,14 +7,18 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.model.TagTemplate;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
+import static com.ibsanalyzer.inputday.R.id.bristolBar;
+import static com.ibsanalyzer.inputday.R.id.completeBar;
 
 public class ExerciseActivity extends EventActivity {
     TextView typeOfExercise;
@@ -25,6 +29,16 @@ public class ExerciseActivity extends EventActivity {
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_exercise;
+    }
+
+    @Override
+    protected void buildEvent() {
+        //scoreBar starts from zero
+        int intensity = intensityBar.getProgress() + 1;
+        Tag typeOfExercise = new Tag(getLocalDateTime(), (String) this.typeOfExercise.getText(),
+                1.0);
+        Exercise event = new Exercise(getLocalDateTime(), typeOfExercise, intensity);
+        returnEvent(event, RETURN_EXERCISE_SERIALIZABLE);
     }
 
     @Override
@@ -87,16 +101,5 @@ public class ExerciseActivity extends EventActivity {
                     (RETURN_TAG_TEMPLATE_SERIALIZABLE);
             typeOfExercise.setText(tagTemplate.get_tagname());
         }
-    }
-
-
-    @Override
-    public void finish() {
-        //scoreBar starts from zero
-        int intensity = intensityBar.getProgress() + 1;
-        Tag typeOfExercise = new Tag(getLocalDateTime(), (String) this.typeOfExercise.getText(),
-                1.0);
-        Exercise event = new Exercise(getLocalDateTime(), typeOfExercise, intensity);
-        returnEvent(event, RETURN_EXERCISE_SERIALIZABLE);
     }
 }
