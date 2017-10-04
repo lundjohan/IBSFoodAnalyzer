@@ -8,6 +8,8 @@ import java.io.File;
 
 /**
  * Created by Johan on 2017-10-04.
+ * very slight rewrite (mime-type) of this class https://stackoverflow
+ * .com/questions/4646913/android-how-to-use-mediascannerconnection-scanfile
  */
 
 public class SingleMediaScanner implements MediaScannerConnection.MediaScannerConnectionClient {
@@ -19,6 +21,9 @@ public class SingleMediaScanner implements MediaScannerConnection.MediaScannerCo
         mFile = f;
         this.mimeType = mimeType;
         mMs = new MediaScannerConnection(context, this);
+    }
+
+    public void scan() {
         mMs.connect();
     }
 

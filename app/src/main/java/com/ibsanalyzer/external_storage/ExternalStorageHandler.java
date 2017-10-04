@@ -121,22 +121,23 @@ public class ExternalStorageHandler {
                 new String[]{permissionName}, permissionRequestCode);
     }
 
+    /**
+     * Nota Bene! If file or folder isn't showing up in Windows File Explorer - restart the
+     * device (it flushes).
+     * It has to do with Microsoft mtb.
+     * MediaScanner is SUPPOSED to be solution to this but not fully (since a reboot of phone is
+     * needed).
+     *
+     * @param c
+     */
     public static void saveDBToExtStorage(Context c) {
-        //from https://stackoverflow.com/questions/1995320/how-do-i-backup-a-database-file-to-the
-        // -sd-card-on-android
-
         try {
             c.getDatabasePath(DATABASE_NAME);
-            //File directoryToSaveIn = c.getFilesDir();
-            File directoryToSaveIn = Environment.getExternalStoragePublicDirectory(DIRECTORY_IBSFOODANALYZER);
-
-           //File directoryToSaveIn = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            //Nota
+            File directoryToSaveIn = Environment.getExternalStoragePublicDirectory
+                    (DIRECTORY_IBSFOODANALYZER);
             File data = Environment.getDataDirectory();
-            //this has been lifted out to outer class to make this method independent on outer class
-            // showWritablePermission(activity);
-            String backupDBPath = LocalDate.from(LocalDateTime.now()) + DATABASE_NAME;
-            //TODO if backupDpPath exists, increase with +1 => 2017-10-04_2.ibsfa
-
+            String backupDBPath = LocalDateTime.now() + "_" + DATABASE_NAME;
             File currentDB = c.getDatabasePath(DATABASE_NAME);
             if (!isExternalStorageAccessable()) {
                 return;
@@ -147,16 +148,18 @@ public class ExternalStorageHandler {
                 if (!directoryToSaveIn.exists()) {
                     directoryToSaveIn.mkdirs();
                 }
-
-
-
                 File backupDB = new File(directoryToSaveIn, backupDBPath);
 
                 //mediascannerconnection is implemented for windows explorer to see file see =>
-                //https://stackoverflow.com/questions/32789157/how-to-write-files-to-external-public-storage-in-android-so-that-they-are-visibl
+                //https://stackoverflow
+                // .com/questions/32789157/how-to-write-files-to-external-public-storage-in
+                // -android-so-that-they-are-visibl
                 //and
-                //https://stackoverflow.com/questions/4646913/android-how-to-use-mediascannerconnection-scanfile
-                SingleMediaScanner mediaScanner2 = new SingleMediaScanner(c, backupDB, "application/x-sqlite3");
+                //https://stackoverflow
+                // .com/questions/4646913/android-how-to-use-mediascannerconnection-scanfile
+                SingleMediaScanner mediaScanner = new SingleMediaScanner(c, backupDB,
+                        "application/x-sqlite3");
+                mediaScanner.scan();
                 FileOutputStream fos = new FileOutputStream(backupDB);
 
                 FileChannel dst = fos.getChannel();
