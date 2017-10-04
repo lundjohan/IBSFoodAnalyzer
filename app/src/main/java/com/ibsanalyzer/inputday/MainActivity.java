@@ -61,11 +61,6 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
         switch (item.getItemId()) {
             case R.id.importMenuItem:
                 showChooser();
-                if (dbFileToImport != null) {
-                    ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
-                    asyncThread.execute(0);
-                }
-                dbFileToImport = null;
                 return true;
 
             //THIS OPTION WILL BE REMOVED IN PRODUCTION CODE!!!
@@ -116,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
 
         }
     }
-
+    //code reused from aFileChooser example
     private void showChooser() {
         // Use the GET_CONTENT intent from the utility class
         Intent target = FileUtils.createGetContentIntent();
@@ -273,6 +268,11 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        if (dbFileToImport != null) {
+                            ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
+                            asyncThread.execute(0);
+                        }
+                        dbFileToImport = null;
                     }
                 }
                 break;
