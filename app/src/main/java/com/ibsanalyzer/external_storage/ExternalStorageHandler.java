@@ -189,6 +189,11 @@ public class ExternalStorageHandler {
     }*/
 
     public static void replaceDBWithExtStorageFile() {
+        //using library aFileChooser to let user pick database file
+
+
+
+
         //get current path to internal storage db file
         File data = Environment.getDataDirectory();
         File pathToCurrentDB = new File(data, CURRENT_DB_PATH);

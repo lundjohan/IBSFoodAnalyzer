@@ -21,6 +21,7 @@ import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +51,11 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.importMenuItem:
-                ImportDBAsyncTask asyncThread = new ImportDBAsyncTask();
-                asyncThread.execute(0);
+                File choosenFile = useAFileChooserToPickFile();
+                if (choosenFile!= null) {
+                    ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(choosenFile);
+                    asyncThread.execute(0);
+                }
                 return true;
 
             //THIS OPTION WILL BE REMOVED IN PRODUCTION CODE!!!

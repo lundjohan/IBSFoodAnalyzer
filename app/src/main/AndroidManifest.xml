@@ -102,13 +102,30 @@
         </activity>
         <activity android:name=".LoadEventsTemplateActivity">
         </activity>
-        <activity android:name="com.ibsanalyzer.settings.StatSettingsActivity"
+        <activity
+            android:name="com.ibsanalyzer.settings.StatSettingsActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+        <activity
+            android:name="com.ipaulpro.afilechooser.FileChooserActivity"
+            android:enabled="@bool/use_activity"
+            android:exported="true"
+            android:icon="@drawable/ic_chooser"
+            android:label="@string/choose_file">
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT"/>
 
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.OPENABLE"/>
+
+                <data android:mimeType="*/*"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.ibsanalyzer.external_storage.FilePicker">
+        </activity>
     </application>
 
 </manifest>
