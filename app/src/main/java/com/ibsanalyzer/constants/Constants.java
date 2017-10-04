@@ -17,9 +17,7 @@ public class Constants {
 
 
     //Database operations
-    public final static String CURRENT_DB_PATH = "//data//" + BuildConfig.APPLICATION_ID +
-            "//databases//" +
-            DATABASE_NAME;
+    public final static String DIRECTORY_IBSFOODANALYZER = "ibsFoodAnalyzer";
     public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
     //Other
     public final static int TAGS_TO_ADD = 4444;

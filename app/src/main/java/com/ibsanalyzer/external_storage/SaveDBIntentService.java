@@ -26,6 +26,6 @@ public class SaveDBIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        ExternalStorageHandler.saveDBToExtStorage();
+        ExternalStorageHandler.saveDBToExtStorage(getApplicationContext());
     }
 }

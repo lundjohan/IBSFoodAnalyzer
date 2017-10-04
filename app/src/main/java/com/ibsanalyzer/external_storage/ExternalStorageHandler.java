@@ -4,6 +4,7 @@ package com.ibsanalyzer.external_storage;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.importer.Importer;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +29,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ibsanalyzer.constants.Constants.CURRENT_DB_PATH;
+import static com.ibsanalyzer.constants.Constants.DIRECTORY_IBSFOODANALYZER;
 import static com.ibsanalyzer.constants.Constants.NAME_OF_TXT_FILE;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
@@ -117,29 +121,42 @@ public class ExternalStorageHandler {
                 new String[]{permissionName}, permissionRequestCode);
     }
 
-    public static void saveDBToExtStorage() {
+    public static void saveDBToExtStorage(Context c) {
         //from https://stackoverflow.com/questions/1995320/how-do-i-backup-a-database-file-to-the
         // -sd-card-on-android
 
         try {
+            c.getDatabasePath(DATABASE_NAME);
+            //File directoryToSaveIn = c.getFilesDir();
+            File directoryToSaveIn = Environment.getExternalStoragePublicDirectory(DIRECTORY_IBSFOODANALYZER);
 
-            File sd = Environment.getExternalStoragePublicDirectory(Environment
-                    .DIRECTORY_DOWNLOADS);
+           //File directoryToSaveIn = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File data = Environment.getDataDirectory();
             //this has been lifted out to outer class to make this method independent on outer class
             // showWritablePermission(activity);
-            String backupDBPath = DATABASE_NAME;
-            File currentDB = new File(data, CURRENT_DB_PATH);
+            String backupDBPath = LocalDate.from(LocalDateTime.now()) + DATABASE_NAME;
+            //TODO if backupDpPath exists, increase with +1 => 2017-10-04_2.ibsfa
+
+            File currentDB = c.getDatabasePath(DATABASE_NAME);
             if (!isExternalStorageAccessable()) {
                 return;
             }
 
             if (currentDB.exists()) {
                 FileChannel src = new FileInputStream(currentDB).getChannel();
-                if (!sd.exists()) {
-                    sd.mkdirs();
+                if (!directoryToSaveIn.exists()) {
+                    directoryToSaveIn.mkdirs();
                 }
-                File backupDB = new File(sd, backupDBPath);
+
+
+
+                File backupDB = new File(directoryToSaveIn, backupDBPath);
+
+                //mediascannerconnection is implemented for windows explorer to see file see =>
+                //https://stackoverflow.com/questions/32789157/how-to-write-files-to-external-public-storage-in-android-so-that-they-are-visibl
+                //and
+                //https://stackoverflow.com/questions/4646913/android-how-to-use-mediascannerconnection-scanfile
+                SingleMediaScanner mediaScanner2 = new SingleMediaScanner(c, backupDB, "application/x-sqlite3");
                 FileOutputStream fos = new FileOutputStream(backupDB);
 
                 FileChannel dst = fos.getChannel();
@@ -174,11 +191,10 @@ public class ExternalStorageHandler {
         return false;
     }
 
-    public static void replaceDBWithExtStorageFile(File backupDB) {
+    public static void replaceDBWithExtStorageFile(File backupDB, Context c) {
         //get current path to internal storage db file
         File data = Environment.getDataDirectory();
-        File pathToCurrentDB = new File(data, CURRENT_DB_PATH);
-
+        File pathToCurrentDB = c.getDatabasePath(DATABASE_NAME);
         try {
             FileChannel src = new FileInputStream(backupDB).getChannel();
             FileOutputStream fos = new FileOutputStream(pathToCurrentDB);

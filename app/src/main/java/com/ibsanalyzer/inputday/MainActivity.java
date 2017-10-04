@@ -33,7 +33,8 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
-public class MainActivity extends AppCompatActivity implements TemplateFragment.TemplateFragmentListener, DiaryFragment
+public class MainActivity extends AppCompatActivity implements TemplateFragment
+        .TemplateFragmentListener, DiaryFragment
         .DiaryFragmentListener, StatFragment.StatFragmentListener {
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
     File dbFileToImport = null;
 
     private static final int REQUEST_CODE = 6384; // onActivityResult request
+
     // code
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
         switch (item.getItemId()) {
             case R.id.importMenuItem:
                 showChooser();
-                if (dbFileToImport!= null) {
+                if (dbFileToImport != null) {
                     ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
                     asyncThread.execute(0);
                 }
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
 
         }
     }
+
     private void showChooser() {
         // Use the GET_CONTENT intent from the utility class
         Intent target = FileUtils.createGetContentIntent();
@@ -126,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
             // The reason for the existence of aFileChooser
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
     public void changeToTemplateFragment() {
         viewPager.setCurrentItem(0);
     }
+
     public DiaryFragment accessDiaryFragment() {
         return (DiaryFragment) adapter.getRegisteredFragment(1);
     }
@@ -212,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
         //TODO 3. if this fails, retrieve events from database instead.
         return events;
     }
+
     @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
         DiaryFragment diary = accessDiaryFragment();
@@ -228,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
 
         @Override
         protected Void doInBackground(Integer... notUsedParams) {
-            ExternalStorageHandler.replaceDBWithExtStorageFile(file);
+            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getApplicationContext());
             return null;
         }
 
@@ -243,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
             }
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -270,6 +277,9 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
                 }
                 break;
         }
+        //this must be here so that this activities fragments can use onActivityResult also. Its
+        // strange...
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 
