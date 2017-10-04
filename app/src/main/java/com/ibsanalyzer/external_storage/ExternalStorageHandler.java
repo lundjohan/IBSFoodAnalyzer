@@ -174,41 +174,11 @@ public class ExternalStorageHandler {
         return false;
     }
 
-    /*private void importDatabase(String inputFileName) throws IOException {
-        InputStream mInput = new FileInputStream(inputFileName);
-        String outFileName = YOUR_DB_PATH_HERE;
-        OutputStream mOutput = new FileOutputStream(outFileName);
-        byte[] mBuffer = new byte[1024];
-        int mLength;
-        while ((mLength = mInput.read(mBuffer)) > 0) {
-            mOutput.write(mBuffer, 0, mLength);
-        }
-        mOutput.flush();
-        mOutput.close();
-        mInput.close();
-    }*/
-
-    public static void replaceDBWithExtStorageFile() {
-        //using library aFileChooser to let user pick database file
-
-
-
-
+    public static void replaceDBWithExtStorageFile(File backupDB) {
         //get current path to internal storage db file
         File data = Environment.getDataDirectory();
         File pathToCurrentDB = new File(data, CURRENT_DB_PATH);
-        //get current path to external storage db file
-        File sd = Environment.getExternalStoragePublicDirectory(Environment
-                .DIRECTORY_DOWNLOADS);
-        String pathToExternalDB = DATABASE_NAME;
-        if (!isExternalStorageAccessable()) {
-            //try to fix it
-        }
-        File backupDB = new File(sd, pathToExternalDB);
-        if (!sd.exists()) {
-            Log.d("Debug", "There is no database file stored in location: " + backupDB.toString());
-            return;
-        }
+
         try {
             FileChannel src = new FileInputStream(backupDB).getChannel();
             FileOutputStream fos = new FileOutputStream(pathToCurrentDB);
@@ -223,8 +193,6 @@ public class ExternalStorageHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**

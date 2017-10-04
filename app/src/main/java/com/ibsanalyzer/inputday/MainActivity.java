@@ -1,7 +1,9 @@
 package com.ibsanalyzer.inputday;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -20,12 +22,14 @@ import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
+import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
@@ -34,7 +38,10 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
     TabLayout tabLayout;
     ViewPager viewPager;
     TabPagerAdapter adapter;
+    File dbFileToImport = null;
 
+    private static final int REQUEST_CODE = 6384; // onActivityResult request
+    // code
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -51,11 +58,12 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.importMenuItem:
-                File choosenFile = useAFileChooserToPickFile();
-                if (choosenFile!= null) {
-                    ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(choosenFile);
+                showChooser();
+                if (dbFileToImport!= null) {
+                    ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
                     asyncThread.execute(0);
                 }
+                dbFileToImport = null;
                 return true;
 
             //THIS OPTION WILL BE REMOVED IN PRODUCTION CODE!!!
@@ -106,7 +114,18 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
 
         }
     }
-
+    private void showChooser() {
+        // Use the GET_CONTENT intent from the utility class
+        Intent target = FileUtils.createGetContentIntent();
+        // Create the chooser Intent
+        Intent intent = Intent.createChooser(
+                target, getString(R.string.chooser_title));
+        try {
+            startActivityForResult(intent, REQUEST_CODE);
+        } catch (ActivityNotFoundException e) {
+            // The reason for the existence of aFileChooser
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,13 +220,15 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
 
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
+        File file = null;
 
-        public ImportDBAsyncTask() {
+        public ImportDBAsyncTask(File file) {
+            this.file = file;
         }
 
         @Override
         protected Void doInBackground(Integer... notUsedParams) {
-            ExternalStorageHandler.replaceDBWithExtStorageFile();
+            ExternalStorageHandler.replaceDBWithExtStorageFile(file);
             return null;
         }
 
@@ -220,6 +241,34 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment.
                 Log.d(TAG, "Adapter could not be updated after replacement of database");
                 e.printStackTrace();
             }
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE:
+                // If the file selection was successful
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        // Get the URI of the selected file
+                        final Uri uri = data.getData();
+                        Log.i("Debug", "Uri = " + uri.toString());
+                        try {
+                            // Get the file path from the URI
+                            final String path = FileUtils.getPath(this, uri);
+                            Toast.makeText(getApplicationContext(),
+                                    "File Selected: " + path, Toast.LENGTH_LONG).show();
+
+                            if (path != null && FileUtils.isLocal(path)) {
+                                dbFileToImport = new File(path);
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                break;
         }
     }
 }
