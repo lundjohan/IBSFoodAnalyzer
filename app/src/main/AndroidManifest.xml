@@ -110,6 +110,13 @@
                 android:value=".MainActivity"/>
         </activity>
         <activity
+            android:name="com.ibsanalyzer.settings.GeneralSettingsActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+        <activity
             android:name="com.ipaulpro.afilechooser.FileChooserActivity"
             android:enabled="@bool/use_activity"
             android:exported="true"

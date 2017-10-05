@@ -22,6 +22,7 @@ import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
+import com.ibsanalyzer.settings.GeneralSettingsActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import java.io.File;
@@ -29,7 +30,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
 
                 return true;
             case R.id.settingsMenuItem:
-                //TODO
+                Intent i = new Intent(this, GeneralSettingsActivity.class);
+                startActivity(i);
                 return true;
             case R.id.clearDBItem:
                 DBHandler dbHandler = new DBHandler(getApplicationContext());

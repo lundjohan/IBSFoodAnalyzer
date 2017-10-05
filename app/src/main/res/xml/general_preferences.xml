@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:sample="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="Settings for statistic algorithms">
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:defaultValue="20"
+            android:enabled="true"
+            android:key="hours_break"
+            android:summary="After a break, the algorithm waits until next event before it gathers points again."
+            android:title="Hours after event before a break"
+
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_maxValue="72"
+            sample:msbp_measurementUnit="h"
+            sample:msbp_minValue="8"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

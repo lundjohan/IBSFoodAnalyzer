@@ -180,7 +180,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         List<Event> events = callback.retrieveEvents();
         //insert or remove automatic breaks on events.
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int hoursInFrontOfAutoBreak = preferences.getInt("hoursInFrontOfAutoBreak", HOURS_AHEAD_FOR_BREAK_BACKUP);
+        int hoursInFrontOfAutoBreak = preferences.getInt("hours_break", HOURS_AHEAD_FOR_BREAK_BACKUP);
         Log.d(TAG, "hoursInFrontOfAutoBreak == "+ hoursInFrontOfAutoBreak);
 
         List<Break> breaks = Event.makeBreaks(events, hoursInFrontOfAutoBreak);
@@ -218,7 +218,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         switch (typeOfScore) {
             case AVG_SCORE:
-                int hours_ahead_for_av = preferences.getInt("avg_hours_ahea",HOURS_AHEAD_FOR_AVG);
+                int hours_ahead_for_av = preferences.getInt("hours_ahead_avg",HOURS_AHEAD_FOR_AVG);
                 Log.d("Debug", "ahead_for_avg_score, funkar detta så funkar seekbarpreference: "+hours_ahead_for_av);
                 scoreWrapper = new AvgScoreWrapper(hours_ahead_for_av);
                 break;
@@ -228,6 +228,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
                 break;
             case COMPLETENESS_SCORE:
                 int hours_ahead_for_complete = preferences.getInt("hours_ahead_complete",HOURS_AHEAD_FOR_COMPLETE);
+                Log.d("Debug", "hours_ahead_for_complete: "+hours_ahead_for_complete);
                 scoreWrapper = new CompleteScoreWrapper(hours_ahead_for_complete);
                 break;
             case BRISTOL_SCORE:
