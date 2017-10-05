@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ibsanalyzer.adapters.StatAdapter;
+import com.ibsanalyzer.base_classes.Break;
 import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.calc_score_classes.AvgScoreWrapper;
@@ -34,12 +35,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ibsanalyzer.base_classes.Event.makeBreaks;
 import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
 import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
 import static com.ibsanalyzer.constants.Constants.BRISTOL_SCORE;
 import static com.ibsanalyzer.constants.Constants.COMPLETENESS_SCORE;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_AVG;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BLUEZONES;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BRISTOL;
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_COMPLETE;
 import static com.ibsanalyzer.constants.Constants.SCORE_BLUEZONES_FROM;
@@ -175,7 +178,13 @@ public class StatFragment extends Fragment implements View.OnClickListener {
     private void changeAndRefreshSetup(int typeOfScore) {
         tagPoints.clear();
         List<Event> events = callback.retrieveEvents();
-        List<Chunk> chunks = Chunk.makeChunksFromEvents(events);
+        //insert or remove automatic breaks on events.
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int hoursInFrontOfAutoBreak = preferences.getInt("hoursInFrontOfAutoBreak", HOURS_AHEAD_FOR_BREAK_BACKUP);
+        Log.d(TAG, "hoursInFrontOfAutoBreak == "+ hoursInFrontOfAutoBreak);
+
+        List<Break> breaks = Event.makeBreaks(events, hoursInFrontOfAutoBreak);
+        List<Chunk> chunks = Chunk.makeChunksFromEvents(events, breaks);
         ScoreWrapper scoreWrapper = makeScoreWrapper(typeOfScore);
         //tagPoints = scoreWrapper.calcScore(chunks, tagPoints);
         Log.d(TAG, "Inside Main Thread, before asyncTask");

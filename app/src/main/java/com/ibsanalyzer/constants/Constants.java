@@ -83,4 +83,8 @@ public class Constants {
     public static String SHOULD_HAVE_DATE = "shouldHaveDate";
     //=================================TIME ZONE===================================
 
+    //=================================SETTINGS VARIABLES APP===================================
+    public static final int HOURS_AHEAD_FOR_BREAK_BACKUP = 20; //in hours
+
+
 }

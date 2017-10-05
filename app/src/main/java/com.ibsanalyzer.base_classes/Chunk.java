@@ -19,18 +19,76 @@ public class Chunk {
         this.events = events;
     }
 
-    public static List<Chunk> makeChunksFromEvents(List<Event> events) {
+    /**
+     * NB: first and last breaks are never before or after first/last event
+     *
+     * sorry for the mess, this is way to complicated. But it is tested.
+     *
+     * @param events should be in chronological order
+     * @param breaks should be in chronological order
+     * @return
+     */
+    public static List<Chunk> makeChunksFromEvents(List<Event> events, List<Break> breaks) {
         List<Chunk> chunks = new ArrayList<>();
-        int lastEndIndex = 0;
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).hasBreak() || i == events.size() - 1) {
-                Chunk ch = new Chunk(events.subList(lastEndIndex, i));
-                chunks.add(ch);
-                lastEndIndex = i;
+        if (breaks.isEmpty() && !events.isEmpty()) {
+            chunks.add(new Chunk(events));
+            return chunks;
+        }
+        LocalDateTime leftBreak = LocalDateTime.MIN;
+        for (int i = 0; i < breaks.size(); i++) {
+            //start or middle of breaks list
+            Chunk firstOrMiddleCh = makeChunk(events, leftBreak, breaks.get(i).getTime());
+            if (firstOrMiddleCh != null) {
+                chunks.add(firstOrMiddleCh);
             }
+            //at end break.
+            if (i == breaks.size() - 1) {
+                //end, notice that this can happen at same time as start
+                    Chunk lastCh = makeChunk(events, breaks.get(i).getTime(), LocalDateTime.MAX);
+                if (lastCh != null) {
+                    chunks.add(lastCh);
+                }
+            }
+            leftBreak = breaks.get(i).getTime();
         }
         return chunks;
     }
+
+    /**
+     * Helper method for chopping a list of events with breaks
+     * the event that is at the same time as break goes to the chunk before
+     * => fromExcl, toIncl
+     *
+     * @param events
+     * @param fromExcl
+     * @param toIncl must be after or at same time as fromExcl
+     * @return can return null value
+     */
+    private static Chunk makeChunk(List<Event> events, LocalDateTime fromExcl, LocalDateTime
+            toIncl) {
+        int startIndEvents = 0;
+        int endIndEvents = events.size()-1;
+
+        //find startIndEvents
+        for (int i= 0;i<events.size();i++) {
+            LocalDateTime timeOfEvent = events.get(i).getTime();
+            if (timeOfEvent.isAfter(fromExcl)) {
+                startIndEvents = i;
+                break;
+            }
+        }
+        //find endIndEvents
+        for (int i= events.size()-1;i>=0;i--) {
+            LocalDateTime timeOfEvent = events.get(i).getTime();
+            if (!timeOfEvent.isAfter(toIncl)) {
+                endIndEvents = i;
+                break;
+            }
+        }
+        //remember sublist is exclusive second parameter
+        return new Chunk (events.subList(startIndEvents, endIndEvents +1));
+    }
+
 
     public List<Event> getEvents() {
         return events;
@@ -161,7 +219,7 @@ public class Chunk {
         }
         return filteredBms;
         /*return getBMs().stream().
-				filter(bm-> bm.getTime().isAfter(time) && bm.getTime().isBefore(time.plusHours
+                filter(bm-> bm.getTime().isAfter(time) && bm.getTime().isBefore(time.plusHours
 				(hoursAhead))).
 				collect(Collectors.toList());*/
     }

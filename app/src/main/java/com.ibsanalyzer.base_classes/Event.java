@@ -6,6 +6,8 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 //baseclass only exists to avoid duplication of code.
@@ -58,6 +60,24 @@ public abstract class Event implements Comparable<Event>, Serializable {
      */
     public void setDate(LocalDate ld){
        time =  LocalDateTime.of(ld, time.toLocalTime());
+    }
+
+    /**
+     * If difference in time between consecutive events are larger (equal not enough) than hoursAheadBreak => add a Break
+     * @param events
+     * @param hoursAheadBreak
+     * @return
+     */
+
+    public static List<Break> makeBreaks(List<Event> events, int hoursAheadBreak) {
+        List<Break>breaks = new ArrayList<>();
+        for (int i = 0; i<events.size()-1; i++){
+            if (events.get(i).getTime().plusHours(hoursAheadBreak).isBefore(events.get(i+1).getTime())){
+                breaks.add(new Break(events.get(i).getTime()));
+            }
+        }
+        return breaks;
+
     }
 
     //classes for parceable, most of them are implemented higher up in hierarchy.
