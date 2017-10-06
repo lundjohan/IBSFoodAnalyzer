@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
 
                 }
                 return true;
+            case R.id.aboutItem:
+                //TODO: Apache 2.0 talk about the external libraries.
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 

@@ -19,4 +19,7 @@
     <item
         android:id="@+id/clearDBItem"
         android:title="Clear Database"/>
+    <item
+        android:id="@+id/aboutItem"
+        android:title="About"/>
 </menu>
