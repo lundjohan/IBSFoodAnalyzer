@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
 
         }
     }
+
     //code reused from aFileChooser example
     private void showChooser() {
         // Use the GET_CONTENT intent from the utility class

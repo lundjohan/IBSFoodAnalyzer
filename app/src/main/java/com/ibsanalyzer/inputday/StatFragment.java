@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ibsanalyzer.base_classes.Event.makeBreaks;
 import static com.ibsanalyzer.constants.Constants.AVG_SCORE;
 import static com.ibsanalyzer.constants.Constants.BLUE_ZONE_SCORE;
 import static com.ibsanalyzer.constants.Constants.BRISTOL_SCORE;
@@ -108,7 +107,7 @@ public class StatFragment extends Fragment implements View.OnClickListener {
                     update(adapter.getTypeOfScore());
                 } else if (typeOfScore == SETTINGS) {
                     Intent i = new Intent(getActivity(), StatSettingsActivity.class);
-                    ((Activity)callback).startActivity(i);
+                    ((Activity) callback).startActivity(i);
                 } else if (!isAlreadyRightView(typeOfScore)) {
                     changeTypeText(typeOfScore);
                     adapter.setTypeOfScore(typeOfScore);
@@ -179,9 +178,11 @@ public class StatFragment extends Fragment implements View.OnClickListener {
         tagPoints.clear();
         List<Event> events = callback.retrieveEvents();
         //insert or remove automatic breaks on events.
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int hoursInFrontOfAutoBreak = preferences.getInt("hours_break", HOURS_AHEAD_FOR_BREAK_BACKUP);
-        Log.d(TAG, "hoursInFrontOfAutoBreak == "+ hoursInFrontOfAutoBreak);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity
+                ());
+        int hoursInFrontOfAutoBreak = preferences.getInt("hours_break",
+                HOURS_AHEAD_FOR_BREAK_BACKUP);
+        Log.d(TAG, "hoursInFrontOfAutoBreak == " + hoursInFrontOfAutoBreak);
 
         List<Break> breaks = Event.makeBreaks(events, hoursInFrontOfAutoBreak);
         List<Chunk> chunks = Chunk.makeChunksFromEvents(events, breaks);
@@ -210,29 +211,36 @@ public class StatFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Uses SharedPreferences (editable by users in Settings) for algorithms variables.
+     *
      * @param typeOfScore
      * @return
      */
     private ScoreWrapper makeScoreWrapper(int typeOfScore) {
         ScoreWrapper scoreWrapper = null;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity
+                ());
         switch (typeOfScore) {
             case AVG_SCORE:
-                int hours_ahead_for_av = preferences.getInt("hours_ahead_avg",HOURS_AHEAD_FOR_AVG);
-                Log.d("Debug", "ahead_for_avg_score, funkar detta så funkar seekbarpreference: "+hours_ahead_for_av);
+                int hours_ahead_for_av = preferences.getInt("hours_ahead_avg", HOURS_AHEAD_FOR_AVG);
+                Log.d("Debug", "ahead_for_avg_score, funkar detta så funkar seekbarpreference: "
+                        + hours_ahead_for_av);
                 scoreWrapper = new AvgScoreWrapper(hours_ahead_for_av);
                 break;
             case BLUE_ZONE_SCORE:
-                int hours_ahead_for_bluezones = preferences.getInt("hours_ahead_bluezones",HOURS_AHEAD_FOR_BLUEZONES);
-                scoreWrapper = new BlueScoreWrapper(Integer.valueOf(hours_ahead_for_bluezones),SCORE_BLUEZONES_FROM);
+                int hours_ahead_for_bluezones = preferences.getInt("hours_ahead_bluezones",
+                        HOURS_AHEAD_FOR_BLUEZONES);
+                scoreWrapper = new BlueScoreWrapper(Integer.valueOf(hours_ahead_for_bluezones),
+                        SCORE_BLUEZONES_FROM);
                 break;
             case COMPLETENESS_SCORE:
-                int hours_ahead_for_complete = preferences.getInt("hours_ahead_complete",HOURS_AHEAD_FOR_COMPLETE);
-                Log.d("Debug", "hours_ahead_for_complete: "+hours_ahead_for_complete);
+                int hours_ahead_for_complete = preferences.getInt("hours_ahead_complete",
+                        HOURS_AHEAD_FOR_COMPLETE);
+                Log.d("Debug", "hours_ahead_for_complete: " + hours_ahead_for_complete);
                 scoreWrapper = new CompleteScoreWrapper(hours_ahead_for_complete);
                 break;
             case BRISTOL_SCORE:
-                int hours_ahead_for_bristol = preferences.getInt("hours_ahead_bristol",HOURS_AHEAD_FOR_BRISTOL);
+                int hours_ahead_for_bristol = preferences.getInt("hours_ahead_bristol",
+                        HOURS_AHEAD_FOR_BRISTOL);
                 scoreWrapper = new CompleteScoreWrapper(hours_ahead_for_bristol);
                 break;
         }
