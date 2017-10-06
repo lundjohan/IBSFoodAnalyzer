@@ -27,7 +27,6 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
@@ -35,7 +34,7 @@ import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EX
 
 public class MainActivity extends AppCompatActivity implements TemplateFragment
         .TemplateFragmentListener, DiaryFragment
-        .DiaryFragmentListener, StatFragment.StatFragmentListener {
+        .DiaryFragmentListener{//, StatFragment.StatFragmentListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     TabPagerAdapter adapter;
@@ -207,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
         }
     }
 
-    @Override
+   /* @Override
     public List<Event> retrieveEvents() {
         List<Event> events = new ArrayList<>();
         //1. Access Diary Fragment
@@ -216,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
         events = diary.getEvents();
         //TODO 3. if this fails, retrieve events from database instead.
         return events;
-    }
+    }*/
 
     @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {

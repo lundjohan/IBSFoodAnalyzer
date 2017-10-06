@@ -12,6 +12,6 @@
     <string name="tab_diary">Diary</string>
     <string name="delete_event">Delete Event</string>
 
-   <!-- strings for aFileChooser -->
+    <!-- strings for aFileChooser -->
     <string name="chooser_title">Lorem ipsum</string>
 </resources>

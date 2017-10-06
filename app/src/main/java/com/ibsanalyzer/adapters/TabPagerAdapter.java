@@ -7,7 +7,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.ibsanalyzer.inputday.DiaryFragment;
-import com.ibsanalyzer.inputday.StatFragment;
+import com.ibsanalyzer.inputday.StatOptionsFragment;
 import com.ibsanalyzer.inputday.TemplateFragment;
 
 /**
@@ -34,7 +34,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
                 DiaryFragment tabD = new DiaryFragment();
                 return tabD;
             case 2:
-                StatFragment tabS = new StatFragment();
+                StatOptionsFragment tabS = new StatOptionsFragment();
                 return tabS;
             default:
                 return null;
@@ -43,10 +43,10 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
     public DiaryFragment getDiaryFragment() {
         return (DiaryFragment) getRegisteredFragment(1);
-    }
+    }/*
     public StatFragment getStatFragment() {
         return (StatFragment) getRegisteredFragment(2);
-    }
+    }*/
 
     @Override
     public int getCount() {
