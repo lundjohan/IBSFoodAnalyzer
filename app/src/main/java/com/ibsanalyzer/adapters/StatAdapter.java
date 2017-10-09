@@ -24,23 +24,13 @@ import java.util.Map;
  */
 
 public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Map<String, TagPoint> tagPoints = new HashMap<>();
+    //list needs to be initiated, otherwise getItemCount crashes.
+    private List<TagPoint>tagPointsList = new ArrayList<>();
     private ScoreWrapper scoreWrapper;
-    private int typeOfScore;
 
-    public StatAdapter(Map<String, TagPoint> tagPoints) {
-        this.tagPoints = tagPoints;
+    public StatAdapter(ScoreWrapper scoreWrapper) {
+        this.scoreWrapper = scoreWrapper;
     }
-
-
-    public int getTypeOfScore() {
-        return typeOfScore;
-    }
-
-    public void setTypeOfScore(int typeOfScore) {
-        this.typeOfScore = typeOfScore;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_stat, parent,
@@ -49,10 +39,10 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return viewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        List<TagPoint> tagPointsList = new ArrayList<TagPoint>(tagPoints.values());
         TagPoint tp = tagPointsList.get(position);
         viewHolder.tagName.setText(tp.getName());
         viewHolder.scoreField.setText(String.format("%.1f", scoreWrapper.getScore(tp)));
@@ -62,11 +52,11 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return tagPoints.size();
+        return tagPointsList.size();
     }
 
-    public void setScoreWrapper(ScoreWrapper scoreWrapper) {
-        this.scoreWrapper = scoreWrapper;
+    public void setTagPointsList(List<TagPoint>tagPointsList){
+        this.tagPointsList = tagPointsList;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

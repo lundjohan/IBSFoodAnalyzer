@@ -1,17 +1,15 @@
 package com.ibsanalyzer.inputday;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.ibsanalyzer.adapters.StatAdapter;
 import com.ibsanalyzer.base_classes.Break;
@@ -26,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
-import static com.ibsanalyzer.inputday.R.id.recyclerView;
 
 public abstract class StatActivity extends AppCompatActivity {
     static final String TAG = "STAT_ACTIVITY";
@@ -45,10 +42,7 @@ public abstract class StatActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager
                 .VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new StatAdapter(tagPoints);
-        adapter.setScoreWrapper(getScoreWrapper());
-
-
+        adapter = new StatAdapter(getScoreWrapper());
         recyclerView.setAdapter(adapter);
         //add line separator
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
@@ -105,7 +99,7 @@ public abstract class StatActivity extends AppCompatActivity {
      * A bit of Spaghetti code (onPostExecute accepts scoreWrapper which seems a little bit odd
      * for example), but it works.
      */
-    private class StatAsyncTask extends AsyncTask<Object, Void, ScoreWrapper> {
+    private class StatAsyncTask extends AsyncTask<Object, Void, List<TagPoint>> {
         final String TAG = this.getClass().getName();
 
         public StatAsyncTask() {
@@ -117,20 +111,21 @@ public abstract class StatActivity extends AppCompatActivity {
          * @return
          */
         @Override
-        protected ScoreWrapper doInBackground(Object... params) {
+        protected List<TagPoint> doInBackground(Object... params) {
             Log.d(TAG, "Inside doInBackground");
             ScoreWrapper wrapper = (ScoreWrapper) params[0];
             List<Chunk> chunks = (List<Chunk>) params[1];
             tagPoints = wrapper.calcScore(chunks, tagPoints);
             //sort tagPoints here
-
-            return wrapper;
+            return wrapper.toSortedList(tagPoints);
         }
 
         @Override
-        protected void onPostExecute(ScoreWrapper scoreWrapper) {
-            adapter.setScoreWrapper(scoreWrapper);
+        protected void onPostExecute(List<TagPoint> sortedList) {
+            adapter.setTagPointsList(sortedList);
             adapter.notifyDataSetChanged();
+            //scrolling to top is needed, otherwise it starts at the bottom.
+            recyclerView.scrollToPosition(sortedList.size()-1);
         }
     }
 }
