@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,7 +36,7 @@ import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EX
 
 public class MainActivity extends AppCompatActivity implements TemplateFragment
         .TemplateFragmentListener, DiaryFragment
-        .DiaryFragmentListener{//, StatFragment.StatFragmentListener {
+        .DiaryFragmentListener, StatOptionsFragment.StatOptionsListener{//, StatFragment.StatFragmentListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     TabPagerAdapter adapter;
@@ -221,6 +223,13 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
         DiaryFragment diary = accessDiaryFragment();
         diary.addEventsToDiary(events);
+    }
+
+    @Override
+    public void startNestedFragment(Fragment f) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.pager, f).commit();
     }
 
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {

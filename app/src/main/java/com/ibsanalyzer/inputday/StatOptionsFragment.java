@@ -1,7 +1,11 @@
 package com.ibsanalyzer.inputday;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import static com.ibsanalyzer.inputday.EventsContainer.NEW_MEAL;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,11 +23,19 @@ import android.widget.Button;
 public class StatOptionsFragment extends Fragment implements View.OnClickListener {
 
     Button avgBtn;
+    StatOptionsListener callback;
     public StatOptionsFragment() {
         // Required empty public constructor
     }
+    public interface StatOptionsListener{
+        void startNestedFragment(Fragment f);
+    }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (StatOptionsListener) context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,10 +50,9 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        Fragment nestedFragment = null;
         switch (v.getId()) {
             case R.id.avgBtn:
-                nestedFragment = new AverageStatFragment();
+                newAverageStatActivity();
                 break;
             case R.id.blueZoneBtn:
                 //nestedFragment = new BlueZoneStatFragment();
@@ -51,14 +64,10 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
                 //nestedFragment = new BristolStatFragment();
                 break;
         }
-        startNestedFragment(nestedFragment);
     }
 //nested fragments creation
-    private void startNestedFragment(Fragment toBeNested) {
-        if (toBeNested != null) {
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.space, toBeNested).commit();
-        }
+    private void newAverageStatActivity() {
+        Intent intent = new Intent((Activity) this.callback, AverageStatActivity.class);
+        startActivity(intent);
     }
 }
