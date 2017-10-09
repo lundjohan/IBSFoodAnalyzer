@@ -15,14 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import static com.ibsanalyzer.inputday.EventsContainer.NEW_MEAL;
+import static com.ibsanalyzer.inputday.R.id.avgBtn;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class StatOptionsFragment extends Fragment implements View.OnClickListener {
-
-    Button avgBtn;
     StatOptionsListener callback;
     public StatOptionsFragment() {
         // Required empty public constructor
@@ -40,9 +39,12 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stat_options, container, false);
-        avgBtn = (Button) view.findViewById(R.id.avgBtn);
-        avgBtn.setOnClickListener(this);
 
+        //make buttons clickable
+        ((Button) view.findViewById(R.id.avgBtn)).setOnClickListener(this);
+        ((Button) view.findViewById(R.id.blueZoneBtn)).setOnClickListener(this);
+        ((Button) view.findViewById(R.id.completeBtn)).setOnClickListener(this);
+        ((Button) view.findViewById(R.id.bristolBtn)).setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
@@ -51,23 +53,23 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.avgBtn:
-                newAverageStatActivity();
+            case avgBtn:
+                newStatActivity(new AverageStatActivity());
                 break;
             case R.id.blueZoneBtn:
-                //nestedFragment = new BlueZoneStatFragment();
+                newStatActivity(new BlueZoneStatActivity());
                 break;
             case R.id.completeBtn:
-                //nestedFragment = new CompleteStatFragment();
+                newStatActivity(new CompleteStatActivity());
                 break;
             case R.id.bristolBtn:
-                //nestedFragment = new BristolStatFragment();
+                newStatActivity(new BristolStatActivity());
                 break;
         }
     }
-//nested fragments creation
-    private void newAverageStatActivity() {
-        Intent intent = new Intent((Activity) this.callback, AverageStatActivity.class);
+
+    private void newStatActivity(StatActivity instance) {
+        Intent intent = new Intent((Activity) this.callback, instance.getClass());
         startActivity(intent);
     }
 }
