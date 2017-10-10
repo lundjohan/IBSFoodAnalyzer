@@ -1,5 +1,6 @@
 package com.ibsanalyzer.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -120,6 +121,14 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return mCursorAdapter.getCount();
     }
 
+
+    //also used in copy function in Diary
+    public static void startLoadEventsTemplate(EventsTemplate et, Activity activity){
+        Intent intent = new Intent(activity, LoadEventsTemplateActivity.class);
+        intent.putExtra(EVENTSTEMPLATE_TO_LOAD, et);
+        activity.startActivityForResult(intent, LOAD_EVENTS_FROM_EVENTSTEMPLATE);
+    }
+
     public void doPopupMenu(View v, final int position) {
         PopupMenu popup = new PopupMenu(usingFragment.getContext(), v);
         //Inflating the Popup using xml file
@@ -131,9 +140,7 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 final long eventsTemplateId = c.getLong(c.getColumnIndex(COLUMN_ID));
                 if (item.getItemId() == R.id.menu_load) {
                     EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);
-                    Intent intent = new Intent(usingFragment.getContext(), LoadEventsTemplateActivity.class);
-                    intent.putExtra(EVENTSTEMPLATE_TO_LOAD, et);
-                    usingFragment.startActivityForResult(intent, LOAD_EVENTS_FROM_EVENTSTEMPLATE);
+                    startLoadEventsTemplate(et, usingFragment.getActivity());
                 } else if (item.getItemId() == R.id.menu_edit) {
 
                     EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);

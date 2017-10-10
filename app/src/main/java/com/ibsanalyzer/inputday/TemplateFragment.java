@@ -58,28 +58,6 @@ public class TemplateFragment extends Fragment {
         return v;
     }
 
-    /**
-     * Currently only used for transfering events from EventsTemplate to MainActivity
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        List<Event> eventsToReturn = null;
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        if (requestCode != LOAD_EVENTS_FROM_EVENTSTEMPLATE) {
-            return;
-        }
-        if (data.hasExtra(EVENTS_TO_LOAD)) {
-            eventsToReturn = (List<Event>) data.getSerializableExtra(EVENTS_TO_LOAD);
-        }
-        callback.addEventsFromEventsTemplateToDiary(eventsToReturn);
-    }
-
     public interface TemplateFragmentListener {
         /**
          * This method pushes events from here => MainActivity => DiaryFragment

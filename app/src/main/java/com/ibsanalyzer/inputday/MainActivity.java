@@ -31,7 +31,9 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
+import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity implements TemplateFragment
@@ -260,10 +262,11 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK){
+            return;
+        }
         switch (requestCode) {
             case REQUEST_CODE:
-                // If the file selection was successful
-                if (resultCode == RESULT_OK) {
                     if (data != null) {
                         // Get the URI of the selected file
                         final Uri uri = data.getData();
@@ -287,6 +290,11 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
                         }
                         dbFileToImport = null;
                     }
+                break;
+            case LOAD_EVENTS_FROM_EVENTSTEMPLATE:
+                if (data.hasExtra(EVENTS_TO_LOAD)) {
+                    List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra(EVENTS_TO_LOAD);
+                    addEventsFromEventsTemplateToDiary(eventsToReturn);
                 }
                 break;
         }

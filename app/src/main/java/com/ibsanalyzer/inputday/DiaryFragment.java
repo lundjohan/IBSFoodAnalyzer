@@ -185,6 +185,13 @@ public class DiaryFragment extends Fragment implements EventsContainer
                 callback.doEventsTemplateAdder(retrieveMarkedEvents());
             }
         });
+        ImageButton copyBtn = (ImageButton) getActivity().findViewById(R.id.copy_btn);
+        toTemplateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.doEventsTemplateAdder(retrieveMarkedEvents());
+            }
+        });
     }
 
 
