@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -122,31 +123,22 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
     protected abstract void saveToDB(EventsTemplate et);
 
-/*
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("eventList", (Serializable) ec.eventList);
-        outState.putString("someVarB", someVarB);
+    public void onBackPressed() {
+        finish();
     }
 
+    //in case API<21 onBackPressed is not called
+    //this is blocking natural behavoiur of backbutton
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        someVarA = savedInstanceState.getInt("someVarA");
-        someVarB = savedInstanceState.getString("someVarB");
-    }*/
-
-
-    /**
-     * Not that date should not be an issue here, only time of day.
-     * <p>
-     * There should be ok to have same time of same type of events, then it time is changed
-     * automatically. Implement this and test for it!
-     *
-     * @param event
-     */
-
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
 
     @Override
     public void addEventToList(Event event) {
