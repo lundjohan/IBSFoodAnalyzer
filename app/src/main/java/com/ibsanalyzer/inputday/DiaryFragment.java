@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ViewSwitcher;
 
+import com.ibsanalyzer.adapters.EventsTemplateAdapter;
 import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Exercise;
@@ -25,6 +26,7 @@ import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
@@ -186,10 +188,11 @@ public class DiaryFragment extends Fragment implements EventsContainer
             }
         });
         ImageButton copyBtn = (ImageButton) getActivity().findViewById(R.id.copy_btn);
-        toTemplateBtn.setOnClickListener(new View.OnClickListener() {
+        copyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.doEventsTemplateAdder(retrieveMarkedEvents());
+                EventsTemplate et = new EventsTemplate(retrieveMarkedEvents(), "");
+                EventsTemplateAdapter.startLoadEventsTemplate(et, getActivity());
             }
         });
     }
