@@ -17,7 +17,7 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
-import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.Util;
 
@@ -33,8 +33,8 @@ import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.MEAL;
 import static com.ibsanalyzer.constants.Constants.OTHER;
 import static com.ibsanalyzer.constants.Constants.RATING;
-import static com.ibsanalyzer.inputday.R.id.tagNames;
-import static com.ibsanalyzer.inputday.R.id.tagQuantities;
+import static com.ibsanalyzer.diary.R.id.tagNames;
+import static com.ibsanalyzer.diary.R.id.tagQuantities;
 
 /**
  * Created by Johan on 2017-04-10.

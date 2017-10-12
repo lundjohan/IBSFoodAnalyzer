@@ -1,10 +1,6 @@
 package com.ibsanalyzer.constants;
 
-import com.ibsanalyzer.inputday.BuildConfig;
-
 import org.threeten.bp.ZoneId;
-
-import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 
 /**
  * Created by Johan on 2017-05-13.

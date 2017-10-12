@@ -7,13 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
-import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Johan on 2017-06-21.

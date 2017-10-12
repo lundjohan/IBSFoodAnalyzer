@@ -5,7 +5,7 @@
                                              android:id="@+id/otherContainer"
                                              android:layout_width="match_parent"
                                              android:layout_height="wrap_content"
-                                             tools:context="com.ibsanalyzer.inputday.OtherActivity">
+                                             tools:context="com.ibsanalyzer.diary.OtherActivity">
 
     <include
         layout="@layout/add_tags"

@@ -18,10 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ibsanalyzer.database.DBHandler;
-import com.ibsanalyzer.inputday.EditEventsTemplateActivity;
-import com.ibsanalyzer.inputday.LoadEventsTemplateActivity;
-import com.ibsanalyzer.inputday.R;
-import com.ibsanalyzer.inputday.TemplateFragment;
+import com.ibsanalyzer.diary.EditEventsTemplateActivity;
+import com.ibsanalyzer.diary.LoadEventsTemplateActivity;
+import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.model.EventsTemplate;
 
 import java.io.Serializable;

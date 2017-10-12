@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.diary.R;
 
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;

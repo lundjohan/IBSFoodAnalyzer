@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
-import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.diary.R;
 
 /**
  * Created by Johan on 2017-10-05.

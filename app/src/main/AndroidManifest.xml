@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ibsanalyzer.inputday">
+          package="com.ibsanalyzer.diary">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.ibsanalyzer.diary.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,103 +23,104 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MealActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="com.ibsanalyzer.diary.MealActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
         <activity
-            android:name=".RatingActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="com.ibsanalyzer.diary.RatingActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
         <activity
-            android:name=".BmActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="com.ibsanalyzer.diary.BmActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
-        <activity android:name=".TagAdderActivity"/>
+        <activity android:name="com.ibsanalyzer.diary.TagAdderActivity"/>
         <activity
-            android:name=".OtherActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="com.ibsanalyzer.diary.OtherActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
         <activity
-            android:name=".ExerciseActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="com.ibsanalyzer.diary.ExerciseActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
         <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
         <activity
-            android:name=".SaveEventsTemplateActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.ibsanalyzer.diary.SaveEventsTemplateActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
         <activity
-            android:name=".EditEventsTemplateActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.ibsanalyzer.diary.EditEventsTemplateActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
-        <activity android:name=".LoadEventsTemplateActivity"
-            android:parentActivityName=".MainActivity"
+        <activity
+            android:name="com.ibsanalyzer.diary.LoadEventsTemplateActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
+        </activity>
 
-        </activity>
         <service
             android:name="com.ibsanalyzer.external_storage.SaveDBIntentService"
             android:exported="false">
         </service>
 
         <activity
-            android:name=".TagTemplateAdderActivity"
-            android:parentActivityName=".TagAdderActivity">
+            android:name="com.ibsanalyzer.diary.TagTemplateAdderActivity"
+            android:parentActivityName="com.ibsanalyzer.diary.TagAdderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TagAdderActivity"/>
+                android:value="com.ibsanalyzer.diary.TagAdderActivity"/>
         </activity>
-        <activity android:name=".TagTemplateEditActivity">
+        <activity android:name="com.ibsanalyzer.diary.TagTemplateEditActivity">
         </activity>
         <activity
             android:name="com.ibsanalyzer.settings.StatSettingsActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
         <activity
             android:name="com.ibsanalyzer.settings.GeneralSettingsActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.ibsanalyzer.diary.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
         <activity
             android:name="com.ipaulpro.afilechooser.FileChooserActivity"
@@ -138,31 +139,39 @@
         </activity>
         <activity android:name="com.ibsanalyzer.external_storage.FilePicker">
         </activity>
-        <activity android:name=".AverageStatActivity">
+        <activity android:name="com.ibsanalyzer.diary.AverageStatActivity">
             android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
-        <activity android:name=".BlueZoneStatActivity">
+        <activity android:name="com.ibsanalyzer.diary.BlueZoneStatActivity">
+
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
-        <activity android:name=".CompleteStatActivity">
+        <activity android:name="com.ibsanalyzer.diary.CompleteStatActivity">
+
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
         </activity>
-        <activity android:name=".BristolStatActivity">
+        <activity android:name="com.ibsanalyzer.diary.BristolStatActivity">
+
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.ibsanalyzer.diary.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".DrawerActivity"
+            android:label="@string/title_activity_drawer"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

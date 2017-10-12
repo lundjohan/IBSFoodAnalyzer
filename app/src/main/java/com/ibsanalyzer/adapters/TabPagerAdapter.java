@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import com.ibsanalyzer.inputday.DiaryFragment;
-import com.ibsanalyzer.inputday.StatOptionsFragment;
-import com.ibsanalyzer.inputday.TemplateFragment;
+import com.ibsanalyzer.diary.DiaryFragment;
+import com.ibsanalyzer.diary.StatOptionsFragment;
+import com.ibsanalyzer.diary.TemplateFragment;
 
 /**
  * Created by Johan on 2017-04-18.

@@ -3,7 +3,7 @@ package com.ibsanalyzer.external_storage;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.ibsanalyzer.inputday.R;
+import com.ibsanalyzer.diary.R;
 
 public class FilePicker extends AppCompatActivity {
 

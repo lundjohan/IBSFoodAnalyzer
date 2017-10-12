@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Tag;
-import com.ibsanalyzer.inputday.R;
-import com.ibsanalyzer.inputday.TagEventActivity;
+import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.diary.TagEventActivity;
 
 import java.util.List;
 
