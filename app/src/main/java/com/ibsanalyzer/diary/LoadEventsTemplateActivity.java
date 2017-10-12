@@ -9,6 +9,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.model.EventsTemplate;
 
@@ -85,7 +86,9 @@ public class LoadEventsTemplateActivity extends EventsTemplateActivity implement
      * when user wants to change date.
      */
     public void newDate(View v) {
-        DialogFragment newFragment = new EventActivity.DatePickerFragment();
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.setContext(this);
+        newFragment.setListener(this);
         newFragment.show(getFragmentManager(), "datePicker");
     }
 

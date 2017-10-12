@@ -35,6 +35,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="right">
 
+                <TextView
+                    android:id="@+id/diaryDateView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:text="2017-01-03"/>
             <ImageButton
                 android:id="@+id/template_btn"
                 android:layout_width="wrap_content"

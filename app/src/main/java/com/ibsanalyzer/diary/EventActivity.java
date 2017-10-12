@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.widget.TimePicker;
 
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.util.Util;
 
@@ -154,9 +156,10 @@ public abstract class EventActivity extends AppCompatActivity implements
     }
 
     public void startDatePicker(View view) {
-        DialogFragment newFragment = new RatingActivity.DatePickerFragment();
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.setContext(this);
+        newFragment.setListener(this);
         newFragment.show(getFragmentManager(), "datePicker");
-
     }
 
     @Override
@@ -247,35 +250,5 @@ public abstract class EventActivity extends AppCompatActivity implements
         }*/
     }
 
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-        //  public LocalDate localDate;
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current dateView as the default dateView in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
 
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            //see http://stackoverflow
-            // .com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted
-            // answer.
-            ((DatePickerDialog.OnDateSetListener) getActivity()).onDateSet(view, year, month, day);
-            //  localDate = LocalDate.of(year,month,day);
-            // dateView.setText(Integer.valueOf(ld.getYear())+" "+ld.getMonth().toString()+"
-            // "+Integer.valueOf(ld.getDayOfMonth()));
-        }
-       /* public LocalDate getLocalDate (){
-            return localDate;
-        }*/
-
-
-    }
 }

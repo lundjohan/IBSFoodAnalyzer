@@ -1,6 +1,8 @@
 package com.ibsanalyzer.diary;
 
 
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.adapters.EventsTemplateAdapter;
@@ -25,10 +29,13 @@ import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
+
+import org.threeten.bp.LocalDate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,14 +64,16 @@ import static com.ibsanalyzer.diary.EventsContainer.NEW_RATING;
  * A simple {@link Fragment} subclass.
  */
 public class DiaryFragment extends Fragment implements EventsContainer
-        .EventsContainerUser {
+        .EventsContainerUser,DatePickerDialog.OnDateSetListener{
 
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
         void startTemplateFragment();
         void doEventsTemplateAdder(List<Event> events);
     }
-
+    //the date of the day as put by calender.
+    LocalDate currentDate;
+    TextView dateView;
 
     public static final int CHANGED_MEAL = 1010;
     public static final int CHANGED_OTHER = 1011;
@@ -151,7 +160,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         startTime = System.nanoTime();
         logTimePassed();
         //==========================================================================================
-
+        currentDate = LocalDate.now();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
         super.onCreate(savedInstanceState);
@@ -186,6 +195,13 @@ public class DiaryFragment extends Fragment implements EventsContainer
     private void setUpMenu(View view) {
         //cant come up with better solution for gaining access to toolbar buttons that lie on
         // main_activity.xml
+        dateView = (TextView)view.findViewById(R.id.diaryDateView);
+        dateView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDatePickerInDiary(v);
+            }
+        });
         ImageButton templateBtn = (ImageButton) view.findViewById(R.id.template_btn);
         templateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -548,7 +564,10 @@ public class DiaryFragment extends Fragment implements EventsContainer
         logTimePassed();
         //==========================================================================================
 
-        List<Event> sortedEvents = dbHandler.getAllEventsSorted();
+        //TODO implement!
+        List<Event> sortedEvents = new ArrayList<>();//dbHandler.getAllEventsSortedFromDay(currentDate);
+
+
         // Log.d(TAG, "3. sortedEvents.size()" + sortedEvents.size());
         logTimePassed();
         Log.d(TAG, "(4) 5. ended sortedEvents");
@@ -581,5 +600,27 @@ public class DiaryFragment extends Fragment implements EventsContainer
         return ec.eventList;
     }
 
+    public void changeToDate(LocalDate ld){
+        currentDate = ld;
+        setDateView(ld);
+        fillEventListWithDatabase();
 
+    }
+
+    private void setDateView(LocalDate ld) {
+        dateView.setText(ld.getDayOfWeek().toString() + " " + ld.getDayOfMonth() + " " +ld.getMonth().toString() +", " + Integer.toString(ld.getYear()));
+    }
+
+    public void startDatePickerInDiary(View view) {
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.setContext(getContext());
+        newFragment.setListener(this);
+        newFragment.show(getActivity().getFragmentManager(), "datePicker");
+    }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+        //month datepicker +1 == LocalDate.Month
+        changeToDate(LocalDate.of(year, month + 1, dayOfMonth));
+    }
 }
