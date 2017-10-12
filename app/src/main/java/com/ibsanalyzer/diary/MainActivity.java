@@ -167,11 +167,6 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
 
     }
 
-    @Override
-    public ViewSwitcher getTabsLayoutSwitcher() {
-        return (ViewSwitcher) findViewById(R.id.tabLayoutSwitcher);
-    }
-
     public void changeToTemplateFragment() {
         viewPager.setCurrentItem(0);
     }
@@ -180,6 +175,11 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
         return (DiaryFragment) adapter.getRegisteredFragment(1);
     }
     //==============================================================================================
+
+    @Override
+    public void startTemplateFragment() {
+
+    }
 
     //this method gets marked events from DiaryFragment and calls EventsTemplateAdder to store them.
     @Override

@@ -12,12 +12,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.diary.DiaryFragment;
 import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.StatOptionsFragment;
+import com.ibsanalyzer.diary.TemplateFragment;
+
+import java.util.List;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, StatOptionsFragment.StatOptionsListener{
+        implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment.DiaryFragmentListener, StatOptionsFragment.StatOptionsListener, TemplateFragment
+        .TemplateFragmentListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,5 +107,24 @@ public class DrawerActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void startTemplateFragment() {
+        Fragment fragment = new TemplateFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    @Override
+    public void doEventsTemplateAdder(List<Event> events) {
+
+    }
+
+    @Override
+    public void addEventsFromEventsTemplateToDiary(List<Event> events) {
+       // DiaryFragment diary = accessDiaryFragment();
+       // diary.addEventsToDiary(events);
     }
 }

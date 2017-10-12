@@ -1,7 +1,6 @@
 package com.ibsanalyzer.diary;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -60,6 +59,13 @@ import static com.ibsanalyzer.diary.EventsContainer.NEW_RATING;
 public class DiaryFragment extends Fragment implements EventsContainer
         .EventsContainerUser {
 
+    // Container Activity must implement this interface
+    public interface DiaryFragmentListener {
+        void startTemplateFragment();
+        void doEventsTemplateAdder(List<Event> events);
+    }
+
+
     public static final int CHANGED_MEAL = 1010;
     public static final int CHANGED_OTHER = 1011;
     public static final int CHANGED_EXERCISE = 1012;
@@ -87,6 +93,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
 //==================================================================================================
 
     EventsContainer ec;
+    DiaryFragmentListener diaryListener;
 
     public DiaryFragment() {
 
@@ -123,7 +130,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        diaryListener = (DiaryFragmentListener) context;
         Bundle args = getArguments();
         setHasOptionsMenu(true);
     }
@@ -179,6 +186,14 @@ public class DiaryFragment extends Fragment implements EventsContainer
     private void setUpMenu(View view) {
         //cant come up with better solution for gaining access to toolbar buttons that lie on
         // main_activity.xml
+        ImageButton templateBtn = (ImageButton) view.findViewById(R.id.template_btn);
+        templateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                diaryListener.startTemplateFragment();
+            }
+        });
+
         ImageButton toTemplateBtn = (ImageButton) view.findViewById(R.id.to_template_btn);
         toTemplateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -567,10 +582,4 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
 
 
-    // Container Activity must implement this interface
-    public interface DiaryFragmentListener {
-        ViewSwitcher getTabsLayoutSwitcher();
-
-        void doEventsTemplateAdder(List<Event> events);
-    }
 }
