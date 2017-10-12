@@ -25,6 +25,12 @@ public class DateTimeFormat {
         return ldt.toString();
     }
 
+    public static String dateToSqLiteFormat(LocalDate ld) {
+
+        return ld.toString();
+    }
+
+
     public static LocalDateTime fromSqLiteFormat(String str) {
         //ugly format fix
         if (str.length() == 16) {

@@ -21,6 +21,7 @@ import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.util.Util;
 
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import static com.ibsanalyzer.constants.Constants.RATING;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_AFTER;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_BRISTOL;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_COMPLETENESS;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATETIME;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENT;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENTSTEMPLATE;
@@ -325,6 +327,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public long addEvent(Event event, long typeOfEvent) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
+        values.put (COLUMN_DATE,DateTimeFormat.dateToSqLiteFormat(event.getTime().toLocalDate()));
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
         return addEventHelper(event, values);
     }
@@ -1018,6 +1021,29 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
-
+    //99% copy pasted from DBHandler getAllEventsSorted.
+    public List<Event> getAllEventsSortedFromDay(LocalDate currentDate) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATE + " =? " + " ORDER BY " + COLUMN_DATETIME + "" +
+                " ASC";
+        Cursor c = db.rawQuery(QUERY, new String[]{DateTimeFormat.dateToSqLiteFormat(currentDate)});
+        List<Event> eventList = new ArrayList<>();
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                    String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                    LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
+                    int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
+                    Event event = getEvent(eventId, ldt, typeOfEvent);
+                    eventList.add(event);
+                    c.moveToNext();
+                }
+            }
+        }
+        c.close();
+        db.close();
+        return eventList;
+    }
 }
 

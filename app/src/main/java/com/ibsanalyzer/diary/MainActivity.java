@@ -27,6 +27,8 @@ import com.ibsanalyzer.external_storage.SaveDBIntentService;
 import com.ibsanalyzer.settings.GeneralSettingsActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
+import org.threeten.bp.LocalDate;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
 
             //THIS OPTION WILL BE REMOVED IN PRODUCTION CODE!!!
             //No effort is therefore to put it in thread etc
-            case R.id.importFromTxtMenuItem:
+           /* case R.id.importFromTxtMenuItem:
                 final DBHandler db = new DBHandler(this);
                 List<Event> events = ExternalStorageHandler.importEventsFromTxt();
                 db.deleteAllTablesRows();
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
                             "database");
                     Log.e("Error", e.getStackTrace().toString());
 
-                }
+                }*/
 
 
             case R.id.exportMenuItem:
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
                 DBHandler dbHandler = new DBHandler(getApplicationContext());
                 dbHandler.deleteAllTablesRowsExceptTagTemplates();
                 try {
-                    adapter.getDiaryFragment().fillEventListWithDatabase();
+                    adapter.getDiaryFragment().fillEventListWithDatabase(LocalDate.now());
 
                 } catch (Exception e) {
                     Log.e("Error", "Adapter could not be updated after replacement of " +
@@ -251,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
         @Override
         protected void onPostExecute(Void notUsed) {
             try {
-                adapter.getDiaryFragment().fillEventListWithDatabase();
+                adapter.getDiaryFragment().fillEventListWithDatabase(LocalDate.now());
 
             } catch (Exception e) {
                 Log.d(TAG, "Adapter could not be updated after replacement of database");

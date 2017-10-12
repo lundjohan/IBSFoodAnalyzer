@@ -173,7 +173,9 @@ public class DiaryFragment extends Fragment implements EventsContainer
         ec.initiateRecyclerView(recyclerView, this.getContext());
 
         setUpMenu(view);
+
         changeToDate(LocalDate.now());
+        fillEventListWithDatabase(LocalDate.now());
         if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventList")) {
             //populate array, this will be added to when button is pressed
             //===================================================================
@@ -184,8 +186,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
             //   ec.eventList = savedInstanceState.getParcelableArrayList("ec.eventList");
         }
-        //fill recyclerView from database
-//        fillEventListWithDatabase();
+
         //=====================TIMER================================================================
         Log.d(TAG, "BEFORE quiting onCreateView");
         logTimePassed();
@@ -552,7 +553,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         return eventsMarked.contains(position);
     }
 
-    public void fillEventListWithDatabase() {
+    public void fillEventListWithDatabase(LocalDate theDate) {
         DBHandler dbHandler = new DBHandler(getContext());
 
         //see here why reference just cant be changed. notifyDataSetChanged won't work in that case.
@@ -566,7 +567,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         //==========================================================================================
 
         //TODO implement!
-        List<Event> sortedEvents = new ArrayList<>();//dbHandler.getAllEventsSortedFromDay(currentDate);
+        List<Event> sortedEvents = dbHandler.getAllEventsSortedFromDay(theDate);
 
 
         // Log.d(TAG, "3. sortedEvents.size()" + sortedEvents.size());
@@ -604,8 +605,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
     public void changeToDate(LocalDate ld){
         currentDate = ld;
         setDateView(ld);
-        fillEventListWithDatabase();
-
     }
 
     private void setDateView(LocalDate ld) {
@@ -620,8 +619,9 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
         //month datepicker +1 == LocalDate.Month
-        changeToDate(LocalDate.of(year, month + 1, dayOfMonth));
+        LocalDate d = LocalDate.of(year, month + 1, dayOfMonth);
+        changeToDate(d);
+        fillEventListWithDatabase(d);
     }
 }
