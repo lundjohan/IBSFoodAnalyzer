@@ -31,6 +31,7 @@ import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +40,7 @@ import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT_RETURNED;
+import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
@@ -78,7 +80,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
     List<Integer> eventsMarked = new ArrayList<>();
     //switcher tab and it's tabs
     ViewSwitcher tabsLayoutSwitcher;
-    DiaryFragmentListener callback;
 
 //==================================================================================================
     //as recommended for communication between Fragment to Activity.
@@ -122,7 +123,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (DiaryFragmentListener) context;
 
         Bundle args = getArguments();
         setHasOptionsMenu(true);
@@ -150,13 +150,13 @@ public class DiaryFragment extends Fragment implements EventsContainer
         super.onCreate(savedInstanceState);
 
         //starts as invisible appBarLayout but when user marks something this pops up
-        tabsLayoutSwitcher = (ViewSwitcher) callback.getTabsLayoutSwitcher();
+        tabsLayoutSwitcher = (ViewSwitcher) view.findViewById(R.id.tabLayoutSwitcher);
         ec = new EventsContainer(this);
         ec.setUpEventButtons(view);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
         ec.initiateRecyclerView(recyclerView, this.getContext());
 
-        setUpMenu();
+        setUpMenu(view);
         if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventList")) {
             //populate array, this will be added to when button is pressed
             //===================================================================
@@ -176,17 +176,17 @@ public class DiaryFragment extends Fragment implements EventsContainer
         return view;
     }
 
-    private void setUpMenu() {
+    private void setUpMenu(View view) {
         //cant come up with better solution for gaining access to toolbar buttons that lie on
         // main_activity.xml
-        ImageButton toTemplateBtn = (ImageButton) getActivity().findViewById(R.id.to_template_btn);
+        ImageButton toTemplateBtn = (ImageButton) view.findViewById(R.id.to_template_btn);
         toTemplateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.doEventsTemplateAdder(retrieveMarkedEvents());
+                doEventsTemplateAdder(retrieveMarkedEvents());
             }
         });
-        ImageButton copyBtn = (ImageButton) getActivity().findViewById(R.id.copy_btn);
+        ImageButton copyBtn = (ImageButton) view.findViewById(R.id.copy_btn);
         copyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,7 +196,13 @@ public class DiaryFragment extends Fragment implements EventsContainer
         });
     }
 
-
+    private void doEventsTemplateAdder(List<Event> events) {
+        Intent intent = new Intent(getActivity(), SaveEventsTemplateActivity.class);
+        //Gson gson = new Gson();
+        //String objAsJSON = gson.toJson(events);
+        intent.putExtra(LIST_OF_EVENTS, (Serializable) events);
+        startActivity(intent);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ec.onActivityResult(requestCode, resultCode, data);
@@ -313,27 +319,27 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
 
     public void newMealActivity(View view) {
-        Intent intent = new Intent((Activity) this.callback, MealActivity.class);
+        Intent intent = new Intent(getActivity(), MealActivity.class);
         startActivityForResult(intent, NEW_MEAL);
     }
 
     public void newOtherActivity(View v) {
-        Intent intent = new Intent((Activity) this.callback, OtherActivity.class);
+        Intent intent = new Intent(getActivity(), OtherActivity.class);
         startActivityForResult(intent, NEW_OTHER);
     }
 
     public void newExerciseActivity(View v) {
-        Intent intent = new Intent((Activity) this.callback, ExerciseActivity.class);
+        Intent intent = new Intent(getActivity(), ExerciseActivity.class);
         startActivityForResult(intent, NEW_EXERCISE);
     }
 
     public void newBmActivity(View v) {
-        Intent intent = new Intent((Activity) this.callback, BmActivity.class);
+        Intent intent = new Intent(getActivity(), BmActivity.class);
         startActivityForResult(intent, NEW_BM);
     }
 
     public void newScoreItem(View view) {
-        Intent intent = new Intent((Activity) this.callback, RatingActivity.class);
+        Intent intent = new Intent(getActivity(), RatingActivity.class);
         startActivityForResult(intent, NEW_RATING);
     }
 
@@ -501,7 +507,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     //user requests to change event
     public void changeEventActivity(Event event, Class activityClass, int valueToReturn, int
             posInList) {
-        Intent intent = new Intent((Activity) this.callback, activityClass);
+        Intent intent = new Intent(getActivity(), activityClass);
         intent.putExtra(EVENT_TO_CHANGE, event);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getContext());
@@ -515,7 +521,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
 
     public void fillEventListWithDatabase() {
-        DBHandler dbHandler = new DBHandler(((Activity) callback).getApplicationContext());
+        DBHandler dbHandler = new DBHandler(getContext());
 
         //see here why reference just cant be changed. notifyDataSetChanged won't work in that case.
         //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from

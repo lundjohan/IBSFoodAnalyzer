@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ibsanalyzer.diary.DiaryFragment;
 import com.ibsanalyzer.diary.R;
 
 public class DrawerActivity extends AppCompatActivity
@@ -38,7 +39,7 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     private void initiateFragment() {
-        Fragment fragment = new BlankFragment();
+        Fragment fragment = new DiaryFragment();
         FragmentManager transaction =getSupportFragmentManager();
         transaction.beginTransaction()
                 .add(R.id.fragment_container, fragment)
@@ -84,7 +85,7 @@ public class DrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_diary) {
-            Fragment fragment = new BlankFragment();
+            Fragment fragment = new DiaryFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit();
