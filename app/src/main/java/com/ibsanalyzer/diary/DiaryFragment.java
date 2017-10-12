@@ -173,6 +173,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         ec.initiateRecyclerView(recyclerView, this.getContext());
 
         setUpMenu(view);
+        changeToDate(LocalDate.now());
         if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventList")) {
             //populate array, this will be added to when button is pressed
             //===================================================================
