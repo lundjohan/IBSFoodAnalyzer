@@ -14,9 +14,10 @@ import android.view.MenuItem;
 
 import com.ibsanalyzer.diary.DiaryFragment;
 import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.diary.StatOptionsFragment;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, StatOptionsFragment.StatOptionsListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,10 @@ public class DrawerActivity extends AppCompatActivity
                     .commit();
 
         } else if (id == R.id.nav_statistics) {
+            Fragment fragment = new StatOptionsFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
 
         }
 

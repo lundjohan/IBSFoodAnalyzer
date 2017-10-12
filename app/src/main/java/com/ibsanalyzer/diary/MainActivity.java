@@ -227,12 +227,12 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
         diary.addEventsToDiary(events);
     }
 
-    @Override
+   /* @Override
     public void startNestedFragment(Fragment f) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
         transaction.replace(R.id.pager, f).commit();
-    }
+    }*/
 
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();

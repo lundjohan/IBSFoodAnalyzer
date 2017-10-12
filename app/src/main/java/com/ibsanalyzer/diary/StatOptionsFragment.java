@@ -23,7 +23,6 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         // Required empty public constructor
     }
     public interface StatOptionsListener{
-        void startNestedFragment(Fragment f);
     }
 
     @Override
