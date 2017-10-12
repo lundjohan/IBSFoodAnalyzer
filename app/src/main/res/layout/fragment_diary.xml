@@ -58,14 +58,6 @@
                     android:gravity="right">
 
                     <ImageButton
-                        android:id="@+id/break_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        app:srcCompat="@drawable/ic_pan_tool_black_24dp"/>
-
-                    <ImageButton
                         android:id="@+id/to_template_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
