@@ -2,7 +2,6 @@ package com.ibsanalyzer.diary;
 
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -64,13 +63,15 @@ import static com.ibsanalyzer.diary.EventsContainer.NEW_RATING;
  * A simple {@link Fragment} subclass.
  */
 public class DiaryFragment extends Fragment implements EventsContainer
-        .EventsContainerUser,DatePickerDialog.OnDateSetListener{
+        .EventsContainerUser, DatePickerDialog.OnDateSetListener {
 
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
         void startTemplateFragment();
+
         void doEventsTemplateAdder(List<Event> events);
     }
+
     //the date of the day as put by calender.
     LocalDate currentDate;
     TextView dateView;
@@ -111,7 +112,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
 
     /**
-     *   also adds DateMarkerEvent if appropriate
+     * also adds DateMarkerEvent if appropriate
      */
     @Override
     public void addEventToList(Event event) {
@@ -197,7 +198,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     private void setUpMenu(View view) {
         //cant come up with better solution for gaining access to toolbar buttons that lie on
         // main_activity.xml
-        dateView = (TextView)view.findViewById(R.id.diaryDateView);
+        dateView = (TextView) view.findViewById(R.id.diaryDateView);
         dateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,6 +237,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         intent.putExtra(LIST_OF_EVENTS, (Serializable) events);
         startActivity(intent);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ec.onActivityResult(requestCode, resultCode, data);
@@ -452,26 +454,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
                         //2 remove event from ec.eventList
                         boolean dateMarkerWasLastEventForDay = Util
                                 .removeEventAndAlsoDateMarkerIfLast(ec.eventList, position);
-
-
-                        //uncommented text below looks great but sadly does not work.
-                        // RecyclerView seem to be not perfectly implemented.
-
-                        //3 notify RecyclerView of changes
-                        //3.1 Remove for normal event
-
-
-                        // ec.adapter.notifyItemRemoved(position);
-
-                        //3.2 Possible remove for DateMarkerPos (also position since recyclerview
-                        // has been contracted one after event was removed above)
-
-
-                        /*if (dateMarkerWasLastEventForDay) {
-                            ec.adapter.notifyItemRemoved(position);
-                        }*/
-
-
                         ec.adapter.notifyDataSetChanged();
                     }
                     return true;
@@ -602,13 +584,14 @@ public class DiaryFragment extends Fragment implements EventsContainer
         return ec.eventList;
     }
 
-    public void changeToDate(LocalDate ld){
+    public void changeToDate(LocalDate ld) {
         currentDate = ld;
         setDateView(ld);
     }
 
     private void setDateView(LocalDate ld) {
-        dateView.setText(ld.getDayOfWeek().toString() + " " + ld.getDayOfMonth() + " " +ld.getMonth().toString() +", " + Integer.toString(ld.getYear()));
+        dateView.setText(ld.getDayOfWeek().toString() + " " + ld.getDayOfMonth() + " " + ld
+                .getMonth().toString() + ", " + Integer.toString(ld.getYear()));
     }
 
     public void startDatePickerInDiary(View view) {
@@ -617,6 +600,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         newFragment.setListener(this);
         newFragment.show(getActivity().getFragmentManager(), "datePicker");
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         //month datepicker +1 == LocalDate.Month
