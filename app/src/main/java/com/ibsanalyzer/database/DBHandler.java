@@ -81,6 +81,7 @@ import static com.ibsanalyzer.database.TablesAndStrings.THIRD_COLUMN_IS_A;
  */
 
 public class DBHandler extends SQLiteOpenHelper {
+    private final String TAG = DBHandler.class.toString();
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -1031,13 +1032,21 @@ public class DBHandler extends SQLiteOpenHelper {
         if (c != null) {
             if (c.moveToFirst()) {
                 while (!c.isAfterLast()) {
-                    long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                    String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                    LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
-                    int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
-                    Event event = getEvent(eventId, ldt, typeOfEvent);
-                    eventList.add(event);
-                    c.moveToNext();
+                   try {
+
+                       long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                       String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                       LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
+                       int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
+                       Event event = getEvent(eventId, ldt, typeOfEvent);
+                       eventList.add(event);
+                       c.moveToNext();
+                   }
+                   catch (Exception e){
+                       Log.e(TAG, "Something went wrong reading an event, jumping to next");
+                       Log.e(TAG, "exception", e);
+                       c.moveToNext();
+                   }
                 }
             }
         }
