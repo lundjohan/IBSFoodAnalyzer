@@ -1,7 +1,5 @@
 package com.ibsanalyzer.base_classes;
 
-import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
-
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
@@ -24,17 +22,9 @@ public abstract class Event implements Comparable<Event>, Serializable {
         return time;
     }
 
-    //compares localdatetime + DateMarkerEvent (should come last in case of same time)
+    //compares localdatetime of events
     public int compareTo(Event event2) {
-        int toReturn = this.time.compareTo(event2.time);
-        if (toReturn == 0) {
-            if (this instanceof DateMarkerEvent) {
-                toReturn = 1; //positive
-            } else if (event2 instanceof DateMarkerEvent) {
-                toReturn = -1; //negative
-            }
-        }
-        return toReturn;
+        return this.time.compareTo(event2.time);
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.ibsanalyzer.diary;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
-import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
 import org.junit.Test;

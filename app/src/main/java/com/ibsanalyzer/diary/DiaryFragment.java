@@ -30,8 +30,6 @@ import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.model.EventsTemplate;
-import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
-import com.ibsanalyzer.util.InsertPositions;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
@@ -111,18 +109,10 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     }
 
-    /**
-     * also adds DateMarkerEvent if appropriate
-     */
     @Override
     public void addEventToList(Event event) {
-        InsertPositions insertPositions = Util.insertEventWithDayMarker(ec.eventList, event);
-
-        //notify RecyclerView of changes
-        ec.adapter.notifyItemInserted(insertPositions.getPosInserted());
-        if (insertPositions.isDateMarkerAdded()) {
-            ec.adapter.notifyItemInserted(insertPositions.getPosDateMarker());
-        }
+        int indexOfInsertion = Util.addEventAtRightPlace(event, ec.eventList);
+            ec.adapter.notifyItemInserted(indexOfInsertion);
     }
 
     //runs without a timer by reposting this handler at the end of the runnable
@@ -385,9 +375,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
     @Override
     public void onItemClicked(View v, int position) {
         final Event pressedEvent = ec.eventList.get(position);
-        if (pressedEvent instanceof DateMarkerEvent) {
-            return;
-        }
         Log.d("Debug", "inside fragment, item was clicked");
         if (!markingModeIsOn()) {
             ec.editEvent(position);
@@ -404,10 +391,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
     @Override
     public boolean onItemLongClicked(final View v, final int position) {
         final Event pressedEvent = ec.eventList.get(position);
-        //it should not be possible to press a DateMarkerEvent
-        if (pressedEvent instanceof DateMarkerEvent) {
-            return false;
-        }
         if (!markingModeIsOn()) {
             //initiate pop-up menu
             PopupMenu popup = new PopupMenu(getActivity(), v);
@@ -452,8 +435,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
                         DBHandler dbHandler = new DBHandler(getContext());
                         dbHandler.deleteEvent(pressedEvent);
                         //2 remove event from ec.eventList
-                        boolean dateMarkerWasLastEventForDay = Util
-                                .removeEventAndAlsoDateMarkerIfLast(ec.eventList, position);
+                        ec.eventList.remove(pressedEvent);
                         ec.adapter.notifyDataSetChanged();
                     }
                     return true;
@@ -560,11 +542,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
         logTimePassed();
         //==========================================================================================
         ec.eventList.addAll(sortedEvents);
-        //=====================TIMER================================================================
-        Log.d(TAG, "BEFORE addDateEventsToList");
-        logTimePassed();
-        //==========================================================================================
-        Util.addDateEventsToList(ec.eventList);
         //=====================TIMER================================================================
         Log.d(TAG, "BEFORE ec.adapter.notifyDataSetChanged");
         logTimePassed();

@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.BM;
-import static com.ibsanalyzer.constants.Constants.DATE_MARKER;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.MEAL;
 import static com.ibsanalyzer.constants.Constants.OTHER;
@@ -198,10 +197,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         for (Event e : et.getEvents()) {
             int type = Util.getTypeOfEvent(e);
-            if (type == DATE_MARKER) {
-                throw new RuntimeException("Error! DateMarkerEvent should not have been possible " +
-                        "to add to an EventsTemplate. Some restriction has not been added.");
-            }
             long idOfEventAdded = addEventToRefEventsTemplate(e, type, template_id);
             Log.d("Debug", "id of event added to EventsTemplate: " + idOfEventAdded);
             addToChildrenOfEventTables(idOfEventAdded, e, type);

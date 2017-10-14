@@ -57,7 +57,7 @@ public class Constants {
     public final static String ID_OF_EVENTSTEMPLATE = "idOfEventsTemplate";
     public final static String LIST_OF_EVENTS = "listOfEvents";
     //used in various cases
-    public static final int MEAL = 0, OTHER = 1, EXERCISE = 2, BM = 3, RATING = 4, DATE_MARKER = 5;
+    public static final int MEAL = 0, OTHER = 1, EXERCISE = 2, BM = 3, RATING = 4;
     //***************************************STATISTICS*********************************************
     //for StatFragment and its adapter
     public static final int AVG_SCORE = 0, BLUE_ZONE_SCORE = 1, COMPLETENESS_SCORE = 2,

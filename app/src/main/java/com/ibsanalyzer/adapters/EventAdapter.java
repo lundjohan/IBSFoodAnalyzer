@@ -18,7 +18,6 @@ import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.diary.R;
-import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDateTime;
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.BM;
-import static com.ibsanalyzer.constants.Constants.DATE_MARKER;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.MEAL;
 import static com.ibsanalyzer.constants.Constants.OTHER;
@@ -120,11 +118,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         parent, false);
                 viewHolder = new ScoreViewHolder(v);
                 break;
-            case DATE_MARKER:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_datemarker,
-                        parent, false);
-                viewHolder = new DateMarkerViewHolder(v);
-                break;
         }
         //here: make v clickable item.
 
@@ -191,12 +184,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
                 setTime(rating, scoreHolder);
                 scoreHolder.afterScore.setText(Rating.pointsToText(rating.getAfter()));
-                break;
-            case DATE_MARKER:
-                DateMarkerEvent dateMarker = (DateMarkerEvent) event;
-                DateMarkerViewHolder dateMarkerViewHolder = (DateMarkerViewHolder) holder;
-                dateMarkerViewHolder.dateView.setText(DateTimeFormat.toTextViewFormat(dateMarker
-                        .getDate()));
                 break;
         }
     }

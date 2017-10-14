@@ -16,19 +16,14 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.diary.EventActivity;
-import com.ibsanalyzer.pseudo_event.DateMarkerEvent;
-
-import org.threeten.bp.LocalDate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
-import static com.ibsanalyzer.constants.Constants.DATE_MARKER;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.MEAL;
@@ -130,99 +125,6 @@ public class Util {
     // (possible removal of datemarkers must be in consideration)
     //==============================================================================================
 
-    /**
-     * @param events
-     * @param position
-     * @return true if a DateMarker was last for day and therefore removed.
-     */
-    public static boolean removeEventAndAlsoDateMarkerIfLast(List<Event> events, int position) {
-        LocalDate dateOfEvent = events.get(position).getTime().toLocalDate();
-
-        events.remove(position);
-        //possibly remove datemarker
-        //position has moved to be on step later in list (notice t)
-        //N.B. another event could have been before removed event so it is not so banal.
-        if (dateMarkerIsSoleEventOneDay(events, dateOfEvent, position)) {
-            //position is now upheld by DateMarker (since list has been contracted by events
-            // .remove above)
-            events.remove(position);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Is is understated that DateMarkerEvent occupies last position in list for that date.
-     * <p>
-     * Uses position to sort faster.
-     * <p>
-     * <p>
-     * <p>
-     * Requires sorted list.
-     * <p>
-     *
-     * @param events
-     * @param dateOfEvent
-     * @param position    => is either a normal event that day, or a datemarker that day. Used
-     *                    for optimization
-     * @return
-     */
-    private static boolean dateMarkerIsSoleEventOneDay(List<Event> events, LocalDate dateOfEvent,
-                                                       int position) {
-        //check at position
-        if (events.get(position).getClass() != DateMarkerEvent.class) {
-            return false;
-        }
-        //check before position if there are other events that day
-        if (position > 0 && events.get(position - 1).getTime().toLocalDate().isEqual(dateOfEvent)) {
-            return false;
-        }
-        //Check after position is not needed since datemarker should always be placed last for day.
-        return true;
-    }
-
-    //==============================================================================================
-    //Adding of events from list.
-    // (possible adding of datemarkers must be in consideration)
-    //==============================================================================================
-    //instead of sorting this should use addDateEventAtRightPlace for insertion of event
-    public static InsertPositions insertEventWithDayMarker(List<Event> events, Event event) {
-        //add event to list
-        //this feels bad. better to add it at the right index straight away...
-        events.add(event);
-
-        LocalDate dateOfEvent = event.getTime().toLocalDate();
-        //1. Is there a DateMarkerEvent already with the same day as event?
-        DateMarkerEvent dateMarker = addDateMarkerIfNotExists(dateOfEvent, events);
-
-        //3. Sort list
-        Collections.sort(events);
-
-        //4. get index (after sort) of event
-        int posEvent = events.indexOf(event);
-        int posDateMarker = -1;
-
-        if (dateMarker != null) {
-
-            //get index (after sort) of the DateMarkerEvent.
-            posDateMarker = events.indexOf(dateMarker);
-        }
-        //5. Create an InsertPositions and return it
-        InsertPositions insertPositions = new InsertPositions(posEvent, posDateMarker);
-
-        return insertPositions;
-    }
-
-
-    public static DateMarkerEvent addDateMarkerIfNotExists(LocalDate dateOfEvent, List<Event>
-            events) {
-        DateMarkerEvent dateMarker = null;
-        if (!dateMarkerExists(events, dateOfEvent)) {
-            dateMarker = new DateMarkerEvent(dateOfEvent);
-            addEventAtRightPlace(dateMarker, events);
-        }
-        return dateMarker;
-    }
 
     /**
      * @param event
@@ -233,7 +135,7 @@ public class Util {
     //TODO ugly method, works, but should be total remake over.
     //ineffective method, but doesnt matter since it is inly used when ONE event is added.
     //(other methods are used to add much )
-    private static int addEventAtRightPlace(Event event, List<Event> events) {
+    public static int addEventAtRightPlace(Event event, List<Event> events) {
         int indexOfInsertion = -1;
         if (events.isEmpty()) {
             events.add(event);
@@ -261,11 +163,6 @@ public class Util {
         return indexOfInsertion;
     }
 
-    private static boolean dateMarkerExists(List<Event> events, LocalDate dateOfMarkerEvent) {
-        DateMarkerEvent dateMarker = new DateMarkerEvent(dateOfMarkerEvent);
-        return events.indexOf(dateMarker) > -1;
-    }
-
     /**
      * tags exist in Meal, Other and Exercise events.
      *
@@ -285,49 +182,6 @@ public class Util {
     }
 
     /**
-     * Methods used by DiaryFragment at start of app after list has been filled with events
-     *
-     * @param eventList
-     */
-    public static void addDateEventsToList(List<Event> eventList) {
-        LocalDate date;
-        for (int i = 0; i < eventList.size(); i++) {
-            date = eventList.get(i).getTime().toLocalDate();
-            i = Util.stepForwardUntilNewDateOrEndOfList(eventList, date, i);
-            Util.addDateEventToList(date, eventList, i);
-        }
-    }
-
-    /**
-     * Prerequisite: position is the place to add DateEvent.
-     * OR if position == size of list, it is DateEvent is added last in list
-     *
-     * @param dateOfEvent
-     * @param eventList
-     * @param position
-     */
-    public static void addDateEventToList(LocalDate dateOfEvent, List<Event> eventList, int
-            position) {
-        DateMarkerEvent dateMarker = new DateMarkerEvent(dateOfEvent);
-
-        if (position == eventList.size()) {
-            eventList.add(dateMarker);
-        } else {
-            eventList.add(position, dateMarker);
-        }
-    }
-
-    public static int stepForwardUntilNewDateOrEndOfList(List<Event> eventList, LocalDate ld,
-                                                         int startPos) {
-        int i = ++startPos;
-        if (startPos >= eventList.size() || !eventList.get(i).getTime().toLocalDate().equals(ld))
-            return i;
-        else {
-            return stepForwardUntilNewDateOrEndOfList(eventList, ld, i);
-        }
-    }
-
-    /**
      * @param e not allowed to be null or other classes than listed in conditionals here.
      * @return
      */
@@ -342,8 +196,6 @@ public class Util {
             return BM;
         } else if (e instanceof Rating) {
             return RATING;
-        } else if (e instanceof DateMarkerEvent) {
-            return DATE_MARKER;
         } else if (e == null) {
             throw new NullPointerException("Event should not be null here");
         }
