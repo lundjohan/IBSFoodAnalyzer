@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.diary.DiaryContainerFragment;
 import com.ibsanalyzer.diary.DiaryFragment;
 import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.StatOptionsFragment;
@@ -45,7 +46,7 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     private void initiateFragment() {
-        Fragment fragment = new DiaryFragment();
+        Fragment fragment = new DiaryContainerFragment();
         FragmentManager transaction =getSupportFragmentManager();
         transaction.beginTransaction()
                 .add(R.id.fragment_container, fragment)
@@ -91,7 +92,7 @@ public class DrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_diary) {
-            Fragment fragment = new DiaryFragment();
+            Fragment fragment = new DiaryContainerFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit();

@@ -50,6 +50,7 @@ import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.SWIPING_TO_DATE;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_BM;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_EXERCISE;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_MEAL;
@@ -105,14 +106,12 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     public DiaryFragment() {
 
-        Bundle b = getArguments();
-
     }
 
     @Override
     public void addEventToList(Event event) {
         int indexOfInsertion = Util.addEventAtRightPlace(event, ec.eventList);
-            ec.adapter.notifyItemInserted(indexOfInsertion);
+        ec.adapter.notifyItemInserted(indexOfInsertion);
     }
 
     //runs without a timer by reposting this handler at the end of the runnable
@@ -145,16 +144,18 @@ public class DiaryFragment extends Fragment implements EventsContainer
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        //=====================TIMER================================================================
-        Log.d(TAG, "BEFORE TIMER STARTS (DIARYFRAGMENT STARTS)");
-        startTime = System.nanoTime();
-        logTimePassed();
-        //==========================================================================================
-        currentDate = LocalDate.now();
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_diary, container, false);
         super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_diary, container, false);
+        setUpMenu(view);
+
+        //this is used to set date after swipe
+        Bundle b = this.getArguments();
+        if (b != null) {
+            changeToDate((LocalDate) b.getSerializable(SWIPING_TO_DATE));
+        }
+        else {
+            changeToDate(LocalDate.now());
+        }
 
         //starts as invisible appBarLayout but when user marks something this pops up
         tabsLayoutSwitcher = (ViewSwitcher) view.findViewById(R.id.tabLayoutSwitcher);
@@ -163,10 +164,8 @@ public class DiaryFragment extends Fragment implements EventsContainer
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
         ec.initiateRecyclerView(recyclerView, this.getContext());
 
-        setUpMenu(view);
 
-        changeToDate(LocalDate.now());
-        fillEventListWithDatabase(LocalDate.now());
+        fillEventListWithDatabase(currentDate);
         if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventList")) {
             //populate array, this will be added to when button is pressed
             //===================================================================

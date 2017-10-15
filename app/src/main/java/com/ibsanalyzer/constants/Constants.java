@@ -16,6 +16,11 @@ public class Constants {
     public final static String DIRECTORY_IBSFOODANALYZER = "ibsFoodAnalyzer";
     public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
     //Other
+
+    //Swipe in Diary
+    public final static String SWIPING_TO_DATE = "swipingToDate";
+
+
     public final static int TAGS_TO_ADD = 4444;
     public final static int TAGTEMPLATE_TO_ADD = 4445;
     public final static String RETURN_TAG_TEMPLATE_SERIALIZABLE = "returnTagTemplateSer";
