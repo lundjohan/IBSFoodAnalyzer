@@ -71,7 +71,6 @@ public class EventsContainer {
                 user.newScoreItem(v);
                 break;
         }
-        //do other buttons here
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -104,7 +103,6 @@ public class EventsContainer {
     }
 
     public void initiateRecyclerView(RecyclerView recyclerView, Context layoutInitiator) {
-        //==========================================================================================
         this.recyclerView = recyclerView;
         layoutManager = new LinearLayoutManager(layoutInitiator, LinearLayoutManager
                 .VERTICAL, true);
@@ -116,7 +114,6 @@ public class EventsContainer {
                 .getContext(),
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
-        //==========================================================================================
     }
 
     /**

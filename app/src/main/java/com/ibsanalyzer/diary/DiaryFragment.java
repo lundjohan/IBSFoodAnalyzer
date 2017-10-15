@@ -524,36 +524,11 @@ public class DiaryFragment extends Fragment implements EventsContainer
         //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from
         // -custom-ec.adapter
         ec.eventList.clear();
-        //=====================TIMER================================================================
-        Log.d(TAG, "1. starting sortedEvents");
-        Log.d(TAG, "2. BEFORE dbHandler.getAllEventsSorted()");
-        logTimePassed();
-        //==========================================================================================
-
-        //TODO implement!
         List<Event> sortedEvents = dbHandler.getAllEventsSortedFromDay(theDate);
-
-
-        // Log.d(TAG, "3. sortedEvents.size()" + sortedEvents.size());
-        logTimePassed();
-        Log.d(TAG, "(4) 5. ended sortedEvents");
-        //=====================TIMER================================================================
-        Log.d(TAG, "BEFORE ec.eventList.addAll()");
-        logTimePassed();
-        //==========================================================================================
         ec.eventList.addAll(sortedEvents);
-        //=====================TIMER================================================================
-        Log.d(TAG, "BEFORE ec.adapter.notifyDataSetChanged");
-        logTimePassed();
-        //==========================================================================================
         ec.adapter.notifyDataSetChanged();
         //place focus at top (otherwise user has to scroll up, which make time sizeable time for
         // large imports).
-        //=====================TIMER================================================================
-        Log.d(TAG, "BEFORE recyclerView.scrollToPosition");
-        logTimePassed();
-        //==========================================================================================
-        //ec.recyclerview är null.
         ec.recyclerView.scrollToPosition(ec.eventList.size() - 1);
     }
 
