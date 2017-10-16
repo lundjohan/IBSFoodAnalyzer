@@ -229,6 +229,11 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
         diary.addEventsToDiary(events);
     }
 
+    @Override
+    public void fixToolBarForTemplateFragment() {
+
+    }
+
    /* @Override
     public void startNestedFragment(Fragment f) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

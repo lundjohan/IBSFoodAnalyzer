@@ -22,20 +22,26 @@ import com.ibsanalyzer.diary.TemplateFragment;
 import java.util.List;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment.DiaryFragmentListener, StatOptionsFragment.StatOptionsListener, TemplateFragment
-        .TemplateFragmentListener{
+        implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment
+        .DiaryFragmentListener, StatOptionsFragment.StatOptionsListener, TemplateFragment
+        .TemplateFragmentListener {
+
+    Toolbar toolbar;
+    ActionBarDrawerToggle toggle;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string
                 .navigation_drawer_close);
+        toggle.setDrawerIndicatorEnabled(true);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -47,7 +53,7 @@ public class DrawerActivity extends AppCompatActivity
 
     private void initiateFragment() {
         Fragment fragment = new DiaryContainerFragment();
-        FragmentManager transaction =getSupportFragmentManager();
+        FragmentManager transaction = getSupportFragmentManager();
         transaction.beginTransaction()
                 .add(R.id.fragment_container, fragment)
                 .commit();
@@ -59,6 +65,7 @@ public class DrawerActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            getSupportFragmentManager().popBackStackImmediate();
             super.onBackPressed();
         }
     }
@@ -80,6 +87,11 @@ public class DrawerActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        //this is solely used from TemplateFragment
+        if (id == android.R.id.home) {
+            backToDiaryFragment();
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -112,6 +124,7 @@ public class DrawerActivity extends AppCompatActivity
 
     @Override
     public void startTemplateFragment() {
+        //toggle.setHomeAsUpIndicator(null);
         Fragment fragment = new TemplateFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -125,7 +138,47 @@ public class DrawerActivity extends AppCompatActivity
 
     @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
-       // DiaryFragment diary = accessDiaryFragment();
-       // diary.addEventsToDiary(events);
+        // DiaryFragment diary = accessDiaryFragment();
+        // diary.addEventsToDiary(events);
+    }
+
+    @Override
+    public void fixToolBarForTemplateFragment() {
+        toolbar.setTitle("Templates");
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string
+                .navigation_drawer_close);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// show back button
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //without this hamburger button is shown instead of back button
+        //see https://stackoverflow.com/questions/27742074/up-arrow-does-not-show-after-calling
+        // -actionbardrawertoggle-setdrawerindicatorena
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.syncState();
+
+
+    }
+    //called after back button of TemplateFragment is pressed
+    //this is not nice code but couldn't get backstack to work together with drawer
+    private void backToDiaryFragment(){
+       // getSupportFragmentManager().popBackStackImmediate();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);// unshow back button
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string
+                .navigation_drawer_close);
+        toggle.setDrawerIndicatorEnabled(true);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        getSupportActionBar().setTitle(R.string.app_name);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Fragment fragment = new DiaryContainerFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }

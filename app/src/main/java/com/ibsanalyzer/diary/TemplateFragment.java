@@ -50,6 +50,7 @@ public class TemplateFragment extends Fragment {
         adapter = new EventsTemplateAdapter(this, cursor, width);
         recyclerView.setAdapter(adapter);
         callback = (TemplateFragmentListener) getActivity();
+        callback.fixToolBarForTemplateFragment();
         return v;
     }
 
@@ -60,5 +61,6 @@ public class TemplateFragment extends Fragment {
          * @param events
          */
         void addEventsFromEventsTemplateToDiary(List<Event> events);
+        void fixToolBarForTemplateFragment();
     }
 }
