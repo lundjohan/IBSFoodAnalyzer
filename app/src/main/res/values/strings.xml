@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodAnalyzer</string>
+    <string name="app_name">IBS FoodAnalyzer</string>
     <string name="meal_icon_label">Meal</string>
     <string name="other_icon_label">Other</string>
     <string name="exercise_icon_label">Exercise</string>
@@ -14,7 +14,7 @@
 
     <!-- strings for aFileChooser -->
     <string name="chooser_title">Lorem ipsum</string>
-    <string name="title_activity_drawer">DrawerActivity</string>
+    <string name="title_activity_drawer">IBS FoodAnalyzer</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
