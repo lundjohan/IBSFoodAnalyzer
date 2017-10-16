@@ -62,10 +62,13 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        FragmentManager manager = getSupportFragmentManager();
+        int sizeOfStack = manager.getBackStackEntryCount();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (sizeOfStack > 0) {
+            backToDiaryFragment();
         } else {
-            getSupportFragmentManager().popBackStackImmediate();
             super.onBackPressed();
         }
     }
@@ -127,7 +130,7 @@ public class DrawerActivity extends AppCompatActivity
         //toggle.setHomeAsUpIndicator(null);
         Fragment fragment = new TemplateFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_container, fragment).addToBackStack(null)
                 .commit();
     }
 
@@ -161,10 +164,12 @@ public class DrawerActivity extends AppCompatActivity
 
 
     }
+
     //called after back button of TemplateFragment is pressed
     //this is not nice code but couldn't get backstack to work together with drawer
-    private void backToDiaryFragment(){
-       // getSupportFragmentManager().popBackStackImmediate();
+    private void backToDiaryFragment() {
+        //pop away TemplateFragment from BackStack
+        getSupportFragmentManager().popBackStackImmediate();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);// unshow back button
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
