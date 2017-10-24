@@ -16,7 +16,8 @@ import static com.ibsanalyzer.constants.Constants.LOCALDATE;
 import static com.ibsanalyzer.constants.Constants.SWIPING_TO_DATE;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This class uses an adapter that is using DiaryFragment
+ *
  */
 public class DiaryContainerFragment extends Fragment {
     //preferably even number, variables used for setting correct date after swipe

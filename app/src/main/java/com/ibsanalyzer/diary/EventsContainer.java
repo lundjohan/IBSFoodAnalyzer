@@ -85,7 +85,7 @@ public class EventsContainer {
     }
 
     public void setUpEventButtons(View view) {
-        //EventModel Buttons, do onClick here so handlers doesnt have to be in parent Activity
+        //EventModel Buttons, do onClick here so handlers don't have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
         mealBtn.setOnClickListener(user);
 
