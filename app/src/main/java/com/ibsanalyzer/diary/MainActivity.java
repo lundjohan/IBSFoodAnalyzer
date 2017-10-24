@@ -225,8 +225,6 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
 
     @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
-        DiaryFragment diary = accessDiaryFragment();
-        diary.addEventsToDiary(events);
     }
 
     @Override

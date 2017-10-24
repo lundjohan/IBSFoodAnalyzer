@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import org.threeten.bp.LocalDate;
 
+import static com.ibsanalyzer.constants.Constants.LOCALDATE;
 import static com.ibsanalyzer.constants.Constants.SWIPING_TO_DATE;
 
 /**
@@ -23,19 +24,26 @@ public class DiaryContainerFragment extends Fragment {
     private static int START_POS_VIEWPAGER = MAX_SLIDES/2;
     ViewPager pager;
     DiarySlidePagerAdapter adapter;
-    LocalDate currentDate;
+    LocalDate startDate;
     int currentPagerItem;
 
     public DiaryContainerFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diary_container, container, false);
-        currentDate = LocalDate.now();
+
+
+        Bundle args = getArguments();
+        if (args!= null) {
+            startDate = (LocalDate) args.getSerializable(LOCALDATE);
+        }
+        if (startDate == null) {
+            startDate = LocalDate.now();
+        }
         adapter = new DiarySlidePagerAdapter(getFragmentManager());
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
@@ -59,7 +67,7 @@ public class DiaryContainerFragment extends Fragment {
         public Fragment getItem(int position) {
             Fragment fragment = new DiaryFragment();
             Bundle args = new Bundle();
-            LocalDate nextDate = currentDate.plusDays(position - START_POS_VIEWPAGER);
+            LocalDate nextDate = startDate.plusDays(position - START_POS_VIEWPAGER);
             args.putSerializable(SWIPING_TO_DATE, nextDate);
             fragment.setArguments(args);
             return fragment;

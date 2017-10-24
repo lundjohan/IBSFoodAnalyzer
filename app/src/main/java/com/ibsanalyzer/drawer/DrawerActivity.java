@@ -1,5 +1,8 @@
 package com.ibsanalyzer.drawer;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -9,17 +12,31 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ibsanalyzer.base_classes.Event;
+import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.diary.DiaryContainerFragment;
 import com.ibsanalyzer.diary.DiaryFragment;
 import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.StatOptionsFragment;
 import com.ibsanalyzer.diary.TemplateFragment;
+import com.ibsanalyzer.external_storage.ExternalStorageHandler;
+import com.ibsanalyzer.util.Util;
+import com.ipaulpro.afilechooser.utils.FileUtils;
 
+import org.threeten.bp.LocalDate;
+
+import java.io.File;
 import java.util.List;
+
+import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
+import static com.ibsanalyzer.constants.Constants.IMPORT_DATABASE;
+import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
+import static com.ibsanalyzer.constants.Constants.LOCALDATE;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment
@@ -29,6 +46,7 @@ public class DrawerActivity extends AppCompatActivity
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
+    File dbFileToImport = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +90,7 @@ public class DrawerActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -141,8 +160,7 @@ public class DrawerActivity extends AppCompatActivity
 
     @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
-        // DiaryFragment diary = accessDiaryFragment();
-        // diary.addEventsToDiary(events);
+
     }
 
     @Override
@@ -185,5 +203,91 @@ public class DrawerActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK){
+            return;
+        }
+        switch (requestCode) {
+            case IMPORT_DATABASE:
+                if (data != null) {
+                    // Get the URI of the selected file
+                    final Uri uri = data.getData();
+                    Log.i("Debug", "Uri = " + uri.toString());
+                    try {
+                        // Get the file path from the URI
+                        final String path = FileUtils.getPath(this, uri);
+                        Toast.makeText(getApplicationContext(),
+                                "File Selected: " + path, Toast.LENGTH_LONG).show();
+
+                        if (path != null && FileUtils.isLocal(path)) {
+                            dbFileToImport = new File(path);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (dbFileToImport != null) {
+                        ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
+                        asyncThread.execute(0);
+                    }
+                    dbFileToImport = null;
+                }
+                break;
+            case LOAD_EVENTS_FROM_EVENTSTEMPLATE:
+                if (data.hasExtra(EVENTS_TO_LOAD)) {
+                    List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra(EVENTS_TO_LOAD);
+                    LocalDate ld = addEventsToDatabase(eventsToReturn);
+                    startDiaryAtDate(ld);
+
+
+                }
+                break;
+        }
+    }
+
+    public LocalDate addEventsToDatabase(List<Event> events) {
+        for (Event e : events) {
+            DBHandler dbHandler = new DBHandler(getApplicationContext());
+            dbHandler.addEvent(e, Util.getTypeOfEvent(e));
+        }
+        return events.get(events.size()-1).getTime().toLocalDate();
+    }
+    private void startDiaryAtDate(LocalDate ld){
+        Fragment fragment = new DiaryContainerFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(LOCALDATE, ld);
+        fragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+    private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
+        final String TAG = this.getClass().getName();
+        File file = null;
+
+        public ImportDBAsyncTask(File file) {
+            this.file = file;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... notUsedParams) {
+            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getApplicationContext());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void notUsed) {
+            try {
+               // adapter.getDiaryFragment().fillEventListWithDatabase(LocalDate.now());
+
+            } catch (Exception e) {
+                Log.d(TAG, "Adapter could not be updated after replacement of database");
+                e.printStackTrace();
+            }
+        }
     }
 }

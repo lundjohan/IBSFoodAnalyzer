@@ -15,6 +15,8 @@ public class Constants {
     //Database operations
     public final static String DIRECTORY_IBSFOODANALYZER = "ibsFoodAnalyzer";
     public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
+    public final static int IMPORT_DATABASE = 1357;
+
     //Other
 
     //Swipe in Diary
@@ -61,6 +63,8 @@ public class Constants {
 
     public final static String ID_OF_EVENTSTEMPLATE = "idOfEventsTemplate";
     public final static String LIST_OF_EVENTS = "listOfEvents";
+
+    public final static String LOCALDATE = "localDateToStartDiaryIn";
     //used in various cases
     public static final int MEAL = 0, OTHER = 1, EXERCISE = 2, BM = 3, RATING = 4;
     //***************************************STATISTICS*********************************************
