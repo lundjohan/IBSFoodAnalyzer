@@ -3,7 +3,6 @@ package com.ibsanalyzer.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -174,6 +173,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_TAGTEMPLATES, null, null);
         db.close();
     }
+
     public void deleteAllTablesRowsExceptTagTemplates() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_EVENTSTEMPLATES, null, null);
@@ -324,12 +324,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return addEventHelper1(event, values, typeOfEvent);
     }
 
-    private long addEventHelper1(Event event, ContentValues values, long typeOfEvent){
+    private long addEventHelper1(Event event, ContentValues values, long typeOfEvent) {
         values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
-        values.put (COLUMN_DATE,DateTimeFormat.dateToSqLiteFormat(event.getTime().toLocalDate()));
+        values.put(COLUMN_DATE, DateTimeFormat.dateToSqLiteFormat(event.getTime().toLocalDate()));
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
         return addEventHelper2(event, values);
     }
+
     private long addEventHelper2(Event event, ContentValues values) {
         SQLiteDatabase db = this.getWritableDatabase();
         long eventId = db.insert(TABLE_EVENTS, DATABASE_NAME, values);
@@ -342,7 +343,7 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         //Exercise is does not inherit InputEvent but has one tag
-        else if (event instanceof Exercise){
+        else if (event instanceof Exercise) {
             Tag t = ((Exercise) event).getTypeOfExercise();
             addTag(t, eventId);
         }
@@ -591,8 +592,9 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT * FROM " + nameOfEventTable + " WHERE " + COLUMN_EVENT + " =" +
                 " ?";
-        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});  //c blir null när laddas från eventstemplate, varför?
-        Log.d("Cursor", DatabaseUtils.dumpCursorToString(c));
+        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});  //c blir null när
+        // laddas från eventstemplate, varför?
+        // Log.d("Cursor", DatabaseUtils.dumpCursorToString(c));
         return c;
     }
 
@@ -1023,28 +1025,28 @@ public class DBHandler extends SQLiteOpenHelper {
     //99% copy pasted from DBHandler getAllEventsSorted.
     public List<Event> getAllEventsSortedFromDay(LocalDate currentDate) {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATE + " =? " + " ORDER BY " + COLUMN_DATETIME + "" +
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATE + " =? " +
+                " ORDER BY " + COLUMN_DATETIME + "" +
                 " ASC";
         Cursor c = db.rawQuery(QUERY, new String[]{DateTimeFormat.dateToSqLiteFormat(currentDate)});
         List<Event> eventList = new ArrayList<>();
         if (c != null) {
             if (c.moveToFirst()) {
                 while (!c.isAfterLast()) {
-                   try {
+                    try {
 
-                       long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                       String dateTime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                       LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(dateTime);
-                       int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
-                       Event event = getEvent(eventId, ldt, typeOfEvent);
-                       eventList.add(event);
-                       c.moveToNext();
-                   }
-                   catch (Exception e){
-                       Log.e(TAG, "Something went wrong reading an event, jumping to next");
-                       Log.e(TAG, "exception", e);
-                       c.moveToNext();
-                   }
+                        long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                        String dateTime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(dateTime);
+                        int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
+                        Event event = getEvent(eventId, ldt, typeOfEvent);
+                        eventList.add(event);
+                        c.moveToNext();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Something went wrong reading an event, jumping to next");
+                        Log.e(TAG, "exception", e);
+                        c.moveToNext();
+                    }
                 }
             }
         }

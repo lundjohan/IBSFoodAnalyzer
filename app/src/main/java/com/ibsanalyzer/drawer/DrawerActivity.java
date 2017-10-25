@@ -25,8 +25,6 @@ import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.StatOptionsFragment;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
-import com.ibsanalyzer.util.Util;
-import com.ipaulpro.afilechooser.FileChooserActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.threeten.bp.LocalDate;
@@ -151,7 +149,8 @@ public class DrawerActivity extends AppCompatActivity
     public void startTemplateFragment(LocalDate date) {
         //toggle.setHomeAsUpIndicator(null);
         Fragment fragment = new TemplateFragment();
-        //save old date in case backbutton is pressen (spaghetti-code, can I get backstack to work properly is this unnecessary)
+        //save old date in case backbutton is pressen (spaghetti-code, can I get backstack to
+        // work properly is this unnecessary)
         this.dateBeforeTemplate = date;
 
         getSupportFragmentManager().beginTransaction()
@@ -213,7 +212,7 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK){
+        if (resultCode != RESULT_OK) {
             return;
         }
         switch (requestCode) {
@@ -244,7 +243,8 @@ public class DrawerActivity extends AppCompatActivity
                 break;
             case LOAD_EVENTS_FROM_EVENTSTEMPLATE:
                 if (data.hasExtra(EVENTS_TO_LOAD)) {
-                    List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra(EVENTS_TO_LOAD);
+                    List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra
+                            (EVENTS_TO_LOAD);
                     LocalDate ld = addEventsToDatabase(eventsToReturn);
                     startDiaryAtDate(ld);
 
@@ -257,9 +257,10 @@ public class DrawerActivity extends AppCompatActivity
     public LocalDate addEventsToDatabase(List<Event> events) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         dbHandler.addEventsWithUnknownTagTemplates(events);
-        return events.get(events.size()-1).getTime().toLocalDate();
+        return events.get(events.size() - 1).getTime().toLocalDate();
     }
-    private void startDiaryAtDate(LocalDate ld){
+
+    private void startDiaryAtDate(LocalDate ld) {
         Fragment fragment = new DiaryContainerFragment();
         Bundle args = new Bundle();
         args.putSerializable(LOCALDATE, ld);
@@ -268,6 +269,7 @@ public class DrawerActivity extends AppCompatActivity
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
+
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
         File file = null;
@@ -285,7 +287,7 @@ public class DrawerActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(Void notUsed) {
             try {
-               // adapter.getDiaryFragment().fillEventListWithDatabase(LocalDate.now());
+                // adapter.getDiaryFragment().fillEventListWithDatabase(LocalDate.now());
 
             } catch (Exception e) {
                 Log.d(TAG, "Adapter could not be updated after replacement of database");

@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.adapters.TabPagerAdapter;
 import com.ibsanalyzer.base_classes.Event;
@@ -30,11 +27,9 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import org.threeten.bp.LocalDate;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
-import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
@@ -241,39 +236,40 @@ public class MainActivity extends AppCompatActivity {//, StatFragment.StatFragme
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK){
+        if (resultCode != RESULT_OK) {
             return;
         }
         switch (requestCode) {
             case REQUEST_CODE:
-                    if (data != null) {
-                        // Get the URI of the selected file
-                        final Uri uri = data.getData();
-                        Log.i("Debug", "Uri = " + uri.toString());
-                        try {
-                            // Get the file path from the URI
-                            final String path = FileUtils.getPath(this, uri);
-                            Toast.makeText(getApplicationContext(),
-                                    "File Selected: " + path, Toast.LENGTH_LONG).show();
+                if (data != null) {
+                    // Get the URI of the selected file
+                    final Uri uri = data.getData();
+                    Log.i("Debug", "Uri = " + uri.toString());
+                    try {
+                        // Get the file path from the URI
+                        final String path = FileUtils.getPath(this, uri);
+                        Toast.makeText(getApplicationContext(),
+                                "File Selected: " + path, Toast.LENGTH_LONG).show();
 
-                            if (path != null && FileUtils.isLocal(path)) {
-                                dbFileToImport = new File(path);
-                            }
+                        if (path != null && FileUtils.isLocal(path)) {
+                            dbFileToImport = new File(path);
+                        }
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        if (dbFileToImport != null) {
-                            ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
-                            asyncThread.execute(0);
-                        }
-                        dbFileToImport = null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                    if (dbFileToImport != null) {
+                        ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
+                        asyncThread.execute(0);
+                    }
+                    dbFileToImport = null;
+                }
                 break;
             case LOAD_EVENTS_FROM_EVENTSTEMPLATE:
                 if (data.hasExtra(EVENTS_TO_LOAD)) {
-                    List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra(EVENTS_TO_LOAD);
-                 //   addEventsFromEventsTemplateToDiary(eventsToReturn);
+                    List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra
+                            (EVENTS_TO_LOAD);
+                    //   addEventsFromEventsTemplateToDiary(eventsToReturn);
                 }
                 break;
         }

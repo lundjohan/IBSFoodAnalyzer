@@ -17,12 +17,11 @@ import static com.ibsanalyzer.constants.Constants.SWIPING_TO_DATE;
 
 /**
  * This class uses an adapter that is using DiaryFragment
- *
  */
 public class DiaryContainerFragment extends Fragment {
     //preferably even number, variables used for setting correct date after swipe
     private static int MAX_SLIDES = 1000;
-    private static int START_POS_VIEWPAGER = MAX_SLIDES/2;
+    private static int START_POS_VIEWPAGER = MAX_SLIDES / 2;
     ViewPager pager;
     DiarySlidePagerAdapter adapter;
     LocalDate startDate;
@@ -39,7 +38,7 @@ public class DiaryContainerFragment extends Fragment {
 
 
         Bundle args = getArguments();
-        if (args!= null) {
+        if (args != null) {
             startDate = (LocalDate) args.getSerializable(LOCALDATE);
         }
         if (startDate == null) {
@@ -60,7 +59,6 @@ public class DiaryContainerFragment extends Fragment {
         }
 
         /**
-         *
          * @param position is used to set correct date also after swipe
          * @return
          */

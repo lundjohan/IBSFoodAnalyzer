@@ -151,8 +151,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         Bundle b = this.getArguments();
         if (b != null) {
             changeToDate((LocalDate) b.getSerializable(SWIPING_TO_DATE));
-        }
-        else {
+        } else {
             changeToDate(LocalDate.now());
         }
 
@@ -327,7 +326,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
 
 
-
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
     public void onClick(View v) {
@@ -364,7 +362,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         startActivityForResult(intent, NEW_RATING);
     }
 
-    private void addDateToNewEventIntent(Intent intent){
+    private void addDateToNewEventIntent(Intent intent) {
         intent.putExtra(DATE_TO_START_NEW_EVENTACTIVITY, (Serializable) currentDate);
     }
 
