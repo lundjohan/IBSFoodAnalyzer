@@ -3,6 +3,7 @@ package com.ibsanalyzer.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -17,6 +18,7 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
+import com.ibsanalyzer.exceptions.CorruptedEventException;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.util.Util;
@@ -279,10 +281,15 @@ public class DBHandler extends SQLiteOpenHelper {
         if (c != null) {
             if (c.moveToFirst()) {
                 while (!c.isAfterLast()) {
-                    long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                    Log.d("Debug", "eventId loaded from inside an EventsTemplate: " + eventId);
-                    Event e = getEvent(eventId);
-                    events.add(e); //här: e == null
+                    try {
+                        long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                        Log.d("Debug", "eventId loaded from inside an EventsTemplate: " + eventId);
+                        Event e = getEvent(eventId);
+                        events.add(e); //här: e == null
+                    }
+                    catch(CorruptedEventException e){
+                        Log.e("CorruptedEvent ", e.getMessage());
+                    }
                     c.moveToNext();
                 }
             }
@@ -442,12 +449,17 @@ public class DBHandler extends SQLiteOpenHelper {
         if (c != null) {
             if (c.moveToFirst()) {
                 while (!c.isAfterLast()) {
-                    long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                    String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                    LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
-                    int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
-                    Event event = getEvent(eventId, ldt, typeOfEvent);
-                    eventList.add(event);
+                    try {
+                        long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                        String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
+                        int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
+                        Event event = getEvent(eventId, ldt, typeOfEvent);
+                        eventList.add(event);
+                    }
+                    catch(CorruptedEventException e){
+                        Log.e("CorruptedEvent ", e.toString());
+                    }
                     c.moveToNext();
                 }
             }
@@ -457,7 +469,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return eventList;
     }
 
-    private Event getEvent(long eventId) {
+    private Event getEvent(long eventId) throws CorruptedEventException {
         SQLiteDatabase db = this.getReadableDatabase();
         Event e = null;
         final String QUERY = "SELECT *  FROM " + TABLE_EVENTS + " WHERE " +
@@ -474,7 +486,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return e;
     }
 
-    private Event getEvent(long eventId, LocalDateTime ldt, int typeOfEvent) {
+    private Event getEvent(long eventId, LocalDateTime ldt, int typeOfEvent) throws
+            CorruptedEventException {
         Event event = null;
         switch (typeOfEvent) {
             case MEAL:
@@ -494,16 +507,16 @@ public class DBHandler extends SQLiteOpenHelper {
                 break;
         }
         if (event == null) {
-            throw new NullPointerException("Event should not be null here");
+            throw new CorruptedEventException("Event should not be null here");
         }
         return event;
     }
 
-    private Event retrieveMeal(long eventId, LocalDateTime ldt) {
+    private Event retrieveMeal(long eventId, LocalDateTime ldt) throws CorruptedEventException {
         Cursor c = retrieveHelper(eventId, TABLE_MEALS);
         Meal meal = null;
         if (c != null) {
-            if (c.moveToFirst()) {
+            if (c.moveToFirst()) {  //hoppar här
                 double portions = c.getDouble(c.getColumnIndex(COLUMN_PORTIONS));
                 List<Tag> tags = getTagsWithEventId(eventId);
                 meal = new Meal(ldt, tags, portions);
@@ -512,12 +525,12 @@ public class DBHandler extends SQLiteOpenHelper {
         c.close();
         this.close();
         if (meal == null) {
-            throw new NullPointerException("Meal event should not be null here");
+            throw new CorruptedEventException("Meal event should not be null here");
         }
         return meal;
     }
 
-    private Event retrieveOther(long eventId, LocalDateTime ldt) {
+    private Event retrieveOther(long eventId, LocalDateTime ldt) throws CorruptedEventException {
         Cursor c = retrieveHelper(eventId, TABLE_OTHERS);
         Other other = null;
         if (c != null) {
@@ -529,12 +542,12 @@ public class DBHandler extends SQLiteOpenHelper {
         c.close();
         this.close();
         if (other == null) {
-            throw new NullPointerException("Other event should not be null here");
+            throw new CorruptedEventException("Other event should not be null here");
         }
         return other;
     }
 
-    private Event retrieveExercise(long eventId, LocalDateTime ldt) {
+    private Event retrieveExercise(long eventId, LocalDateTime ldt) throws CorruptedEventException {
         Cursor c = retrieveHelper(eventId, TABLE_EXERCISES);
         Exercise exercise = null;
         if (c != null) {
@@ -547,12 +560,12 @@ public class DBHandler extends SQLiteOpenHelper {
         c.close();
         this.close();
         if (exercise == null) {
-            throw new NullPointerException("Exercise event should not be null here");
+            throw new CorruptedEventException("Exercise event should not be null here");
         }
         return exercise;
     }
 
-    private Event retrieveBm(long eventId, LocalDateTime ldt) {
+    private Event retrieveBm(long eventId, LocalDateTime ldt) throws CorruptedEventException {
         Cursor c = retrieveHelper(eventId, TABLE_BMS);
         Bm bm = null;
         if (c != null) {
@@ -565,12 +578,12 @@ public class DBHandler extends SQLiteOpenHelper {
         c.close();
         this.close();
         if (bm == null) {
-            throw new NullPointerException("Bm event should not be null here");
+            throw new CorruptedEventException("Bm event should not be null here");
         }
         return bm;
     }
 
-    private Event retrieveRating(long eventId, LocalDateTime ldt) {
+    private Event retrieveRating(long eventId, LocalDateTime ldt) throws CorruptedEventException {
         Cursor c = retrieveHelper(eventId, TABLE_RATINGS);
         Rating rating = null;
         if (c != null) {
@@ -582,7 +595,7 @@ public class DBHandler extends SQLiteOpenHelper {
         c.close();
         this.close();
         if (rating == null) {
-            throw new NullPointerException("Rating event should not be null here");
+            throw new CorruptedEventException("Rating event should not be null here");
         }
         return rating;
     }
@@ -594,7 +607,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 " ?";
         Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});  //c blir null när
         // laddas från eventstemplate, varför?
-        // Log.d("Cursor", DatabaseUtils.dumpCursorToString(c));
+        Log.d("Cursor", DatabaseUtils.dumpCursorToString(c));
         return c;
     }
 
@@ -1042,7 +1055,7 @@ public class DBHandler extends SQLiteOpenHelper {
                         Event event = getEvent(eventId, ldt, typeOfEvent);
                         eventList.add(event);
                         c.moveToNext();
-                    } catch (Exception e) {
+                    } catch (CorruptedEventException e) {
                         Log.e(TAG, "Something went wrong reading an event, jumping to next");
                         Log.e(TAG, "exception", e);
                         c.moveToNext();
