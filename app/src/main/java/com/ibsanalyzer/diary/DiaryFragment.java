@@ -67,9 +67,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
-        void startTemplateFragment();
-
-        void doEventsTemplateAdder(List<Event> events);
+        void startTemplateFragment(LocalDate date);
     }
 
     //the date of the day as put by calender.
@@ -199,7 +197,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         templateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                diaryListener.startTemplateFragment();
+                diaryListener.startTemplateFragment(currentDate);
             }
         });
 

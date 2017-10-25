@@ -26,6 +26,7 @@ import com.ibsanalyzer.diary.StatOptionsFragment;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.util.Util;
+import com.ipaulpro.afilechooser.FileChooserActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.threeten.bp.LocalDate;
@@ -47,6 +48,8 @@ public class DrawerActivity extends AppCompatActivity
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
     File dbFileToImport = null;
+    //used for restablishing date when pressing backButton from TemplateFragment
+    LocalDate dateBeforeTemplate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,17 +148,15 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     @Override
-    public void startTemplateFragment() {
+    public void startTemplateFragment(LocalDate date) {
         //toggle.setHomeAsUpIndicator(null);
         Fragment fragment = new TemplateFragment();
+        //save old date in case backbutton is pressen (spaghetti-code, can I get backstack to work properly is this unnecessary)
+        this.dateBeforeTemplate = date;
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment).addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void doEventsTemplateAdder(List<Event> events) {
-
     }
 
     @Override
@@ -200,6 +201,10 @@ public class DrawerActivity extends AppCompatActivity
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         Fragment fragment = new DiaryContainerFragment();
+        //here place date that was before (this whole method stinks of spaghetti code, but...)
+        Bundle args = new Bundle();
+        args.putSerializable(LOCALDATE, dateBeforeTemplate);
+        fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

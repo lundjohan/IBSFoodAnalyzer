@@ -38,9 +38,7 @@ import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 
-public class MainActivity extends AppCompatActivity implements TemplateFragment
-        .TemplateFragmentListener, DiaryFragment
-        .DiaryFragmentListener, StatOptionsFragment.StatOptionsListener{//, StatFragment.StatFragmentListener {
+public class MainActivity extends AppCompatActivity {//, StatFragment.StatFragmentListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     TabPagerAdapter adapter;
@@ -178,21 +176,6 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
     }
     //==============================================================================================
 
-    @Override
-    public void startTemplateFragment() {
-
-    }
-
-    //this method gets marked events from DiaryFragment and calls EventsTemplateAdder to store them.
-    @Override
-    public void doEventsTemplateAdder(List<Event> events) {
-        Intent intent = new Intent(this, SaveEventsTemplateActivity.class);
-        //Gson gson = new Gson();
-        //String objAsJSON = gson.toJson(events);
-        intent.putExtra(LIST_OF_EVENTS, (Serializable) events);
-        startActivity(intent);
-    }
-
 
     @Override
     public void onRequestPermissionsResult(
@@ -222,15 +205,6 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
         //TODO 3. if this fails, retrieve events from database instead.
         return events;
     }*/
-
-    @Override
-    public void addEventsFromEventsTemplateToDiary(List<Event> events) {
-    }
-
-    @Override
-    public void fixToolBarForTemplateFragment() {
-
-    }
 
    /* @Override
     public void startNestedFragment(Fragment f) {
@@ -299,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements TemplateFragment
             case LOAD_EVENTS_FROM_EVENTSTEMPLATE:
                 if (data.hasExtra(EVENTS_TO_LOAD)) {
                     List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra(EVENTS_TO_LOAD);
-                    addEventsFromEventsTemplateToDiary(eventsToReturn);
+                 //   addEventsFromEventsTemplateToDiary(eventsToReturn);
                 }
                 break;
         }
