@@ -3,6 +3,7 @@ package com.ibsanalyzer.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -591,6 +592,7 @@ public class DBHandler extends SQLiteOpenHelper {
         final String QUERY = "SELECT * FROM " + nameOfEventTable + " WHERE " + COLUMN_EVENT + " =" +
                 " ?";
         Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});  //c blir null när laddas från eventstemplate, varför?
+        Log.d("Cursor", DatabaseUtils.dumpCursorToString(c));
         return c;
     }
 

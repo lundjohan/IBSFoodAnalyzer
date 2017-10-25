@@ -250,10 +250,8 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     public LocalDate addEventsToDatabase(List<Event> events) {
-        for (Event e : events) {
-            DBHandler dbHandler = new DBHandler(getApplicationContext());
-            dbHandler.addEvent(e, Util.getTypeOfEvent(e));
-        }
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+        dbHandler.addEventsWithUnknownTagTemplates(events);
         return events.get(events.size()-1).getTime().toLocalDate();
     }
     private void startDiaryAtDate(LocalDate ld){
