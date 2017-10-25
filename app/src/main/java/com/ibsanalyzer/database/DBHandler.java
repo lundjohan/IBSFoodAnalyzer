@@ -310,11 +310,8 @@ public class DBHandler extends SQLiteOpenHelper {
     private long addEventToRefEventsTemplate(Event event, long typeOfEvent, long
             idOfEventsTemplate) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
-        values.put(COLUMN_DATE, DateTimeFormat.dateToSqLiteFormat(event.getTime().toLocalDate()));
-        values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
         values.put(COLUMN_EVENTSTEMPLATE, idOfEventsTemplate);
-        return addEventHelper(event, values);
+        return addEventHelper1(event, values, typeOfEvent);
     }
 
     /**
@@ -323,15 +320,16 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     public long addEvent(Event event, long typeOfEvent) {
         ContentValues values = new ContentValues();
+        return addEventHelper1(event, values, typeOfEvent);
+    }
+
+    private long addEventHelper1(Event event, ContentValues values, long typeOfEvent){
         values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
         values.put (COLUMN_DATE,DateTimeFormat.dateToSqLiteFormat(event.getTime().toLocalDate()));
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
-        return addEventHelper(event, values);
+        return addEventHelper2(event, values);
     }
-
-    private long addEventHelper(Event event, ContentValues values) {
-
-
+    private long addEventHelper2(Event event, ContentValues values) {
         SQLiteDatabase db = this.getWritableDatabase();
         long eventId = db.insert(TABLE_EVENTS, DATABASE_NAME, values);
         //if inputEvent (Meal, Other)=> add tags
@@ -592,7 +590,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT * FROM " + nameOfEventTable + " WHERE " + COLUMN_EVENT + " =" +
                 " ?";
-        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
+        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});  //c blir null när laddas från eventstemplate, varför?
         return c;
     }
 
