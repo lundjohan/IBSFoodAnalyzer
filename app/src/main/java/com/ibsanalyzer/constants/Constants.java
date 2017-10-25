@@ -51,6 +51,8 @@ public class Constants {
     public final static String ID_OF_EVENT = "idOfEvent";
     public final static String ID_OF_EVENT_RETURNED = "idOfEventReturned";
 
+    public final static String DATE_TO_START_NEW_EVENTACTIVITY = "dateToStartNewEventActivity";
+
  //sent to Activity handling of EventsTemplates
     public final static String EVENTSTEMPLATE_TO_CHANGE = "eventsTemplateToChange";
 

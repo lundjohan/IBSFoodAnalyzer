@@ -32,6 +32,7 @@ import org.threeten.bp.LocalTime;
 
 import java.util.Calendar;
 
+import static com.ibsanalyzer.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 
@@ -123,7 +124,15 @@ public abstract class EventActivity extends AppCompatActivity implements
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
             setDateView(e.getTime().toLocalDate());
             setTimeView(e.getTime().toLocalTime());
-        } else {
+        }
+        //is the event created from scratch, inside diary, the get the start date from open day
+        else if(intent.hasExtra(DATE_TO_START_NEW_EVENTACTIVITY)){
+            LocalDate ld = (LocalDate) intent.getSerializableExtra(DATE_TO_START_NEW_EVENTACTIVITY);
+            setDateView(ld);
+            setTimeView(LocalTime.now()); //must still be set
+        }
+
+        else {
             setDateView(LocalDate.now());
             setTimeView(LocalTime.now());
         }

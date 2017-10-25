@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT;
@@ -337,29 +338,37 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     public void newMealActivity(View view) {
         Intent intent = new Intent(getActivity(), MealActivity.class);
+        addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_MEAL);
     }
 
     public void newOtherActivity(View v) {
         Intent intent = new Intent(getActivity(), OtherActivity.class);
+        addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_OTHER);
     }
 
     public void newExerciseActivity(View v) {
         Intent intent = new Intent(getActivity(), ExerciseActivity.class);
+        addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_EXERCISE);
     }
 
     public void newBmActivity(View v) {
         Intent intent = new Intent(getActivity(), BmActivity.class);
+        addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_BM);
     }
 
     public void newScoreItem(View view) {
         Intent intent = new Intent(getActivity(), RatingActivity.class);
+        addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_RATING);
     }
 
+    private void addDateToNewEventIntent(Intent intent){
+        intent.putExtra(DATE_TO_START_NEW_EVENTACTIVITY, (Serializable) currentDate);
+    }
 
     /*
     Obs krasch om man klickar för snabbt, i alla fall vid ec.adapter.notifyItemRemoved!
