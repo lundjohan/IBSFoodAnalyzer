@@ -45,7 +45,7 @@ public class DiaryContainerFragment extends Fragment {
         if (startDate == null) {
             startDate = LocalDate.now();
         }
-        adapter = new DiarySlidePagerAdapter(getFragmentManager());
+        adapter = new DiarySlidePagerAdapter(getChildFragmentManager());
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(MAX_SLIDES / 2);
@@ -78,6 +78,6 @@ public class DiaryContainerFragment extends Fragment {
         public int getCount() {
             return MAX_SLIDES;
         }
-    }
 
+    }
 }

@@ -5,7 +5,7 @@ package com.ibsanalyzer.database;
  */
 
 public class TablesAndStrings {
-    public static final int DATABASE_VERSION = 24;
+    public static final int DATABASE_VERSION = 28;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -102,7 +102,7 @@ public class TablesAndStrings {
             TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_DATETIME + " TEXT NOT NULL, " +
-            COLUMN_DATE + " TEXT, " +
+            COLUMN_DATE + " TEXT NOT NULL, " +
             COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL, " +
             //this column is only used when event is inside a EventsTemplate, otherwise null
             COLUMN_EVENTSTEMPLATE + " INTEGER, " +

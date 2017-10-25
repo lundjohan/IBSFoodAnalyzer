@@ -311,6 +311,7 @@ public class DBHandler extends SQLiteOpenHelper {
             idOfEventsTemplate) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
+        values.put(COLUMN_DATE, DateTimeFormat.dateToSqLiteFormat(event.getTime().toLocalDate()));
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
         values.put(COLUMN_EVENTSTEMPLATE, idOfEventsTemplate);
         return addEventHelper(event, values);
@@ -329,6 +330,8 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     private long addEventHelper(Event event, ContentValues values) {
+
+
         SQLiteDatabase db = this.getWritableDatabase();
         long eventId = db.insert(TABLE_EVENTS, DATABASE_NAME, values);
         //if inputEvent (Meal, Other)=> add tags
@@ -1030,8 +1033,8 @@ public class DBHandler extends SQLiteOpenHelper {
                    try {
 
                        long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                       String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                       LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
+                       String dateTime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                       LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(dateTime);
                        int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
                        Event event = getEvent(eventId, ldt, typeOfEvent);
                        eventList.add(event);
