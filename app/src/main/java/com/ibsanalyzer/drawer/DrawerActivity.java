@@ -1,5 +1,6 @@
 package com.ibsanalyzer.drawer;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -25,6 +26,8 @@ import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.StatOptionsFragment;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
+import com.ibsanalyzer.external_storage.SaveDBIntentService;
+import com.ibsanalyzer.settings.GeneralSettingsActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.threeten.bp.LocalDate;
@@ -109,6 +112,8 @@ public class DrawerActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(this, GeneralSettingsActivity.class);
+            startActivity(i);
             return true;
         }
         //this is solely used from TemplateFragment
@@ -120,31 +125,61 @@ public class DrawerActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        Fragment fragment;
+        switch (item.getItemId()){
+            case R.id.nav_diary:
+                fragment = new DiaryContainerFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                break;
 
-        if (id == R.id.nav_diary) {
-            Fragment fragment = new DiaryContainerFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
+            case R.id.nav_statistics:
+                    fragment = new StatOptionsFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+                break;
 
-        } else if (id == R.id.nav_statistics) {
-            Fragment fragment = new StatOptionsFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-
+            case R.id.importMenuItem:
+                showChooser();
+                break;
+            case R.id.exportMenuItem:
+                //ok, write to file? Otherwise ask for permission
+                ExternalStorageHandler.showWritablePermission(this);
+                //IntentService
+                Intent intent = new Intent(this, SaveDBIntentService.class);
+                startService(intent);
+                break;
+            case R.id.clearDBItem:
+                DBHandler dbHandler = new DBHandler(getApplicationContext());
+                dbHandler.deleteAllTablesRowsExceptTagTemplates();
+                startDiaryAtDate(LocalDate.now());
+                break;
+            case R.id.aboutItem:
+                //TODO: Apache 2.0 talk about the external libraries.
+                break;
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return super.onOptionsItemSelected(item);
     }
-
+    //code reused from aFileChooser example
+    private void showChooser() {
+        // Use the GET_CONTENT intent from the utility class
+        Intent target = FileUtils.createGetContentIntent();
+        // Create the chooser Intent
+        Intent intent = Intent.createChooser(
+                target, getString(R.string.chooser_title));
+        try {
+            startActivityForResult(intent, IMPORT_DATABASE);
+        } catch (ActivityNotFoundException e) {
+            // The reason for the existence of aFileChooser
+        }
+    }
     @Override
     public void startTemplateFragment(LocalDate date) {
         //toggle.setHomeAsUpIndicator(null);

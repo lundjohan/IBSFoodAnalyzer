@@ -10,6 +10,19 @@
             android:id="@+id/nav_statistics"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Statistics"/>
+        <item
+            android:id="@+id/importMenuItem"
+            android:title="Import from file"/>
+        <item
+            android:id="@+id/exportMenuItem"
+            android:title="Export to file"
+            />
+        <item
+            android:id="@+id/clearDBItem"
+            android:title="Clear Database"/>
+        <item
+            android:id="@+id/aboutItem"
+            android:title="About"/>
     </group>
 
 </menu>
