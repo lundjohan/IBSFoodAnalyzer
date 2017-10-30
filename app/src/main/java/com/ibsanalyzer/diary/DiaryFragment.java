@@ -68,6 +68,9 @@ public class DiaryFragment extends Fragment implements EventsContainer
     // Container Activity must implement this interface
     public interface DiaryFragmentListener {
         void startTemplateFragment(LocalDate date);
+
+        //when user picks a date from calendar.
+        void changeDate(LocalDate date);
     }
 
     //the date of the day as put by calender.
@@ -554,7 +557,8 @@ public class DiaryFragment extends Fragment implements EventsContainer
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         //month datepicker +1 == LocalDate.Month
         LocalDate d = LocalDate.of(year, month + 1, dayOfMonth);
-        changeToDate(d);
-        fillEventListWithDatabase(d);
+        if (d != currentDate) {
+            diaryListener.changeDate(d);
+        }
     }
 }

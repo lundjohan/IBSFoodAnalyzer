@@ -201,6 +201,11 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     @Override
+    public void changeDate(LocalDate date) {
+        startDiaryAtDate(date);
+    }
+
+    @Override
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
 
     }
