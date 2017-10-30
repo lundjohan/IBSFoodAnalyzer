@@ -189,7 +189,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         dateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDatePickerInDiary(v);
+                startDatePickerInDiary();
             }
         });
         ImageButton templateBtn = (ImageButton) view.findViewById(R.id.template_btn);
@@ -543,7 +543,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
                 .getMonth().toString() + ", " + Integer.toString(ld.getYear()));
     }
 
-    public void startDatePickerInDiary(View view) {
+    public void startDatePickerInDiary() {
         DatePickerFragment newFragment = new DatePickerFragment();
         newFragment.setContext(getContext());
         newFragment.setListener(this);
