@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.ibsanalyzer.settings.StatSettingsActivity;
+
 import static com.ibsanalyzer.diary.R.id.avgBtn;
 
 
@@ -40,6 +42,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         ((Button) view.findViewById(R.id.blueZoneBtn)).setOnClickListener(this);
         ((Button) view.findViewById(R.id.completeBtn)).setOnClickListener(this);
         ((Button) view.findViewById(R.id.bristolBtn)).setOnClickListener(this);
+        ((Button) view.findViewById(R.id.stat_settings)).setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
@@ -60,10 +63,13 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
             case R.id.bristolBtn:
                 newStatActivity(new BristolStatActivity());
                 break;
+            case R.id.stat_settings:
+                newStatActivity(new StatSettingsActivity());
+                break;
         }
     }
 
-    private void newStatActivity(StatActivity instance) {
+    private void newStatActivity(Activity instance) {
         Intent intent = new Intent((Activity) this.callback, instance.getClass());
         startActivity(intent);
     }
