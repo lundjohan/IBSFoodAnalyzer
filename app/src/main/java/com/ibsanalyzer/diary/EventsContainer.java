@@ -145,6 +145,9 @@ public class EventsContainer {
         adapter.notifyItemRemoved(pos);
         user.addEventToList(e);
     }
+    public View getItemView(int pos){
+       return layoutManager.findViewByPosition(pos);
+    }
 
     public interface EventsContainerUser extends EventAdapter
             .EventAdapterUser, View.OnClickListener {

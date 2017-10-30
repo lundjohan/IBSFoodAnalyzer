@@ -218,6 +218,18 @@ public class DiaryFragment extends Fragment implements EventsContainer
                 EventsTemplateAdapter.startLoadEventsTemplate(et, getActivity());
             }
         });
+        ImageButton cancelBtn = (ImageButton) view.findViewById(R.id.cancel_btn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = eventsMarked.size()-1; i >=0; i--){
+                    View itemView = ec.getItemView(eventsMarked.get(i));
+                    if (itemView != null) {
+                        removeEventsMarked(itemView, eventsMarked.get(i));
+                    }
+                }
+            }
+        });
     }
 
     private void doEventsTemplateAdder(List<Event> events) {
@@ -452,14 +464,8 @@ public class DiaryFragment extends Fragment implements EventsContainer
     // given: markingModeIsOn
     private void clickHelper(View v, int position) {
         if (eventIsMarked(position)) {
-            eventsMarked.remove(Integer.valueOf(position)); //remove special case integer
-            v.setBackgroundColor(Color.WHITE);
+            removeEventsMarked(v, position);
 
-            //if last item now is unmarked, then change back menu.
-            if (!markingModeIsOn()) {
-                changeToTabbedMenu();
-
-            }
         } else {   //markingModeIsOn but eventIsNotMarked
             eventsMarked.add(position);
 
@@ -469,7 +475,17 @@ public class DiaryFragment extends Fragment implements EventsContainer
             v.setBackgroundColor(BACKGROUND_COLOR);
         }
     }
+    private void removeEventsMarked(View v, int position){
 
+        eventsMarked.remove(Integer.valueOf(position)); //remove special case integer
+        v.setBackgroundColor(Color.WHITE);
+
+        //if last item now is unmarked, then change back menu.
+        if (!markingModeIsOn()) {
+            changeToTabbedMenu();
+
+        }
+    }
     private List<Event> retrieveMarkedEvents() {
         List<Event> eventsToSend = new ArrayList<>();
         for (int i : eventsMarked) {
