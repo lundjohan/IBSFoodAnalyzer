@@ -154,6 +154,13 @@ public class DrawerActivity extends AppCompatActivity
                 Intent intent = new Intent(this, SaveDBIntentService.class);
                 startService(intent);
                 break;
+            case R.id.importFromTxtMenuItem:
+                final DBHandler db = new DBHandler(this);
+                List<Event> events = ExternalStorageHandler.importEventsFromTxt();
+                db.deleteAllTablesRows();
+                db.addEventsWithUnknownTagTemplates(events);
+                startDiaryAtDate(LocalDate.now());
+                break;
             case R.id.clearDBItem:
                 DBHandler dbHandler = new DBHandler(getApplicationContext());
                 dbHandler.deleteAllTablesRowsExceptTagTemplates();
