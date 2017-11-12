@@ -10,11 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.ibsanalyzer.adapters.TagAdapter;
 import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.model.TagTemplate;
+import com.ibsanalyzer.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +118,5 @@ public abstract class TagEventActivity extends EventActivity {
 
 
     }
-
 
 }

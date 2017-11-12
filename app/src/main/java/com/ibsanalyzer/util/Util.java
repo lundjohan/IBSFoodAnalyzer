@@ -1,10 +1,15 @@
 package com.ibsanalyzer.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.ibsanalyzer.base_classes.Bm;
@@ -16,8 +21,10 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.diary.EventActivity;
+import com.ibsanalyzer.diary.R;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,6 +207,36 @@ public class Util {
             throw new NullPointerException("Event should not be null here");
         }
         return -1;
+    }
+
+    public static void useNumberPickerDialog(Activity activity, final TextView textWithNrToChange) {
+        View v = activity.getLayoutInflater().inflate(R.layout.decimal_number_picker, null);
+
+        //for conversion to numbers on both sides of decimal point note that double is inexakt =>
+        // 4.5 can become 4.4999999999, so it's not good idea to simply truncate with (int)
+        Double originalNr = Double.parseDouble((String) textWithNrToChange.getText());
+        int intPart = originalNr.intValue();
+        int decPart = (int) Math.round((originalNr.doubleValue() - (double) intPart) * 10.);
+        final NumberPicker np1 = (NumberPicker) v.findViewById(R.id.numberPicker1);
+        np1.setMinValue(0);
+        np1.setMaxValue(9);
+        np1.setValue(intPart);
+        final NumberPicker np2 = (NumberPicker) v.findViewById(R.id.numberPicker2);
+        np2.setMinValue(0);
+        np2.setMaxValue(9);
+        np2.setValue(decPart);
+        new AlertDialog.Builder(activity)
+                .setView(v)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        double value;
+                        value = np1.getValue() + ((double) np2.getValue()) / 10;
+                        textWithNrToChange.setText(Double.toString(value));
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
 

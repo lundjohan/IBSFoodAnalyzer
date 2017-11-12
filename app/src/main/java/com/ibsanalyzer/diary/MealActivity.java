@@ -1,11 +1,14 @@
 package com.ibsanalyzer.diary;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Meal;
+import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
@@ -22,6 +25,13 @@ public class MealActivity extends TagEventActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         portionView = (TextView) findViewById(R.id.portions);
+        final Activity thisActivity = this;
+        portionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.useNumberPickerDialog(thisActivity, portionView);
+            }
+        });
         Intent intent = getIntent();
         if (intent.hasExtra(EVENT_TO_CHANGE)) {
             Meal meal = (Meal) intent.getSerializableExtra(EVENT_TO_CHANGE);

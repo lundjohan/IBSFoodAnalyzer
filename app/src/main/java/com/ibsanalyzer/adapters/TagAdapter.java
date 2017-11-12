@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.TagEventActivity;
+import com.ibsanalyzer.util.Util;
 
 import java.util.List;
 
@@ -38,8 +39,15 @@ public class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         Tag t = tagsList.get(position);
-        viewHolder.quantity.setText(Double.toString(t.getSize()));
         viewHolder.tagName.setText(t.getName());
+        final TextView quantity = viewHolder.quantity;
+        viewHolder.quantity.setText(Double.toString(t.getSize()));
+        viewHolder.quantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.useNumberPickerDialog(parentActivity, quantity);
+            }
+        });
         viewHolder.deleteTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
