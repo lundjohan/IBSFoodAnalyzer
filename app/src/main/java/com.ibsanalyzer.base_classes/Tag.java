@@ -65,6 +65,10 @@ public class Tag implements Serializable {
         name = s;
 
     }
+    public void setSize(double d) {
+        size = d;
+
+    }
 
     public LocalDateTime getTime() {
         return time;

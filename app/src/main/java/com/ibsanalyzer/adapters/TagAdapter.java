@@ -45,7 +45,7 @@ public class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         viewHolder.quantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.useNumberPickerDialog(parentActivity, quantity);
+                Util.useNumberPickerDialogForTag(parentActivity, quantity, tagsList.get(position));
             }
         });
         viewHolder.deleteTag.setOnClickListener(new View.OnClickListener() {

@@ -242,6 +242,34 @@ public class Util {
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
+    public static void useNumberPickerDialogForTag(Activity activity, final TextView textWithNrToChange, final Tag tag) {
+        View v = activity.getLayoutInflater().inflate(R.layout.decimal_number_picker, null);
+        final NumberPicker np1 = (NumberPicker) v.findViewById(R.id.numberPicker1);
+        setNrsForNumberPicker(np1, true);
+        final NumberPicker np2 = (NumberPicker) v.findViewById(R.id.numberPicker2);
+        setNrsForNumberPicker(np2, false);
+
+        //for conversion to numbers on both sides of decimal point note that double is inexakt =>
+        // 4.5 can become 4.4999999999, so it's not good idea to simply truncate with (int)
+        Double originalNr = Double.parseDouble((String) textWithNrToChange.getText());
+        int intPart = originalNr.intValue();
+        int decPart = (int) Math.round((originalNr.doubleValue() - (double) intPart) * 10.);
+        np1.setValue(intPart);
+        np2.setValue(decPart);
+        new AlertDialog.Builder(activity)
+                .setView(v)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        double value;
+                        value = np1.getValue() + ((double) np2.getValue()) / 10;
+                        textWithNrToChange.setText(Double.toString(value));
+                        tag.setSize(value);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
 
 
 }
