@@ -129,7 +129,7 @@ public class DrawerActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         Fragment fragment;
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_diary:
                 fragment = new DiaryContainerFragment();
                 getSupportFragmentManager().beginTransaction()
@@ -138,10 +138,10 @@ public class DrawerActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_statistics:
-                    fragment = new StatOptionsFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, fragment)
-                            .commit();
+                fragment = new StatOptionsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
                 break;
 
             case R.id.importMenuItem:
@@ -159,7 +159,13 @@ public class DrawerActivity extends AppCompatActivity
                 List<Event> events = ExternalStorageHandler.importEventsFromTxt();
                 db.deleteAllTablesRows();
                 db.addEventsWithUnknownTagTemplates(events);
-                startDiaryAtDate(LocalDate.now());
+                LocalDate startingDate = LocalDate.now();
+                try {
+                    startingDate = events.get(events.size() - 1).getTime().toLocalDate();
+                } catch (Exception e) {
+                    startingDate = LocalDate.now();
+                }
+                startDiaryAtDate(startingDate);
                 break;
             case R.id.clearDBItem:
                 DBHandler dbHandler = new DBHandler(getApplicationContext());
@@ -170,10 +176,14 @@ public class DrawerActivity extends AppCompatActivity
                 //TODO: Apache 2.0 talk about the external libraries.
                 break;
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return super.onOptionsItemSelected(item);
+        return super.
+
+                onOptionsItemSelected(item);
     }
+
     //code reused from aFileChooser example
     private void showChooser() {
         // Use the GET_CONTENT intent from the utility class
@@ -187,6 +197,7 @@ public class DrawerActivity extends AppCompatActivity
             // The reason for the existence of aFileChooser
         }
     }
+
     @Override
     public void startTemplateFragment(LocalDate date) {
         //toggle.setHomeAsUpIndicator(null);
