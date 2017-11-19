@@ -344,10 +344,11 @@ public class DrawerActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Void notUsed) {
-            //after db has been replaced, make the date shown for user the last date filled in new db.
+            //after db has been replaced, make the date shown for user the last date filled in
+            // new db.
             final DBHandler dbImport = new DBHandler(getApplication());
             LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
-            lastDateOfEvents = lastDateOfEvents != null ?lastDateOfEvents : LocalDate.now();
+            lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
             startDiaryAtDate(lastDateOfEvents);
         }
     }

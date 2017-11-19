@@ -286,8 +286,7 @@ public class DBHandler extends SQLiteOpenHelper {
                         Log.d("Debug", "eventId loaded from inside an EventsTemplate: " + eventId);
                         Event e = getEvent(eventId);
                         events.add(e); //här: e == null
-                    }
-                    catch(CorruptedEventException e){
+                    } catch (CorruptedEventException e) {
                         Log.e("CorruptedEvent ", e.getMessage());
                     }
                     c.moveToNext();
@@ -456,8 +455,7 @@ public class DBHandler extends SQLiteOpenHelper {
                         int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
                         Event event = getEvent(eventId, ldt, typeOfEvent);
                         eventList.add(event);
-                    }
-                    catch(CorruptedEventException e){
+                    } catch (CorruptedEventException e) {
                         Log.e("CorruptedEvent ", e.toString());
                     }
                     c.moveToNext();
@@ -1071,21 +1069,17 @@ public class DBHandler extends SQLiteOpenHelper {
     public LocalDate getDateOfLastEvent() {
         SQLiteDatabase db = this.getReadableDatabase();
         //must use datetime and not date since datetime can be used with MAX in sqlite
-        final String QUERY = "Select MAX (" +COLUMN_DATETIME+ ") FROM "+TABLE_EVENTS;/*"SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATETIME + "" +
-                " DESC";*/
-        //final String QUERY =  "SELECT "+ COLUMN_DATETIME +" FROM "+TABLE_EVENTS +" ORDER BY "+COLUMN_DATETIME +" desc LIMIT 1";
-                 //"Select MAX (" +COLUMN_DATETIME+ ") FROM "+TABLE_EVENTS;
+        final String QUERY = "Select MAX (" + COLUMN_DATETIME + ") FROM " + TABLE_EVENTS;
         Cursor c = db.rawQuery(QUERY, null);
-        Log.d(TAG,DatabaseUtils.dumpCursorToString(c));
+        Log.d(TAG, DatabaseUtils.dumpCursorToString(c));
         LocalDate ld = null;
-        if (c != null){
+        if (c != null) {
             c.moveToFirst();
             try {
                 String dateTimeStr = c.getString(0);
                 LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(dateTimeStr);
                 ld = ldt.toLocalDate();
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 ld = null;
                 Log.e(TAG, e.getMessage());
             }
