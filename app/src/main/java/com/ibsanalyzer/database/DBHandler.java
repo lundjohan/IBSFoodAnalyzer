@@ -1067,5 +1067,33 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return eventList;
     }
+
+    public LocalDate getDateOfLastEvent() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        //must use datetime and not date since datetime can be used with MAX in sqlite
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATETIME + "" +
+                " DESC";
+        //final String QUERY =  "SELECT "+ COLUMN_DATETIME +" FROM "+TABLE_EVENTS +" ORDER BY "+COLUMN_DATETIME +" desc LIMIT 1";
+                 //"Select MAX ("+COLUMN_DATETIME+") FROM "+TABLE_EVENTS;
+        Cursor c = db.rawQuery(QUERY, null);
+        Log.d(TAG,DatabaseUtils.dumpCursorToString(c));
+        LocalDate ld = null;
+        if (c != null){
+            c.moveToFirst();
+            try {
+                String dateTimeStr = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(dateTimeStr);
+                ld = ldt.toLocalDate();
+            }
+            catch (Exception e){
+                ld = null;
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        c.close();
+        db.close();
+        return ld;
+
+    }
 }
 

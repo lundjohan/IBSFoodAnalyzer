@@ -5,7 +5,7 @@ package com.ibsanalyzer.database;
  */
 
 public class TablesAndStrings {
-    public static final int DATABASE_VERSION = 28;
+    public static final int DATABASE_VERSION = 29;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
