@@ -13,6 +13,7 @@ import java.util.List;
 public abstract class Event implements Comparable<Event>, Serializable {
     protected LocalDateTime time;
     protected boolean isBreak;
+    protected String comment;
 
     public Event(LocalDateTime time) {
         this.time = time;
@@ -68,6 +69,13 @@ public abstract class Event implements Comparable<Event>, Serializable {
         }
         return breaks;
 
+    }
+
+    public String getComment() {
+        return comment;
+    }
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     //classes for parceable, most of them are implemented higher up in hierarchy.

@@ -5,7 +5,7 @@ package com.ibsanalyzer.database;
  */
 
 public class TablesAndStrings {
-    public static final int DATABASE_VERSION = 29;
+    public static final int DATABASE_VERSION = 30;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -33,6 +33,7 @@ public class TablesAndStrings {
     //Event
     public static final String TABLE_EVENTS = "events";
     public static final String COLUMN_TAGS = "tags";
+    public static final String COLUMN_COMMENT = "comment";
 
     //Event => many-to-many =>  Tags
     public static final String COLUMN_TYPE_OF_EVENT = "type_of_event";
@@ -106,6 +107,7 @@ public class TablesAndStrings {
             COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL, " +
             //this column is only used when event is inside a EventsTemplate, otherwise null
             COLUMN_EVENTSTEMPLATE + " INTEGER, " +
+            COLUMN_COMMENT + " TEXT, " +
             " FOREIGN KEY( " + COLUMN_EVENTSTEMPLATE + " ) REFERENCES " + TABLE_EVENTSTEMPLATES
             + " ( " + COLUMN_ID + ") ON DELETE CASCADE " +
             ");";

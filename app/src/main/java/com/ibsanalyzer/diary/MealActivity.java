@@ -44,7 +44,7 @@ public class MealActivity extends TagEventActivity {
         //create meal
         Log.d("Debug", "finish inside MealActivity");
         double portions = Double.parseDouble((String) portionView.getText());
-        Meal event = new Meal(getLocalDateTime(), tagsList, portions);
+        Meal event = new Meal(getLocalDateTime(), getComment(), tagsList, portions);
         returnEvent(event, RETURN_MEAL_SERIALIZABLE);
     }
 }

@@ -54,6 +54,7 @@ public abstract class EventActivity extends AppCompatActivity implements
     protected int posOfEvent = -1;
     TextView dateView;
     TextView timeView;
+    TextView commentView;
     Button dateBtn;
     Button timeBtn;
 
@@ -114,6 +115,7 @@ public abstract class EventActivity extends AppCompatActivity implements
 
         dateView = (TextView) findViewById(R.id.date);
         timeView = (TextView) findViewById(R.id.time);
+        commentView = (TextView) findViewById(R.id.commentView);
 
         //is the event mean to be changed (as opposition to new event to be created)?
         Intent intent = getIntent();
@@ -201,6 +203,10 @@ public abstract class EventActivity extends AppCompatActivity implements
         LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);
         LocalTime lt = DateTimeFormat.fromTextViewTimeFormat(ltStr);
         return LocalDateTime.of(ld, lt);
+    }
+
+    protected String getComment() {
+        return (String) commentView.getText().toString();
     }
 
     //If it doesnt' work it can be because <this> in parameter to returnChangedEvent should be

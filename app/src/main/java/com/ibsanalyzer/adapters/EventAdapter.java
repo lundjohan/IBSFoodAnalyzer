@@ -145,13 +145,15 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 return true;
             }
         });
+        EventViewHolder eventHolder = (EventViewHolder) holder;
         //check for breaks
         if (!(holder instanceof DateMarkerViewHolder)) {
             if (event.hasBreak()) {
-                EventViewHolder eventHolder = (EventViewHolder) holder;
                 eventHolder.setBreakLayout();
             }
         }
+        //add comments
+        eventHolder.comment.setText(event.getComment());
         switch (holder.getItemViewType()) {
             case MEAL:
                 Meal meal = (Meal) event;
@@ -200,11 +202,13 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     abstract class EventViewHolder extends RecyclerView.ViewHolder {
         public View itemView;
         public TextView time;
+        public TextView comment;
 
         public EventViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             time = (TextView) itemView.findViewById(R.id.time);
+            comment = (TextView) itemView.findViewById(R.id.commentInItem);
         }
 
         public void setBreakLayout() {
