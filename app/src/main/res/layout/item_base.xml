@@ -72,7 +72,7 @@
         android:id="@+id/commentInItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/item_icon"
+        app:layout_constraintTop_toBottomOf="@+id/tagNames"
         android:paddingTop="2dp"
         android:paddingBottom="0dp"
         android:paddingLeft="4dp"
@@ -80,6 +80,8 @@
         android:ems="10"/>
 
     <!-- views below are specific for Meal and Other events-->
+    <!-- notice that there is a fixed min height. It is here because comments has constraintTop_toBottomOf this view.
+    If it is not here comments will come too high up sometimes-->
     <LinearLayout
         android:id="@+id/tagNames"
         android:layout_width="wrap_content"
@@ -90,6 +92,7 @@
         android:layout_marginTop="2dp"
         android:gravity="right|fill|end"
         android:orientation="vertical"
+        android:minHeight="40dp"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintRight_toLeftOf="@+id/tagQuantities"
         app:layout_constraintTop_toTopOf="parent"

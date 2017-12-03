@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
 
@@ -43,8 +44,6 @@ public class EventLayout extends ConstraintLayout {
 
         //for Meal and Other events only
         if (hasTags){
-            //necessary?
         }
-
     }
 }
