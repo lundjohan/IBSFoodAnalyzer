@@ -84,6 +84,7 @@ public abstract class EventActivity extends AppCompatActivity implements
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("localDateStr", (String) dateView.getText());
         outState.putString("localTimeStr", (String) timeView.getText());
+        outState.putString("commentStr", (String) commentView.getText());
         super.onSaveInstanceState(outState);
     }
     @Override
@@ -126,6 +127,7 @@ public abstract class EventActivity extends AppCompatActivity implements
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
             setDateView(e.getTime().toLocalDate());
             setTimeView(e.getTime().toLocalTime());
+            commentView.setText(e.getComment());
         }
         //is the event created from scratch, inside diary, the get the start date from open day
         else if(intent.hasExtra(DATE_TO_START_NEW_EVENTACTIVITY)){
