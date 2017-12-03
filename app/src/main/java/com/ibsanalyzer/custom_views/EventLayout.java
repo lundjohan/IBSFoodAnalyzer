@@ -34,11 +34,17 @@ public class EventLayout extends ConstraintLayout {
                 0, 0);
         int imgSrc = arr.getResourceId(R.styleable.EventLayout_itemImg,R.styleable.EventLayout_itemImg);
         int color = arr.getColor(R.styleable.EventLayout_itemColor, ContextCompat.getColor(context, R.color.colorLightBlue));
-
+        boolean hasTags = arr.getBoolean(R.styleable.EventLayout_hasTags, false);
 
         ImageView icon = (ImageView) findViewById(R.id.item_icon);
 
         icon.setImageResource(imgSrc);
         icon.setBackgroundColor(color);
+
+        //for Meal and Other events only
+        if (hasTags){
+            //necessary?
+        }
+
     }
 }

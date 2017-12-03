@@ -62,9 +62,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder
             tagHolder) {
-        setTime(inputEvent, tagHolder.time);
+        setTime(inputEvent, tagHolder.firstLine);
 
-        //clearing up, because recyclerview remembers cache. Problems with to many tags in
+        //clearing up, because recyclerview remembers cache. Problems with too many tags in
         // imports of files otherwise
         tagHolder.tagQuantsLayout.removeAllViews();
         tagHolder.tagNamesLayout.removeAllViews();
@@ -96,12 +96,12 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case MEAL:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal, parent,
                         false);
-                viewHolder = new MealViewHolder(v, parent.getContext());
+                viewHolder = new InputEventViewHolder(v, parent.getContext());
                 break;
             case OTHER:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_other, parent,
                         false);
-                viewHolder = new OtherViewHolder(v, parent.getContext());
+                viewHolder = new InputEventViewHolder(v, parent.getContext());
                 break;
             case EXERCISE:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise,
@@ -152,21 +152,21 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 eventHolder.setBreakLayout();
             }
         }
-        //add comments
-        //remove this if, only temporary thing becuse comment for a while only existed in item_meal
-        if (eventHolder.comment!= null) {
+        //add comments, same for all events
+        if (eventHolder.comment != null) {
             eventHolder.comment.setText(event.getComment());
         }
+
         switch (holder.getItemViewType()) {
             case MEAL:
                 Meal meal = (Meal) event;
-                MealViewHolder mealHolder = (MealViewHolder) holder;
-                mealHolder.portions.setText(String.valueOf(meal.getPortions()));
+                InputEventViewHolder mealHolder = (InputEventViewHolder) holder;
+                mealHolder.secondLine.setText("Portions: "+String.valueOf(meal.getPortions()));
                 bindTagsToTagEventViewHolder(meal, mealHolder);
                 break;
             case OTHER:
                 Other other = (Other) event;
-                OtherViewHolder otherHolder = (OtherViewHolder) holder;
+                InputEventViewHolder otherHolder = (InputEventViewHolder) holder;
                 bindTagsToTagEventViewHolder(other, otherHolder);
                 break;
             case EXERCISE:
@@ -205,14 +205,20 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     abstract class EventViewHolder extends RecyclerView.ViewHolder {
         public View itemView;
-        public TextView time;
         public TextView comment;
+
+        //used for time for all events except Rating, Rating prints a "From".
+        public TextView firstLine;
+
+        //used for type of exercise for Exercise, Bristol for BM, time for Rating, portions for Meal
+        public TextView secondLine;
 
         public EventViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            time = (TextView) itemView.findViewById(R.id.secondLine);
             comment = (TextView) itemView.findViewById(R.id.commentInItem);
+            firstLine = (TextView) itemView.findViewById(R.id.firstLine);
+            secondLine = (TextView) itemView.findViewById(R.id.secondLine);
         }
 
         public void setBreakLayout() {
@@ -224,13 +230,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    //this is for tags
-    abstract class InputEventViewHolder extends EventViewHolder {
+    //this is for Meal and Other Events
+    class InputEventViewHolder extends EventViewHolder {
         public LinearLayout tagQuantsLayout;
         public LinearLayout tagNamesLayout;
         public Context context;
-       /* public List<String>tagQuantsList;
-        public List<String>tagNamesList;*/
 
         public InputEventViewHolder(View itemView, Context context) {
             super(itemView);
@@ -241,37 +245,15 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    class MealViewHolder extends InputEventViewHolder {
-        public TextView portions;
-
-        public MealViewHolder(View itemView, Context context) {
-            super(itemView, context);
-            portions = (TextView) itemView.findViewById(R.id.portions);
-        }
-    }
-
-    class OtherViewHolder extends InputEventViewHolder {
-
-        public OtherViewHolder(View itemView, Context context) {
-
-            super(itemView, context);
-        }
-    }
     //ViewHolder class for Exercise, BM and Rating.
     class ViewHolderWithoutTagList extends EventViewHolder {
-        //used for time for all events except Rating, Rating prints a "From".
-        public TextView firstLine;
 
-        //used for type of exercise for Exercise, Bristol for BM, time for Rating
-        public TextView secondLine;
 
         //used as score for Rating, completeness for BM, intensity for Exercise
         public TextView rightLine;
 
         public ViewHolderWithoutTagList(View itemView) {
             super(itemView);
-            firstLine = (TextView) itemView.findViewById(R.id.firstLine);
-            secondLine = (TextView) itemView.findViewById(R.id.secondLine);
             rightLine = (TextView) itemView.findViewById(R.id.rightLine);
         }
     }
