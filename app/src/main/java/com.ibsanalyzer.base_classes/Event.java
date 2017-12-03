@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class Event implements Comparable<Event>, Serializable {
     protected LocalDateTime time;
     protected boolean isBreak;
-    protected String comment;
+    protected String comment ="";
 
     public Event(LocalDateTime time) {
         this.time = time;

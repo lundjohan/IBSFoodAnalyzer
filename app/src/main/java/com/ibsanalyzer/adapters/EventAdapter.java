@@ -153,7 +153,10 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
         //add comments
-        eventHolder.comment.setText(event.getComment());
+        //remove this if, only temporary thing becuse comment for a while only existed in item_meal
+        if (eventHolder.comment!= null) {
+            eventHolder.comment.setText(event.getComment());
+        }
         switch (holder.getItemViewType()) {
             case MEAL:
                 Meal meal = (Meal) event;
