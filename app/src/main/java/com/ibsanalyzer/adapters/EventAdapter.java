@@ -52,17 +52,17 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return events.size();
     }
 
-    private void setTime(Event event, EventViewHolder holder) {
+    private void setTime(Event event, TextView timeView) {
         LocalDateTime time = event.getTime();
         LocalTime lt = time.toLocalTime();
 
-        holder.time.setText(DateTimeFormat
+        timeView.setText(DateTimeFormat
                 .toTextViewFormat(lt));
     }
 
     private void bindTagsToTagEventViewHolder(InputEvent inputEvent, InputEventViewHolder
             tagHolder) {
-        setTime(inputEvent, tagHolder);
+        setTime(inputEvent, tagHolder.time);
 
         //clearing up, because recyclerview remembers cache. Problems with to many tags in
         // imports of files otherwise
@@ -106,17 +106,17 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case EXERCISE:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise,
                         parent, false);
-                viewHolder = new ExerciseViewHolder(v);
+                viewHolder = new ViewHolderWithoutTagList(v);
                 break;
             case BM:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bm, parent,
                         false);
-                viewHolder = new BmViewHolder(v);
+                viewHolder = new ViewHolderWithoutTagList(v);
                 break;
             case RATING:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rating,
                         parent, false);
-                viewHolder = new ScoreViewHolder(v);
+                viewHolder = new ViewHolderWithoutTagList(v);
                 break;
         }
         //here: make v clickable item.
@@ -171,27 +171,28 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 break;
             case EXERCISE:
                 Exercise exercise = (Exercise) event;
-                ExerciseViewHolder exerciseHolder = (ExerciseViewHolder) holder;
-                setTime(exercise, exerciseHolder);
-                exerciseHolder.intensity.setText(Exercise.intensityLevelToText(exercise
+                ViewHolderWithoutTagList exerciseHolder = (ViewHolderWithoutTagList) holder;
+                setTime(exercise, exerciseHolder.firstLine);
+                exerciseHolder.rightLine.setText(Exercise.intensityLevelToText(exercise
                         .getIntensity()));
-                exerciseHolder.typeOfExcercise.setText(exercise.getTypeOfExercise().getName());
+                exerciseHolder.secondLine.setText(exercise.getTypeOfExercise().getName());
                 break;
             case BM:
                 Bm bm = (Bm) event;
-                BmViewHolder bmHolder = (BmViewHolder) holder;
-                setTime(bm, bmHolder);
-                bmHolder.completeness.setText(Bm.completenessScoreToText(bm.getComplete()));
-                bmHolder.bristol.setText(String.valueOf(bm.getBristol()));
+                ViewHolderWithoutTagList bmHolder = (ViewHolderWithoutTagList) holder;
+                setTime(bm, bmHolder.firstLine);
+                bmHolder.rightLine.setText(Bm.completenessScoreToText(bm.getComplete()));
+                bmHolder.secondLine.setText("Bristol: "+ String.valueOf(bm.getBristol()));
                 break;
             case RATING:
                 Rating rating = (Rating) event;
-                ScoreViewHolder scoreHolder = (ScoreViewHolder) holder;
-                setTime(rating, scoreHolder);
-                scoreHolder.afterScore.setText(Rating.pointsToText(rating.getAfter()));
+                ViewHolderWithoutTagList scoreHolder = (ViewHolderWithoutTagList) holder;
+                setTime(rating, scoreHolder.secondLine);
+                scoreHolder.rightLine.setText(Rating.pointsToText(rating.getAfter()));
                 break;
         }
     }
+
 
     /*
     Click Listeners
@@ -210,7 +211,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public EventViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            time = (TextView) itemView.findViewById(R.id.time);
+            time = (TextView) itemView.findViewById(R.id.secondLine);
             comment = (TextView) itemView.findViewById(R.id.commentInItem);
         }
 
@@ -256,37 +257,22 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView, context);
         }
     }
+    //ViewHolder class for Exercise, BM and Rating.
+    class ViewHolderWithoutTagList extends EventViewHolder {
+        //used for time for all events except Rating, Rating prints a "From".
+        public TextView firstLine;
 
-    class ExerciseViewHolder extends EventViewHolder {
-        public TextView typeOfExcercise;
-        public TextView intensity;
+        //used for type of exercise for Exercise, Bristol for BM, time for Rating
+        public TextView secondLine;
 
-        public ExerciseViewHolder(View itemView) {
+        //used as score for Rating, completeness for BM, intensity for Exercise
+        public TextView rightLine;
 
+        public ViewHolderWithoutTagList(View itemView) {
             super(itemView);
-            typeOfExcercise = (TextView) itemView.findViewById(R.id.exercise_type);
-            intensity = (TextView) itemView.findViewById(R.id.intensity);
-        }
-    }
-
-    class BmViewHolder extends EventViewHolder {
-        public TextView bristol;
-        public TextView completeness;
-
-        public BmViewHolder(View itemView) {
-            super(itemView);
-            bristol = (TextView) itemView.findViewById(R.id.bristol);
-            completeness = (TextView) itemView.findViewById(R.id.completeness);
-        }
-    }
-
-    class ScoreViewHolder extends EventViewHolder {
-        public TextView toTime;
-        public TextView afterScore;
-
-        public ScoreViewHolder(View itemView) {
-            super(itemView);
-            afterScore = (TextView) itemView.findViewById(R.id.scoreAfter);
+            firstLine = (TextView) itemView.findViewById(R.id.firstLine);
+            secondLine = (TextView) itemView.findViewById(R.id.secondLine);
+            rightLine = (TextView) itemView.findViewById(R.id.rightLine);
         }
     }
 

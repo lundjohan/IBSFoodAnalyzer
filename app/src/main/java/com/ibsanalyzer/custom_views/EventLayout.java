@@ -33,12 +33,12 @@ public class EventLayout extends ConstraintLayout {
                 R.styleable.EventLayout,
                 0, 0);
         int imgSrc = arr.getResourceId(R.styleable.EventLayout_itemImg,R.styleable.EventLayout_itemImg);
-        arr.getColor(R.styleable.EventLayout_itemColor, ContextCompat.getColor(context, R.color.colorLightBlue));
+        int color = arr.getColor(R.styleable.EventLayout_itemColor, ContextCompat.getColor(context, R.color.colorLightBlue));
 
 
         ImageView icon = (ImageView) findViewById(R.id.item_icon);
 
         icon.setImageResource(imgSrc);
-        icon.setBackgroundResource(R.color.colorWineRed);
+        icon.setBackgroundColor(color);
     }
 }

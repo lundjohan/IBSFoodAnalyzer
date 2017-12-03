@@ -44,7 +44,7 @@ public class NewEventBackButtonTest {
 
         //check that recyclerview in Diary still contains an event item (the Rating item created
         // before)
-        onView(withId(R.id.time)).check(matches(isDisplayed()));
+        onView(withId(R.id.secondLine)).check(matches(isDisplayed()));
 
     }
 

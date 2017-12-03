@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -82,9 +81,9 @@ public abstract class EventActivity extends AppCompatActivity implements
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("localDateStr", (String) dateView.getText());
-        outState.putString("localTimeStr", (String) timeView.getText());
-        outState.putString("commentStr", (String) commentView.getText());
+        outState.putString("localDateStr", (String) dateView.getText().toString());
+        outState.putString("localTimeStr", (String) timeView.getText().toString());
+        outState.putString("commentStr",  (String)commentView.getText().toString());
         super.onSaveInstanceState(outState);
     }
     @Override
@@ -115,7 +114,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         timeBtn = (Button) findViewById(R.id.timeBtn);
 
         dateView = (TextView) findViewById(R.id.date);
-        timeView = (TextView) findViewById(R.id.time);
+        timeView = (TextView) findViewById(R.id.secondLine);
         commentView = (TextView) findViewById(R.id.commentView);
 
         //is the event mean to be changed (as opposition to new event to be created)?

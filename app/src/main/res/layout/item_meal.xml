@@ -37,7 +37,7 @@
         app:layout_constraintHorizontal_bias="0.545"/>
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/secondLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -64,7 +64,7 @@
         android:text="Portions:"
         android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/time"
+        app:layout_constraintTop_toBottomOf="@+id/secondLine"
         />
 
     <TextView
