@@ -10,4 +10,8 @@ public class Other extends InputEvent {
 
         super(time, tags);
     }
+    public Other(LocalDateTime time, String comment, List<Tag> tags) {
+
+        super(time, comment, tags);
+    }
 }

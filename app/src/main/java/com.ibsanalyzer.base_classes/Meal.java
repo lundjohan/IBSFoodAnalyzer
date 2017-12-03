@@ -10,12 +10,11 @@ public class Meal extends InputEvent {
     private double portions;
 
     public Meal(LocalDateTime time, List<Tag> tags, double portions) {
-        super(time, tags);
+        super(time, "",tags);
         this.portions = portions;
     }
     public Meal(LocalDateTime time, String comment, List<Tag> tags, double portions) {
-        super(time, tags);
-        this.comment = comment;
+        super(time, comment, tags);
         this.portions = portions;
     }
 

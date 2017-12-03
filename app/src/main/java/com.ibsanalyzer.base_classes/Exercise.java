@@ -12,6 +12,11 @@ public class Exercise extends Event {
         this.typeOfExercise = typeOfExercise;
         this.intensity = intensity;
     }
+    public Exercise(LocalDateTime time, String comment, Tag typeOfExercise, int intensity) {
+        super(time, comment);
+        this.typeOfExercise = typeOfExercise;
+        this.intensity = intensity;
+    }
 
     public static String intensityLevelToText(int score) {
         String text = "OUT OF RANGE";

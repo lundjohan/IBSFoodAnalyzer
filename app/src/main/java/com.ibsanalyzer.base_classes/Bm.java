@@ -12,8 +12,15 @@ public class Bm extends Event {
         super(time);
         this.complete = complete;
         this.bristol = bristol;
+    }
+    public Bm(LocalDateTime time, String comment, int complete, int bristol) {
+        super(time, comment);
+        this.complete = complete;
+        this.bristol = bristol;
 
     }
+
+
 
     public static String completenessScoreToText(int score) {
         String text = "OUT OF RANGE";

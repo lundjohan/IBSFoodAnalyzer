@@ -28,7 +28,7 @@ public class RatingActivity extends EventActivity {
     protected void buildEvent() {
         //scoreBar starts from zero
         int after = scoreBar.getProgress() + 1;
-        Rating rating = new Rating(getLocalDateTime(), after);
+        Rating rating = new Rating(getLocalDateTime(), getComment(), after);
         returnEvent(rating, RETURN_RATING_SERIALIZABLE);
     }
 
