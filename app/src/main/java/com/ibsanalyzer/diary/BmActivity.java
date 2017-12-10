@@ -30,7 +30,7 @@ public class BmActivity extends EventActivity {
         //scoreBar starts from zero
         int complete = completeBar.getProgress() + 1;
         int bristol = bristolBar.getProgress() + 1;
-        Bm bm = new Bm(getLocalDateTime(), complete, bristol);
+        Bm bm = new Bm(getLocalDateTime(), getComment(), complete, bristol);
         returnEvent(bm, RETURN_BM_SERIALIZABLE);
     }
     @Override

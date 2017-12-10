@@ -33,7 +33,7 @@ public class ExerciseActivity extends EventActivity {
         int intensity = intensityBar.getProgress() + 1;
         Tag typeOfExercise = new Tag(getLocalDateTime(), (String) this.typeOfExercise.getText(),
                 1.0);
-        Exercise event = new Exercise(getLocalDateTime(), typeOfExercise, intensity);
+        Exercise event = new Exercise(getLocalDateTime(), getComment(), typeOfExercise, intensity);
         returnEvent(event, RETURN_EXERCISE_SERIALIZABLE);
     }
 

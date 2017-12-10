@@ -16,7 +16,7 @@ public class OtherActivity extends TagEventActivity {
     @Override
     protected void buildEvent() {
         //create event
-        Other other = new Other(getLocalDateTime(), tagsList);
+        Other other = new Other(getLocalDateTime(), getComment(), tagsList);
         returnEvent(other, RETURN_OTHER_SERIALIZABLE);
     }
 
