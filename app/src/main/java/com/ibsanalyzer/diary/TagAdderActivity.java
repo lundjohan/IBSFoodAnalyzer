@@ -26,6 +26,9 @@ import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
 
+/**
+ * This is the acticity that is seen when in Meal-, Other- or ExerciseActivity button "Add Tags" is pressed
+ */
 public class TagAdderActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     SearchView tagSearch;
     ListView tagsList;
