@@ -31,7 +31,6 @@ import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
 
 public abstract class TagEventActivity extends EventActivity {
     protected List<Tag> tagsList;
-    private Button addTagsBtn;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private TagAdapter adapter;
@@ -39,7 +38,6 @@ public abstract class TagEventActivity extends EventActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addTagsBtn = (Button) findViewById(R.id.addTagsBtn);
         recyclerView = (RecyclerView) findViewById(R.id.addedTagsView);
         layoutManager = new LinearLayoutManager(this);
         tagsList = new ArrayList<>();
