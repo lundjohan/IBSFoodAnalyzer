@@ -1,8 +1,13 @@
 package com.ibsanalyzer.diary;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -85,7 +90,9 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                 return dbHandler.fetchTagTemplatesByName(constraint.toString());
             }
         });
-
+        /**
+         * short click on item in tagtemplate list => item is chosen.
+         */
         tagsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             //good explanation: http://stackoverflow
@@ -93,8 +100,50 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             // -onitemclick-in-andro
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 chosenTagTemplate = dbHandler.findTagTemplate((int) id);
-                Log.d("Debug", "onItemClick position: " + position);
                 returnTag();
+            }
+        });
+
+        /**
+         * If longclick is made on item, user should be able to delete or change the TagTemplate.
+         * To cancel, point outside dialog.
+         *
+         * NB => long click should probably be replaced by three dots on each recycleritem instead (much clearer).
+         */
+        final Context context = this;
+        tagsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                TagTemplate tt = dbHandler.findTagTemplate((int) id);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setCancelable(true);
+                builder.setTitle("Handle Item");
+                builder.setMessage("Edit or remove item "+ tt.get_tagname()+"?");
+                builder.setPositiveButton("Edit",
+                        new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                               //TODO: 1. Go to screen TagTemplateEditActivity
+                                // TODO: 2. Keep the same id and change stuff in database. Shouldn't be complex.
+                            }
+                        });
+
+
+
+                builder.setNegativeButton("Delete",
+                        new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                //TODO: 1. Set null on all TagTemplates references (inherits) to this TagTemplate
+                                //TODO: 2. For all Meal, Other and Exercise (special case! How to do here?) events, remove Tag with this TagTemplate.
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                //return true to not allow also short click to fire
+                return true;
             }
         });
     }
