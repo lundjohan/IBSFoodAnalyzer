@@ -50,7 +50,7 @@ public abstract class TagEventActivity extends EventActivity {
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
-        //is the event mean to be changed (as opposition to new event to be created)?
+        //is the event meant to be changed (as opposition to new event to be created)?
         Intent intent = getIntent();
         if (intent.hasExtra(EVENT_TO_CHANGE)) {
             InputEvent e = (InputEvent) intent.getSerializableExtra(EVENT_TO_CHANGE);

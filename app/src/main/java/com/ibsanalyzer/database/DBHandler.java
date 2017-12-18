@@ -842,13 +842,35 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_TAGTEMPLATES, "_id=" + idOfTagTemplate, null);
         db.close();
     }
+
     public void editTagTemplate(TagTemplate tagTemplate, long idOfTagTemplate) {
         ContentValues values = makeTagTemplateContentValues(tagTemplate);
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TABLE_TAGTEMPLATES, values, "_id=" + idOfTagTemplate, null);
         db.close();
     }
+    public void removeExercisesWithTagTemplate(long idOfTagTemplate){
+        //1. get all eventId where exercises has a tag with tagtemplate_id == idOfTagTemplate
+        final String QUERY = "SELECT " + "a." + COLUMN_EVENT + " FROM " +
+                TABLE_EXERCISES + " a "
+                + " INNER JOIN " + TABLE_TAGS + " b ON " + " a." + COLUMN_EVENT + " = b." +
+                COLUMN_EVENT + " WHERE b."+ COLUMN_TAGTEMPLATE +" =? ";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(QUERY, new String[]{Long.toString(idOfTagTemplate)});
 
+        //2. For all these use deleteEvent (eventId). Cascading will delete the Exercises.
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                        long eventId = c.getLong(c.getColumnIndex(COLUMN_EVENT));
+                        deleteEvent(eventId);
+                        c.moveToNext();
+                }
+            }
+        }
+        c.close();
+        db.close();
+    }
     private ContentValues makeTagTemplateContentValues(TagTemplate tagTemplate) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_TAGNAME, tagTemplate.get_tagname());

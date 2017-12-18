@@ -147,8 +147,13 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                                 //for other tags they will be removed through cascading in database.
                                 dbHandler.removeExercisesWithTagTemplate(tagTemplateId);
 
-                                //Remove the TagTemplate itself from database
-                                dbHandler.deleteTagTemplate(tagTemplateId);
+                                synchronized (this) {
+                                    //Remove the TagTemplate itself from database
+                                    dbHandler.deleteTagTemplate(tagTemplateId);
+
+                                    //remove TagTemplate from list inside TagAdderView.
+                                    updateListView();
+                                }
                             }
                         });
                 AlertDialog dialog = builder.create();
