@@ -26,14 +26,14 @@ import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
 
 public abstract class TagTemplateActivity extends AppCompatActivity implements View
         .OnClickListener {
-    private TagTemplate is_a_1 = null;
-    private TagTemplate is_a_2 = null;
-    private TagTemplate is_a_3 = null;
+    protected TagTemplate is_a_1 = null;
+    protected TagTemplate is_a_2 = null;
+    protected TagTemplate is_a_3 = null;
 
-    private EditText name;
-    private EditText type_of_1;
-    private EditText type_of_2;
-    private EditText type_of_3;
+    protected EditText name;
+    protected EditText type_of_1;
+    protected EditText type_of_2;
+    protected EditText type_of_3;
 
     /**
      * a TagTemplate must be sent back because 1. TagAdderActivity must now which TagTemplate

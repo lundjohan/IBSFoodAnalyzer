@@ -1,7 +1,5 @@
 package com.ibsanalyzer.diary;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +7,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +25,8 @@ import java.io.Serializable;
 
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
+import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_ID;
+import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_TO_EDIT;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
 
@@ -113,8 +112,12 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         final Context context = this;
         tagsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
+            /*notice that "id" actually DO return the row_id from database of element.
+            This is because the tagsList adapter is a CursorAdapter and it knows the _id of the elements.
+            See https://stackoverflow.com/questions/3184672/what-does-adapterview-mean-in-the-onitemclick-method-what-is-the-use-of-ot/25622142#25622142
+             */
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                TagTemplate tt = dbHandler.findTagTemplate((int) id);
+                final TagTemplate tt = dbHandler.findTagTemplate((int) id);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setCancelable(true);
                 builder.setTitle("Handle Item");
@@ -125,7 +128,12 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                             public void onClick(DialogInterface dialog, int id)
                             {
                                //TODO: 1. Go to screen TagTemplateEditActivity
-                                // TODO: 2. Keep the same id and change stuff in database. Shouldn't be complex.
+                                Intent intent = new Intent(context, TagTemplateEditActivity.class);
+                                intent.putExtra(TAG_TEMPLATE_TO_EDIT, (Serializable) tt);
+                                intent.putExtra(TAG_TEMPLATE_ID, (int) id);
+                                startActivity(intent);
+                                //TODO 2. (After user has changed or deleted item inside TagTemplateEditActivity) => Update tagsList view I guess.
+                                //probably by using startActivityForResults
                             }
                         });
 

@@ -53,6 +53,11 @@ public class Constants {
 
     public final static String DATE_TO_START_NEW_EVENTACTIVITY = "dateToStartNewEventActivity";
 
+    //For TagTemplateEditActivity
+    public final static String TAG_TEMPLATE_TO_EDIT = "tagTemplateToEdit";
+    public final static String TAG_TEMPLATE_ID = "tagTemplateId";
+
+
  //sent to Activity handling of EventsTemplates
     public final static String EVENTSTEMPLATE_TO_CHANGE = "eventsTemplateToChange";
 
