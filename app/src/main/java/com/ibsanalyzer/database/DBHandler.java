@@ -838,7 +838,7 @@ public class DBHandler extends SQLiteOpenHelper {
         // with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
     }
 
-    public void editTagTemplate(TagTemplate tagTemplate, int idOfTagTemplate) {
+    public void editTagTemplate(TagTemplate tagTemplate, long idOfTagTemplate) {
         ContentValues values = makeTagTemplateContentValues(tagTemplate);
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TABLE_TAGTEMPLATES, values, "_id=" + idOfTagTemplate, null);
@@ -885,9 +885,9 @@ public class DBHandler extends SQLiteOpenHelper {
         return findTagTemplateHelper(query);
     }
 
-    public TagTemplate findTagTemplate(int anInt) {
+    public TagTemplate findTagTemplate(long id) {
         String query = "SELECT * FROM " + TABLE_TAGTEMPLATES + " WHERE " + COLUMN_ID + " = \"" +
-                String.valueOf(anInt) + "\"";
+                String.valueOf(id) + "\"";
         return findTagTemplateHelper(query);
     }
 

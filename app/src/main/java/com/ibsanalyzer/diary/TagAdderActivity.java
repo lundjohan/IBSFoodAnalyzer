@@ -116,8 +116,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             This is because the tagsList adapter is a CursorAdapter and it knows the _id of the elements.
             See https://stackoverflow.com/questions/3184672/what-does-adapterview-mean-in-the-onitemclick-method-what-is-the-use-of-ot/25622142#25622142
              */
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final TagTemplate tt = dbHandler.findTagTemplate((int) id);
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, final long tagTemplateId) {
+                final TagTemplate tt = dbHandler.findTagTemplate(tagTemplateId);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setCancelable(true);
                 builder.setTitle("Handle Item");
@@ -129,8 +129,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                             {
                                //TODO: 1. Go to screen TagTemplateEditActivity
                                 Intent intent = new Intent(context, TagTemplateEditActivity.class);
-                                intent.putExtra(TAG_TEMPLATE_TO_EDIT, (Serializable) tt);
-                                intent.putExtra(TAG_TEMPLATE_ID, (int) id);
+                                intent.putExtra(TAG_TEMPLATE_TO_EDIT, tt);
+                                intent.putExtra(TAG_TEMPLATE_ID, tagTemplateId);
                                 startActivity(intent);
                                 //TODO 2. (After user has changed or deleted item inside TagTemplateEditActivity) => Update tagsList view I guess.
                                 //probably by using startActivityForResults

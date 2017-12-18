@@ -13,7 +13,7 @@ import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_TO_EDIT;
 public class TagTemplateEditActivity extends TagTemplateActivity {
     //this variable is used to know which TagTemplate in database that should be edited (as name
     // could have been change there is no other way of knowing original TagTemplate otherwise)
-    int idOfTagTemplate = -1;
+    long idOfTagTemplate = -1;
     TagTemplate tt;
 
     /*
@@ -24,7 +24,7 @@ public class TagTemplateEditActivity extends TagTemplateActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         if (intent.hasExtra(TAG_TEMPLATE_ID)) {
-            idOfTagTemplate = intent.getIntExtra(TAG_TEMPLATE_ID, -1);
+            idOfTagTemplate = intent.getLongExtra(TAG_TEMPLATE_ID, -1);
         }
         else{
             throw new IllegalArgumentException("TagTemplateEditActivity needs to be started with a valid TAG_TEMPLATE_ID");
@@ -53,5 +53,6 @@ public class TagTemplateEditActivity extends TagTemplateActivity {
 
     public void doneClicked() {
         super.finishDoneClicked(idOfTagTemplate);
+        finish();
     }
 }

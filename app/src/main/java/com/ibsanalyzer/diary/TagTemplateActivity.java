@@ -43,7 +43,7 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
      * @param idOfTagTemplate <0 means new TagTemplate. If editing this is
      *                        the id.
      */
-    protected void finishDoneClicked(int idOfTagTemplate) {
+    protected void finishDoneClicked(long idOfTagTemplate) {
         //1. create a TagTemplate object from name, is_a1, is_a_2, is_a_3.
         TagTemplate tagTemplate = new TagTemplate(name.getText().toString(), is_a_1, is_a_2,
                 is_a_3);
