@@ -49,13 +49,13 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
                 is_a_3);
         //2 update database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
+        Intent data = new Intent();
         if (idOfTagTemplate >= 0) {
             dbHandler.editTagTemplate(tagTemplate, idOfTagTemplate);
         } else {
             dbHandler.addTagTemplate(tagTemplate);
+            data.putExtra(PUT_TAG_TEMPLATE, (Serializable) tagTemplate);
         }
-        Intent data = new Intent();
-        data.putExtra(PUT_TAG_TEMPLATE, (Serializable) tagTemplate);
         setResult(RESULT_OK, data);
         finish();
     }

@@ -26,6 +26,8 @@ import java.io.Serializable;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_ID;
+import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED;
+import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_POS;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_TO_EDIT;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
@@ -131,7 +133,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                                 Intent intent = new Intent(context, TagTemplateEditActivity.class);
                                 intent.putExtra(TAG_TEMPLATE_TO_EDIT, tt);
                                 intent.putExtra(TAG_TEMPLATE_ID, tagTemplateId);
-                                startActivity(intent);
+                                startActivityForResult(intent, TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED);
                                 //TODO 2. (After user has changed or deleted item inside TagTemplateEditActivity) => Update tagsList view I guess.
                                 //probably by using startActivityForResults
                             }
@@ -207,6 +209,14 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             //return the tagTemplate that has been added.
             chosenTagTemplate = (TagTemplate) data.getSerializableExtra(PUT_TAG_TEMPLATE);
             returnTag();
+        }
+        if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED){
+            Cursor updatedCursor = dbHandler.getCursorToTagTemplates();
+            //there is no notifyDataItemChanged for a CursorAdapter. One alternativ is to update the cursor:
+            //see https://stackoverflow.com/questions/13953171/update-the-listview-after-inserting-a-new-record-with-simplecursoradapter-requ/13953470#13953470
+            //the only concern I have is that this is ineffective for big sets of TagTemplates. There is only one TagTemplate that needs to be updated so why update the whole set!
+            //perhaps this is relevant? https://stackoverflow.com/questions/3724874/how-can-i-update-a-single-row-in-a-listview
+            adapter.changeCursor(updatedCursor);
         }
     }
 }

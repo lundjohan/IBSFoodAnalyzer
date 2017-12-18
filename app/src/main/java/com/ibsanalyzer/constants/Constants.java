@@ -54,6 +54,8 @@ public class Constants {
     public final static String DATE_TO_START_NEW_EVENTACTIVITY = "dateToStartNewEventActivity";
 
     //For TagTemplateEditActivity
+    public final static int TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED = 1357;
+    public final static String TAG_TEMPLATE_POS = "posOfTagTemplateInList";
     public final static String TAG_TEMPLATE_TO_EDIT = "tagTemplateToEdit";
     public final static String TAG_TEMPLATE_ID = "tagTemplateId";
 
