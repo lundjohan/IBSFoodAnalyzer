@@ -129,13 +129,10 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                         {
                             public void onClick(DialogInterface dialog, int id)
                             {
-                               //TODO: 1. Go to screen TagTemplateEditActivity
                                 Intent intent = new Intent(context, TagTemplateEditActivity.class);
                                 intent.putExtra(TAG_TEMPLATE_TO_EDIT, tt);
                                 intent.putExtra(TAG_TEMPLATE_ID, tagTemplateId);
                                 startActivityForResult(intent, TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED);
-                                //TODO 2. (After user has changed or deleted item inside TagTemplateEditActivity) => Update tagsList view I guess.
-                                //probably by using startActivityForResults
                             }
                         });
 
@@ -144,10 +141,14 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                 builder.setNegativeButton("Delete",
                         new DialogInterface.OnClickListener()
                         {
-                            public void onClick(DialogInterface dialog, int id)
+                            public void onClick(DialogInterface dialog, int notRelevantId)
                             {
-                                //TODO: 1. Set null on all TagTemplates references (inherits) to this TagTemplate
-                                //TODO: 2. For all Meal, Other and Exercise (special case! How to do here?) events, remove Tag with this TagTemplate.
+                                //Exercise needs to be removed first with tag that contain a tagTemplate that will no longer exist.
+                                //for other tags they will be removed through cascading in database.
+                                dbHandler.removeExercisesWithTagTemplate(tagTemplateId);
+
+                                //Remove the TagTemplate itself from database
+                                dbHandler.deleteTagTemplate(tagTemplateId);
                             }
                         });
                 AlertDialog dialog = builder.create();
@@ -210,13 +211,18 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             chosenTagTemplate = (TagTemplate) data.getSerializableExtra(PUT_TAG_TEMPLATE);
             returnTag();
         }
-        if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED){
-            Cursor updatedCursor = dbHandler.getCursorToTagTemplates();
-            //there is no notifyDataItemChanged for a CursorAdapter. One alternativ is to update the cursor:
-            //see https://stackoverflow.com/questions/13953171/update-the-listview-after-inserting-a-new-record-with-simplecursoradapter-requ/13953470#13953470
-            //the only concern I have is that this is ineffective for big sets of TagTemplates. There is only one TagTemplate that needs to be updated so why update the whole set!
-            //perhaps this is relevant? https://stackoverflow.com/questions/3724874/how-can-i-update-a-single-row-in-a-listview
-            adapter.changeCursor(updatedCursor);
+        if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED) {
+            updateListView();
         }
     }
+        //there is no notifyDataItemChanged for a CursorAdapter. One alternativ is to update the cursor:
+        //see https://stackoverflow.com/questions/13953171/update-the-listview-after-inserting-a-new-record-with-simplecursoradapter-requ/13953470#13953470
+        //the only concern I have is that this is ineffective for big sets of TagTemplates. There is only one TagTemplate that needs to be updated so why update the whole set!
+        //perhaps this is relevant? https://stackoverflow.com/questions/3724874/how-can-i-update-a-single-row-in-a-listview
+        private void updateListView(){
+        Cursor updatedCursor = dbHandler.getCursorToTagTemplates();
+        adapter.changeCursor(updatedCursor);
+
+        }
+
 }

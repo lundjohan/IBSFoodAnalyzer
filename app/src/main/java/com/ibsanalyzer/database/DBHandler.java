@@ -384,22 +384,22 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     public long getEventId(Event event) {
         int type = Util.getTypeOfEvent(event);
-        String date = DateTimeFormat.toSqLiteFormat(event.getTime());
-        return getEventId(type, date);
+        String time = DateTimeFormat.toSqLiteFormat(event.getTime());
+        return getEventId(type, time);
     }
 
     /**
      * @param typeOfEvent
-     * @param date
+     * @param time
      * @return returns -1 if no such event exists
      */
-    private long getEventId(int typeOfEvent, String date) {
+    private long getEventId(int typeOfEvent, String time) {
         long eventId = -1;
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT " + COLUMN_ID + " FROM " + TABLE_EVENTS + " WHERE " +
                 COLUMN_TYPE_OF_EVENT +
                 " = ? AND " + COLUMN_DATETIME + " = ?";
-        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(typeOfEvent), date});
+        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(typeOfEvent), time});
         if (c != null) {
             if (c.moveToFirst()) {
                 eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
@@ -837,7 +837,11 @@ public class DBHandler extends SQLiteOpenHelper {
         //Log.d("Debug", "addTagTemplate completed! TagTemplate " + tagTemplate.get_tagname() + "
         // with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
     }
-
+    public void deleteTagTemplate(long idOfTagTemplate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TAGTEMPLATES, "_id=" + idOfTagTemplate, null);
+        db.close();
+    }
     public void editTagTemplate(TagTemplate tagTemplate, long idOfTagTemplate) {
         ContentValues values = makeTagTemplateContentValues(tagTemplate);
         SQLiteDatabase db = this.getWritableDatabase();

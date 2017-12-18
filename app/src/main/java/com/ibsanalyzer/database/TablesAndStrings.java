@@ -93,7 +93,7 @@ public class TablesAndStrings {
             COLUMN_DATETIME + " TEXT NOT NULL, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
-            + " ( " + COLUMN_ID + ")" +
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
             + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
