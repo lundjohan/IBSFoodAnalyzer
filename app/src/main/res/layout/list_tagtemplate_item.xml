@@ -25,7 +25,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginLeft="0dp"
 
-        app:layout_constraintHorizontal_bias="0.0"/>
+        app:layout_constraintHorizontal_bias="0.5"/>
 
     <TextView
         android:id="@+id/inherits"
@@ -40,9 +40,10 @@
         app:layout_constraintTop_toBottomOf="@+id/name_of_tag"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/three_dots_inside_listView"
         android:layout_marginTop="0dp"
-        android:layout_marginRight="0dp"/>
+        android:layout_marginRight="0dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintRight_toRightOf="@+id/name_of_tag"/>
 
     <ImageButton
         android:id="@+id/three_dots_inside_listView"
@@ -57,6 +58,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/inherits"
         android:layout_marginBottom="0dp"
         android:background="#00000000"
-        app:layout_constraintVertical_bias="0.187"
-        android:scaleType='fitXY'/>
+        app:layout_constraintVertical_bias="0.0"
+        android:scaleType='fitXY'
+        android:layout_marginLeft="16dp"/>
 </android.support.constraint.ConstraintLayout>
