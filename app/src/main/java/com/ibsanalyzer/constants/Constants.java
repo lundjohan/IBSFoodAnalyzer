@@ -53,6 +53,10 @@ public class Constants {
 
     public final static String DATE_TO_START_NEW_EVENTACTIVITY = "dateToStartNewEventActivity";
 
+    //For TagAdderActivity
+    public final static String TAG_LIST_CALLBACK= "tagListCallback";
+    public final static String OLD_TAGTEMPLATE_NAME= "old_tag_template_name";
+    public final static String NEW_TAGTEMPLATE_NAME= "new_tagtemplate_name";
     //For TagTemplateEditActivity
     public final static int TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED = 1357;
     public final static String TAG_TEMPLATE_POS = "posOfTagTemplateInList";

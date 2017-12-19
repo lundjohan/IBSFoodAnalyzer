@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import com.ibsanalyzer.base_classes.Other;
 
+import java.io.Serializable;
+
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 
-public class OtherActivity extends TagEventActivity {
+public class OtherActivity extends TagEventActivity implements Serializable {
 
     @Override
     protected int getLayoutRes() {

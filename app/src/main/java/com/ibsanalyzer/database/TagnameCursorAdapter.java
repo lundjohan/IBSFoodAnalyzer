@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,15 +26,17 @@ import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
 //based on https://github.com/codepath/android_guides/wiki/Populating-a-ListView-with-a
 // -CursorAdapter
 public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
-    ChangingTagTemplate changingTagTemplate;
-    public interface ChangingTagTemplate {
-        void editTagTemplate(long tagTemplateId);
-        void delTagTemplate(long tagTemplateId);
+    CallBackForChangingTagTemplate callBackForChangingTagTemplate;
+    boolean threeDotsShowMenu;
+    public interface CallBackForChangingTagTemplate {
+        void editTagTemplate(long tagTemplateId, String tagNameToBeChangedInList);
+        void delTagTemplate(long tagTemplateIdToBeDeleted, String tagNameToBeRemovedFromList);
     }
 
-    public TagnameCursorAdapter(ChangingTagTemplate changingTagTemplate, Cursor c) {
-        super((AppCompatActivity)changingTagTemplate, c, 0);
-        this.changingTagTemplate = changingTagTemplate;
+    public TagnameCursorAdapter(CallBackForChangingTagTemplate callBackForChangingTagTemplate, Cursor c, boolean threeDotsShouldShowMenu) {
+        super((AppCompatActivity) callBackForChangingTagTemplate, c, 0);
+        this.callBackForChangingTagTemplate = callBackForChangingTagTemplate;
+        threeDotsShowMenu = threeDotsShouldShowMenu;
     }
 
     @Override
@@ -52,24 +53,34 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         threeDotsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(context, v);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.delete_edit_tagtemplate_menu, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
+                //this alternative is used when called from parent
+                if (threeDotsShowMenu) {
+                    PopupMenu popup = new PopupMenu(context, v);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater().inflate(R.menu.delete_edit_tagtemplate_menu, popup.getMenu());
 
-                        if (item.getItemId() == R.id.edit_tagtemplate) {
-                            changingTagTemplate.editTagTemplate(c.getInt(c.getColumnIndex(COLUMN_ID)));
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            String oldTagTemplateName = c.getString(c.getColumnIndex(COLUMN_TAGNAME));
+                            long idOfTagTemplate = c.getInt(c.getColumnIndex(COLUMN_ID));
+                            if (item.getItemId() == R.id.edit_tagtemplate) {
+                                callBackForChangingTagTemplate.editTagTemplate(idOfTagTemplate,oldTagTemplateName);
+                            } else if (item.getItemId() == R.id.del_tagtemplate) {
+                                callBackForChangingTagTemplate.delTagTemplate(idOfTagTemplate,oldTagTemplateName);
+                                ;
+                            }
+                            return true;
                         }
-                        else if (item.getItemId() == R.id.del_tagtemplate){
-                            changingTagTemplate.delTagTemplate(c.getInt(c.getColumnIndex(COLUMN_ID)));;
-                        }
-                        return true;
-                    }
-                });
-                popup.show();
+                    });
+                    popup.show();
+                }
+                //this altenrative is used when called recursevily (it becomes very complicated if not doing like this, what if - for example - a tagtemplate is changed and then changed back).
+                else{
+                    //do a AlertDiaolog that explains, alternative OK.
+                }
             }
         });
+
 
         String name = c.getString(c.getColumnIndexOrThrow(COLUMN_TAGNAME));
         String inheritanceOne = c.getString(c.getColumnIndexOrThrow(FIRST_COLUMN_IS_A));

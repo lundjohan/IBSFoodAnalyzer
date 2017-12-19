@@ -842,7 +842,20 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_TAGTEMPLATES, "_id=" + idOfTagTemplate, null);
         db.close();
     }
-
+    public String getTagTemplateName(long idOfTagTemplate){
+        String toReturn ="";
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + TABLE_TAGTEMPLATES + " WHERE "+ COLUMN_ID + " =?";
+        Cursor c = db.rawQuery(QUERY, new String[]{Long.toString(idOfTagTemplate)});
+        if (c != null) {
+            if (c.moveToFirst()) {
+                 toReturn = c.getString(c.getColumnIndex(COLUMN_TAGNAME));
+            }
+        }
+        c.close();
+        db.close();
+        return toReturn;
+    }
     public void editTagTemplate(TagTemplate tagTemplate, long idOfTagTemplate) {
         ContentValues values = makeTagTemplateContentValues(tagTemplate);
         SQLiteDatabase db = this.getWritableDatabase();
