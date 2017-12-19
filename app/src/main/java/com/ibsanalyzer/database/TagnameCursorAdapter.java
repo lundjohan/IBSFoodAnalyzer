@@ -3,10 +3,15 @@ package com.ibsanalyzer.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
@@ -22,10 +27,15 @@ import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
 //based on https://github.com/codepath/android_guides/wiki/Populating-a-ListView-with-a
 // -CursorAdapter
 public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
+    ChangingTagTemplate changingTagTemplate;
+    public interface ChangingTagTemplate {
+        void editTagTemplate(long tagTemplateId);
+        void delTagTemplate(long tagTemplateId);
+    }
 
-
-    public TagnameCursorAdapter(Context context, Cursor c) {
-        super(context, c, 0);
+    public TagnameCursorAdapter(ChangingTagTemplate changingTagTemplate, Cursor c) {
+        super((AppCompatActivity)changingTagTemplate, c, 0);
+        this.changingTagTemplate = changingTagTemplate;
     }
 
     @Override
@@ -34,12 +44,35 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor c) {
         TextView tagName = (TextView) view.findViewById(R.id.name_of_tag);
         TextView inherits = (TextView) view.findViewById(R.id.inherits);
+        ImageView threeDotsBtn = (ImageView) view.findViewById(R.id.three_dots_inside_listView);
 
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TAGNAME));
-        String inheritanceOne = cursor.getString(cursor.getColumnIndexOrThrow(FIRST_COLUMN_IS_A));
+        threeDotsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(context, v);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.delete_edit_tagtemplate_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        if (item.getItemId() == R.id.edit_tagtemplate) {
+                            changingTagTemplate.editTagTemplate(c.getInt(c.getColumnIndex(COLUMN_ID)));
+                        }
+                        else if (item.getItemId() == R.id.del_tagtemplate){
+                            changingTagTemplate.delTagTemplate(c.getInt(c.getColumnIndex(COLUMN_ID)));;
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
+
+        String name = c.getString(c.getColumnIndexOrThrow(COLUMN_TAGNAME));
+        String inheritanceOne = c.getString(c.getColumnIndexOrThrow(FIRST_COLUMN_IS_A));
         tagName.setText(name);
         if (inheritanceOne == null) {
             inherits.setText("");
@@ -53,36 +86,4 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         //inherits.append(inheritanceOne + " " + inheritanceTwo + " " + inheritanceThree);
 
     }
-
-    //temporarily, inefficient and bad solution. Prefer to use database instead of looping cursor
-    private String getTagNameFromId(Cursor cursor, int id) {
-        cursor.moveToFirst();
-        String tagName = "";
-        while (!cursor.isAfterLast()) {
-            if (cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)) == id) {
-                tagName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TAGNAME));
-                break;
-            }
-            cursor.moveToNext();
-        }
-        return tagName;
-    }
-
-/*    @Override
-    public Filter getFilter() {
-        // return a filter that filters data based on a constraint
-
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                return null;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-
-            }
-        };
-    }*/
-
 }

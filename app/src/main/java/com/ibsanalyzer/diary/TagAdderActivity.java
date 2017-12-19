@@ -1,11 +1,8 @@
 package com.ibsanalyzer.diary;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +24,6 @@ import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_ID;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED;
-import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_POS;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_TO_EDIT;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
@@ -35,7 +31,7 @@ import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
 /**
  * This is the acticity that is seen when in Meal-, Other- or ExerciseActivity button "Add Tags" is pressed
  */
-public class TagAdderActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class TagAdderActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, TagnameCursorAdapter.ChangingTagTemplate {
     SearchView tagSearch;
     ListView tagsList;
     DBHandler dbHandler;
@@ -102,64 +98,6 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 chosenTagTemplate = dbHandler.findTagTemplate((int) id);
                 returnTag();
-            }
-        });
-
-        /**
-         * If longclick is made on item, user should be able to delete or change the TagTemplate.
-         * To cancel, point outside dialog.
-         *
-         * NB => long click should probably be replaced by three dots on each recycleritem instead (much clearer).
-         */
-        final Context context = this;
-        tagsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            /*notice that "id" actually DO return the row_id from database of element.
-            This is because the tagsList adapter is a CursorAdapter and it knows the _id of the elements.
-            See https://stackoverflow.com/questions/3184672/what-does-adapterview-mean-in-the-onitemclick-method-what-is-the-use-of-ot/25622142#25622142
-             */
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, final long tagTemplateId) {
-                final TagTemplate tt = dbHandler.findTagTemplate(tagTemplateId);
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setCancelable(true);
-                builder.setTitle("Handle Item");
-                builder.setMessage("Edit or remove item "+ tt.get_tagname()+"?");
-                builder.setPositiveButton("Edit",
-                        new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                Intent intent = new Intent(context, TagTemplateEditActivity.class);
-                                intent.putExtra(TAG_TEMPLATE_TO_EDIT, tt);
-                                intent.putExtra(TAG_TEMPLATE_ID, tagTemplateId);
-                                startActivityForResult(intent, TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED);
-                            }
-                        });
-
-
-
-                builder.setNegativeButton("Delete",
-                        new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(DialogInterface dialog, int notRelevantId)
-                            {
-                                //Exercise needs to be removed first with tag that contain a tagTemplate that will no longer exist.
-                                //for other tags they will be removed through cascading in database.
-                                dbHandler.removeExercisesWithTagTemplate(tagTemplateId);
-
-                                synchronized (this) {
-                                    //Remove the TagTemplate itself from database
-                                    dbHandler.deleteTagTemplate(tagTemplateId);
-
-                                    //remove TagTemplate from list inside TagAdderView.
-                                    updateListView();
-                                }
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                //return true to not allow also short click to fire
-                return true;
             }
         });
     }
@@ -230,4 +168,26 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
         }
 
+    @Override
+    public void editTagTemplate(long tagTemplateId) {
+        Intent intent = new Intent(getApplicationContext(), TagTemplateEditActivity.class);
+        intent.putExtra(TAG_TEMPLATE_TO_EDIT, dbHandler.findTagTemplate(tagTemplateId));
+        intent.putExtra(TAG_TEMPLATE_ID, tagTemplateId);
+        startActivityForResult(intent, TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED);
+    }
+
+    @Override
+    public void delTagTemplate(long tagTemplateId) {
+        //Exercise needs to be removed first with tag that contain a tagTemplate that will no longer exist.
+        //for other tags they will be removed through cascading in database.
+        dbHandler.removeExercisesWithTagTemplate(tagTemplateId);
+
+        synchronized (this) {
+            //Remove the TagTemplate itself from database
+            dbHandler.deleteTagTemplate(tagTemplateId);
+
+            //remove TagTemplate from list inside TagAdderView.
+            updateListView();
+        }
+    }
 }
