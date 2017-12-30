@@ -90,6 +90,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         Cursor cursor = dbHandler.getCursorToTagTemplates();
 
         //in case this Activity was started from a real parent (TagEventActivity or ExerciseActivity)
+        //note: all this is dubios, since no TAG_LIST_CALLBACK is ever entered anymore. See TagEventActivity.newTagAdderActivity for uncommented code.
         if (intent.hasExtra(TAG_LIST_CALLBACK)){
             tagListCallback = (TagListCallback )getParent();
             adapter = new TagnameCursorAdapter(this,

@@ -86,7 +86,8 @@ public abstract class TagEventActivity extends EventActivity implements TagAdder
 
     public void newTagAdderActivity(View view) {
         Intent intent = new Intent(this, TagAdderActivity.class);
-        intent.putExtra(TAG_LIST_CALLBACK, this);
+       //uncommenting this line, cause it is an error. It had to do with editing the eventactivities tags when a tagtemplate been changed. But it didn't work properly anyway.
+        // intent.putExtra(TAG_LIST_CALLBACK, this);
         startActivityForResult(intent, TAGS_TO_ADD);
     }
 
