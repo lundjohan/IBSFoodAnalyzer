@@ -1,9 +1,12 @@
 package com.ibsanalyzer.diary;
 
 
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+
+import com.ibsanalyzer.drawer.DrawerActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,52 +15,82 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class NewEventBackButtonTest {
-/*
+
     @Rule
-    public IntentsTestRule<MainActivity> mActivityTestRule = new IntentsTestRule<MainActivity>
-            (MainActivity.class);
+    public IntentsTestRule<DrawerActivity> mActivityTestRule = new IntentsTestRule<DrawerActivity>
+            (DrawerActivity.class);
 
 
     //create a rating event in beginning, it will later check that it remains in view after back
     // click.
     public void fillRecyclerViewWithAnRatingEvent() {
-        onView(withId(R.id.ratingBtn)).perform(click());
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.ratingBtn),withContentDescription("Rating"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
 
         //properties of rating event doesn't matter
         onView(withId(R.id.menu_done)).perform(click());
 
     }
 
-    private void checkThatBackActionCameBackToSameView(int id) {
+    private void checkThatBackActionCameBackToSameView(int id, String contentDesc, int notExistingId) {
         //Click "New Meal Button"
-        onView(withId(id)).perform(click());
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(id),withContentDescription(contentDesc),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
 
         //Inside NewMealActivity, press back button
         pressBack();
 
         //check that recyclerview in Diary still contains an event item (the Rating item created
         // before)
-        onView(withId(R.id.secondLine)).check(matches(isDisplayed()));
+        onView(withId(R.id.rating_item_container)).check(matches(isDisplayed()));
 
+        //also check that no other event item is displayed
+        onView(withId(notExistingId))
+                .check(doesNotExist());
     }
+    //removed the rating that was added in beginning.
+    //the code in method comes from espresso recording.
+    public void cleanUp(){
+        ViewInteraction linearLayout = onView(
+                allOf(withClassName(is("android.widget.LinearLayout")),
+                        withParent(withId(R.id.events_layout)),
+                        isDisplayed()));
+        linearLayout.perform(longClick());
 
+        ViewInteraction appCompatTextView = onView(
+                allOf(withId(R.id.title), withText("Delete Event"), isDisplayed()));
+        appCompatTextView.perform(click());   }
     @Test
     public void newEventsBackButtonTest() {
         fillRecyclerViewWithAnRatingEvent();
-        checkThatBackActionCameBackToSameView(R.id.mealBtn);
-        checkThatBackActionCameBackToSameView(R.id.otherBtn);
-        checkThatBackActionCameBackToSameView(R.id.exerciseBtn);
-        checkThatBackActionCameBackToSameView(R.id.bmBtn);
-        checkThatBackActionCameBackToSameView(R.id.bmBtn);
-        checkThatBackActionCameBackToSameView(R.id.ratingBtn);
+        checkThatBackActionCameBackToSameView(R.id.mealBtn, "Meal", R.id.meal_item_container);
+        checkThatBackActionCameBackToSameView(R.id.otherBtn, "Other",R.id.other_item_container);
+        checkThatBackActionCameBackToSameView(R.id.exerciseBtn, "Exercise",R.id.exercise_item_container);
+        checkThatBackActionCameBackToSameView(R.id.bmBtn, "Bowel Movement",R.id.bm_item_container);
 
+        //cannot have rating as not existing, therefore meal
+        checkThatBackActionCameBackToSameView(R.id.ratingBtn, "Rating", R.id.meal_item_container);
+        cleanUp();
     }
-*/
 }
