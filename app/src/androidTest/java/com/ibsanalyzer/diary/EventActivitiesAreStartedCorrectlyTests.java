@@ -1,6 +1,7 @@
 package com.ibsanalyzer.diary;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -16,11 +17,13 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static org.hamcrest.Matchers.allOf;
 
 
 /**
@@ -30,7 +33,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class DiaryFragmentEspressoTests {
+public class EventActivitiesAreStartedCorrectlyTests {
     @Rule
     public IntentsTestRule<DrawerActivity> mActivityRule =
             new IntentsTestRule<>(DrawerActivity.class);
@@ -61,8 +64,12 @@ public class DiaryFragmentEspressoTests {
 
     @Test
     public void ensureThatPressingOtherBtnLeadsToNewOtherActivity() throws InterruptedException {
-        onView(withId(R.id.otherBtn)).
-                check(matches(isDisplayed())).perform(click());
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.otherBtn), withContentDescription("Other"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
         intended(hasComponent(OtherActivity.class.getName())); //only works if IntentTestRule
         // instead of ActivityTestRule
     }
