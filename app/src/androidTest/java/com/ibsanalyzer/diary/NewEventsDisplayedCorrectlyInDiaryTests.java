@@ -62,7 +62,7 @@ import static org.hamcrest.Matchers.allOf;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MainActivityNewEventsTests {
+public class NewEventsDisplayedCorrectlyInDiaryTests {
 
     @Rule
     public IntentsTestRule<DrawerActivity> intentsRule = new IntentsTestRule<>(DrawerActivity.class);
