@@ -4,11 +4,12 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
+
     <com.ibsanalyzer.custom_views.EventLayout
+        android:id="@+id/other_item_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:hasTags="true"
-        custom:itemImg="@drawable/ic_help_outline_black_24dp"
         custom:itemColor="@color/colorPurple"
-        />
+        custom:itemImg="@drawable/ic_help_outline_black_24dp"/>
 </LinearLayout>

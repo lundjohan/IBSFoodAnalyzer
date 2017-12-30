@@ -4,11 +4,12 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
+
     <com.ibsanalyzer.custom_views.EventLayout
+        android:id="@+id/exercise_item_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:hasTags="false"
-        custom:itemImg="@drawable/ic_pool_black_24dp"
         custom:itemColor="@color/colorLightBlue"
-        />
+        custom:itemImg="@drawable/ic_pool_black_24dp"/>
 </LinearLayout>

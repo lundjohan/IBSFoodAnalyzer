@@ -3,6 +3,7 @@ package com.ibsanalyzer.diary;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
@@ -15,6 +16,7 @@ import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
+import com.ibsanalyzer.drawer.DrawerActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,10 +32,13 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
@@ -46,11 +51,11 @@ import static org.hamcrest.Matchers.allOf;
  * Created by Johan on 2017-05-23.
  * <p>
  * <p>
- * This Test class will test that behaviour of MainActivity with its child DiaryFragment is
+ * This Test class will test that behaviour of DrawerActivity with its child DiaryFragment is
  * behaving ok
  * relative to child Activities.
  * <p>
- * All other Activities (except for MainActivity) are stubbed out.
+ * All other Activities (except for DrawerActivity) are stubbed out.
  * <p>
  * <p>
  * Based on end of https://guides.codepath.com/android/UI-Testing-with-Espresso
@@ -60,7 +65,7 @@ import static org.hamcrest.Matchers.allOf;
 public class MainActivityNewEventsTests {
 
     @Rule
-    public IntentsTestRule<MainActivity> intentsRule = new IntentsTestRule<>(MainActivity.class);
+    public IntentsTestRule<DrawerActivity> intentsRule = new IntentsTestRule<>(DrawerActivity.class);
     List<Tag> tags = new ArrayList<>();
     LocalDateTime ldt;
 
@@ -90,29 +95,32 @@ public class MainActivityNewEventsTests {
         stubOutActivity(MealActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
-        onView(withId(R.id.mealBtn)).perform(click());
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.mealBtn), withContentDescription("Meal"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
 
         //check that an item exists in RecyclerView that has Time 16:00 and portions 2.5
         onView(allOf(
 
                 //all meal items has portions id
-                withId(R.id.portions),
-
-                //timeView
-                hasSibling(withText("16:00")),
-
-                //nr of portions
-                hasSibling(withText("1.0")),
+                withId(R.id.meal_item_container),
+                //firstLine
+                hasDescendant(withText("16:00")),
+                //nr of portions, very sensitiv to changes of text ("Portions..."). Not so good, change in some way?
+                hasDescendant(withText("Portions: 1.0")),
 
                 //tags in item
-                hasSibling(withChild(withText("banana"))), hasSibling(withChild(withText("honey")
-                ))))
+                hasDescendant(withText("banana")),
+                hasDescendant(withChild(withText("honey")))
+        ))
                 .check(matches(isDisplayed()));
     }
 
     @Test
     public void testReturnValueFromOtherActivity() {
-        ldt = LocalDateTime.of(2017, Month.MAY, 23, 23, 22);
+        ldt = LocalDateTime.of(2017, Month.MAY, 24, 23, 22);
 
         tags.add(new Tag(ldt, "happy", 1.0));
         Other other = new Other(ldt, tags);
@@ -122,25 +130,26 @@ public class MainActivityNewEventsTests {
         stubOutActivity(OtherActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
-        onView(withId(R.id.otherBtn)).perform(click());
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.otherBtn), withContentDescription("Other"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
 
         //check that an item exists in RecyclerView that has Time 16:00 and portions 2.5
         onView(allOf(
 
                 //all meal items has portions id
-                withId(R.id.smallOtherIcon),
-
-                //timeView
-                hasSibling(withText("23:22")),
+                withId(R.id.other_item_container),
+                //firstLine
+                hasDescendant(withText("23:22")),
 
                 //tags in item
-                hasSibling(withChild(withText("happy"))
+                hasDescendant(withChild(withText("happy"))
                 )))
                 .check(matches(isDisplayed()));
     }
 
-    // TODO Othertest  (but it so similar to Meal so maybe I don't have to do it), but should
-    // make Bm and Rating at least
     @Test
     public void testReturnValueFromExerciseActivity() {
         // Create a meal object with timeView 16:00
@@ -154,22 +163,28 @@ public class MainActivityNewEventsTests {
                 exercise);
         stubOutActivity(ExerciseActivity.class.getName(), result);
 
-        //now press click of MealBtn that makes us go to MealActivity stub above
-        onView(withId(R.id.exerciseBtn)).perform(click());
+        //Press Exercise Btn
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.exerciseBtn), withContentDescription("Exercise"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+
 
         //check that a relevant item exists in RecyclerView
         onView(allOf(
                 //use the image
-                withId(R.id.smallExerciseIcon),
+                withId(R.id.exercise_item_container),
                 //withText("17:30"),
                 //timeView
-                hasSibling(withText("17:30")),
+                hasDescendant(withText("17:30")),
 
                 //tag
-                hasSibling(withText("running")),
+                hasDescendant(withText("running")),
 
                 //intensity
-                hasSibling(withText("Intense"))
+                hasDescendant(withText("Intense"))
         ))
                 .check(matches(isDisplayed()));
     }
@@ -185,20 +200,23 @@ public class MainActivityNewEventsTests {
         stubOutActivity(BmActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
-        onView(withId(R.id.bmBtn)).perform(click());
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.bmBtn), withContentDescription("Bowel Movement"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
 
         //check that a relevant item exists in RecyclerView
         onView(allOf(
-                //use the image
-                withId(R.id.smallBmIcon),
+                withId(R.id.bm_item_container), //use the image
                 //timeView
-                hasSibling(withText("18:00")),
+                hasDescendant(withText("18:00")),
 
                 //tag
-                hasSibling(withText("Phenomenal")),
+                hasDescendant(withText("Phenomenal")),
 
                 //intensity
-                hasSibling(withText("2"))
+                hasDescendant(withText("Bristol: 2"))
         ))
                 .check(matches(isDisplayed()));
     }
@@ -214,17 +232,21 @@ public class MainActivityNewEventsTests {
         stubOutActivity(RatingActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
-        onView(withId(R.id.ratingBtn)).perform(click());
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.ratingBtn), withContentDescription("Rating"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
 
         //check that a relevant item exists in RecyclerView
         onView(allOf(
                 //use the image
-                withId(R.id.smallRatingIcon),
+                withId(R.id.rating_item_container),
                 //timeView
-                hasSibling(withText("19:00")),
+                hasDescendant(withText("19:00")),
 
                 //rating/after
-                hasSibling(withText("Great"))
+                hasDescendant(withText("Great"))
         ))
                 .check(matches(isDisplayed()));
     }

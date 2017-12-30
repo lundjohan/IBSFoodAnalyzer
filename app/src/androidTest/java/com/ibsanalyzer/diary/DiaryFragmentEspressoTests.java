@@ -6,6 +6,8 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.view.ViewPager;
 
+import com.ibsanalyzer.drawer.DrawerActivity;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,10 +32,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @LargeTest
 public class DiaryFragmentEspressoTests {
     @Rule
-    public IntentsTestRule<MainActivity> mActivityRule =
-            new IntentsTestRule<>(MainActivity.class);
+    public IntentsTestRule<DrawerActivity> mActivityRule =
+            new IntentsTestRule<>(DrawerActivity.class);
     ViewPagerIdlingResource viewPagerIdlingResource;
-    MainActivity activity;
+    DrawerActivity activity;
 
     @Before
     public void registerIntentServiceIdlingResource() {

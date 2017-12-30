@@ -1,9 +1,12 @@
 package com.ibsanalyzer.diary;
 
 
+import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+
+import com.ibsanalyzer.drawer.DrawerActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,7 +30,7 @@ import static org.hamcrest.Matchers.hasToString;
 public class AddingTagTemplateAndTagTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity
+    public ActivityTestRule<DrawerActivity> mActivityTestRule = new ActivityTestRule<>(DrawerActivity
             .class);
 
     @Test

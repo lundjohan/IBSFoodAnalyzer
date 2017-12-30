@@ -19,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class NewTagBackButtonTest {
-
+    /*
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity
             .class);
@@ -37,6 +37,6 @@ public class NewTagBackButtonTest {
 
         //should be back in MealActivity, check for some id there
         onView(withId(R.id.mealContainer)).check(matches(isDisplayed()));
-    }
+    }*/
 
 }

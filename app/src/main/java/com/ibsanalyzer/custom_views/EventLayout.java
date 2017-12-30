@@ -13,6 +13,8 @@ import com.ibsanalyzer.diary.R;
 
 /**
  * Created by Johan on 2017-12-03.
+ *
+ * It seems a bit complicated but the reason for this class is to use the same item base for all events, in case I would like to change something later.
  */
 
 public class EventLayout extends ConstraintLayout {

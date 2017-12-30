@@ -19,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class NewEventBackButtonTest {
-
+/*
     @Rule
     public IntentsTestRule<MainActivity> mActivityTestRule = new IntentsTestRule<MainActivity>
             (MainActivity.class);
@@ -59,5 +59,5 @@ public class NewEventBackButtonTest {
         checkThatBackActionCameBackToSameView(R.id.ratingBtn);
 
     }
-
+*/
 }
