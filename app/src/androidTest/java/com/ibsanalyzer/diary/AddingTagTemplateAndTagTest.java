@@ -37,7 +37,7 @@ public class AddingTagTemplateAndTagTest {
     public void addingTagTemplateAndTagTest() {
         //first, add TagTemplate "butter"
 
-        onView(withId(R.id.mealBtn)).perform(click());
+        onView(allOf(withId(R.id.mealBtn), isDisplayed())).perform(click());
         onView(withId(R.id.addTagsBtn)).perform(click());
         onView(withId(R.id.menu_add_new)).perform(click());
         onView(withId(R.id.name_box)).perform(click()).perform(replaceText("butter"),
