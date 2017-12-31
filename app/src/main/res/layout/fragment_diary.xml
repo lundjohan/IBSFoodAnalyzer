@@ -6,7 +6,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorOrange"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -103,7 +103,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
@@ -117,7 +117,7 @@
     <include
         android:id="@+id/buttons"
         layout="@layout/event_buttons"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"

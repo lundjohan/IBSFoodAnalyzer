@@ -54,7 +54,7 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
             @Override
             public void onClick(View v) {
                 //this alternative is used when called from parent
-                if (threeDotsShowMenu) {
+               // if (threeDotsShowMenu) {
                     PopupMenu popup = new PopupMenu(context, v);
                     //Inflating the Popup using xml file
                     popup.getMenuInflater().inflate(R.menu.delete_edit_tagtemplate_menu, popup.getMenu());
@@ -73,11 +73,11 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
                         }
                     });
                     popup.show();
-                }
+                //}
                 //this altenrative is used when called recursevily (it becomes very complicated if not doing like this, what if - for example - a tagtemplate is changed and then changed back).
-                else{
+               // else{
                     //do a AlertDiaolog that explains, alternative OK.
-                }
+                //}
             }
         });
 
