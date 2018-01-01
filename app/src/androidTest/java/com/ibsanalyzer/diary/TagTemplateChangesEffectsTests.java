@@ -1,6 +1,5 @@
 package com.ibsanalyzer.diary;
 
-import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -23,9 +22,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -60,9 +57,6 @@ public class TagTemplateChangesEffectsTests {
         onView(withId(R.id.menu_done)).perform(click());
 
         //Inside DiaryFragment, check that the tag has been added.
-       /* onView(allOf(withId(R.id.events_layout), isDisplayed())).check(matches(hasDescendant(withId(R.id.tagNames))
-                (hasDescendant(withText(containsString("Butter"))))));*/
-
         onView(allOf(withId(R.id.tagNames), hasDescendant(withText(containsString("Butter"))))).check(matches(isDisplayed()));
         //go back into the event
         onView(allOf(isDisplayed(), withId(R.id.events_layout)))

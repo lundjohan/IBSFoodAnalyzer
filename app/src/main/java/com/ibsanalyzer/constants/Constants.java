@@ -59,7 +59,8 @@ public class Constants {
     public final static String TAG_TEMPLATE_TO_EDIT = "tagTemplateToEdit";
     public final static String TAG_TEMPLATE_ID = "tagTemplateId";
 
-
+    //Other uses for TagTemplates
+    public final static String TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED = "delete_or_edited_tagTemplate";
  //sent to Activity handling of EventsTemplates
     public final static String EVENTSTEMPLATE_TO_CHANGE = "eventsTemplateToChange";
 

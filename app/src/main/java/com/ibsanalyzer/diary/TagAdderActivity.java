@@ -24,6 +24,7 @@ import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_ID;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED;
+import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_TO_EDIT;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
@@ -41,6 +42,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     int typeOf = -1;
     private TagnameCursorAdapter adapter;
 
+    //used for backPress
+    private boolean tagTemplateHasBeenEditedOrDeleted;
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_tagtemplate_menu, menu);
@@ -107,6 +110,9 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         if (typeOf >= 0) {
             data.putExtra(WHICH_TYPE, typeOf);
         }
+        if (tagTemplateHasBeenEditedOrDeleted){
+            data.putExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED, true);
+        }
         setResult(RESULT_OK, data);
         finish();
     }
@@ -154,8 +160,10 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             chosenTagTemplate = (TagTemplate) data.getSerializableExtra(PUT_TAG_TEMPLATE);
             returnTag();
         }
+        //code coming back from TagTemplateEditActivity
         if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED) {
             updateListView();
+            tagTemplateHasBeenEditedOrDeleted = true;
         }
     }
         //there is no notifyDataItemChanged for a CursorAdapter. One alternativ is to update the cursor:
@@ -188,6 +196,19 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
             //remove TagTemplate from list inside TagAdderView.
             updateListView();
+            tagTemplateHasBeenEditedOrDeleted = true;
+
         }
+
+    }
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED, tagTemplateHasBeenEditedOrDeleted);
+
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 }
