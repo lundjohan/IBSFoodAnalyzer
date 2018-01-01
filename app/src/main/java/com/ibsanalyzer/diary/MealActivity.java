@@ -10,8 +10,6 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.util.Util;
 
-import java.io.Serializable;
-
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 

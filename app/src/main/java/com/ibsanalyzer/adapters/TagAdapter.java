@@ -12,14 +12,13 @@ import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.TagEventActivity;
 import com.ibsanalyzer.util.Util;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Johan on 2017-05-13.
  */
 
-public class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class TagAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Tag> tagsList;
     private TagEventActivity parentActivity;
 

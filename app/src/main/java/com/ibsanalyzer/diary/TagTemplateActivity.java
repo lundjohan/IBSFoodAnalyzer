@@ -15,9 +15,7 @@ import com.ibsanalyzer.model.TagTemplate;
 
 import java.io.Serializable;
 
-import static com.ibsanalyzer.constants.Constants.NEW_TAGTEMPLATE_NAME;
 import static com.ibsanalyzer.constants.Constants.NEW_TYPE_FOR_TAGTEMPLATE;
-import static com.ibsanalyzer.constants.Constants.OLD_TAGTEMPLATE_NAME;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TYPE_OF_1;
@@ -39,7 +37,7 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
 
     /**
      * a TagTemplate must be sent back because 1. TagAdderActivity must now which TagTemplate
-     * has been chosen and 2. TagTemplateEdit/Adder-Activity must know which parent has been
+     * has been chosen and 2. TagTemplateEdit/Adder-Activity must now which parent has been
      * created/ chosen.
      *
      * @param idOfTagTemplate <0 means new TagTemplate. If editing this is
@@ -53,10 +51,7 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         Intent data = new Intent();
         if (idOfTagTemplate >= 0) {
-            String oldName = dbHandler.getTagTemplateName(idOfTagTemplate);
             dbHandler.editTagTemplate(tagTemplate, idOfTagTemplate);
-            data.putExtra(OLD_TAGTEMPLATE_NAME, oldName);
-            data.putExtra(NEW_TAGTEMPLATE_NAME, tagTemplate.get_tagname());
         } else {
             dbHandler.addTagTemplate(tagTemplate);
             data.putExtra(PUT_TAG_TEMPLATE, (Serializable) tagTemplate);

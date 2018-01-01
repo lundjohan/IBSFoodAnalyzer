@@ -4,33 +4,32 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.ibsanalyzer.adapters.TagAdapter;
 import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.model.TagTemplate;
+import com.ibsanalyzer.util.Util;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
-import static com.ibsanalyzer.constants.Constants.TAG_LIST_CALLBACK;
 
 /**
  * Created by Johan on 2017-05-13.
  */
 
-public abstract class TagEventActivity extends EventActivity implements TagAdderActivity.TagListCallback {
+public abstract class TagEventActivity extends EventActivity {
     protected List<Tag> tagsList;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
@@ -86,8 +85,6 @@ public abstract class TagEventActivity extends EventActivity implements TagAdder
 
     public void newTagAdderActivity(View view) {
         Intent intent = new Intent(this, TagAdderActivity.class);
-       //uncommenting this line, cause it is an error. It had to do with editing the eventactivities tags when a tagtemplate been changed. But it didn't work properly anyway.
-        // intent.putExtra(TAG_LIST_CALLBACK, this);
         startActivityForResult(intent, TAGS_TO_ADD);
     }
 
@@ -119,24 +116,5 @@ public abstract class TagEventActivity extends EventActivity implements TagAdder
 
 
     }
-    @Override
-    public  void updateListViewAfterDeletionOfTagTemplate(String oldName){
-        for (int i = 0;i<tagsList.size(); i++){
-            if (tagsList.get(i).getName().equals(oldName)) {
-                tagsList.remove(i);
-                adapter.notifyItemChanged(i);
-            }
 
-        }
-    }
-    @Override
-    public void updateListViewAfterEditingOfTagTemplate(String oldName, String newName){
-        for (int i = 0;i<tagsList.size(); i++){
-            Tag oldTag = tagsList.get(i);
-            if (oldTag.getName().equals(oldName)){
-                oldTag.setName(newName);
-                adapter.notifyItemChanged(i);
-            }
-        }
-    }
 }
