@@ -1,14 +1,12 @@
 package com.ibsanalyzer.diary;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.drawer.DrawerActivity;
-import com.ibsanalyzer.help_classes.RecyclerViewMatcher;
+import com.ibsanalyzer.help_classes.AndroidTestUtil;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,16 +43,7 @@ public class TagTemplateChangesEffectsTests {
 
     @Before
     public void clearDatabase(){
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Open navigation drawer"),
-                        withParent(withId(R.id.toolbar)),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
-
-        ViewInteraction appCompatCheckedTextView = onView(
-                allOf(withId(R.id.design_menu_item_text), withText("Clear Database"), isDisplayed
-                        ()));
-        appCompatCheckedTextView.perform(click());
+      AndroidTestUtil.clearDatabase();
         /* This is not enough, becuase events will still lay in RecyclerView
         DBHandler  dbHandler = new DBHandler(InstrumentationRegistry.getTargetContext());
         dbHandler.deleteAllTablesRows();*/
@@ -129,9 +118,5 @@ public class TagTemplateChangesEffectsTests {
 
         //You should now be inside DiaryFragment (check that it is the same date as before), and
         // only the new tag should be found, not the deleted one..
-    }
-
-    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
-        return new RecyclerViewMatcher(recyclerViewId);
     }
 }
