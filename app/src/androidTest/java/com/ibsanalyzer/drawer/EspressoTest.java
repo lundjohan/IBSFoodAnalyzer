@@ -23,7 +23,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -33,14 +32,14 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TestFromEspressoRecordning {
+public class EspressoTest {
 
     @Rule
     public ActivityTestRule<DrawerActivity> mActivityTestRule = new ActivityTestRule<>
             (DrawerActivity.class);
 
     @Test
-    public void testFromEspressoRecordning() {
+    public void espressoTest() {
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.otherBtn), withContentDescription("Other"),
                         withParent(withId(R.id.buttons)),
@@ -84,29 +83,9 @@ public class TestFromEspressoRecordning {
                         isDisplayed()));
         textView.check(matches(withText("Butter")));
 
-        /* ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.events_layout), isDisplayed()));
-        recyclerView.perform(actionOnItemAtPosition(0, click()));
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.addTagsBtn), withText("Add Tags"), isDisplayed()));
-        appCompatButton2.perform(click());
-
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withId(R.id.three_dots_inside_listView),
-                        withParent(childAtPosition(
-                                withId(R.id.listOfTags),
-                                0)),
-                        isDisplayed()));
-        appCompatImageButton2.perform(click());
-
-      ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.title), withText("Delete"), isDisplayed()));
-        appCompatTextView.perform(click());*/
-
     }
 
-    public static Matcher<View> childAtPosition(
+    private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
