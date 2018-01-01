@@ -24,6 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ibsanalyzer.diary.R.id.addedTagsView;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 
@@ -43,9 +44,7 @@ public class TagTemplateChangesEffectsTests {
       AndroidTestUtil.clearDatabase();
     }
 
-    @Test
-    public void deletedTagTemplateBackBtnTest() throws InterruptedException {
-
+    private void startOfTest(){
         //create a new TagTemplate and add it to an OtherEvent and click done in TagAdderActivity
         // and in OtherActivity so it is placed in diary.
         onView(allOf(withId(R.id.otherBtn), isDisplayed())).perform(click());
@@ -62,9 +61,15 @@ public class TagTemplateChangesEffectsTests {
         onView(allOf(isDisplayed(), withId(R.id.events_layout)))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
-        //go into add tags and delete the TagTemplate.
+        //inside OtherActivity, go into add tags and delete the TagTemplate.
         onView(withId(R.id.addTagsBtn)).perform(click());
 
+
+    }
+    @Test
+    public void deletedTagTemplateBackBtnTest() throws InterruptedException {
+        startOfTest();
+        //inside TagAdderActivity, delete Butter TagTemplate
         onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
@@ -90,26 +95,44 @@ public class TagTemplateChangesEffectsTests {
 
 
     }
-
+//TODO Do this with Meal Activity instead of Other
     @Test
     public void deletedTagTemplateDoneTest() {
-        //create a new TagTemplate and add it to an OtherEvent and click done so it is placed in
-        // diary.
+        startOfTest();
 
-        //go back into the event
+        //inside TagAdderActivity, add another TagTemplate
+        onView(withId(R.id.menu_add_new)).perform(click());
+        onView(withId(R.id.name_box)).perform(click()).perform(replaceText("Sugar"),
+                closeSoftKeyboard());
+        onView(withId(R.id.menu_done)).perform(click());
 
-        //go into add tags and delete the TagTemplate.
+        //Now should be back in OtherActivity, check that there are Butter and Sugar tags in list.
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Butter"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Sugar"))))).check(matches(isDisplayed()));
 
-        //check that you are still in TagAdderView and that the TagTemplate was deleted
+        //go back to TagAdder and remove "Butter"
+        onView(withId(R.id.addTagsBtn)).perform(click());
+        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+                .perform(click());
+        onView(withText("Delete")).check(matches(isDisplayed())).perform(click());
 
-        //create another tagTemplate
+        //add another TagTemplate, Honey.
+        onView(withId(R.id.menu_add_new)).perform(click());
+        onView(withId(R.id.name_box)).perform(click()).perform(replaceText("Honey"),
+                closeSoftKeyboard());
+        onView(withId(R.id.menu_done)).perform(click());
 
-        //now you should be inside OtherActivity and the deleted tag should be removed in
-        // tagsList, but the new tag should be there
+        //Now, inside OtherActivity again, there should only be two tags, Sugar and Honey. Butter should be gone.
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Honey"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Sugar"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
 
-        //Press done.
+        //change the event to the one displayed in OtherActivity
+        onView(withId(R.id.menu_done)).perform(click());
 
-        //You should now be inside DiaryFragment (check that it is the same date as before), and
-        // only the new tag should be found, not the deleted one..
+        //now inside DiaryFragment, do checks
+        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Honey"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Sugar"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
     }
 }
