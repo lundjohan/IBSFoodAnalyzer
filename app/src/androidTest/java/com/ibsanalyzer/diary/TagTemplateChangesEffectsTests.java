@@ -84,8 +84,10 @@ public class TagTemplateChangesEffectsTests {
 
         //Press back btn again.
         pressBack();
-        //You should now be inside DiaryFragment (check that it is the same date as before), and
+        //You should now be inside DiaryFragment, and
         // the tag should not be found anywhere.
+        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
+
 
     }
 
