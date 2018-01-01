@@ -377,6 +377,11 @@ public class DiaryFragment extends Fragment implements EventsContainer
         startActivityForResult(intent, NEW_RATING);
     }
 
+    @Override
+    public void updateTagsInListOfEventsAfterTagTemplateChange() {
+        fillEventListWithDatabase(currentDate);
+    }
+
     private void addDateToNewEventIntent(Intent intent) {
         intent.putExtra(DATE_TO_START_NEW_EVENTACTIVITY, (Serializable) currentDate);
     }

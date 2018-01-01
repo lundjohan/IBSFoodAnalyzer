@@ -40,6 +40,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ibsanalyzer.constants.Constants.NEW_EVENT;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
@@ -72,6 +73,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     public static Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event event) {
         Intent resultData = new Intent();
         resultData.putExtra(putExtraStr, event);
+        resultData.putExtra(NEW_EVENT, true);
         return new Instrumentation.ActivityResult(Activity
                 .RESULT_OK, resultData);
     }

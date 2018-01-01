@@ -67,4 +67,6 @@ public class EditEventsTemplateActivity extends EventsTemplateActivity {
 
         return et.getEvents();
     }
+
+
 }

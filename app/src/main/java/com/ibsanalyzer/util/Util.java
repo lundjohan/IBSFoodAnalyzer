@@ -34,6 +34,7 @@ import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.MEAL;
+import static com.ibsanalyzer.constants.Constants.NEW_EVENT;
 import static com.ibsanalyzer.constants.Constants.OTHER;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.RATING;
@@ -68,11 +69,12 @@ public class Util {
      * @param putExtraString
      * @param usingActivity
      */
-    public static void returnSerializable(Serializable serializable, String putExtraString,
-                                          Activity usingActivity) {
+    public static void returnNewEvent(Serializable serializable, String putExtraString,
+                                      Activity usingActivity) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(putExtraString, serializable);
         Intent data = new Intent();
+        bundle.putBoolean(NEW_EVENT, true);
         data.putExtras(bundle);
         usingActivity.setResult(RESULT_OK, data);
     }
@@ -141,7 +143,7 @@ public class Util {
     //TODO Change to if (events.size()<10) and Implement else
     //TODO ugly method, works, but should be total remake over.
     //ineffective method, but doesnt matter since it is inly used when ONE event is added.
-    //(other methods are used to add much )
+    //(other methods are used to add many).
     public static int addEventAtRightPlace(Event event, List<Event> events) {
         int indexOfInsertion = -1;
         if (events.isEmpty()) {

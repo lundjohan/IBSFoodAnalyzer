@@ -306,4 +306,11 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         intent.putExtra(ID_OF_EVENT, eventId);
         startActivityForResult(intent, valueToReturn);
     }
+    @Override
+    public void updateTagsInListOfEventsAfterTagTemplateChange() {
+
+        //does this work? Write tests for EventsTemplate classes just as you have for DiaryFragment
+        ec.eventList = getStartingEvents();
+        ec.adapter.notifyDataSetChanged();
+    }
 }

@@ -9,15 +9,12 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.ibsanalyzer.adapters.TagAdapter;
 import com.ibsanalyzer.base_classes.InputEvent;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.TagTemplate;
-import com.ibsanalyzer.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +22,6 @@ import java.util.List;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
-import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 
 /**
@@ -37,6 +33,7 @@ public abstract class TagEventActivity extends EventActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private TagAdapter adapter;
+    private boolean tagTemplateSeemsToHaveBeenBeenEditedOrDeleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +69,11 @@ public abstract class TagEventActivity extends EventActivity {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (data.hasExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED)){
-            updateTagsList();
+        if (data.hasExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED)) {
+            if (data.getBooleanExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED, true)) {
+                tagTemplateSeemsToHaveBeenBeenEditedOrDeleted = true;
+                updateTagsList();
+            }
         }
         if (requestCode != TAGS_TO_ADD) {
             return;
@@ -95,17 +95,18 @@ public abstract class TagEventActivity extends EventActivity {
      * simply match this Activity's TagList and TagTemplate in database,
      * if no match => remove from tagList (it is not so terrible if too many lines become removed)
      */
-    private void updateTagsList(){
+    private void updateTagsList() {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        for (int i = 0;i<tagsList.size();i++){
+        for (int i = 0; i < tagsList.size(); i++) {
             String tagName = tagsList.get(i).getName();
-            if (dbHandler.getTagTemplateId(tagName) == -1){
+            if (dbHandler.getTagTemplateId(tagName) == -1) {
                 tagsList.remove(i);
             }
 
         }
         adapter.notifyDataSetChanged();
     }
+
     public void newTagAdderActivity(View view) {
         Intent intent = new Intent(this, TagAdderActivity.class);
         startActivityForResult(intent, TAGS_TO_ADD);
@@ -138,6 +139,20 @@ public abstract class TagEventActivity extends EventActivity {
         dialog.show();
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (tagTemplateSeemsToHaveBeenBeenEditedOrDeleted) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED,
+                    tagTemplateSeemsToHaveBeenBeenEditedOrDeleted);
+
+            Intent intent = new Intent();
+            intent.putExtras(bundle);
+            setResult(RESULT_OK, intent);
+        }
+        super.onBackPressed();
     }
 
 }

@@ -21,6 +21,8 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ibsanalyzer.constants.Constants.CHANGED_EVENT;
+import static com.ibsanalyzer.constants.Constants.NEW_EVENT;
+import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_BM;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_EXERCISE;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_MEAL;
@@ -77,13 +79,17 @@ public class EventsContainer {
         if (resultCode != RESULT_OK) {
             return;
         }
+        if (data.hasExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED)){
+            user.updateTagsInListOfEventsAfterTagTemplateChange();
+        }
         if (data.hasExtra(CHANGED_EVENT)) {
             user.executeChangedEvent(requestCode, data);
-        } else {
+        }
+        if (data.hasExtra(NEW_EVENT)){
             user.executeNewEvent(requestCode, data);
         }
     }
-
+    
     public void setUpEventButtons(View view) {
         //EventModel Buttons, do onClick here so handlers don't have to be in parent Activity
         ImageButton mealBtn = (ImageButton) view.findViewById(R.id.mealBtn);
@@ -169,5 +175,7 @@ public class EventsContainer {
         void newBmActivity(View v);
 
         void newScoreItem(View view);
+
+        void updateTagsInListOfEventsAfterTagTemplateChange();
     }
 }

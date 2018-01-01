@@ -44,6 +44,7 @@ public class Constants {
     public final static String EVENT_TO_CHANGE = "eventToChange";
     //changed event or new event?
     public final static String CHANGED_EVENT = "changedEvent";
+    public final static String NEW_EVENT = "newEvent";
     //position of event in list, same position but used at different places.
     public final static String EVENT_POSITION = "eventPosition";
     public final static String POS_OF_EVENT_RETURNED = "eventPositionReturned";
