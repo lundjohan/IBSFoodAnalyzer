@@ -44,9 +44,6 @@ public class TagTemplateChangesEffectsTests {
     @Before
     public void clearDatabase(){
       AndroidTestUtil.clearDatabase();
-        /* This is not enough, becuase events will still lay in RecyclerView
-        DBHandler  dbHandler = new DBHandler(InstrumentationRegistry.getTargetContext());
-        dbHandler.deleteAllTablesRows();*/
     }
 
     @Test
