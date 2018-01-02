@@ -252,4 +252,54 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         ))
                 .check(matches(isDisplayed()));
     }
+    @Test
+    public void mealAddedAfterOtherMealHasOtherTime() {
+        // Create a meal object with timeView 19:00
+        LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 19, 0);
+        Meal meal1 = new Meal(ldt, new ArrayList<Tag>(), 1.0);
+
+
+        Instrumentation.ActivityResult result1 = buildAnIntentResult(RETURN_MEAL_SERIALIZABLE,
+                meal1);
+        stubOutActivity(MealActivity.class.getName(), result1);
+
+
+
+        //now press click of MealBtn that makes us go to MealActivity stub above
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.mealBtn), withContentDescription("Meal"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        //do same thing again with another meal-object
+        LocalDateTime ldt2 = LocalDateTime.of(2017, Month.MAY, 23, 20, 0);
+        Meal meal2 = new Meal(ldt2, new ArrayList<Tag>(), 1.0);
+        Instrumentation.ActivityResult result2 = buildAnIntentResult(RETURN_MEAL_SERIALIZABLE,
+                meal2);
+        stubOutActivity(MealActivity.class.getName(), result2);
+        ViewInteraction appCompatImageButton2 = onView(
+                allOf(withId(R.id.mealBtn), withContentDescription("Meal"),
+                        withParent(withId(R.id.buttons)),
+                        isDisplayed()));
+        appCompatImageButton2.perform(click());
+
+        //#1 check that a relevant item exists in RecyclerView
+        onView(allOf(
+                //use the image
+                withId(R.id.meal_item_container),
+                //timeView
+                hasDescendant(withText("19:00"))
+        ))
+                .check(matches(isDisplayed()));
+
+        //#2 check that a relevant item exists in RecyclerView
+        onView(allOf(
+                //use the image
+                withId(R.id.meal_item_container),
+                //timeView
+                hasDescendant(withText("20:00"))
+        ))
+                .check(matches(isDisplayed()));
+    }
 }
