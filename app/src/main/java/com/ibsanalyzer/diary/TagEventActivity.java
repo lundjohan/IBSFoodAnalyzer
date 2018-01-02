@@ -85,8 +85,8 @@ public abstract class TagEventActivity extends EventActivity {
             //create a new Tag
             Tag tag = new Tag(getLocalDateTime(), tagTemplate.get_tagname(), 1.0);
             tagsList.add(tag);
+            notifyItemInserted();
         }
-        notifyItemInserted();
     }
 
     /**
