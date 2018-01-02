@@ -192,5 +192,19 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withText(containsString("Sugar"))).check(matches(isDisplayed()));
 
     }
+    @Test
+    public void whenATagTemplateHasBeenAddedToOtherActivityItShouldntShowUpAnymoreInTagAdderList() {
+        DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
+        TagTemplate butter = new TagTemplate("Butter", null, null, null);
+        dbHandler.addTagTemplate(butter);
+        goToTagAdderActivity();
 
+        //add TagTemplate to OtherActivity's  tagList
+        onView(withText("Butter")).perform(click());
+
+        //back into TagAdder, where "Butter" TagTemplate should be no more displayed.
+        onView(withId(R.id.addTagsBtn)).perform(click());
+
+        onView(withText(containsString("Butter"))).check(doesNotExist());
+    }
 }
