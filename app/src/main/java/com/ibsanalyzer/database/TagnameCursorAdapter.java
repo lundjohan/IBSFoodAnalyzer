@@ -1,5 +1,6 @@
 package com.ibsanalyzer.database;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
@@ -28,6 +29,7 @@ import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
 // -CursorAdapter
 public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
     ChangingTagTemplate changingTagTemplate;
+    Context mainContext;
     public interface ChangingTagTemplate {
         void editTagTemplate(long tagTemplateId);
         void delTagTemplate(long tagTemplateId);
@@ -36,6 +38,7 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
     public TagnameCursorAdapter(ChangingTagTemplate changingTagTemplate, Cursor c) {
         super((AppCompatActivity)changingTagTemplate, c, 0);
         this.changingTagTemplate = changingTagTemplate;
+        this.mainContext = ((Activity)changingTagTemplate).getApplicationContext();
     }
 
     @Override
@@ -45,7 +48,7 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
 
     @Override
     public void bindView(View view, final Context context, final Cursor c) {
-        TextView tagName = (TextView) view.findViewById(R.id.name_of_tag);
+        final TextView tagName = (TextView) view.findViewById(R.id.name_of_tag);
         TextView inherits = (TextView) view.findViewById(R.id.inherits);
         ImageView threeDotsBtn = (ImageView) view.findViewById(R.id.three_dots_inside_listView);
 
@@ -57,12 +60,14 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
                 popup.getMenuInflater().inflate(R.menu.delete_edit_tagtemplate_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-
+                        String tagNameStr = (String)tagName.getText();
+                        DBHandler dbHandler = new DBHandler(mainContext);
+                        long tagTemplateId = dbHandler.getTagTemplateId(tagNameStr);
                         if (item.getItemId() == R.id.edit_tagtemplate) {
-                            changingTagTemplate.editTagTemplate(c.getInt(c.getColumnIndex(COLUMN_ID)));
+                            changingTagTemplate.editTagTemplate(tagTemplateId);
                         }
                         else if (item.getItemId() == R.id.del_tagtemplate){
-                            changingTagTemplate.delTagTemplate(c.getInt(c.getColumnIndex(COLUMN_ID)));;
+                            changingTagTemplate.delTagTemplate(tagTemplateId);
                         }
                         return true;
                     }
