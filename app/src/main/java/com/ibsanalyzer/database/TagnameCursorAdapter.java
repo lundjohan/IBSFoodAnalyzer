@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.model.TagTemplate;
 
-import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
 import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
 
@@ -30,15 +29,17 @@ import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
 public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
     ChangingTagTemplate changingTagTemplate;
     Context mainContext;
+
     public interface ChangingTagTemplate {
         void editTagTemplate(long tagTemplateId);
+
         void delTagTemplate(long tagTemplateId);
     }
 
     public TagnameCursorAdapter(ChangingTagTemplate changingTagTemplate, Cursor c) {
-        super((AppCompatActivity)changingTagTemplate, c, 0);
+        super((AppCompatActivity) changingTagTemplate, c, 0);
         this.changingTagTemplate = changingTagTemplate;
-        this.mainContext = ((Activity)changingTagTemplate).getApplicationContext();
+        this.mainContext = ((Activity) changingTagTemplate).getApplicationContext();
     }
 
     @Override
@@ -57,16 +58,21 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(context, v);
                 //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.delete_edit_tagtemplate_menu, popup.getMenu());
+                popup.getMenuInflater().inflate(R.menu.delete_edit_tagtemplate_menu, popup
+                        .getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        String tagNameStr = (String)tagName.getText();
+                        /*Ugly solution of using the TagName to get the id of TagTemplate.
+                        But the Cursor c is always in last position here (I guess it is not meant
+                         to be used in a onClickEvent that is called after the first bindView),
+                         so it can't be used (it would of course have been better to retrieve the
+                          id directly instead of using the name of the TagName)*/
+                        String tagNameStr = (String) tagName.getText();
                         DBHandler dbHandler = new DBHandler(mainContext);
                         long tagTemplateId = dbHandler.getTagTemplateId(tagNameStr);
                         if (item.getItemId() == R.id.edit_tagtemplate) {
                             changingTagTemplate.editTagTemplate(tagTemplateId);
-                        }
-                        else if (item.getItemId() == R.id.del_tagtemplate){
+                        } else if (item.getItemId() == R.id.del_tagtemplate) {
                             changingTagTemplate.delTagTemplate(tagTemplateId);
                         }
                         return true;
