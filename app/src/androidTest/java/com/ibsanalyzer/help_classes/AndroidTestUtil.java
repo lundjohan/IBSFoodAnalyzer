@@ -1,7 +1,9 @@
 package com.ibsanalyzer.help_classes;
 
+import android.content.Context;
 import android.support.test.espresso.ViewInteraction;
 
+import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.diary.R;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -18,7 +20,10 @@ import static org.hamcrest.Matchers.allOf;
  */
 
 public class AndroidTestUtil {
-    public static void clearDatabase(){
+    public static void clearDatabase(Context context){
+        DBHandler dbHandler = new DBHandler(context);
+        dbHandler.deleteAllTablesRows();
+
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open navigation drawer"),
                         withParent(withId(R.id.toolbar)),

@@ -1,17 +1,22 @@
 package com.ibsanalyzer.diary;
 
+import android.database.Cursor;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.ListView;
 
+import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.drawer.DrawerActivity;
 import com.ibsanalyzer.help_classes.AndroidTestUtil;
+import com.ibsanalyzer.model.TagTemplate;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -24,15 +29,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.ibsanalyzer.diary.R.id.addedTagsView;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.instanceOf;
 
 /**
  * Created by Johan on 2017-12-31.
  */
 @RunWith(AndroidJUnit4.class)
-public class TagTemplateChangesEffectsTests {
+public class TagTemplateChangesAndDeletesTests {
 
     @Rule
     public ActivityTestRule<DrawerActivity> mActivityTestRule = new ActivityTestRule<>
@@ -41,34 +47,39 @@ public class TagTemplateChangesEffectsTests {
 
     @Before
     public void clearDatabase(){
-      AndroidTestUtil.clearDatabase();
+        AndroidTestUtil.clearDatabase(mActivityTestRule.getActivity().getApplicationContext());
     }
 
-    private void startOfTest(){
-        //create a new TagTemplate and add it to an OtherEvent and click done in TagAdderActivity
-        // and in OtherActivity so it is placed in diary.
+    private void goToTagAdderActivity(){
         onView(allOf(withId(R.id.otherBtn), isDisplayed())).perform(click());
         onView(withId(R.id.addTagsBtn)).perform(click());
+    }
+
+    //starts inside TagAdderActivity
+    private void createATagTemplate(String nameOfTagTemplate){
+        //create a new TagTemplate and add it to an OtherEvent and click done in TagAdderActivity
+        // and in OtherActivity so it is placed in diary.
         onView(withId(R.id.menu_add_new)).perform(click());
-        onView(withId(R.id.name_box)).perform(click()).perform(replaceText("Butter"),
+        onView(withId(R.id.name_box)).perform(click()).perform(replaceText(nameOfTagTemplate),
                 closeSoftKeyboard());
         onView(withId(R.id.menu_done)).perform(click());
         onView(withId(R.id.menu_done)).perform(click());
 
         //Inside DiaryFragment, check that the tag has been added.
-        onView(allOf(withId(R.id.tagNames), hasDescendant(withText(containsString("Butter"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString(nameOfTagTemplate))))).check(matches(isDisplayed()));
         //go back into the event
         onView(allOf(isDisplayed(), withId(R.id.events_layout)))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
-        //inside OtherActivity, go into add tags and delete the TagTemplate.
+        //inside OtherActivity, go into TagAdderActivity again
         onView(withId(R.id.addTagsBtn)).perform(click());
 
 
     }
     @Test
     public void deletedTagTemplateBackBtnTest() throws InterruptedException {
-        startOfTest();
+        goToTagAdderActivity();
+        createATagTemplate("Butter");
         //inside TagAdderActivity, delete Butter TagTemplate
         onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
@@ -95,10 +106,10 @@ public class TagTemplateChangesEffectsTests {
 
 
     }
-//TODO Do this with Meal Activity instead of Other
     @Test
     public void deletedTagTemplateDoneTest() {
-        startOfTest();
+        goToTagAdderActivity();
+        createATagTemplate("Butter");
 
         //inside TagAdderActivity, add another TagTemplate
         onView(withId(R.id.menu_add_new)).perform(click());
@@ -135,4 +146,51 @@ public class TagTemplateChangesEffectsTests {
         onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Sugar"))))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
     }
+
+    /**
+     * This test exists simply because there was an error when deleting a tagTemplate say in place 0 in ListView, than it was always the TagTemplate in last position that was deleted instead.
+     */
+    @Test
+    public void correctTagTemplateIsDeletedTest() {
+        //add 2 TagTemplates
+        DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
+        TagTemplate butter = new TagTemplate("Butter", null, null, null);
+        TagTemplate sugar = new TagTemplate("Sugar", null, null, null);
+        dbHandler.addTagTemplate(butter);
+        dbHandler.addTagTemplate(sugar);
+
+        goToTagAdderActivity();
+
+        /*temporary test, right now the tagtemplate that was added first is placed first in listOfTags,
+        this will probably change later though (to sort order by name etc). Change this sentence then. I don't know how to do it now.
+        */
+        onData(anything())
+                .inAdapterView(withId(R.id.listOfTags))
+                .atPosition(0)
+                .check(matches(hasDescendant(
+                        allOf(withId(R.id.name_of_tag), withText(containsString("Butter"))))));
+
+        onData(anything())
+                .inAdapterView(withId(R.id.listOfTags))
+                .atPosition(1)
+                .check(matches(hasDescendant(
+                        allOf(withId(R.id.name_of_tag), withText(containsString("Sugar"))))));
+
+
+        //delete the first TagTemplate in list, in this case "Butter"
+        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+                .perform(click());
+        /*code below didn't work
+        onData(withId(R.id.three_dots_inside_listView))
+                .inAdapterView(withId(R.id.listOfTags))
+                .atPosition(0).perform(click());*/
+
+        onView(withText("Delete")).check(matches(isDisplayed())).perform(click());
+
+        //now only Sugar should be displayed
+        onView(withText(containsString("Butter"))).check(doesNotExist());
+        onView(withText(containsString("Sugar"))).check(matches(isDisplayed()));
+
+    }
+
 }
