@@ -112,8 +112,12 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     @Override
     public void addEventToList(Event event) {
-        int indexOfInsertion = Util.addEventAtRightPlace(event, ec.eventList);
-        ec.adapter.notifyItemInserted(indexOfInsertion);
+        ec.eventList.add(event);
+        //All dates must be the same, becuase dates are irrellevant in a EventsTemplate,
+        // only time matter.
+        //TODO: implement constriction for above
+        Collections.sort(ec.eventList);
+        ec.adapter.notifyDataSetChanged();
     }
 
     //runs without a timer by reposting this handler at the end of the runnable

@@ -129,49 +129,6 @@ public class Util {
         return (int) (dpWidth);
         //return (int)(dpWidth/mNoOfColumns);
     }
-    //==============================================================================================
-    //Removal of events from list.
-    // (possible removal of datemarkers must be in consideration)
-    //==============================================================================================
-
-
-    /**
-     * @param event
-     * @param events
-     * @return -1 on failure
-     */
-    //TODO Change to if (events.size()<10) and Implement else
-    //TODO ugly method, works, but should be total remake over.
-    //ineffective method, but doesnt matter since it is inly used when ONE event is added.
-    //(other methods are used to add many).
-    public static int addEventAtRightPlace(Event event, List<Event> events) {
-        int indexOfInsertion = -1;
-        if (events.isEmpty()) {
-            events.add(event);
-            indexOfInsertion = 0;
-        } else if (events.size() > 0) {
-            for (int i = 0; i < events.size(); i++) {
-                if (events.get(i).getTime().isBefore(event.getTime()))
-                    continue;
-                else {
-                    events.add(i, event);
-                    indexOfInsertion = i;
-                    break;
-                }
-
-            }
-        }
-        //do some more effective algorithm
-        else {
-
-        }
-        //no event has been added => means that it should be added last (see in loop above why
-        // so). This is ugly but works.
-        if (indexOfInsertion == -1)
-            events.add(event);
-        return indexOfInsertion;
-    }
-
     /**
      * tags exist in Meal, Other and Exercise events.
      *

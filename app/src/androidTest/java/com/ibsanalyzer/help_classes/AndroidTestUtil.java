@@ -35,4 +35,20 @@ public class AndroidTestUtil {
                         ()));
         appCompatCheckedTextView.perform(click());
     }
+
+    /*
+    In case context is not available
+     */
+    public static void clearDatabase() {
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Open navigation drawer"),
+                        withParent(withId(R.id.toolbar)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction appCompatCheckedTextView = onView(
+                allOf(withId(R.id.design_menu_item_text), withText("Clear Database"), isDisplayed
+                        ()));
+        appCompatCheckedTextView.perform(click());
+    }
 }

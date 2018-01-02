@@ -17,7 +17,9 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.drawer.DrawerActivity;
+import com.ibsanalyzer.help_classes.AndroidTestUtil;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,6 +71,11 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     public IntentsTestRule<DrawerActivity> intentsRule = new IntentsTestRule<>(DrawerActivity.class);
     List<Tag> tags = new ArrayList<>();
     LocalDateTime ldt;
+
+    @Before
+    public void clearDatabase(){
+        AndroidTestUtil.clearDatabase();
+    }
 
     public static Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event event) {
         Intent resultData = new Intent();
