@@ -107,6 +107,48 @@ public class TagTemplateChangesAndDeletesTests {
 
     }
     @Test
+    public void editedTagTemplateBackBtnTest() throws InterruptedException {
+        goToTagAdderActivity();
+        createATagTemplate("Butter");
+        //inside TagAdderActivity, delete Butter TagTemplate
+        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+                .perform(click());
+
+        onView(withText("Edit")).check(matches(isDisplayed())).perform(click());
+
+        //in TagEditActivity, change Butter to Cream
+        onView(withId(R.id.name_box)).perform(click()).perform(replaceText("Cream"),
+                closeSoftKeyboard());
+
+        //press done
+        onView(withId(R.id.menu_done)).perform(click());
+
+        //back in TagAdderActivity?
+        onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
+
+        //changes has taken effect
+        onView(withText(containsString("Butter"))).check(doesNotExist());
+        onView(withText(containsString("Cream"))).check(matches(isDisplayed()));
+
+        //remove soft keyboard
+        pressBack();
+
+        //go back to OtherActivity
+        pressBack();
+        //now you should be inside OtherActivity and the Cream should have replaced Butter
+        onView(withText(containsString("Butter"))).check(doesNotExist());
+        onView(withText(containsString("Cream"))).check(matches(isDisplayed()));
+
+        //Press back btn again.
+        pressBack();
+        //You should now be inside DiaryFragment, and
+        // the tag should not be found anywhere.
+        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
+        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Cream"))))).check(matches(isDisplayed()));
+
+
+    }
+    @Test
     public void deletedTagTemplateDoneTest() {
         goToTagAdderActivity();
         createATagTemplate("Butter");
