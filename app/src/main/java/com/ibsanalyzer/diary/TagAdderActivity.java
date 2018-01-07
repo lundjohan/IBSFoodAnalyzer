@@ -149,6 +149,15 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         if (resultCode != RESULT_OK) {
             return;
         }
+        //code coming back from TagTemplateEditActivity
+        if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED) {
+            if (data.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)){
+                idsOfChangedTagTemplates = data.getLongArrayExtra(IDS_OF_EDITED_TAG_TEMPLATES);
+            }
+            tagTemplateHasBeenEditedOrDeleted = true;
+            updateListView();
+        }
+
         if (data.hasExtra(PUT_TAG_TEMPLATE)) {
             //update adapter to next time
             adapter.notifyDataSetChanged();
@@ -157,14 +166,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             chosenTagTemplate = (TagTemplate) data.getSerializableExtra(PUT_TAG_TEMPLATE);
             returnTag();
         }
-        //code coming back from TagTemplateEditActivity
-        if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED) {
-            updateListView();
-            if (data.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)){
-                idsOfChangedTagTemplates = data.getLongArrayExtra(IDS_OF_EDITED_TAG_TEMPLATES);
-            }
-            tagTemplateHasBeenEditedOrDeleted = true;
-        }
+
     }
         //there is no notifyDataItemChanged for a CursorAdapter. One alternativ is to update the cursor:
         //see https://stackoverflow.com/questions/13953171/update-the-listview-after-inserting-a-new-record-with-simplecursoradapter-requ/13953470#13953470

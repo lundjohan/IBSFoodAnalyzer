@@ -16,6 +16,8 @@ import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.TagTemplate;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,7 +121,7 @@ public abstract class TagEventActivity extends EventActivity {
         }
         if (editedTagTemplatesIds != null) {
             for (long idOfTagTemplate : editedTagTemplatesIds) {
-                tagsList.add(new Tag(dbHandler.getTagTemplateName(idOfTagTemplate)));
+                tagsList.add(new Tag(getLocalDateTime(),dbHandler.getTagTemplateName(idOfTagTemplate), 1.0));
             }
         }
         adapter.notifyDataSetChanged();
