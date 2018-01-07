@@ -15,10 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
-import com.ibsanalyzer.model.TagTemplate;
 
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_TAGNAME;
-import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
+import static com.ibsanalyzer.database.TablesAndStrings.TYPE_OF;
 
 /**
  * Created by Johan on 2017-05-10.
@@ -83,7 +82,7 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         });
 
         String name = c.getString(c.getColumnIndexOrThrow(COLUMN_TAGNAME));
-        String inheritanceOne = c.getString(c.getColumnIndexOrThrow(FIRST_COLUMN_IS_A));
+        String inheritanceOne = c.getString(c.getColumnIndexOrThrow(TYPE_OF));
         tagName.setText(name);
         if (inheritanceOne == null) {
             inherits.setText("");

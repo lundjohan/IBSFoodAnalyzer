@@ -18,9 +18,7 @@ public class TablesAndStrings {
     public static final String COLUMN_TAGNAME = "_tagname"; //this should be unique
     //make it point to parent TagName and
     // not to id, it make it possible to display in listview after filtering.
-    public static final String FIRST_COLUMN_IS_A = "_is_a1";
-    public static final String SECOND_COLUMN_IS_A = "_is_a2";
-    public static final String THIRD_COLUMN_IS_A = "_is_a3";
+    public static final String TYPE_OF = "_is_a1";
 
     //Tag
     public static final String TABLE_TAGS = "tags";
@@ -72,17 +70,9 @@ public class TablesAndStrings {
             TABLE_TAGTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE ON CONFLICT IGNORE, " +
-            FIRST_COLUMN_IS_A + " INTEGER CHECK( " + FIRST_COLUMN_IS_A + " != " + COLUMN_ID + ")," +
+            TYPE_OF + " INTEGER CHECK( " + TYPE_OF + " != " + COLUMN_ID + ")," +
             "  " +
-            SECOND_COLUMN_IS_A + " INTEGER CHECK( " + SECOND_COLUMN_IS_A + " != " + COLUMN_ID +
-            "),  " +
-            THIRD_COLUMN_IS_A + " INTEGER CHECK( " + THIRD_COLUMN_IS_A + " != " + COLUMN_ID + ")," +
-            "  " +
-            " FOREIGN KEY( " + FIRST_COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
-            + " ( " + COLUMN_ID + ")" + " ON DELETE SET NULL " +
-            " FOREIGN KEY( " + SECOND_COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
-            + " ( " + COLUMN_ID + ")" + " ON DELETE SET NULL " +
-            " FOREIGN KEY( " + THIRD_COLUMN_IS_A + ") REFERENCES " + TABLE_TAGTEMPLATES
+            " FOREIGN KEY( " + TYPE_OF + ") REFERENCES " + TABLE_TAGTEMPLATES
             + " ( " + COLUMN_ID + ")" + " ON DELETE SET NULL " +
             ");";
     public static final String CREATE_TAG_TABLE = "CREATE TABLE " +

@@ -19,22 +19,14 @@ import static com.ibsanalyzer.constants.Constants.NEW_TYPE_FOR_TAGTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGNAME_SEARCH_STRING;
-import static com.ibsanalyzer.constants.Constants.TYPE_OF_1;
-import static com.ibsanalyzer.constants.Constants.TYPE_OF_2;
-import static com.ibsanalyzer.constants.Constants.TYPE_OF_3;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
-import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
 
 public abstract class TagTemplateActivity extends AppCompatActivity implements View
         .OnClickListener {
-    protected TagTemplate is_a_1 = null;
-    protected TagTemplate is_a_2 = null;
-    protected TagTemplate is_a_3 = null;
+    protected TagTemplate is_a = null;
 
     protected EditText name;
-    protected EditText type_of_1;
-    protected EditText type_of_2;
-    protected EditText type_of_3;
+    protected EditText type_of;
 
     /**
      * a TagTemplate must be sent back because 1. TagAdderActivity must now which TagTemplate
@@ -45,9 +37,8 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
      *                        the id.
      */
     protected void finishDoneClicked(long idOfTagTemplate) {
-        //1. create a TagTemplate object from name, is_a1, is_a_2, is_a_3.
-        TagTemplate tagTemplate = new TagTemplate(name.getText().toString(), is_a_1, is_a_2,
-                is_a_3);
+        //1. create a TagTemplate object from name, is_a
+        TagTemplate tagTemplate = new TagTemplate(name.getText().toString(), is_a);
         //2 update database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         Intent data = new Intent();
@@ -84,9 +75,7 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_template_adder);
         name = (EditText) findViewById(R.id.name_box);
-        type_of_1 = (EditText) findViewById(R.id.is_a_type_of_1);
-        type_of_2 = (EditText) findViewById(R.id.is_a_type_of_2);
-        type_of_3 = (EditText) findViewById(R.id.is_a_type_of_3);
+        type_of = (EditText) findViewById(R.id.is_a_type_of);
         Intent intent = getIntent();
         if (intent.hasExtra(TAGNAME_SEARCH_STRING)) {
             name.setText(intent.getStringExtra(TAGNAME_SEARCH_STRING));
@@ -95,23 +84,11 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.is_a_type_of_1:
-                newTypeOf(TYPE_OF_1);
-                break;
-            case R.id.is_a_type_of_2:
-                newTypeOf(TYPE_OF_2);
-                break;
-            case R.id.is_a_type_of_3:
-                newTypeOf(TYPE_OF_3);
-                break;
-        }
+        startRecursiveIntent();
     }
 
-    protected void newTypeOf(int toPutInExtra) {
+    protected void startRecursiveIntent() {
         Intent intent = new Intent(this, TagAdderActivity.class);
-        intent.putExtra(WHICH_TYPE_OF, toPutInExtra);
         startActivityForResult(intent, NEW_TYPE_FOR_TAGTEMPLATE);
     }
 
@@ -132,21 +109,8 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
         if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
             tagTemplateChild = (TagTemplate) data.getExtras().getSerializable
                     (RETURN_TAG_TEMPLATE_SERIALIZABLE);
-
-            switch (whichType) {
-                case TYPE_OF_1:
-                    is_a_1 = tagTemplateChild;
-                    type_of_1.setText(is_a_1.get_tagname());
-                    break;
-                case TYPE_OF_2:
-                    is_a_2 = tagTemplateChild;
-                    type_of_2.setText(is_a_2.get_tagname());
-                    break;
-                case TYPE_OF_3:
-                    is_a_3 = tagTemplateChild;
-                    type_of_3.setText(is_a_3.get_tagname());
-                    break;
-            }
+            is_a = tagTemplateChild;
+            type_of.setText(is_a.get_tagname());
         }
     }
 }

@@ -2,11 +2,9 @@ package com.ibsanalyzer.diary;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
 
 import com.ibsanalyzer.model.TagTemplate;
 
-import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_ID;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_ID;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_TO_EDIT;
 
@@ -38,17 +36,9 @@ public class TagTemplateEditActivity extends TagTemplateActivity {
 
         //fill in form with data from tt
         name.setText(tt.get_tagname());
-        if (tt.get_is_a1()!= null) {
-            type_of_1.setText(tt.get_is_a1().get_tagname());
+        if (tt.get_type_of()!= null) {
+            type_of.setText(tt.get_type_of().get_tagname());
         }
-        if (tt.get_is_a2()!= null) {
-            type_of_2.setText(tt.get_is_a2().get_tagname());
-        }
-            if (tt.get_is_a3()!= null) {
-                type_of_3.setText(tt.get_is_a3().get_tagname());
-            }
-
-
     }
 
     public void doneClicked() {

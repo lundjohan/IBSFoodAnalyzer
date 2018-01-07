@@ -20,7 +20,6 @@ import com.ibsanalyzer.model.TagTemplate;
 
 import java.io.Serializable;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGNAME_SEARCH_STRING;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
@@ -29,7 +28,6 @@ import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_E
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_TO_EDIT;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
-import static com.ibsanalyzer.constants.Constants.WHICH_TYPE_OF;
 
 /**
  * This is the acticity that is seen when in Meal-, Other- or ExerciseActivity button "Add Tags" is pressed
@@ -65,15 +63,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_adder);
-
         //handle type of request
-        Intent intent = getIntent();
-        if (intent.hasExtra(WHICH_TYPE_OF)) {
-            typeOf = intent.getIntExtra(WHICH_TYPE_OF, -1);
-        }
-
         dbHandler = new DBHandler(this);
-
         //only in developing mode
         /*dbHandler.deleteAllTagTemplates();
         dbHandler.createSomeTagTemplates();*/

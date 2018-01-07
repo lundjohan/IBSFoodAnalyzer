@@ -26,12 +26,6 @@ public class Constants {
     public final static int TAGS_TO_ADD = 4444;
     public final static int TAGTEMPLATE_TO_ADD = 4445;
     public final static String RETURN_TAG_TEMPLATE_SERIALIZABLE = "returnTagTemplateSer";
-
-    public final static String TAGTEMPLATE_ID = "id_of_tagtemplate";
-    public final static int TYPE_OF_1 = 1;
-    public final static int TYPE_OF_2 = 2;
-    public final static int TYPE_OF_3 = 3;
-    public final static String WHICH_TYPE_OF = "whichOfTheThreeTypes";
     public final static String WHICH_TYPE = "whichOfTheTypes";
     public final static String PUT_TAG_TEMPLATE = "tagTemplateToBeSent";
     public final static String TAGNAME_SEARCH_STRING = "tagNameSearchString";

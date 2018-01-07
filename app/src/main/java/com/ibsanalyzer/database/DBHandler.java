@@ -62,8 +62,6 @@ import static com.ibsanalyzer.database.TablesAndStrings.CREATE_TAG_TABLE;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_VERSION;
 import static com.ibsanalyzer.database.TablesAndStrings.ENABLE_FOREIGN_KEYS;
-import static com.ibsanalyzer.database.TablesAndStrings.FIRST_COLUMN_IS_A;
-import static com.ibsanalyzer.database.TablesAndStrings.SECOND_COLUMN_IS_A;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_BMS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_EVENTSTEMPLATEEVENTS;
@@ -74,7 +72,7 @@ import static com.ibsanalyzer.database.TablesAndStrings.TABLE_OTHERS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_RATINGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGS;
 import static com.ibsanalyzer.database.TablesAndStrings.TABLE_TAGTEMPLATES;
-import static com.ibsanalyzer.database.TablesAndStrings.THIRD_COLUMN_IS_A;
+import static com.ibsanalyzer.database.TablesAndStrings.TYPE_OF;
 
 /**
  * Created by Johan on 2017-05-06.
@@ -149,14 +147,12 @@ public class DBHandler extends SQLiteOpenHelper {
         if (inputText == null || inputText.length() == 0) {
 
             mCursor = db.query(TABLE_TAGTEMPLATES, new String[]{COLUMN_ID,
-                            COLUMN_TAGNAME, FIRST_COLUMN_IS_A, SECOND_COLUMN_IS_A,
-                            THIRD_COLUMN_IS_A},
+                            COLUMN_TAGNAME, TYPE_OF},
                     null, null, null, null, null);
 
         } else {
             mCursor = db.query(true, TABLE_TAGTEMPLATES, new String[]{COLUMN_ID,
-                            COLUMN_TAGNAME, FIRST_COLUMN_IS_A, SECOND_COLUMN_IS_A,
-                            THIRD_COLUMN_IS_A},
+                            COLUMN_TAGNAME, TYPE_OF},
                     COLUMN_TAGNAME + " like '%" + inputText + "%'", null,
                     null, null, null, null);
         }
@@ -887,9 +883,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private ContentValues makeTagTemplateContentValues(TagTemplate tagTemplate) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_TAGNAME, tagTemplate.get_tagname());
-        actOnTagTemplateChild(values, tagTemplate.get_is_a1(), FIRST_COLUMN_IS_A);
-        actOnTagTemplateChild(values, tagTemplate.get_is_a2(), SECOND_COLUMN_IS_A);
-        actOnTagTemplateChild(values, tagTemplate.get_is_a3(), THIRD_COLUMN_IS_A);
+        actOnTagTemplateChild(values, tagTemplate.get_type_of(), TYPE_OF);
         return values;
     }
 
@@ -947,9 +941,7 @@ public class DBHandler extends SQLiteOpenHelper {
         tt.set_tagname(c.getString(c.getColumnIndex(COLUMN_TAGNAME)));
 
         //sets nulls or parent tagtemplates
-        tt.set_is_a1(retrieveOneParentToTagTemplate(c, FIRST_COLUMN_IS_A));
-        tt.set_is_a2(retrieveOneParentToTagTemplate(c, SECOND_COLUMN_IS_A));
-        tt.set_is_a3(retrieveOneParentToTagTemplate(c, THIRD_COLUMN_IS_A));
+        tt.set_is_a1(retrieveOneParentToTagTemplate(c, TYPE_OF));
         return tt;
     }
 
@@ -1027,13 +1019,13 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void createSomeTagTemplates() {
         addTagTemplate(new TagTemplate("dairy"));
-        addTagTemplate(new TagTemplate("yoghurt", findTagTemplate("dairy"), null, null));
+        addTagTemplate(new TagTemplate("yoghurt"));
         addTagTemplate(new TagTemplate("wheat"));
         addTagTemplate(new TagTemplate("running"));
         addTagTemplate(new TagTemplate("sleep"));
         addTagTemplate(new TagTemplate("sugar"));
         addTagTemplate(new TagTemplate("honey"));
-        addTagTemplate(new TagTemplate("pizza", findTagTemplate("wheat"), null, null));
+        addTagTemplate(new TagTemplate("pizza", findTagTemplate("wheat")));
     }
 
     //===================================================================================

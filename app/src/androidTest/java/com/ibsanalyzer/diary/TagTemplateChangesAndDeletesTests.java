@@ -154,8 +154,8 @@ public class TagTemplateChangesAndDeletesTests {
     public void correctTagTemplateIsDeletedTest() {
         //add 2 TagTemplates
         DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
-        TagTemplate butter = new TagTemplate("Butter", null, null, null);
-        TagTemplate sugar = new TagTemplate("Sugar", null, null, null);
+        TagTemplate butter = new TagTemplate("Butter", null);
+        TagTemplate sugar = new TagTemplate("Sugar", null);
         dbHandler.addTagTemplate(butter);
         dbHandler.addTagTemplate(sugar);
 
