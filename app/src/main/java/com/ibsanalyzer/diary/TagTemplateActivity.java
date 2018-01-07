@@ -18,6 +18,7 @@ import java.io.Serializable;
 import static com.ibsanalyzer.constants.Constants.NEW_TYPE_FOR_TAGTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.TAGNAME_SEARCH_STRING;
 import static com.ibsanalyzer.constants.Constants.TYPE_OF_1;
 import static com.ibsanalyzer.constants.Constants.TYPE_OF_2;
 import static com.ibsanalyzer.constants.Constants.TYPE_OF_3;
@@ -86,7 +87,10 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
         type_of_1 = (EditText) findViewById(R.id.is_a_type_of_1);
         type_of_2 = (EditText) findViewById(R.id.is_a_type_of_2);
         type_of_3 = (EditText) findViewById(R.id.is_a_type_of_3);
-
+        Intent intent = getIntent();
+        if (intent.hasExtra(TAGNAME_SEARCH_STRING)) {
+            name.setText(intent.getStringExtra(TAGNAME_SEARCH_STRING));
+        }
     }
 
     @Override

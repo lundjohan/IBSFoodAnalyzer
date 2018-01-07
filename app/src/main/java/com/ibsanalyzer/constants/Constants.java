@@ -34,6 +34,7 @@ public class Constants {
     public final static String WHICH_TYPE_OF = "whichOfTheThreeTypes";
     public final static String WHICH_TYPE = "whichOfTheTypes";
     public final static String PUT_TAG_TEMPLATE = "tagTemplateToBeSent";
+    public final static String TAGNAME_SEARCH_STRING = "tagNameSearchString";
     public final static int NEW_TYPE_FOR_TAGTEMPLATE = 8888;
     public final static String RETURN_MEAL_SERIALIZABLE = "returnMealSer";
     public final static String RETURN_OTHER_SERIALIZABLE = "returnOtherSer";

@@ -20,7 +20,9 @@ import com.ibsanalyzer.model.TagTemplate;
 
 import java.io.Serializable;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
+import static com.ibsanalyzer.constants.Constants.TAGNAME_SEARCH_STRING;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_ID;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED;
@@ -52,7 +54,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                doneClickedNew(null);
+                doneClickedNew();
                 return true;
             }
         });
@@ -134,10 +136,11 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         return true;
     }
 
-    public void doneClickedNew(View view) {
+    public void doneClickedNew() {
         Intent intent = new Intent(this, TagTemplateAdderActivity.class);
+        String searchStr = tagSearch.getQuery().toString();
+        intent.putExtra(TAGNAME_SEARCH_STRING, searchStr);
         startActivityForResult(intent, TAGTEMPLATE_TO_ADD);
-
     }
 
     /**
