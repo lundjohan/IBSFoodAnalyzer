@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.IDS_OF_EDITED_TAG_TEMPLATES;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
@@ -34,6 +35,7 @@ public abstract class TagEventActivity extends EventActivity {
     private LinearLayoutManager layoutManager;
     private TagAdapter adapter;
     private boolean tagTemplateSeemsToHaveBeenBeenEditedOrDeleted;
+    private long [] editedTagTemplatesIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public abstract class TagEventActivity extends EventActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new TagAdapter(tagsList, this);
         recyclerView.setAdapter(adapter);
+
+
         //add line separator
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
                 .getContext(),
@@ -57,6 +61,9 @@ public abstract class TagEventActivity extends EventActivity {
             tagsList.addAll(e.getTags());
             adapter.notifyDataSetChanged();
         }
+        /*if (intent.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)){
+            editedTagTemplatesIds = intent.getLongArrayExtra(IDS_OF_EDITED_TAG_TEMPLATES);
+        }*/
     }
 
     protected void notifyItemInserted() {
@@ -72,6 +79,12 @@ public abstract class TagEventActivity extends EventActivity {
         if (data.hasExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED)) {
             if (data.getBooleanExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED, true)) {
                 tagTemplateSeemsToHaveBeenBeenEditedOrDeleted = true;
+                if (data.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)){
+                    editedTagTemplatesIds = data.getLongArrayExtra(IDS_OF_EDITED_TAG_TEMPLATES);
+                }
+
+
+
                 updateTagsList();
             }
         }
@@ -103,6 +116,11 @@ public abstract class TagEventActivity extends EventActivity {
                 tagsList.remove(i);
             }
 
+        }
+        if (editedTagTemplatesIds != null) {
+            for (long idOfTagTemplate : editedTagTemplatesIds) {
+                tagsList.add(new Tag(dbHandler.getTagTemplateName(idOfTagTemplate)));
+            }
         }
         adapter.notifyDataSetChanged();
     }

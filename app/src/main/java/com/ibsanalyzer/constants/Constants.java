@@ -57,6 +57,13 @@ public class Constants {
 
     //Other uses for TagTemplates
     public final static String TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED = "delete_or_edited_tagTemplate";
+
+    //note: IDS_OF_EDITED_TAG_TEMPLATES & IDS_OF_EARLIER_EDITED_TAG_TEMPLATES are closely related.
+    // TagAdderActivity -> TagEventActivity, //TagTemplateEditActivity -> TagAdderActivity
+    public final static String IDS_OF_EDITED_TAG_TEMPLATES = "idsOfEditedTagTemplates";
+
+    //TagAdderActivity -> TagTemplateEditActivity
+    public final static String IDS_OF_EARLIER_EDITED_TAG_TEMPLATES = "idsOfEditedTagTemplates";
  //sent to Activity handling of EventsTemplates
     public final static String EVENTSTEMPLATE_TO_CHANGE = "eventsTemplateToChange";
 

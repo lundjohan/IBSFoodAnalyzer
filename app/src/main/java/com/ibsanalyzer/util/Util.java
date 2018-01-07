@@ -26,6 +26,7 @@ import com.ibsanalyzer.diary.R;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -229,6 +230,16 @@ public class Util {
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
-
-
+    public static long [] appendToArray(long [] arr, long toAdd){
+        long [] ret;
+        if (arr == null){
+            ret = new long [1];
+        }
+        else {
+            ret = new long[arr.length + 1];
+        }
+        for(int i = 0;i < ret.length;i++)
+            ret[ret.length-1] = toAdd;
+        return ret;
+    }
 }

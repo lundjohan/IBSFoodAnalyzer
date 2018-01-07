@@ -20,6 +20,7 @@ import com.ibsanalyzer.model.TagTemplate;
 
 import java.io.Serializable;
 
+import static com.ibsanalyzer.constants.Constants.IDS_OF_EDITED_TAG_TEMPLATES;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGNAME_SEARCH_STRING;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
@@ -44,6 +45,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
     //used for backPress
     private boolean tagTemplateHasBeenEditedOrDeleted;
+    private long [] idsOfChangedTagTemplates;
+
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_tagtemplate_menu, menu);
@@ -157,6 +160,9 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         //code coming back from TagTemplateEditActivity
         if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED) {
             updateListView();
+            if (data.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)){
+                idsOfChangedTagTemplates = data.getLongArrayExtra(IDS_OF_EDITED_TAG_TEMPLATES);
+            }
             tagTemplateHasBeenEditedOrDeleted = true;
         }
     }
@@ -175,6 +181,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         Intent intent = new Intent(getApplicationContext(), TagTemplateEditActivity.class);
         intent.putExtra(TAG_TEMPLATE_TO_EDIT, dbHandler.findTagTemplate(tagTemplateId));
         intent.putExtra(TAG_TEMPLATE_ID, tagTemplateId);
+        intent.putExtra(IDS_OF_EDITED_TAG_TEMPLATES, idsOfChangedTagTemplates);
         startActivityForResult(intent, TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED);
     }
 
@@ -199,6 +206,9 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     public void onBackPressed() {
         Bundle bundle = new Bundle();
         bundle.putBoolean(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED, tagTemplateHasBeenEditedOrDeleted);
+        if (idsOfChangedTagTemplates!= null){
+            bundle.putLongArray(IDS_OF_EDITED_TAG_TEMPLATES, idsOfChangedTagTemplates);
+        }
 
         Intent intent = new Intent();
         intent.putExtras(bundle);
