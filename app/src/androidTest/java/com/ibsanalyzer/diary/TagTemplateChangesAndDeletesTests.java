@@ -29,6 +29,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ibsanalyzer.diary.R.id.is_a_type_of;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
@@ -192,7 +193,7 @@ public class TagTemplateChangesAndDeletesTests {
     public void editedTagTemplateDoneTest() {
         goToTagAdderActivity();
         createATagTemplate("Butter");
-        //inside TagAdderActivity, delete Butter TagTemplate
+        //inside TagAdderActivity, edit Butter TagTemplate
         onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
@@ -273,18 +274,57 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withText(containsString("Sugar"))).check(matches(isDisplayed()));
 
     }
-  /*  @Test
-    public void whenATagTemplateHasBeenAddedToOtherActivityItShouldntShowUpAnymoreInTagAdderList() {
+    //this was crasching before
+    @Test
+    public void whileInEditingTagTemplateAddingInheritance() {
         DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
-        TagTemplate butter = new TagTemplate("Butter", null, null, null);
+        TagTemplate butter = new TagTemplate("Butter", null);
         dbHandler.addTagTemplate(butter);
+
         goToTagAdderActivity();
 
-        //add TagTemplate to OtherActivity's  tagList
-        onView(withText("Butter")).perform(click());
+        //inside TagAdderActivity, edit Butter TagTemplate
+        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+                .perform(click());
 
-        //go back into TagAdder, where "Butter" TagTemplate should be no more displayed.
-        onView(withId(R.id.addTagsBtn)).perform(click());
-        onView(withText(containsString("Butter"))).check(doesNotExist());
-    }*/
+        onView(withText("Edit")).check(matches(isDisplayed())).perform(click());
+        //need double click
+        onView(withId(R.id.is_a_type_of)).perform(click());
+        onView(withId(R.id.is_a_type_of)).perform(click());
+        //back in TagAdderActivity?
+        onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
+
+        //add another TagTemplate, Lacteo.
+        onView(withId(R.id.menu_add_new)).perform(click());
+        onView(withId(R.id.name_box)).perform(click()).perform(replaceText("Lacteo"),
+                closeSoftKeyboard());
+        onView(withId(R.id.menu_done)).perform(click());
+
+        //now back in Butter edittext view
+        onView(withId(R.id.is_a_type_of)).check(matches(isDisplayed()));
+        onView(withText("Butter")).check(matches(isDisplayed()));
+        onView(withText("Lacteo")).check(matches(isDisplayed()));
+        onView(withId(R.id.menu_done)).perform(click());
+
+        //now in TagAdder again
+        onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
+        onView(withText("Butter")).check(matches(isDisplayed()));
+        onView(withText("Lacteo")).check(matches(isDisplayed()));
+
+        //remove soft keyboard
+        pressBack();
+
+        //go back to OtherActivity
+        pressBack();
+        //now you should be inside OtherActivity and still only Butter should be seen
+        onView(withText(containsString("Butter"))).check(matches(isDisplayed()));
+        //this one might change in case inheritance is shown.
+        onView(withText(containsString("Lacteo"))).check(doesNotExist());
+        //Press back btn again.
+        pressBack();
+        //You should now be in Diary
+
+        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Lacteo"))))).check(doesNotExist());
+    }
 }
