@@ -82,18 +82,20 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         });
 
         String name = c.getString(c.getColumnIndexOrThrow(COLUMN_TAGNAME));
-        String inheritanceOne = c.getString(c.getColumnIndexOrThrow(TYPE_OF));
+        Long inheritanceId = c.getLong(c.getColumnIndexOrThrow(TYPE_OF));
+        DBHandler dbHandler = new DBHandler(mainContext);
+        String parentName = dbHandler.getTagTemplateName(inheritanceId);
         tagName.setText(name);
-        if (inheritanceOne == null) {
+        if (parentName == null) {
             inherits.setText("");
             return;
         }
-        inherits.setText(inheritanceOne);
+        inherits.setText(parentName);
 
         //String inheritanceTwo = "";//cursor.getString(cursor.getColumnIndexOrThrow("priority"));
         //String inheritanceThree = "";//cursor.getString(cursor.getColumnIndexOrThrow("priority"));
         //TODO: there should be a maxlength of each one of them.
-        //inherits.append(inheritanceOne + " " + inheritanceTwo + " " + inheritanceThree);
+        //inherits.append(parentName + " " + inheritanceTwo + " " + inheritanceThree);
 
     }
 }

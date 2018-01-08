@@ -30,6 +30,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ibsanalyzer.diary.R.id.is_a_type_of;
+import static com.ibsanalyzer.diary.R.id.name_of_tag;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
@@ -250,13 +251,13 @@ public class TagTemplateChangesAndDeletesTests {
                 .inAdapterView(withId(R.id.listOfTags))
                 .atPosition(0)
                 .check(matches(hasDescendant(
-                        allOf(withId(R.id.name_of_tag), withText(containsString("Butter"))))));
+                        allOf(withId(name_of_tag), withText(containsString("Butter"))))));
 
         onData(anything())
                 .inAdapterView(withId(R.id.listOfTags))
                 .atPosition(1)
                 .check(matches(hasDescendant(
-                        allOf(withId(R.id.name_of_tag), withText(containsString("Sugar"))))));
+                        allOf(withId(name_of_tag), withText(containsString("Sugar"))))));
 
 
         //delete the first TagTemplate in list, in this case "Butter"
@@ -303,13 +304,13 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withId(R.id.is_a_type_of)).check(matches(isDisplayed()));
         onView(withText("Butter")).check(matches(isDisplayed()));
         onView(withText("Lacteo")).check(matches(isDisplayed()));
-        
+
         onView(withId(R.id.menu_done)).perform(click());
 
         //now in TagAdder again
         onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
         onView(withText("Butter")).check(matches(isDisplayed()));
-        onView(withText("Lacteo")).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.name_of_tag), withText("Lacteo"))).check(matches(isDisplayed()));
 
         //remove soft keyboard
         pressBack();
