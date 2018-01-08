@@ -274,7 +274,6 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withText(containsString("Sugar"))).check(matches(isDisplayed()));
 
     }
-    //this was crasching before
     @Test
     public void whileInEditingTagTemplateAddingInheritance() {
         DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
@@ -304,6 +303,7 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withId(R.id.is_a_type_of)).check(matches(isDisplayed()));
         onView(withText("Butter")).check(matches(isDisplayed()));
         onView(withText("Lacteo")).check(matches(isDisplayed()));
+        
         onView(withId(R.id.menu_done)).perform(click());
 
         //now in TagAdder again
@@ -320,10 +320,11 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withText(containsString("Butter"))).check(matches(isDisplayed()));
         //this one might change in case inheritance is shown.
         onView(withText(containsString("Lacteo"))).check(doesNotExist());
-        //Press back btn again.
-        pressBack();
-        //You should now be in Diary
 
+        //change the event to the one displayed in OtherActivity
+        onView(withId(R.id.menu_done)).perform(click());
+
+        //You should now be in Diary
         onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Lacteo"))))).check(doesNotExist());
     }

@@ -892,7 +892,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (child == null) {
             values.putNull(childColumn);
         } else {
-            values.put(childColumn, child.get_tagname());
+            values.put(childColumn, getTagTemplateId(child.get_tagname()));
         }
     }
 
