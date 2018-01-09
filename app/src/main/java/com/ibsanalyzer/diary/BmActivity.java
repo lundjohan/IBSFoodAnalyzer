@@ -58,7 +58,7 @@ public class BmActivity extends EventActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int score = ++progress;
-                bristolName.setText(Bm.bristolToText(score));
+                setBristolNrAndText(bristolName, score);
             }
 
             @Override
@@ -104,10 +104,14 @@ public class BmActivity extends EventActivity {
         if (intent.hasExtra(EVENT_TO_CHANGE)) {
             Bm bm = (Bm) intent.getSerializableExtra(EVENT_TO_CHANGE);
             bristolBar.setProgress(bm.getBristol() - 1);
-            bristolName.setText((Bm.bristolToText(bm.getBristol())));
+            setBristolNrAndText(bristolName, bm.getBristol());
             completeBar.setProgress(bm.getComplete() - 1);
             completeName.setText((Bm.bristolToText(bm.getComplete())));
         }
+
+    }
+    private static void setBristolNrAndText(TextView v, int bristolScore) {
+        v.setText("("+bristolScore + ") "+ Bm.bristolToText(bristolScore));
     }
 
 
