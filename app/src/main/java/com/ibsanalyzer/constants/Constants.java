@@ -15,6 +15,7 @@ public class Constants {
     //Database operations
     public final static String DIRECTORY_IBSFOODANALYZER = "ibsFoodAnalyzer";
     public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
+    public final static int REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE = 9998;
     public final static int IMPORT_DATABASE = 1357;
 
     //Other

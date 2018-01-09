@@ -145,6 +145,8 @@ public class DrawerActivity extends AppCompatActivity
                 break;
 
             case R.id.importMenuItem:
+                //ok, read from external file? Otherwise ask for permission
+                ExternalStorageHandler.showReadablePermission(this);
                 showChooser();
                 break;
             case R.id.exportMenuItem:

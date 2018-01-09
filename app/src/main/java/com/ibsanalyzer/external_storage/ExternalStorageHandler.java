@@ -31,50 +31,22 @@ import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.DIRECTORY_IBSFOODANALYZER;
 import static com.ibsanalyzer.constants.Constants.NAME_OF_TXT_FILE;
+import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
 
 /**
  * Created by Johan on 2017-05-31.
+ *
+ * To check if permissions work, disable permissions in Android Settings for app.
  */
 
 public class ExternalStorageHandler {
 
-    protected static boolean hasPermissions(Activity activity) {
+    protected static boolean hasReadablePermissions(Activity activity) {
         int permissionCheck = ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                Manifest.permission.READ_EXTERNAL_STORAGE);
         return permissionCheck == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private static void askPermissions(Activity thisActivity) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,
-                Manifest.permission.READ_CONTACTS)) {
-
-            // Show an explanation to the user *asynchronously* -- don't block
-            // this thread waiting for the user's response! After the user
-            // sees the explanation, try again to request the permission.
-
-        } else {
-
-            // No explanation needed, we can request the permission.
-
-            ActivityCompat.requestPermissions(thisActivity,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE);
-
-            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-            // app-defined int constant. The callback method gets the
-            // result of the request.
-        }
-    }
-
-    public static void askForPermissionIfNeeded(Activity activity) {
-        // Check if we have write permission
-        if (!hasPermissions(activity)) {
-            askPermissions(activity);
-        }
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission
-                .WRITE_EXTERNAL_STORAGE);
     }
 
     //https://stackoverflow.com/questions/35484767/activitycompat-requestpermissions-not-showing
@@ -85,10 +57,8 @@ public class ExternalStorageHandler {
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                showExplanation("Permission Needed", "Rationale", Manifest.permission
-                                .WRITE_EXTERNAL_STORAGE,
-                        REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE,
-                        activity);
+                requestPermission(Manifest.permission
+                        .WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE, activity);
             } else {
                 requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE, activity);
@@ -99,20 +69,23 @@ public class ExternalStorageHandler {
                     .LENGTH_SHORT).show();
         }
     }
-
-    private static void showExplanation(String title,
-                                        String message,
-                                        final String permission,
-                                        final int permissionRequestCode, final Activity activity) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        requestPermission(permission, permissionRequestCode, activity);
-                    }
-                });
-        builder.create().show();
+    public static void showReadablePermission(Activity activity) {
+        int permissionCheck = ContextCompat.checkSelfPermission(
+                activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                requestPermission(Manifest.permission
+                        .READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE, activity);
+            } else {
+                requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE, activity);
+            }
+        } else {
+            Log.d("Debug", "Permission is already granted for reading from external storage");
+            Toast.makeText(activity, "Permission (already) Granted!", Toast
+                    .LENGTH_SHORT).show();
+        }
     }
 
     private static void requestPermission(String permissionName, int permissionRequestCode,
