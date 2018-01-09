@@ -2,9 +2,14 @@ package com.ibsanalyzer.help_classes;
 
 import android.content.Context;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.rule.ActivityTestRule;
 
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.drawer.DrawerActivity;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.Month;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -50,5 +55,8 @@ public class AndroidTestUtil {
                 allOf(withId(R.id.design_menu_item_text), withText("Clear Database"), isDisplayed
                         ()));
         appCompatCheckedTextView.perform(click());
+    }
+    public static void changeDate (ActivityTestRule<DrawerActivity> activityTestRule, LocalDate date){
+        activityTestRule.getActivity().changeDate(date);
     }
 }

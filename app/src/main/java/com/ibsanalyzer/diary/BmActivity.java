@@ -113,6 +113,4 @@ public class BmActivity extends EventActivity {
     private static void setBristolNrAndText(TextView v, int bristolScore) {
         v.setText("("+bristolScore + ") "+ Bm.bristolToText(bristolScore));
     }
-
-
 }
