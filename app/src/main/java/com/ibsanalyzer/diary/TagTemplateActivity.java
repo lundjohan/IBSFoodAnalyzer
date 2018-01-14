@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.model.TagTemplate;
+import com.ibsanalyzer.util.Util;
 
 import java.io.Serializable;
 
@@ -38,7 +39,7 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
      */
     protected void finishDoneClicked(long idOfTagTemplate) {
         //1. create a TagTemplate object from name, is_a
-        TagTemplate tagTemplate = new TagTemplate(name.getText().toString(), is_a);
+        TagTemplate tagTemplate = new TagTemplate(Util.makeFirstLetterCapitalAndRestSmall(name.getText().toString()), is_a);
         //2 update database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         Intent data = new Intent();
