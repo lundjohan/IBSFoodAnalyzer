@@ -146,6 +146,7 @@ public abstract class TagEventActivity extends EventActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         tagsList.remove(position);
                         adapter.notifyItemRemoved(position);
+                        adapter.notifyItemRangeChanged(position,tagsList.size());
                     }
                 });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
