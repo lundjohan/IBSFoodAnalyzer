@@ -58,7 +58,7 @@ public abstract class StatActivity extends AppCompatActivity {
     private void calculateStats() {
         //get events from database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        List<Event> events = dbHandler.getAllEventsSorted();
+        List<Event> events = dbHandler.getAllEventsMinusEventsTemplateSorted();
         //insert or remove automatic breaks on events.
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext()

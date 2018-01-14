@@ -437,35 +437,24 @@ public class DBHandler extends SQLiteOpenHelper {
         addRating(toRating);
     }
 
-    public List<Event> getAllEventsSorted() {
+    //notice how this method use null in select statement to avoid retrieving events from eventstemplates
+    public List<Event> getAllEventsMinusEventsTemplateSorted() {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY " + COLUMN_DATETIME + "" +
-                " ASC";
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENTSTEMPLATE +
+                " IS NULL "+" ORDER BY " + COLUMN_DATETIME + "" + " ASC";
         Cursor c = db.rawQuery(QUERY, null);
-        List<Event> eventList = new ArrayList<>();
-        if (c != null) {
-            if (c.moveToFirst()) {
-                while (!c.isAfterLast()) {
-                    try {
-                        long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                        String date = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
-                        int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
-                        String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
-                        Event event = getEvent(eventId, ldt, comment, typeOfEvent);
-                        eventList.add(event);
-                    } catch (CorruptedEventException e) {
-                        Log.e("CorruptedEvent ", e.toString());
-                    }
-                    c.moveToNext();
-                }
-            }
-        }
-        c.close();
-        db.close();
-        return eventList;
+        return getSortedEventsHelper(c);
     }
 
+    public List<Event> getAllEventsMinusEventsTemplateSortedFromDay(LocalDate currentDate) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATE + " =? " +
+                " AND " + COLUMN_EVENTSTEMPLATE + " IS NULL "+
+                " ORDER BY " + COLUMN_DATETIME + "" +
+                " ASC";
+        Cursor c = db.rawQuery(QUERY, new String[]{DateTimeFormat.dateToSqLiteFormat(currentDate)});
+        return getSortedEventsHelper(c);
+    }
     private Event getEvent(long eventId) throws CorruptedEventException {
         SQLiteDatabase db = this.getReadableDatabase();
         Event e = null;
@@ -1069,13 +1058,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
-    public List<Event> getAllEventsMinusEventsTemplateSortedFromDay(LocalDate currentDate) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATE + " =? " +
-                " AND " + COLUMN_EVENTSTEMPLATE + " IS NULL "+
-                " ORDER BY " + COLUMN_DATETIME + "" +
-                " ASC";
-        Cursor c = db.rawQuery(QUERY, new String[]{DateTimeFormat.dateToSqLiteFormat(currentDate)});
+    private List<Event> getSortedEventsHelper(Cursor c){
         List<Event> eventList = new ArrayList<>();
         if (c != null) {
             if (c.moveToFirst()) {
@@ -1099,7 +1082,7 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         c.close();
-        db.close();
+        this.close();
         return eventList;
     }
 
