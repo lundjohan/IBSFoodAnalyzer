@@ -30,7 +30,6 @@ import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.model.EventsTemplate;
-import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
 
@@ -549,7 +548,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from
         // -custom-ec.adapter
         ec.eventList.clear();
-        List<Event> sortedEvents = dbHandler.getAllEventsSortedFromDay(theDate);
+        List<Event> sortedEvents = dbHandler.getAllEventsMinusEventsTemplateSortedFromDay(theDate);
         ec.eventList.addAll(sortedEvents);
         ec.adapter.notifyDataSetChanged();
         //place focus at top (otherwise user has to scroll up, which make time sizeable time for

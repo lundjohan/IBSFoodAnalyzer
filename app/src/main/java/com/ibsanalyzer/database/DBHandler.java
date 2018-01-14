@@ -1069,10 +1069,10 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
-    //99% copy pasted from DBHandler getAllEventsSorted.
-    public List<Event> getAllEventsSortedFromDay(LocalDate currentDate) {
+    public List<Event> getAllEventsMinusEventsTemplateSortedFromDay(LocalDate currentDate) {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATE + " =? " +
+                " AND " + COLUMN_EVENTSTEMPLATE + " IS NULL "+
                 " ORDER BY " + COLUMN_DATETIME + "" +
                 " ASC";
         Cursor c = db.rawQuery(QUERY, new String[]{DateTimeFormat.dateToSqLiteFormat(currentDate)});

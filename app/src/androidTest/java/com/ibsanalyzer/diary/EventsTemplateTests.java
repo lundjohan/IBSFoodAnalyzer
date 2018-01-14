@@ -1,5 +1,6 @@
 package com.ibsanalyzer.diary;
 
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -24,9 +25,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.os.Build.VERSION_CODES.M;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by Johan on 2018-01-09.
+ *
+ * This test is not finished. Read up on testing in Android first!!!
+ * (I want to use mocking etc)
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -66,12 +83,46 @@ public class EventsTemplateTests {
     }
 
     @Test
-    public void creatingAEventsTemplateTest() {
+    public void creatingAnEventsTemplateTest() {
         //go to correct date.
-
+        AndroidTestUtil.changeDate(mActivityTestRule, LocalDate.of(2018, Month.JANUARY, 9));
+        //-----------------------------------------------------------------------------
         //save event to eventstemplates
+        // (this is very sloppy, it is mostly copied from a record espresso test)
+        //-----------------------------------------------------------------------------
+        //long click on event in diary
+        ViewInteraction linearLayout = onView(
+                allOf(withClassName(is("android.widget.LinearLayout")),
+                        withParent(withId(R.id.events_layout)),
+                        isDisplayed()));
+        linearLayout.perform(longClick());
 
-        //ok inside templates view?
+        //mark it
+        onView(
+                allOf(withId(R.id.title), withText("Mark item"), isDisplayed())).perform(click());
+
+        onView(
+                allOf(withId(R.id.to_template_btn), isDisplayed())).perform(click());
+
+        onView(
+                allOf(withId(R.id.template_name), isDisplayed())).perform(click());
+
+
+        onView(
+                allOf(withId(R.id.template_name), isDisplayed())).perform(replaceText("Testtemplate"), closeSoftKeyboard());
+
+        onView(
+                allOf(withId(R.id.menu_done), withText("DONE"), withContentDescription("DONE"),
+                        isDisplayed())).perform(click());
+
+
+        onView(
+                allOf(withId(R.id.cancel_btn), isDisplayed())).perform(click());
+//ok inside templates view?
+        onView(
+                allOf(withId(R.id.template_btn), isDisplayed())).perform(click());
+
+        //TODO here, check that one item is in eventstemplate list
 
         //ok inside diary view
     }
