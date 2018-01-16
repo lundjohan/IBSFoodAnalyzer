@@ -1,4 +1,4 @@
-package com.ibsanalyzer.importer;
+package com.ibsanalyzer.importer_and_exporter;
 
 import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;

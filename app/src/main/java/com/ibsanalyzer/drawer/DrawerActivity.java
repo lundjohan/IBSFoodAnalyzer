@@ -27,6 +27,7 @@ import com.ibsanalyzer.diary.StatOptionsFragment;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
+import com.ibsanalyzer.external_storage.SaveToCSVIntentService;
 import com.ibsanalyzer.settings.GeneralSettingsActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
@@ -37,6 +38,7 @@ import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
 import static com.ibsanalyzer.constants.Constants.IMPORT_DATABASE;
+import static com.ibsanalyzer.constants.Constants.IMPORT_FROM_CSV_FILE;
 import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.LOCALDATE;
 
@@ -48,7 +50,6 @@ public class DrawerActivity extends AppCompatActivity
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
-    File dbFileToImport = null;
     //used for restablishing date when pressing backButton from TemplateFragment
     LocalDate dateBeforeTemplate = null;
 
@@ -149,6 +150,7 @@ public class DrawerActivity extends AppCompatActivity
                 ExternalStorageHandler.showReadablePermission(this);
                 showChooser();
                 break;
+
             case R.id.exportMenuItem:
                 //ok, write to file? Otherwise ask for permission
                 ExternalStorageHandler.showWritablePermission(this);
@@ -156,24 +158,27 @@ public class DrawerActivity extends AppCompatActivity
                 Intent intent = new Intent(this, SaveDBIntentService.class);
                 startService(intent);
                 break;
-            case R.id.importFromTxtMenuItem:
-                final DBHandler db = new DBHandler(this);
-                List<Event> events = ExternalStorageHandler.importEventsFromTxt();
-                db.deleteAllTablesRows();
-                db.addEventsWithUnknownTagTemplates(events);
-                LocalDate startingDate = LocalDate.now();
-                try {
-                    startingDate = events.get(events.size() - 1).getTime().toLocalDate();
-                } catch (Exception e) {
-                    startingDate = LocalDate.now();
-                }
-                startDiaryAtDate(startingDate);
+
+            case R.id.importFromCsvMenuItem:
+                //ok, read from external file? Otherwise ask for permission
+                ExternalStorageHandler.showReadablePermission(this);
+                showChooserForCSVImport();
                 break;
+
+            case R.id.exportToCsvMenuItem:
+                //ok, write to file? Otherwise ask for permission
+                ExternalStorageHandler.showWritablePermission(this);
+                //IntentService
+                Intent csvIntent = new Intent(this, SaveToCSVIntentService.class);
+                startService(csvIntent);
+                break;
+
             case R.id.clearDBItem:
                 DBHandler dbHandler = new DBHandler(getApplicationContext());
                 dbHandler.deleteAllTablesRowsExceptTagTemplates();
                 startDiaryAtDate(LocalDate.now());
                 break;
+
             case R.id.aboutItem:
                 //TODO: Apache 2.0 talk about the external libraries.
                 break;
@@ -200,6 +205,19 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
+    //code reused from aFileChooser example
+    private void showChooserForCSVImport() {
+        // Use the GET_CONTENT intent from the utility class
+        Intent target = FileUtils.createGetContentIntent();
+        // Create the chooser Intent
+        Intent intent = Intent.createChooser(
+                target, getString(R.string.chooser_title));
+        try {
+            startActivityForResult(intent, IMPORT_FROM_CSV_FILE);
+        } catch (ActivityNotFoundException e) {
+            // The reason for the existence of aFileChooser
+        }
+    }
     @Override
     public void startTemplateFragment(LocalDate date) {
         //toggle.setHomeAsUpIndicator(null);
@@ -278,27 +296,20 @@ public class DrawerActivity extends AppCompatActivity
         switch (requestCode) {
             case IMPORT_DATABASE:
                 if (data != null) {
-                    // Get the URI of the selected file
-                    final Uri uri = data.getData();
-                    Log.i("Debug", "Uri = " + uri.toString());
-                    try {
-                        // Get the file path from the URI
-                        final String path = FileUtils.getPath(this, uri);
-                        Toast.makeText(getApplicationContext(),
-                                "File Selected: " + path, Toast.LENGTH_LONG).show();
-
-                        if (path != null && FileUtils.isLocal(path)) {
-                            dbFileToImport = new File(path);
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    File dbFileToImport = getChosenFile(data);
                     if (dbFileToImport != null) {
                         ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
                         asyncThread.execute(0);
                     }
-                    dbFileToImport = null;
+                }
+                break;
+            case IMPORT_FROM_CSV_FILE:
+                if (data != null) {
+                    File csvFileToImport = getChosenFile(data);
+                    if (csvFileToImport != null) {
+                        ImportCsvAsyncTask asyncThread = new ImportCsvAsyncTask(csvFileToImport);
+                        asyncThread.execute(0);
+                    }
                 }
                 break;
             case LOAD_EVENTS_FROM_EVENTSTEMPLATE:
@@ -313,7 +324,25 @@ public class DrawerActivity extends AppCompatActivity
                 break;
         }
     }
+    private File getChosenFile(Intent data){
+        // Get the URI of the selected file
+        final Uri uri = data.getData();
+        File file = null;
+        try {
+            // Get the file path from the URI
+            final String path = FileUtils.getPath(this, uri);
+            Toast.makeText(getApplicationContext(),
+                    "File Selected: " + path, Toast.LENGTH_LONG).show();
 
+            if (path != null && FileUtils.isLocal(path)) {
+                file = new File(path);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
     public LocalDate addEventsToDatabase(List<Event> events) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         dbHandler.addEventsWithUnknownTagTemplates(events);
@@ -341,6 +370,38 @@ public class DrawerActivity extends AppCompatActivity
         @Override
         protected Void doInBackground(Integer... notUsedParams) {
             ExternalStorageHandler.replaceDBWithExtStorageFile(file, getApplicationContext());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void notUsed) {
+            //after db has been replaced, make the date shown for user the last date filled in
+            // new db.
+            final DBHandler dbImport = new DBHandler(getApplication());
+            LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
+            lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
+            startDiaryAtDate(lastDateOfEvents);
+        }
+    }
+    /**Database will not be cleared, this is an adder function. However, conflicting events (
+     with same date and event type) will be ignored (no override or duplication).
+     Best ways to fix that? => probably in database (similar to "unique ignore" or something like it)
+     */
+    private class ImportCsvAsyncTask extends AsyncTask<Integer, Void, Void> {
+        final String TAG = this.getClass().getName();
+        File file = null;
+
+        public ImportCsvAsyncTask(File file) {
+            this.file = file;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... notUsedParams) {
+            List<Event> importedEvents = ExternalStorageHandler.importEventsFromCsv(file);
+            DBHandler db = new DBHandler(getApplicationContext());
+            // db.deleteAllTablesRows(); This is not meant to be here,
+            // better just to add events and cascade ignore on existing ones (same type, same time).
+            db.addEventsWithUnknownTagTemplates(importedEvents);
             return null;
         }
 

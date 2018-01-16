@@ -47,7 +47,10 @@
             android:name="com.ibsanalyzer.external_storage.SaveDBIntentService"
             android:exported="false">
         </service>
-
+        <service
+            android:name="com.ibsanalyzer.external_storage.SaveToCSVIntentService"
+            android:exported="false">
+        </service>
         <activity
             android:name=".TagTemplateAdderActivity"
             android:parentActivityName=".TagAdderActivity">

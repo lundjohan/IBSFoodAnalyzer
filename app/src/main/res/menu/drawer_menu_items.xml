@@ -18,12 +18,16 @@
             android:title="Export to file"
             />
         <item
-            android:id="@+id/importFromTxtMenuItem"
-            android:title="Import from txt file"
+            android:id="@+id/importFromCsvMenuItem"
+            android:title="Import from .csv file"
+            />
+        <item
+            android:id="@+id/exportToCsvMenuItem"
+            android:title="Export to .csv file"
             />
         <item
             android:id="@+id/clearDBItem"
-            android:title="Clear Database"/>
+            android:title="Clear database"/>
         <item
             android:id="@+id/aboutItem"
             android:title="About"/>

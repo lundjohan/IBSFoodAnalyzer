@@ -3,10 +3,9 @@ package com.ibsanalyzer.external_storage;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,14 +13,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.importer.Importer;
+import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.importer_and_exporter.Exporter;
+import com.ibsanalyzer.importer_and_exporter.Importer;
 
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.DIRECTORY_IBSFOODANALYZER;
-import static com.ibsanalyzer.constants.Constants.NAME_OF_TXT_FILE;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE;
 import static com.ibsanalyzer.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 import static com.ibsanalyzer.database.TablesAndStrings.DATABASE_NAME;
@@ -94,6 +94,30 @@ public class ExternalStorageHandler {
                 new String[]{permissionName}, permissionRequestCode);
     }
 
+    private static File makeFileToSaveTo(String nameOfFile){
+        File directoryToSaveIn = Environment.getExternalStoragePublicDirectory
+                (DIRECTORY_IBSFOODANALYZER);
+        if (!directoryToSaveIn.exists()) {
+            directoryToSaveIn.mkdirs();
+        }
+        File file = new File(directoryToSaveIn, nameOfFile);
+        if (!isExternalStorageAccessable()) {
+            file = null;
+        }
+        return file;
+    }
+    //mediascannerconnection is implemented for windows explorer to see file see =>
+    /*https://stackoverflow
+     .com/questions/32789157/how-to-write-files-to-external-public-storage-in
+     -android-so-that-they-are-visibl*/
+    //and
+    /*https://stackoverflow
+     .com/questions/4646913/android-how-to-use-mediascannerconnection-scanfile*/
+    private static void scanFile(Context c, File f, String mimeType) {
+        SingleMediaScanner mediaScanner = new SingleMediaScanner(c, f,
+                mimeType);
+        mediaScanner.scan();
+    }
     /**
      * Nota Bene! If file or folder isn't showing up in Windows File Explorer - restart the
      * device (it flushes).
@@ -105,34 +129,12 @@ public class ExternalStorageHandler {
      */
     public static void saveDBToExtStorage(Context c) {
         try {
-            c.getDatabasePath(DATABASE_NAME);
-            //Nota
-            File directoryToSaveIn = Environment.getExternalStoragePublicDirectory
-                    (DIRECTORY_IBSFOODANALYZER);
-            File data = Environment.getDataDirectory();
-            String backupDBPath = LocalDateTime.now() + "_" + DATABASE_NAME;
+            File backupDB = makeFileToSaveTo(LocalDateTime.now() + "_" + DATABASE_NAME);
             File currentDB = c.getDatabasePath(DATABASE_NAME);
-            if (!isExternalStorageAccessable()) {
-                return;
-            }
-
             if (currentDB.exists()) {
                 FileChannel src = new FileInputStream(currentDB).getChannel();
-                if (!directoryToSaveIn.exists()) {
-                    directoryToSaveIn.mkdirs();
-                }
-                File backupDB = new File(directoryToSaveIn, backupDBPath);
 
-                //mediascannerconnection is implemented for windows explorer to see file see =>
-                //https://stackoverflow
-                // .com/questions/32789157/how-to-write-files-to-external-public-storage-in
-                // -android-so-that-they-are-visibl
-                //and
-                //https://stackoverflow
-                // .com/questions/4646913/android-how-to-use-mediascannerconnection-scanfile
-                SingleMediaScanner mediaScanner = new SingleMediaScanner(c, backupDB,
-                        "application/x-sqlite3");
-                mediaScanner.scan();
+                scanFile(c,backupDB, "application/x-sqlite3");
                 FileOutputStream fos = new FileOutputStream(backupDB);
 
                 FileChannel dst = fos.getChannel();
@@ -156,7 +158,17 @@ public class ExternalStorageHandler {
         }
 
     }
-
+    public static void saveCSVFile(Context context) {
+        File outFile = makeFileToSaveTo(LocalDateTime.now() + ".csv");
+        scanFile(context, outFile, "text/csv");
+        DBHandler dbHandler = new DBHandler(context);
+        List<Event>allEvents = dbHandler.getAllEventsMinusEventsTemplateSorted();
+        try {
+            Exporter.saveToTxt(outFile, allEvents);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
     private static boolean isExternalStorageAccessable() {
 
         //override the other upmost file with new
@@ -192,17 +204,9 @@ public class ExternalStorageHandler {
      * and store them (together with TagTemplates)
      * in database
      */
-    public static List<Event> importEventsFromTxt() {
+    public static List<Event> importEventsFromCsv(File file) {
         List<Event> importedEvents = new ArrayList<>();
 
-        //get permissions to area
-        File sd = Environment.getExternalStoragePublicDirectory(Environment
-                .DIRECTORY_DOWNLOADS);
-        String pathToTxtFile = NAME_OF_TXT_FILE;
-        if (!isExternalStorageAccessable()) {
-            //try to fix it
-        }
-        File file = new File(sd, pathToTxtFile);
         //read in each row
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             for (String line; (line = br.readLine()) != null; ) {
@@ -219,6 +223,7 @@ public class ExternalStorageHandler {
         }
         return importedEvents;
     }
+
 
 }
 
