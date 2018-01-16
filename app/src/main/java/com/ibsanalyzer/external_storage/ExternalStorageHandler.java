@@ -106,7 +106,10 @@ public class ExternalStorageHandler {
         }
         return file;
     }
-    //mediascannerconnection is implemented for windows explorer to see file see =>
+    //N.B! If this doesnt work for new Mime-types (that is, you cannot se file in windows),
+    // it usually works if you restart mobile!!!
+    //
+    // mediascannerconnection is implemented for windows explorer to see file see =>
     /*https://stackoverflow
      .com/questions/32789157/how-to-write-files-to-external-public-storage-in
      -android-so-that-they-are-visibl*/
