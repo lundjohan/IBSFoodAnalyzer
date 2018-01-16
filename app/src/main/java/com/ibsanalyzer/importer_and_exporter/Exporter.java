@@ -45,6 +45,8 @@ public class Exporter {
                     Log.e("Error", "event couldn't be exported to .txt file");
                 }
             }
+            out.flush();
+            out.close();
         }
 
     }
@@ -90,6 +92,8 @@ public class Exporter {
         out.print(eventName);
         out.print(Constants.DELIMETER);
         out.print(DateTimeFormat.toSqLiteFormat(e.getTime()));
+        out.print(Constants.DELIMETER);
+        out.print(e.getComment());
         out.print(Constants.DELIMETER);
     }
     private static void printTags(PrintWriter out, List<Tag> tags) {
