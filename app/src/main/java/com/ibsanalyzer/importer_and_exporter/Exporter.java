@@ -93,9 +93,8 @@ public class Exporter {
         out.print(Constants.DELIMETER);
         out.print(DateTimeFormat.toSqLiteFormat(e.getTime()));
         out.print(Constants.DELIMETER);
-        out.print("\"");
-        out.print(e.getComment().replace("\"","\'"));
-        out.print("\"");
+        //cannot now allow linebreak in comments, fucks line up
+        out.print(e.getComment().replace(System.getProperty("line.separator"),""));
         out.print(Constants.DELIMETER);
     }
     private static void printTags(PrintWriter out, List<Tag> tags) {
@@ -110,9 +109,7 @@ public class Exporter {
     private static void printTag(PrintWriter out, Tag t) {
         out.print(t.getTime());
         out.print(Constants.DELIMETER);
-        out.print("\"");
         out.print(t.getName());
-        out.print("\"");
         out.print(Constants.DELIMETER);
         out.print(t.getSize());
     }

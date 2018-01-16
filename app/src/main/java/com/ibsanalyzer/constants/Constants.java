@@ -9,7 +9,7 @@ import org.threeten.bp.ZoneId;
 public class Constants {
     //reading from txt files
     public final static String NAME_OF_TXT_FILE = "out.txt";
-    public final static String DELIMETER = ",";
+    public final static String DELIMETER = "|";
 
 
     //Database operations
