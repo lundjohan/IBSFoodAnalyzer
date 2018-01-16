@@ -113,4 +113,27 @@ public class Exporter {
         out.print(Constants.DELIMETER);
         out.print(t.getSize());
     }
+
+    /**
+     could be much more effective by implementing db function that only retrieves Ratings,
+     but this can be sloppy doesnt matter. Its not for production use.
+     */
+    public static void saveTimeAndScoreToTxt(File filename, List<Event> allEvents)throws FileNotFoundException {
+        try (PrintWriter out = new PrintWriter(filename)) {
+            for (Event e : allEvents) {
+                if (e instanceof Rating) {
+                    printRatingsTimeAndScore(out, (Rating)e);
+                    out.println();
+                }
+            }
+            out.flush();
+            out.close();
+        }
+    }
+
+    private static void printRatingsTimeAndScore(PrintWriter out, Rating r) {
+        out.print(DateTimeFormat.toSpreadSheetDateTimeFormat(r.getTime()));
+        out.print(",");
+        out.print(r.getAfter());
+    }
 }

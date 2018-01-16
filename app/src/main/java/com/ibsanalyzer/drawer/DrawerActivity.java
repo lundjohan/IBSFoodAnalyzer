@@ -27,6 +27,7 @@ import com.ibsanalyzer.diary.StatOptionsFragment;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
+import com.ibsanalyzer.external_storage.SaveToCSVForGraphIntentService;
 import com.ibsanalyzer.external_storage.SaveToCSVIntentService;
 import com.ibsanalyzer.settings.GeneralSettingsActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
@@ -172,7 +173,13 @@ public class DrawerActivity extends AppCompatActivity
                 Intent csvIntent = new Intent(this, SaveToCSVIntentService.class);
                 startService(csvIntent);
                 break;
-
+            case R.id.exportCsvForGraph:
+                //ok, write to file? Otherwise ask for permission
+                ExternalStorageHandler.showWritablePermission(this);
+                //IntentService
+                Intent csvGraphIntent = new Intent(this, SaveToCSVForGraphIntentService.class);
+                startService(csvGraphIntent);
+                break;
             case R.id.clearDBItem:
                 DBHandler dbHandler = new DBHandler(getApplicationContext());
                 dbHandler.deleteAllTablesRowsExceptTagTemplates();

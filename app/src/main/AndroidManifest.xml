@@ -51,6 +51,10 @@
             android:name="com.ibsanalyzer.external_storage.SaveToCSVIntentService"
             android:exported="false">
         </service>
+        <service
+            android:name="com.ibsanalyzer.external_storage.SaveToCSVForGraphIntentService"
+            android:exported="false">
+        </service>
         <activity
             android:name=".TagTemplateAdderActivity"
             android:parentActivityName=".TagAdderActivity">

@@ -178,6 +178,17 @@ public class ExternalStorageHandler {
             e.printStackTrace();
         }
     }
+    public static void saveCSVForGraphFile(Context context) {
+        File outFile = makeFileToSaveTo(LocalDateTime.now() + ".csv");
+        DBHandler dbHandler = new DBHandler(context);
+        List<Event>allEvents = dbHandler.getAllEventsMinusEventsTemplateSorted();
+        try {
+            Exporter.saveTimeAndScoreToTxt(outFile, allEvents);
+            scanFile(context, outFile, "text/csv");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
     private static boolean isExternalStorageAccessable() {
 
         //override the other upmost file with new
@@ -232,6 +243,7 @@ public class ExternalStorageHandler {
         }
         return importedEvents;
     }
+
 
 
 }

@@ -26,6 +26,10 @@
             android:title="Export to .csv file"
             />
         <item
+            android:id="@+id/exportCsvForGraph"
+            android:title="Export to .csv file for graph"
+            />
+        <item
             android:id="@+id/clearDBItem"
             android:title="Clear database"/>
         <item

@@ -72,4 +72,11 @@ public class DateTimeFormat {
     public static String toTextViewFormat(LocalTime lt) {
         return String.format("%02d", lt.getHour()) + ":" + String.format("%02d", lt.getMinute());
     }
+
+    //this will not be used in production, only used by me to be able to read graph of score
+    //Outcome is the format "2018-01-16 18:01"
+    public static String toSpreadSheetDateTimeFormat(LocalDateTime ldt) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return ldt.format(formatter);
+    }
 }
