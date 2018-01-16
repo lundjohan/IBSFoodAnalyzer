@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -116,10 +117,15 @@ public class ExternalStorageHandler {
     //and
     /*https://stackoverflow
      .com/questions/4646913/android-how-to-use-mediascannerconnection-scanfile*/
-    private static void scanFile(Context c, File f, String mimeType) {
-        SingleMediaScanner mediaScanner = new SingleMediaScanner(c, f,
-                mimeType);
-        mediaScanner.scan();
+    private static void scanFile(Context c, File f, final String mimeType) {
+        MediaScannerConnection.scanFile(c, new String[]{f.getAbsolutePath()}, new String[]{mimeType}, new MediaScannerConnection.OnScanCompletedListener()
+        {
+            @Override
+            public void onScanCompleted(final String path, final Uri uri)
+            {
+                Log.d("Debug", "Scan of "+mimeType + " has been completed");
+            }
+        });
     }
     /**
      * Nota Bene! If file or folder isn't showing up in Windows File Explorer - restart the
@@ -163,11 +169,11 @@ public class ExternalStorageHandler {
     }
     public static void saveCSVFile(Context context) {
         File outFile = makeFileToSaveTo(LocalDateTime.now() + ".csv");
-        scanFile(context, outFile, "text/csv");
         DBHandler dbHandler = new DBHandler(context);
         List<Event>allEvents = dbHandler.getAllEventsMinusEventsTemplateSorted();
         try {
             Exporter.saveToTxt(outFile, allEvents);
+            scanFile(context, outFile, "text/csv");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
