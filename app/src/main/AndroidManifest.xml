@@ -13,21 +13,16 @@
         android:roundIcon="@mipmap/foodanalyzer_rounded"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MealActivity">
+        <activity android:name=".MealActivity">
         </activity>
-        <activity
-            android:name=".RatingActivity">
+        <activity android:name=".RatingActivity">
         </activity>
-        <activity
-            android:name=".BmActivity">
+        <activity android:name=".BmActivity">
         </activity>
         <activity android:name=".TagAdderActivity"/>
-        <activity
-            android:name=".OtherActivity">
+        <activity android:name=".OtherActivity">
         </activity>
-        <activity
-            android:name=".ExerciseActivity">
+        <activity android:name=".ExerciseActivity">
         </activity>
         <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
         <activity
@@ -55,6 +50,7 @@
             android:name="com.ibsanalyzer.external_storage.SaveToCSVForGraphIntentService"
             android:exported="false">
         </service>
+
         <activity
             android:name=".TagTemplateAdderActivity"
             android:parentActivityName=".TagAdderActivity">
@@ -64,11 +60,9 @@
         </activity>
         <activity android:name=".TagTemplateEditActivity">
         </activity>
-        <activity
-            android:name="com.ibsanalyzer.settings.StatSettingsActivity">
+        <activity android:name="com.ibsanalyzer.settings.StatSettingsActivity">
         </activity>
-        <activity
-            android:name="com.ibsanalyzer.settings.GeneralSettingsActivity">
+        <activity android:name="com.ibsanalyzer.settings.GeneralSettingsActivity">
         </activity>
         <activity
             android:name="com.ipaulpro.afilechooser.FileChooserActivity"
@@ -87,13 +81,16 @@
         </activity>
         <activity android:name="com.ibsanalyzer.external_storage.FilePicker">
         </activity>
-        <activity android:name=".AverageStatActivity">
+        <activity android:name="com.ibsanalyzer.statistics.AverageStatActivity">
         </activity>
-        <activity android:name=".BlueZoneStatActivity">
+        <activity android:name="com.ibsanalyzer.statistics.BlueZoneStatActivity">
         </activity>
-        <activity android:name=".CompleteStatActivity">
+        <activity android:name="com.ibsanalyzer.statistics.CompleteStatActivity">
         </activity>
-        <activity android:name=".BristolStatActivity">
+        <activity android:name="com.ibsanalyzer.statistics.BristolStatActivity">
+        </activity>
+        <activity android:name="com.ibsanalyzer.statistics.PortionStatSettingsActivity">
+            android:label="Portion Stat Settings"
         </activity>
         <activity
             android:name="com.ibsanalyzer.drawer.DrawerActivity"
@@ -105,6 +102,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

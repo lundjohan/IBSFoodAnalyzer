@@ -1,32 +1,32 @@
-package com.ibsanalyzer.diary;
+package com.ibsanalyzer.statistics;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
-import com.ibsanalyzer.calc_score_classes.AvgScoreWrapper;
+import com.ibsanalyzer.calc_score_classes.BristolScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 
-import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_AVG;
+import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_BRISTOL;
 
-public class AverageStatActivity extends StatActivity {
+public class BristolStatActivity extends StatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
     public ScoreWrapper getScoreWrapper() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
-        int hours_ahead_for_av = preferences.getInt("hours_ahead_avg", HOURS_AHEAD_FOR_AVG);
-        return new AvgScoreWrapper(hours_ahead_for_av);
+        int hours_ahead = preferences.getInt("hours_ahead_bristol",
+                HOURS_AHEAD_FOR_BRISTOL);
+        return new BristolScoreWrapper(hours_ahead);
     }
 
     @Override
     public String getStringForTitle() {
-        return "Average Score";
+        return "Bristol Score";
     }
 }

@@ -1,4 +1,4 @@
-package com.ibsanalyzer.diary;
+package com.ibsanalyzer.statistics;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -17,6 +17,7 @@ import com.ibsanalyzer.base_classes.Chunk;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.HashMap;
