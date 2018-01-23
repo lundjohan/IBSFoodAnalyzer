@@ -1,10 +1,12 @@
 package com.ibsanalyzer.statistics;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.external_classes.TinyDB;
@@ -18,6 +20,10 @@ import java.util.ArrayList;
 class PortionStatRangeAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private final String RANGES_KEY= "portionRanges";
     private ArrayList<PortionStatRange> ranges;
+
+
+
+
     public PortionStatRangeAdapter(Context context){
         //get intervals from Shared Preferences, via help library TinyDB
         TinyDB tinydb = new TinyDB(context);
@@ -26,19 +32,35 @@ class PortionStatRangeAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHol
             ranges = new ArrayList<>();
         }
 
-        tinydb.putListPortionRange(RANGES_KEY, ranges);
-        tinydb.getListObject(ArrayList<PortionStatRange>d);
-
     }
+
+    public class RangeHolder extends RecyclerView.ViewHolder {
+        TextView rangesFrom;
+        TextView rangesTo;
+        Switch switchedOn;
+
+        public RangeHolder(View v) {
+            super(v);
+            rangesFrom = (TextView) v.findViewById(R.id.rangeFrom);
+            rangesTo = (TextView) v.findViewById(R.id.rangeTo);
+            switchedOn = (Switch)v.findViewById(R.id.switch1);
+        }
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return LayoutInflater.from(parent.getContext()).inflate(R.layout.item_range, parent,
+        View v =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_range, parent,
                 false);
+        return new RangeHolder(v);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        RangeHolder rangeHolder = (RangeHolder) holder;
+        PortionStatRange range = ranges.get(position);
+        rangeHolder.rangesFrom.setText(Float.toString(range.getRangeStart()));
+        rangeHolder.rangesTo.setText(Float.toString(range.getRangeStop()));
+        rangeHolder.switchedOn.setChecked(range.isTurnedOn());
     }
 
     @Override

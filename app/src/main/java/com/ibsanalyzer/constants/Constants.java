@@ -83,6 +83,10 @@ public class Constants {
     //used in various cases
     public static final int MEAL = 0, OTHER = 1, EXERCISE = 2, BM = 3, RATING = 4;
     //***************************************STATISTICS*********************************************
+    //portion ranges
+    public static final int NEW_PORTION_RANGES = 9876;
+
+
     //for StatFragment and its adapter
     public static final int AVG_SCORE = 0, BLUE_ZONE_SCORE = 1, COMPLETENESS_SCORE = 2,
             BRISTOL_SCORE = 3, UPDATE = 4, SETTINGS = 5;

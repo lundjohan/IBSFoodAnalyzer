@@ -6,11 +6,11 @@ package com.ibsanalyzer.statistics;
 
 public class PortionStatRange {
     //inclusive
-    public float rangeStart;
+    private float rangeStart;
 
     //exclusive
-    public float rangeStop;
-    public boolean turnedOn = true;
+    private float rangeStop;
+    private boolean turnedOn = true;
     PortionStatRange(){
 
     }
@@ -18,6 +18,30 @@ public class PortionStatRange {
     public PortionStatRange(float rangeStart, float rangeStop, boolean turnedOn) {
         this.rangeStart = rangeStart;
         this.rangeStop = rangeStop;
+        this.turnedOn = turnedOn;
+    }
+
+    public float getRangeStart() {
+        return rangeStart;
+    }
+
+    public float getRangeStop() {
+        return rangeStop;
+    }
+
+    public boolean isTurnedOn() {
+        return turnedOn;
+    }
+
+    public void setRangeStart(float rangeStart) {
+        this.rangeStart = rangeStart;
+    }
+
+    public void setRangeStop(float rangeStop) {
+        this.rangeStop = rangeStop;
+    }
+
+    public void setTurnedOn(boolean turnedOn) {
         this.turnedOn = turnedOn;
     }
 }

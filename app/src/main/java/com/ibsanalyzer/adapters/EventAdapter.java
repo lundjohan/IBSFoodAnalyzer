@@ -245,7 +245,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    //ViewHolder class for Exercise, BM and Rating.
+    //RangeHolder class for Exercise, BM and Rating.
     class ViewHolderWithoutTagList extends EventViewHolder {
 
 
