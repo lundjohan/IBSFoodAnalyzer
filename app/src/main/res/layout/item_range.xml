@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="-"
+        android:text="_"
         android:textSize="24dp"
         app:layout_constraintLeft_toRightOf="@+id/rangeFrom"
         />

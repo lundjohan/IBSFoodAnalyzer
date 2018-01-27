@@ -20,17 +20,25 @@ import java.util.ArrayList;
 class PortionStatRangeAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private final String RANGES_KEY= "portionRanges";
     private ArrayList<PortionStatRange> ranges;
-
+    private final TinyDB tinydb;
 
 
 
     public PortionStatRangeAdapter(Context context){
         //get intervals from Shared Preferences, via help library TinyDB
-        TinyDB tinydb = new TinyDB(context);
+        tinydb = new TinyDB(context);
         ranges = tinydb.getListPortionRange(RANGES_KEY);
         if (ranges == null){
             ranges = new ArrayList<>();
         }
+
+    }
+
+    public void addRange(PortionStatRange portionStatRange) {
+        ranges.add(portionStatRange);
+
+        //put in shared preferences to be able to retrieve the same settings at upstart
+        tinydb.putListPortionRange(RANGES_KEY, ranges);
 
     }
 

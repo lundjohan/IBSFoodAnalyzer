@@ -85,6 +85,8 @@ public class Constants {
     //***************************************STATISTICS*********************************************
     //portion ranges
     public static final int NEW_PORTION_RANGES = 9876;
+    public final static String CHOSEN_FROM_RANGE = "chosenFromRange";
+    public final static String CHOSEN_TO_RANGE = "chosenToRange";
 
 
     //for StatFragment and its adapter
