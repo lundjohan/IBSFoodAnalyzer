@@ -92,6 +92,12 @@
         <activity android:name="com.ibsanalyzer.statistics.PortionStatSettingsActivity">
             android:label="Portion Stat Settings"
         </activity>
+        <activity android:name="com.ibsanalyzer.statistics.NewPortionRangeActivity">
+        android:parentActivityName=".PortionStatSettingsActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.ibsanalyzer.statistics.PortionStatSettingsActivity"/>
+        </activity>
         <activity
             android:name="com.ibsanalyzer.drawer.DrawerActivity"
             android:label="@string/title_activity_drawer"
@@ -102,8 +108,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.ibsanalyzer.statistics.NewPortionRangeActivity">
-        </activity>
+
     </application>
 
 </manifest>

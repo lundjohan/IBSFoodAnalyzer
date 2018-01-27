@@ -18,6 +18,7 @@ public class NewPortionRangeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Add Portion Range");
         setContentView(R.layout.activity_new_portion_range);
         from = (TextView)findViewById(R.id.fromRangePortions);
         final Activity here = this;
@@ -52,6 +53,7 @@ public class NewPortionRangeActivity extends AppCompatActivity {
         return true;
     }
 
+    //send data back
     private void doneClicked(){
 
     }
