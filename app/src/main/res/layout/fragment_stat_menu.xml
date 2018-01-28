@@ -1,18 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent">
 
     <com.ibsanalyzer.custom_views.HeadLineLayout
-        android:id="@+id/firstHeadLine"
+    android:id="@+id/firstHeadLine"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    custom:textString="Average Stat"/>
+
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/avgRatingItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        custom:textString="Average Stat"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstHeadLine"
+        custom:textStatMenu="Rating"
+        android:layout_marginEnd="8dp"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/avgCompleteItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avgRatingItem"
+        custom:textStatMenu="Completeness"
+        android:layout_marginEnd="8dp"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/avgBristolItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avgCompleteItem"
+        custom:textStatMenu="Bristol"
+        android:layout_marginEnd="8dp"/>
 
     <com.ibsanalyzer.custom_views.HeadLineLayout
         android:id="@+id/secondHeadLine"
@@ -20,22 +61,124 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        custom:layout_constraintTop_toBottomOf="@+id/firstHeadLine"
+        custom:layout_constraintTop_toBottomOf="@+id/avgBristolItem"
         custom:textString="Frequency Stat"/>
+
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/freqRatingItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secondHeadLine"
+        custom:textStatMenu="Rating"
+        android:layout_marginEnd="8dp"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/freqCompleteItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/freqRatingItem"
+        custom:textStatMenu="Completeness"
+        android:layout_marginEnd="8dp"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/freqBristolItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/freqCompleteItem"
+        custom:textStatMenu="Bristol"
+        android:layout_marginEnd="8dp"/>
     <com.ibsanalyzer.custom_views.HeadLineLayout
         android:id="@+id/thirdHeadLine"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        custom:layout_constraintTop_toBottomOf="@+id/secondHeadLine"
+        custom:layout_constraintTop_toBottomOf="@+id/freqBristolItem"
         custom:textString="Time Stat"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/timeRatingItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thirdHeadLine"
+        custom:textStatMenu="Rating"
+        android:layout_marginEnd="8dp"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/timeCompleteItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeRatingItem"
+        custom:textStatMenu="Completeness"
+        android:layout_marginEnd="8dp"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/timeBristolItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeCompleteItem"
+        custom:textStatMenu="Bristol"
+        android:layout_marginEnd="8dp"/>
     <com.ibsanalyzer.custom_views.HeadLineLayout
         android:id="@+id/fourthHeadLine"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        custom:layout_constraintTop_toBottomOf="@+id/thirdHeadLine"
+        custom:layout_constraintTop_toBottomOf="@+id/timeBristolItem"
         custom:textString="Portions Stat"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/portionsRatingItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fourthHeadLine"
+        custom:textStatMenu="Rating"
+        android:layout_marginEnd="8dp"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/portionsCompleteItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/portionsRatingItem"
+        custom:textStatMenu="Completeness"
+        android:layout_marginEnd="8dp"/>
+    <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        android:id="@+id/portionsBristolItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/portionsCompleteItem"
+        custom:textStatMenu="Bristol"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="13dp"/>
 </android.support.constraint.ConstraintLayout>
+    </ScrollView>

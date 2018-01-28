@@ -1,10 +1,8 @@
 package com.ibsanalyzer.diary;
 
-import android.database.Cursor;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.widget.ListView;
 
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.drawer.DrawerActivity;
@@ -29,12 +27,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.ibsanalyzer.diary.R.id.is_a_type_of;
-import static com.ibsanalyzer.diary.R.id.name_of_tag;
+import static com.ibsanalyzer.diary.R.id.name_of_stat_option;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.instanceOf;
 
 /**
  * Created by Johan on 2017-12-31.
@@ -251,13 +247,13 @@ public class TagTemplateChangesAndDeletesTests {
                 .inAdapterView(withId(R.id.listOfTags))
                 .atPosition(0)
                 .check(matches(hasDescendant(
-                        allOf(withId(name_of_tag), withText(containsString("Butter"))))));
+                        allOf(withId(name_of_stat_option), withText(containsString("Butter"))))));
 
         onData(anything())
                 .inAdapterView(withId(R.id.listOfTags))
                 .atPosition(1)
                 .check(matches(hasDescendant(
-                        allOf(withId(name_of_tag), withText(containsString("Sugar"))))));
+                        allOf(withId(name_of_stat_option), withText(containsString("Sugar"))))));
 
 
         //delete the first TagTemplate in list, in this case "Butter"
@@ -310,7 +306,7 @@ public class TagTemplateChangesAndDeletesTests {
         //now in TagAdder again
         onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
         onView(withText("Butter")).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.name_of_tag), withText("Lacteo"))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.name_of_stat_option), withText("Lacteo"))).check(matches(isDisplayed()));
 
         //remove soft keyboard
         pressBack();
