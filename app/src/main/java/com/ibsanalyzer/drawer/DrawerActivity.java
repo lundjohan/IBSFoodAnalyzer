@@ -22,13 +22,14 @@ import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.diary.DiaryContainerFragment;
 import com.ibsanalyzer.diary.DiaryFragment;
 import com.ibsanalyzer.diary.R;
-import com.ibsanalyzer.statistics.StatOptionsFragment;
+import com.ibsanalyzer.statistics.StatMenuFragmentOld;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
 import com.ibsanalyzer.external_storage.SaveToCSVForGraphIntentService;
 import com.ibsanalyzer.external_storage.SaveToCSVIntentService;
 import com.ibsanalyzer.settings.GeneralSettingsActivity;
+import com.ibsanalyzer.statistics.StatOptionsFragment;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.threeten.bp.LocalDate;
@@ -44,7 +45,7 @@ import static com.ibsanalyzer.constants.Constants.LOCALDATE;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment
-        .DiaryFragmentListener, StatOptionsFragment.StatOptionsListener, TemplateFragment
+        .DiaryFragmentListener, StatMenuFragmentOld.StatOptionsListener, TemplateFragment
         .TemplateFragmentListener {
 
     Toolbar toolbar;

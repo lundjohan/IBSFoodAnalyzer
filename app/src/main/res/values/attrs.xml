@@ -19,4 +19,8 @@
         <!-- in case of event has tags (it is a Meal or Other Event) build up tagsList, otherwise -->
         <attr name="hasTags" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="HeadLineLayout">
+        <!-- the text string of textview-->
+        <attr name="textString" format="string" />
+    </declare-styleable>
 </resources>
