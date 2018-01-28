@@ -51,7 +51,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         ((Button) view.findViewById(R.id.blueZoneBtn)).setOnClickListener(this);
         ((Button) view.findViewById(R.id.completeBtn)).setOnClickListener(this);
         ((Button) view.findViewById(R.id.bristolBtn)).setOnClickListener(this);
-        ((Button) view.findViewById(R.id.portionBtn)).setOnClickListener(this);
+        ((Button) view.findViewById(R.id.portionSettingsBtn)).setOnClickListener(this);
         ((Button) view.findViewById(R.id.stat_settings)).setOnClickListener(this);
 
         // Inflate the layout for this fragment
@@ -78,7 +78,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
             case R.id.bristolBtn:
                 newStatActivity(new BristolStatActivity());
                 break;
-            case R.id.portionBtn:
+            case R.id.portionSettingsBtn:
                 Intent intent = new Intent((Activity) this.callback, PortionStatSettingsActivity.class);
                 startActivity(intent);
                 Log.d("Debug", "inside case for starting PortionStatActivity");
