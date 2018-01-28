@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -39,6 +42,7 @@ import static com.ibsanalyzer.constants.Constants.NEW_EVENT;
 import static com.ibsanalyzer.constants.Constants.OTHER;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.RATING;
+import static com.ibsanalyzer.diary.R.id.recyclerView;
 
 /**
  * Created by Johan on 2017-05-14.
@@ -249,5 +253,12 @@ public class Util {
             return str;
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    }
+
+    public static void addLineSeparator(RecyclerView recyclerView, LinearLayoutManager layoutManager){
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
+                .getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(mDividerItemDecoration);
     }
 }

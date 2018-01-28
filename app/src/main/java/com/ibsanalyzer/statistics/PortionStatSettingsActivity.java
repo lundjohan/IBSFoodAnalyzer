@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import com.ibsanalyzer.diary.LoadEventsTemplateActivity;
 import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.CHOSEN_FROM_RANGE;
 import static com.ibsanalyzer.constants.Constants.CHOSEN_TO_RANGE;
@@ -41,7 +43,7 @@ public class PortionStatSettingsActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         portionsView.setLayoutManager(linearLayoutManager);
         portionsView.setAdapter(adapter);
-
+        Util.addLineSeparator(portionsView, linearLayoutManager);
     }
 
     @Override

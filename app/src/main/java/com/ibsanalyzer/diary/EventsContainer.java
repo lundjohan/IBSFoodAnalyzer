@@ -15,6 +15,7 @@ import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
+import com.ibsanalyzer.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,11 +116,7 @@ public class EventsContainer {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new EventAdapter(eventList, user);
         recyclerView.setAdapter(adapter);
-        //add line separator
-        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
-                .getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(mDividerItemDecoration);
+        Util.addLineSeparator(recyclerView, layoutManager);
     }
 
     /**
