@@ -50,7 +50,7 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
     public void bindView(View view, final Context context, final Cursor c) {
         final TextView tagName = (TextView) view.findViewById(R.id.name_of_stat_option);
         TextView inherits = (TextView) view.findViewById(R.id.inherits);
-        ImageView threeDotsBtn = (ImageView) view.findViewById(R.id.three_dots_inside_listView);
+        ImageView threeDotsBtn = (ImageView) view.findViewById(R.id.settings_btn_inside_listView);
 
         threeDotsBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
@@ -35,5 +36,10 @@ public class StatMenuItemLayout extends ConstraintLayout {
         String text = arr.getString(R.styleable.StatMenuItemLayout_textStatMenu);
         TextView statText = (TextView) findViewById(R.id.name_of_stat_option);
         statText.setText(text);
+
+
+        ImageButton settingsBtn = (ImageButton) findViewById(R.id.settings_btn_inside_listView);
+        int id = arr.getResourceId(R.styleable.StatMenuItemLayout_idOfSettingsBtn,0);
+        settingsBtn.setId(id);
     }
 }

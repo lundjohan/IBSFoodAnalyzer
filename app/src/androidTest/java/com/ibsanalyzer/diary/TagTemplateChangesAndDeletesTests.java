@@ -79,7 +79,7 @@ public class TagTemplateChangesAndDeletesTests {
         goToTagAdderActivity();
         createATagTemplate("Butter");
         //inside TagAdderActivity, delete Butter TagTemplate
-        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+        onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
         onView(withText("Delete")).check(matches(isDisplayed())).perform(click());
@@ -109,7 +109,7 @@ public class TagTemplateChangesAndDeletesTests {
         goToTagAdderActivity();
         createATagTemplate("Butter");
         //inside TagAdderActivity, delete Butter TagTemplate
-        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+        onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
         onView(withText("Edit")).check(matches(isDisplayed())).perform(click());
@@ -163,7 +163,7 @@ public class TagTemplateChangesAndDeletesTests {
 
         //go back to TagAdder and remove "Butter"
         onView(withId(R.id.addTagsBtn)).perform(click());
-        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+        onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
         onView(withText("Delete")).check(matches(isDisplayed())).perform(click());
 
@@ -191,7 +191,7 @@ public class TagTemplateChangesAndDeletesTests {
         goToTagAdderActivity();
         createATagTemplate("Butter");
         //inside TagAdderActivity, edit Butter TagTemplate
-        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+        onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
         onView(withText("Edit")).check(matches(isDisplayed())).perform(click());
@@ -257,7 +257,7 @@ public class TagTemplateChangesAndDeletesTests {
 
 
         //delete the first TagTemplate in list, in this case "Butter"
-        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+        onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
         /*code below didn't work
         onData(withId(R.id.three_dots_inside_listView))
@@ -280,7 +280,7 @@ public class TagTemplateChangesAndDeletesTests {
         goToTagAdderActivity();
 
         //inside TagAdderActivity, edit Butter TagTemplate
-        onView(allOf(withId(R.id.three_dots_inside_listView), hasSibling(withText("Butter"))))
+        onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
         onView(withText("Edit")).check(matches(isDisplayed())).perform(click());

@@ -26,5 +26,6 @@
     <declare-styleable name="StatMenuItemLayout">
         <!-- the text string of textview-->
         <attr name="textStatMenu" format="string" />
+        <attr name ="idOfSettingsBtn" format="integer"/>
     </declare-styleable>
 </resources>
