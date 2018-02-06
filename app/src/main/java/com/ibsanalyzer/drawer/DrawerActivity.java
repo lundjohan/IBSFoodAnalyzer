@@ -22,7 +22,6 @@ import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.diary.DiaryContainerFragment;
 import com.ibsanalyzer.diary.DiaryFragment;
 import com.ibsanalyzer.diary.R;
-import com.ibsanalyzer.statistics.StatMenuFragmentOld;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
 import com.ibsanalyzer.external_storage.SaveDBIntentService;
@@ -45,7 +44,7 @@ import static com.ibsanalyzer.constants.Constants.LOCALDATE;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment
-        .DiaryFragmentListener, StatMenuFragmentOld.StatOptionsListener, TemplateFragment
+        .DiaryFragmentListener, TemplateFragment
         .TemplateFragmentListener {
 
     Toolbar toolbar;
