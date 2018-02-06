@@ -2,28 +2,30 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:sample="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
-        android:title="Settings for Rating Avg Statistics">
+        android:title="Settings for BM Avg Statistics">
         <com.pavelsikun.seekbarpreference.SeekBarPreference
-            android:defaultValue="0"
+            android:defaultValue="24"
             android:enabled="true"
-            android:key="avg_rating_stat_wait_hours_after_event"
-            android:title="Hours to wait"
-            android:summary="A wait hour of zero (0) means that rating starts affecting the event-type's score immediately after the event."
+            android:key="avg_bm_stat_start_hours_before_bm"
+            android:summary="Start limit before a bowel movement when events matter.
+            The events closer or at same time as the start limit (and earlier than the stop limit below) will get affected of the bowel movements
+             score (Completeness and Bristol)."
+            android:title="Start Hours Before BM"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_maxValue="48"
+            sample:msbp_maxValue="72"
             sample:msbp_measurementUnit="h"
             sample:msbp_minValue="0"
             />
         <com.pavelsikun.seekbarpreference.SeekBarPreference
-            android:defaultValue="24"
+            android:defaultValue="0"
             android:enabled="true"
-            android:key="avg_rating_stat_stop_hours_after_event"
-            android:title="Hours before stop"
-            android:summary="A stop hour of 24h means that rating stops affecting the event-type's score 24 hours after the event."
+            android:key="avg_rating_stop_hours_before_bm"
+            android:summary="End limit before a bowel movement when events matter."
+            android:title="End Hours Before BM"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_maxValue="72"
+            sample:msbp_maxValue="24"
             sample:msbp_measurementUnit="h"
             sample:msbp_minValue="0"
             />

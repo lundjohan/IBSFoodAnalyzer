@@ -5,7 +5,7 @@ import android.preference.PreferenceFragment;
 
 import com.ibsanalyzer.diary.R;
 
-public class AvgRatingSettingsActivity extends SettingsBaseActivity {
+public class AvgBmSettingsActivity extends SettingsBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,14 +14,14 @@ public class AvgRatingSettingsActivity extends SettingsBaseActivity {
 
     @Override
     protected PreferenceFragment getFragment() {
-        return new AvgRatingSettingsFragment();
+        return new AvgBMSettingsFragment();
     }
 
-    public static class AvgRatingSettingsFragment extends PreferenceFragment {
+    public static class AvgBMSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.avg_rating_preferences);
+            addPreferencesFromResource(R.xml.avg_bm_preferences);
         }
     }
 }

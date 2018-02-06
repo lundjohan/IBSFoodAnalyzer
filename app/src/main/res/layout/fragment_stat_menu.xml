@@ -45,7 +45,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/avgRatingItem"
-            custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
+            custom:idOfSettingsBtn="@+id/avgSettingsCompleteItem"
             custom:textStatMenu="Completeness"/>
 
         <com.ibsanalyzer.custom_views.StatMenuItemLayout
@@ -58,7 +58,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/avgCompleteItem"
-            custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
+            custom:idOfSettingsBtn="@+id/avgSettingsBristolItem"
             custom:textStatMenu="Bristol"/>
 
         <com.ibsanalyzer.custom_views.HeadLineLayout

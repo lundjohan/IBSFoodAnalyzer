@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.statistics_settings.AvgBmSettingsActivity;
 import com.ibsanalyzer.statistics_settings.AvgRatingSettingsActivity;
 import com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity;
 
@@ -35,6 +36,10 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         help to find them*/
         view.findViewById(getResources().getIdentifier("avgSettingsRatingItem", "id", getContext
                 ().getPackageName())).setOnClickListener(this);
+        view.findViewById(getResources().getIdentifier("avgSettingsBristolItem", "id", getContext
+                ().getPackageName())).setOnClickListener(this);
+        view.findViewById(getResources().getIdentifier("avgSettingsCompleteItem", "id", getContext
+                ().getPackageName())).setOnClickListener(this);
         view.findViewById(getResources().getIdentifier("portionsSettingsRatingItem", "id",
                 getContext().getPackageName())).setOnClickListener(this);
         return view;
@@ -56,6 +61,13 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.avgSettingsRatingItem: {
                 Intent intent = new Intent(getActivity(), AvgRatingSettingsActivity.class);
+                startActivity(intent);
+                break;
+            }
+            //bristol and completeness share settings
+            case R.id.avgSettingsBristolItem:
+            case R.id.avgSettingsCompleteItem: {
+                Intent intent = new Intent(getActivity(), AvgBmSettingsActivity.class);
                 startActivity(intent);
                 break;
             }
