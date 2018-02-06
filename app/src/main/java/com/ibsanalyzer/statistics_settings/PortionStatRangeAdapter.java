@@ -1,4 +1,4 @@
-package com.ibsanalyzer.statistics;
+package com.ibsanalyzer.statistics_settings;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.external_classes.TinyDB;
+import com.ibsanalyzer.statistics.PortionStatRange;
 
 import java.util.ArrayList;
 

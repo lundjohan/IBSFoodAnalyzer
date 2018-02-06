@@ -12,10 +12,9 @@ import android.widget.ImageButton;
 
 import com.ibsanalyzer.custom_views.StatMenuItemLayout;
 import com.ibsanalyzer.diary.R;
-import com.ibsanalyzer.settings.StatSettingsActivity;
+import com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity;
 
 import static com.ibsanalyzer.diary.R.id.avgBristolItem;
-import static com.ibsanalyzer.diary.R.id.avgBtn;
 import static com.ibsanalyzer.diary.R.id.avgCompleteItem;
 import static com.ibsanalyzer.diary.R.id.avgRatingItem;
 
