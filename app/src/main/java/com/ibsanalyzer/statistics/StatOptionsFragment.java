@@ -2,16 +2,15 @@ package com.ibsanalyzer.statistics;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
-import com.ibsanalyzer.custom_views.StatMenuItemLayout;
 import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.statistics_settings.AvgRatingSettingsActivity;
 import com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity;
 
 import static com.ibsanalyzer.diary.R.id.avgBristolItem;
@@ -28,10 +27,16 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_stat_menu, container, false);
 
         //make them clickable
-        ((StatMenuItemLayout) view.findViewById(avgRatingItem)).setOnClickListener(this);
-        ((StatMenuItemLayout) view.findViewById(avgCompleteItem)).setOnClickListener(this);
-        ((StatMenuItemLayout) view.findViewById(avgBristolItem)).setOnClickListener(this);
-        ((ImageButton) view.findViewById(getResources().getIdentifier("portionsSettingsRatingItem", "id", getContext().getPackageName()))).setOnClickListener(this);
+        view.findViewById(avgRatingItem).setOnClickListener(this);
+        view.findViewById(avgCompleteItem).setOnClickListener(this);
+        view.findViewById(avgBristolItem).setOnClickListener(this);
+
+        /*since some ids are set dynamically through custom views, the builder seem to need some
+        help to find them*/
+        view.findViewById(getResources().getIdentifier("avgSettingsRatingItem", "id", getContext
+                ().getPackageName())).setOnClickListener(this);
+        view.findViewById(getResources().getIdentifier("portionsSettingsRatingItem", "id",
+                getContext().getPackageName())).setOnClickListener(this);
         return view;
     }
 
@@ -49,15 +54,22 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
             case avgBristolItem:
                 newStatActivity(new BristolStatActivity());
                 break;
-            case R.id.portionsSettingsRatingItem:
-                Intent intent = new Intent( getActivity(), PortionStatSettingsActivity.class);
+            case R.id.avgSettingsRatingItem: {
+                Intent intent = new Intent(getActivity(), AvgRatingSettingsActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.portionsSettingsRatingItem: {
+                Intent intent = new Intent(getActivity(), PortionStatSettingsActivity.class);
                 startActivity(intent);
                 Log.d("Debug", "inside case for starting PortionStatActivity");
                 break;
+            }
         }
     }
+
     private void newStatActivity(Activity instance) {
-        Intent intent = new Intent( getActivity(), instance.getClass());
+        Intent intent = new Intent(getActivity(), instance.getClass());
         startActivity(intent);
     }
 }
