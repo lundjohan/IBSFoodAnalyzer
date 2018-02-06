@@ -36,5 +36,11 @@ public class HeadLineLayout extends ConstraintLayout {
         String text = arr.getString(R.styleable.HeadLineLayout_textString);
         TextView headLineText = (TextView) findViewById(R.id.headLineText);
         headLineText.setText(text);
+
+        boolean notReady = arr.getBoolean(R.styleable.HeadLineLayout_notReady, false);
+        //in case function is not ready for production, do the following
+        if (notReady){
+            headLineText.setTextColor(getResources().getColor(R.color.colorWeakGrey,null));
+        }
     }
 }

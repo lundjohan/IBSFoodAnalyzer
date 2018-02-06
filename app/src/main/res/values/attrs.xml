@@ -21,7 +21,8 @@
     </declare-styleable>
     <declare-styleable name="HeadLineLayout">
         <!-- the text string of textview-->
-        <attr name="textString" format="string" />
+        <attr name="textString" format="string"/>
+        <attr name="notReady" format="boolean" />
     </declare-styleable>
     <declare-styleable name="StatMenuItemLayout">
         <!-- the text string of textview-->
