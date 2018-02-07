@@ -20,4 +20,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="avg_info">Gives an average score of an event type based on its relationship to Rating, Bm Completeness or Bm Bristol.</string>
+    <string name="freq_info">UPCOMING FEATURE. Shows a percentage for event types that describes how often they have been within a certain score (Rating, Bm Completeness or Bm Bristol) interval</string>
+    <string name="time_info">UPCOMING FEATURE. Shows the time periods that the diary has been within a certain score (Rating, Bm Completeness or Bm Bristol) interval.</string>
+    <string name="portions_info">UPCOMING FEATURE. Gives average score of meal sizes (meal portions) based on their relationships to Rating, Bm Completeness or Bm Bristol.</string>
 </resources>

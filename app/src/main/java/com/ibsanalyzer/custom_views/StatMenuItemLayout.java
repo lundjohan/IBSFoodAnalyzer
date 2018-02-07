@@ -37,7 +37,7 @@ public class StatMenuItemLayout extends ConstraintLayout {
         TextView statText = (TextView) findViewById(R.id.name_of_stat_option);
         statText.setText(text);
 
-
+        //set id of settingsBtn
         ImageButton settingsBtn = (ImageButton) findViewById(R.id.settings_btn_inside_listView);
         int id = arr.getResourceId(R.styleable.StatMenuItemLayout_idOfSettingsBtn,0);
         settingsBtn.setId(id);

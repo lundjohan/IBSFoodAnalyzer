@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
@@ -42,5 +44,10 @@ public class HeadLineLayout extends ConstraintLayout {
         if (notReady){
             headLineText.setTextColor(getResources().getColor(R.color.colorWeakGrey,null));
         }
+
+        //set id of info
+        ImageButton infoBtn = (ImageButton) findViewById(R.id.headLineInfoBtn);
+        int id = arr.getResourceId(R.styleable.HeadLineLayout_idOfInfoBtn,0);
+        infoBtn.setId(id);
     }
 }

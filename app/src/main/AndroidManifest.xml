@@ -112,6 +112,8 @@
         </activity>
         <activity android:name="com.ibsanalyzer.statistics_settings.AvgBmSettingsActivity">
         </activity>
+        <activity android:name="com.ibsanalyzer.info.InfoActivity">
+        </activity>
     </application>
 
 </manifest>

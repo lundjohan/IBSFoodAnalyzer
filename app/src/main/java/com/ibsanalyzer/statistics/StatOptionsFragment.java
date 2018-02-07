@@ -10,13 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.info.InfoActivity;
 import com.ibsanalyzer.statistics_settings.AvgBmSettingsActivity;
 import com.ibsanalyzer.statistics_settings.AvgRatingSettingsActivity;
 import com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity;
 
+import static com.ibsanalyzer.constants.Constants.INFO_STR;
 import static com.ibsanalyzer.diary.R.id.avgBristolItem;
 import static com.ibsanalyzer.diary.R.id.avgCompleteItem;
+import static com.ibsanalyzer.diary.R.id.avgInfoItem;
 import static com.ibsanalyzer.diary.R.id.avgRatingItem;
+import static com.ibsanalyzer.diary.R.id.freqInfoItem;
+import static com.ibsanalyzer.diary.R.id.portionsInfoItem;
+import static com.ibsanalyzer.diary.R.id.timeInfoItem;
 
 /**
  * Gives the user options for statistics
@@ -34,6 +40,18 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
         /*since some ids are set dynamically through custom views, the builder seem to need some
         help to find them*/
+
+        //info buttons
+        view.findViewById(getResources().getIdentifier("avgInfoItem", "id", getContext
+                ().getPackageName())).setOnClickListener(this);
+        view.findViewById(getResources().getIdentifier("freqInfoItem", "id", getContext
+                ().getPackageName())).setOnClickListener(this);
+        view.findViewById(getResources().getIdentifier("timeInfoItem", "id", getContext
+                ().getPackageName())).setOnClickListener(this);
+        view.findViewById(getResources().getIdentifier("portionsInfoItem", "id", getContext
+                ().getPackageName())).setOnClickListener(this);
+
+        //settings buttons
         view.findViewById(getResources().getIdentifier("avgSettingsRatingItem", "id", getContext
                 ().getPackageName())).setOnClickListener(this);
         view.findViewById(getResources().getIdentifier("avgSettingsBristolItem", "id", getContext
@@ -50,6 +68,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         Log.d("Debug", "just above switch");
         switch (v.getId()) {
 
+            //to stat
             case avgRatingItem:
                 newStatActivity(new AverageStatActivity());
                 break;
@@ -59,6 +78,22 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
             case avgBristolItem:
                 newStatActivity(new BristolStatActivity());
                 break;
+
+            //info buttons
+            case avgInfoItem:
+                newInfoActivity(getResources().getString(R.string.avg_info));
+                break;
+            case freqInfoItem:
+                newInfoActivity(getResources().getString(R.string.freq_info));
+                break;
+            case timeInfoItem:
+                newInfoActivity(getResources().getString(R.string.time_info));
+                break;
+            case portionsInfoItem:
+                newInfoActivity(getResources().getString(R.string.portions_info));
+                break;
+
+            //settings buttons
             case R.id.avgSettingsRatingItem: {
                 Intent intent = new Intent(getActivity(), AvgRatingSettingsActivity.class);
                 startActivity(intent);
@@ -83,5 +118,11 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
     private void newStatActivity(Activity instance) {
         Intent intent = new Intent(getActivity(), instance.getClass());
         startActivity(intent);
+    }
+    private void newInfoActivity(String str){
+        Intent intent = new Intent(getActivity(), InfoActivity.class);
+        intent.putExtra(INFO_STR, str);
+        startActivity(intent);
+
     }
 }

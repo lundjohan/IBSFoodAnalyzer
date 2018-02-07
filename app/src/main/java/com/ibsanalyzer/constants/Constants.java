@@ -112,5 +112,6 @@ public class Constants {
     //=================================SETTINGS VARIABLES APP===================================
     public static final int HOURS_AHEAD_FOR_BREAK_BACKUP = 20; //in hours
 
-
+    //=================================INFO===================================
+    public static String INFO_STR = "shouldHaveDate";
 }
