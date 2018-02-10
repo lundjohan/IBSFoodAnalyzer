@@ -21,7 +21,7 @@ public class AverageStatActivity extends StatActivity {
     public ScoreWrapper getScoreWrapper() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
-        int hours_ahead_for_av = preferences.getInt("hours_ahead_avg", HOURS_AHEAD_FOR_AVG);
+        int hours_ahead_for_av = preferences.getInt("avg_rating_stat_stop_hours_after_event", HOURS_AHEAD_FOR_AVG);
         return new AvgScoreWrapper(hours_ahead_for_av);
     }
 
