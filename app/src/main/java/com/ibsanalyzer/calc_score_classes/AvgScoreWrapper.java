@@ -13,8 +13,8 @@ import stat_classes.TagPointMaker;
  */
 
 public class AvgScoreWrapper extends ScoreWrapper {
-    public AvgScoreWrapper(int hoursAheadForAvg) {
-        super(hoursAheadForAvg);
+    public AvgScoreWrapper(int waitHoursAfterEvent, int stopHoursAfterEvent) {
+        super(waitHoursAfterEvent, stopHoursAfterEvent);
     }
 
     @Override
@@ -24,6 +24,6 @@ public class AvgScoreWrapper extends ScoreWrapper {
 
     @Override
     public Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints) {
-        return TagPointMaker.doAvgScore(chunks, hoursAhead, tagPoints);
+        return TagPointMaker.doAvgScore(chunks, startHoursAfterEvent, stopHoursAfterEvent, tagPoints);
     }
 }

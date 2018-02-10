@@ -14,13 +14,13 @@ public class TagPointMaker {
      * Each TagPoint consist of name, quantity, orig_tot_points (the latter based on avg score
      * hours ahead).
      */
-    private static void makeTagPoints(Chunk chunk, int hours, Map<String, TagPoint> tagPoints) {
-        List<Tag> tagsMaterial = chunk.getTags(hours);
+    private static void makeTagPoints(Chunk chunk, int startHoursAfterEvent, int stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
+        List<Tag> tagsMaterial = chunk.getTags(stopHoursAfterEvent);
         for (Tag tag : tagsMaterial) {
             String name = tag.getName();
             double quantity = tag.getSize();
 
-            double pointsForTag = chunk.calcAvgScoreFromToTime(tag.getTime(), hours);
+            double pointsForTag = chunk.calcAvgScoreFromToTime(tag.getTime().plusHours(startHoursAfterEvent), stopHoursAfterEvent);
             TagPoint tpInMap = tagPoints.get(name);
             TagPoint tpToInsert = null;
 
@@ -34,16 +34,16 @@ public class TagPointMaker {
         }
     }
 
-    public static Map<String, TagPoint> makeTagPoints(Chunk chunk, int hours) {
+    /*public static Map<String, TagPoint> makeTagPoints(Chunk chunk, int hours) {
         Map<String, TagPoint> tagPoints = new HashMap<>();
         makeTagPoints(chunk, hours, tagPoints);
         return tagPoints;
-    }
+    }*/
 
-    public static Map<String, TagPoint> doAvgScore(List<Chunk> chunks, int hours, Map<String,
+    public static Map<String, TagPoint> doAvgScore(List<Chunk> chunks, int waitHoursAfterEvent, int stopHoursAfterEvent, Map<String,
             TagPoint> tagPoints) {
         for (Chunk chunk : chunks) {
-            makeTagPoints(chunk, hours, tagPoints);
+            makeTagPoints(chunk, waitHoursAfterEvent, stopHoursAfterEvent, tagPoints);
         }
         return tagPoints;
     }

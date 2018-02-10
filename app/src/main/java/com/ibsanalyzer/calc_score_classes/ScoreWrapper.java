@@ -15,10 +15,18 @@ import java.util.Map;
  */
 
 public abstract class ScoreWrapper {
-    int hoursAhead;
+    int startHoursAfterEvent;
+    int stopHoursAfterEvent;
 
-    public ScoreWrapper(int hoursAhead) {
-        this.hoursAhead = hoursAhead;
+
+    public ScoreWrapper(int startHoursAfterEvent, int stopHoursAfterEvent) {
+        this.startHoursAfterEvent = startHoursAfterEvent;
+        this.stopHoursAfterEvent = stopHoursAfterEvent;
+    }
+
+    public ScoreWrapper(int stopHoursAfterEvent) {
+        startHoursAfterEvent = 0;
+        this.stopHoursAfterEvent = stopHoursAfterEvent;
     }
 
     public abstract double getScore(TagPoint tp);

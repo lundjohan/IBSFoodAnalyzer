@@ -28,6 +28,6 @@ public class BlueScoreWrapper extends ScoreWrapper {
     @Override
     public Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints) {
         return TagPointScoreZonesHandler.addBlueZonesScore(chunks, tagPoints,
-                scoreAboveAreBluezones, hoursAhead);
+                scoreAboveAreBluezones, stopHoursAfterEvent);
     }
 }
