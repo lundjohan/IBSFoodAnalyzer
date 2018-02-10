@@ -37,18 +37,21 @@ public class AvgScoreTest {
      * The method that in effect is tested is TagPointMaker.doAvgScore(...);
      */
     @Before
-    public void init(){
+    public void init() {
 
     }
 
+    /*
+    Simple test case with only one tag and one rating (before the tag)
+     */
     @Test
     public void avgRatingTest() {
         //empty event list
 
         //create some tags...
-        List<Tag>tags1 = new ArrayList<>();
-        LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY,1,10,0);
-        Tag t1 = new Tag(ldt1 , "Butter", 1.0);
+        List<Tag> tags1 = new ArrayList<>();
+        LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
         //...and add them to an event
         Other other1 = new Other(ldt1, tags1);
@@ -60,20 +63,21 @@ public class AvgScoreTest {
         //create an event further on, just to make rating extend to it
         Other other2 = new Other(ldt1.plusHours(10), new ArrayList<Tag>());
 
-        List<Event>events1 = new ArrayList<>();
+        List<Event> events1 = new ArrayList<>();
         events1.add(r1);
         events1.add(other1);
         events1.add(other2);
 
-        List<Chunk>chunks1 = Chunk.makeChunksFromEvents(events1, new ArrayList<Break>());
+        List<Chunk> chunks1 = Chunk.makeChunksFromEvents(events1, new ArrayList<Break>());
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 2;
         Map<String, TagPoint> tagPoints = new HashMap<>();
 
         //Above is a simple one, the score of Butter should be 3.
-        tagPoints =  TagPointMaker.doAvgScore(chunks1, startHoursAfterEvent, stopHoursAfterEvent, tagPoints);
+        tagPoints = TagPointMaker.doAvgScore(chunks1, startHoursAfterEvent, stopHoursAfterEvent,
+                tagPoints);
         assertEquals(1, tagPoints.size());
-        assertEquals(tagPoints.get("Butter").getQuantity(),1.0 );
-        assertEquals(tagPoints.get("Butter").getOrigAvgScore(),3.0);
+        assertEquals(1.0, tagPoints.get("Butter").getQuantity());
+        assertEquals(3.0, tagPoints.get("Butter").getOrigAvgScore());
     }
 }
