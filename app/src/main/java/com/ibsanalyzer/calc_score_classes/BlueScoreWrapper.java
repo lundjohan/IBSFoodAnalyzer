@@ -30,4 +30,9 @@ public class BlueScoreWrapper extends ScoreWrapper {
         return TagPointScoreZonesHandler.addBlueZonesScore(chunks, tagPoints,
                 scoreAboveAreBluezones, stopHoursAfterEvent);
     }
+
+    @Override
+    public int getQuantityLimit() {
+        return 0;
+    }
 }

@@ -19,6 +19,7 @@ public abstract class ScoreWrapper {
     int stopHoursAfterEvent;
 
 
+
     public ScoreWrapper(int startHoursAfterEvent, int stopHoursAfterEvent) {
         this.startHoursAfterEvent = startHoursAfterEvent;
         this.stopHoursAfterEvent = stopHoursAfterEvent;
@@ -52,5 +53,23 @@ public abstract class ScoreWrapper {
         );
         return toBeSorted;
     }
+
+    /**
+     * Sometimes you want to avoid to list stat for tags that only occurred once or three times i diary.
+     * @param tpList
+     * @param limit inclusive
+     * @return
+     */
+    public static List<TagPoint> removeTagPointsWithTooLowQuant(List<TagPoint> tpList, int limit){
+        List<TagPoint>trimmedTpList = new ArrayList<>();
+        for (TagPoint tp:tpList){
+            if(tp.getQuantity()>=limit){
+                trimmedTpList.add(tp);
+            }
+        }
+        return trimmedTpList;
+    }
+
+    public abstract int getQuantityLimit();
 }
 

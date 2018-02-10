@@ -13,8 +13,10 @@ import stat_classes.TagPointMaker;
  */
 
 public class AvgScoreWrapper extends ScoreWrapper {
-    public AvgScoreWrapper(int waitHoursAfterEvent, int stopHoursAfterEvent) {
+    int quantLimit = 0;
+    public AvgScoreWrapper(int waitHoursAfterEvent, int stopHoursAfterEvent, int quantLimit) {
         super(waitHoursAfterEvent, stopHoursAfterEvent);
+        this.quantLimit = quantLimit;
     }
 
     @Override
@@ -26,4 +28,10 @@ public class AvgScoreWrapper extends ScoreWrapper {
     public Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints) {
         return TagPointMaker.doAvgScore(chunks, startHoursAfterEvent, stopHoursAfterEvent, tagPoints);
     }
+
+    @Override
+    public int getQuantityLimit() {
+        return quantLimit;
+    }
+
 }

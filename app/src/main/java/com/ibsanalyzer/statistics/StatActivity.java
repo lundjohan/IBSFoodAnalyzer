@@ -118,8 +118,13 @@ public abstract class StatActivity extends AppCompatActivity {
             List<Chunk> chunks = (List<Chunk>) params[1];
             tagPoints = wrapper.calcScore(chunks, tagPoints);
             //sort tagPoints here
-            return wrapper.toSortedList(tagPoints);
+            List<TagPoint> sortedList = wrapper.toSortedList(tagPoints);
+
+            //remove tagPoints with too low amount of quantity
+            return ScoreWrapper.removeTagPointsWithTooLowQuant(sortedList, wrapper.getQuantityLimit());
         }
+
+
 
         @Override
         protected void onPostExecute(List<TagPoint> sortedList) {

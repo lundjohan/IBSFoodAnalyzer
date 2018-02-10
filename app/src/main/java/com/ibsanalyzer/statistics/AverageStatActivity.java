@@ -23,7 +23,8 @@ public class AverageStatActivity extends StatActivity {
                 (getApplicationContext());
         int wait_hours_after_event = preferences.getInt("avg_rating_stat_wait_hours_after_event",0);
         int hours_ahead_for_av = preferences.getInt("avg_rating_stat_stop_hours_after_event", HOURS_AHEAD_FOR_AVG);
-        return new AvgScoreWrapper(wait_hours_after_event,hours_ahead_for_av);
+        int quantLimit = preferences.getInt("avg_rating_quantity_min_limit",0);
+        return new AvgScoreWrapper(wait_hours_after_event,hours_ahead_for_av, quantLimit);
     }
 
     @Override

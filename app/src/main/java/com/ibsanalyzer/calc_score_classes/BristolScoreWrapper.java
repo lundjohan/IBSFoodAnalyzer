@@ -29,4 +29,9 @@ public class BristolScoreWrapper extends ScoreWrapper {
         return TagPointBmHandler.addBmScore(chunks,
                 tagPoints, stopHoursAfterEvent);
     }
+
+    @Override
+    public int getQuantityLimit() {
+        return 0;
+    }
 }
