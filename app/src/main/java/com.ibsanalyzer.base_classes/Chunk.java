@@ -177,11 +177,13 @@ public class Chunk {
 
     /**
      * @return If there is no div on same time as from, then an earlier div is returned as well.
+     *
+     * Given Chunk must at least have one div, and that one should be at start
      */
     public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, long hoursAhead) {
         return getDivsBetweenAndSometimesOneBefore(from, from.plusHours(hoursAhead));
     }
-
+    //current problem if only one div from getDivs, it should still return one div but it returns zero.
     public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to) {
         //get firstInd
         int firstInd = 0;
@@ -196,16 +198,17 @@ public class Chunk {
         }
 
         //get LastInd
-        int lastInd = divs.size() - 1;
-        for (int i = divs.size() - 1; i > 0; i--) {
+        int lastInd = firstInd;
+        for (int i = firstInd+1; i < divs.size(); i++) {
             LocalDateTime divTime = divs.get(i).getTime();
-            if (divTime.isAfter(to) || divTime.isEqual(to)) {
-                lastInd = i;
-            } else {
+            if (divTime.isAfter(to)) {
                 break;
+            } else {
+                lastInd = i;
             }
         }
-        return divs.subList(firstInd, lastInd);
+        //sublist(incl, excl (therefore +1))
+        return divs.subList(firstInd, lastInd+1);
     }
 
     public List<Bm> getBMsAfterTime(Chunk chunk, LocalDateTime time,
