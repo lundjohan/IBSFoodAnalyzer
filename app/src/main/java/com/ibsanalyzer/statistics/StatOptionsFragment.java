@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import com.ibsanalyzer.statistics_settings.AvgBmSettingsActivity;
 import com.ibsanalyzer.statistics_settings.AvgRatingSettingsActivity;
 import com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity;
 
-import static com.ibsanalyzer.constants.Constants.INFO_STR;
 import static com.ibsanalyzer.diary.R.id.avgBristolItem;
 import static com.ibsanalyzer.diary.R.id.avgCompleteItem;
 import static com.ibsanalyzer.diary.R.id.avgInfoItem;
@@ -81,16 +81,16 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
             //info buttons
             case avgInfoItem:
-                newInfoActivity(getResources().getString(R.string.avg_info));
+                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources().getString(R.string.avg_info));
                 break;
             case freqInfoItem:
-                newInfoActivity(getResources().getString(R.string.freq_info));
+                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources().getString(R.string.freq_info));
                 break;
             case timeInfoItem:
-                newInfoActivity(getResources().getString(R.string.time_info));
+                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources().getString(R.string.time_info));
                 break;
             case portionsInfoItem:
-                newInfoActivity(getResources().getString(R.string.portions_info));
+                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources().getString(R.string.portions_info));
                 break;
 
             //settings buttons
@@ -118,11 +118,5 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
     private void newStatActivity(Activity instance) {
         Intent intent = new Intent(getActivity(), instance.getClass());
         startActivity(intent);
-    }
-    private void newInfoActivity(String str){
-        Intent intent = new Intent(getActivity(), InfoActivity.class);
-        intent.putExtra(INFO_STR, str);
-        startActivity(intent);
-
     }
 }

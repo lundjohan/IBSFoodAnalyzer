@@ -24,4 +24,14 @@
     <string name="freq_info">UPCOMING FEATURE. Shows a percentage for event types that describes how often they have been within a certain score (Rating, Bm Completeness or Bm Bristol) interval</string>
     <string name="time_info">UPCOMING FEATURE. Shows the time periods that the diary has been within a certain score (Rating, Bm Completeness or Bm Bristol) interval.</string>
     <string name="portions_info">UPCOMING FEATURE. Gives average score of meal sizes (meal portions) based on their relationships to Rating, Bm Completeness or Bm Bristol.</string>
+
+    <string name = "avg_info_score">SCORE\tNAME\n
+        7.0\tPhenomenal\n
+        6.0\tGreat\n
+        5.0\tGood\n
+        4.0\tDeficient\n
+        3.0\tBad\n
+        2.0\tAwful\n
+        1.0\tAbysmal
+    </string>
 </resources>

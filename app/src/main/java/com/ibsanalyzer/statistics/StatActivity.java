@@ -1,5 +1,6 @@
 package com.ibsanalyzer.statistics;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.ibsanalyzer.adapters.StatAdapter;
@@ -18,6 +21,7 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.diary.R;
+import com.ibsanalyzer.info.InfoActivity;
 import com.ibsanalyzer.tagpoint_classes.TagPoint;
 
 import java.util.HashMap;
@@ -35,6 +39,25 @@ public abstract class StatActivity extends AppCompatActivity {
     //Scores
     Map<String, TagPoint> tagPoints = new HashMap<String, TagPoint>();
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_info, menu);
+        menu.findItem(R.id.menu_info).setOnMenuItemClickListener(new MenuItem
+                .OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                doneClicked();
+                return true;
+            }
+        });
+        return true;
+    }
+
+    private void doneClicked(){
+        InfoActivity.newInfoActivity(this, getResources().getString(R.string.avg_info_score));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
