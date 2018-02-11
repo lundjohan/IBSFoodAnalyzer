@@ -168,7 +168,7 @@ public class Chunk {
         if (divs.size() == 1) {
             return divs.get(0).getAfter();
         }
-        //time of div before <from> (the first div to take into account) is not interesting (it
+        //time of div before <startTime> (the first div to take into account) is not interesting (it
         // can have happened many days before), only its score.
         long startLong = startTime.atZone(ZONE_ID).toEpochSecond();
         double scoreMultWithTime = 0;

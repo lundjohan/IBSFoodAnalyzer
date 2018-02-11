@@ -13,12 +13,12 @@ public class TagPointMaker {
      * Returns a map of String, TagPoints.
      * Each TagPoint consist of name, quantity, orig_tot_points (the latter based on avg score
      * hours ahead).
+     *
+     * Given: stopHoursAfterEvent is larger than startHoursAfterEvent
      */
     private static void makeTagPoints(Chunk chunk, int startHoursAfterEvent, int
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
 
-        //stopHoursAfterStart should not be negative or zero, restricted higher up in hierarchy
-        int stopHoursAfterStart = stopHoursAfterEvent - startHoursAfterEvent;
         List<Tag> tagsMaterial = chunk.getTags();
         for (Tag tag : tagsMaterial) {
             String name = tag.getName();
@@ -32,7 +32,7 @@ public class TagPointMaker {
 
 
                 double[] scoreAndQuantForOverridingTag = chunk.calcAvgScoreForOverridingTag(tag.getTime(),
-                        startHoursAfterEvent*60, stopHoursAfterStart*60);
+                        startHoursAfterEvent*60, stopHoursAfterEvent*60);
                 if (scoreAndQuantForOverridingTag == null){
                     return;
                 }
@@ -44,7 +44,7 @@ public class TagPointMaker {
             //normal case, no overriding of chunks last time.
             else {
                 pointsForTag = chunk.calcAvgScoreFromToTime(tag.getTime(),
-                        startHoursAfterEvent*60, stopHoursAfterStart*60);
+                        startHoursAfterEvent*60, stopHoursAfterEvent*60);
             }
             //if no ratings exist in chunk, nothing should be added to Tagpoint map
             if (pointsForTag == -1.0) {
