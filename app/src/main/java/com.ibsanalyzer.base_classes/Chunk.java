@@ -149,10 +149,16 @@ public class Chunk {
      * passed after each div in time frame.
      * <p>
      * Given: these times should be within time of this chunk.
+     *
+     * Returns -1.0 if no appropriate rating events are found in chunk
      */
     public double calcAvgScoreFromToTime(LocalDateTime from, long hoursAhead) {
         ZoneId zoneId = ZoneId.systemDefault();
         List<Rating> divs = getDivsBetweenAndSometimesOneBefore(from, hoursAhead); //ok!
+        if (divs.isEmpty()){
+            return -1.0;
+        }
+
         if (divs.size() == 1) {
             return divs.get(0).getAfter();
         }
@@ -183,11 +189,16 @@ public class Chunk {
     public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, long hoursAhead) {
         return getDivsBetweenAndSometimesOneBefore(from, from.plusHours(hoursAhead));
     }
-    //current problem if only one div from getDivs, it should still return one div but it returns zero.
+    /**current problem if only one div from getDivs, it should still return one div but it returns zero.
+     * If there are no divs in chunk, an empty List is returned.
+     */
     public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to) {
         //get firstInd
         int firstInd = 0;
         List<Rating> divs = getDivs();
+        if (divs.isEmpty()){
+            return divs;
+        }
         for (int i = 0; i < divs.size(); i++) {
             LocalDateTime divTime = divs.get(i).getTime();
             if (divTime.isBefore(from) || divTime.isEqual(from)) {

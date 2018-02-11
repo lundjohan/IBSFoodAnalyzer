@@ -45,7 +45,7 @@ public class AvgScoreTest {
     Simple test case with only one tag and one rating (before the tag)
      */
     @Test
-    public void avgRatingTest() {
+    public void simpleAvgRatingTest() {
         //empty event list
 
         //create some tags...
@@ -79,5 +79,45 @@ public class AvgScoreTest {
         assertEquals(1, tagPoints.size());
         assertEquals(1.0, tagPoints.get("Butter").getQuantity());
         assertEquals(3.0, tagPoints.get("Butter").getOrigAvgScore());
+
+        //add one butter
+
+        //senare: add one rating
+
+        //testa ovan också utan rating, det ska ej vara krasch, men tagpoint ska ej återträffas
+    }
+
+    /**
+     * Here, no rating has been added. But it still shouldnt crasch. TagPointMaker.doAvgScore
+     * should just return an empty list.
+     */
+
+    @Test
+    public void noRatingInAvgStatTest() {
+        //create some tags...
+        List<Tag> tags1 = new ArrayList<>();
+        LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
+        tags1.add(t1);
+        //...and add them to an event
+        Other other1 = new Other(ldt1, tags1);
+
+        //create an event further on, just to make rating extend to it
+        Other other2 = new Other(ldt1.plusHours(10), new ArrayList<Tag>());
+
+        List<Event> events1 = new ArrayList<>();
+        events1.add(other1);
+        events1.add(other2);
+        List<Chunk> chunks1 = Chunk.makeChunksFromEvents(events1, new ArrayList<Break>());
+        int startHoursAfterEvent = 0;
+        int stopHoursAfterEvent = 2;
+        Map<String, TagPoint> tagPoints = new HashMap<>();
+
+        //Above is a simple one, the score of Butter should be 3.
+        tagPoints = TagPointMaker.doAvgScore(chunks1, startHoursAfterEvent, stopHoursAfterEvent,
+                tagPoints);
+        assertEquals(0, tagPoints.size());
+
     }
 }
+

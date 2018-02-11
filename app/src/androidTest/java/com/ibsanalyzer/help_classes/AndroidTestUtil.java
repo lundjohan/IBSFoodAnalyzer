@@ -36,7 +36,7 @@ public class AndroidTestUtil {
         appCompatImageButton.perform(click());
 
         ViewInteraction appCompatCheckedTextView = onView(
-                allOf(withId(R.id.design_menu_item_text), withText("Clear Database"), isDisplayed
+                allOf(withId(R.id.design_menu_item_text), withText("Clear database"), isDisplayed
                         ()));
         appCompatCheckedTextView.perform(click());
     }
@@ -52,7 +52,7 @@ public class AndroidTestUtil {
         appCompatImageButton.perform(click());
 
         ViewInteraction appCompatCheckedTextView = onView(
-                allOf(withId(R.id.design_menu_item_text), withText("Clear Database"), isDisplayed
+                allOf(withId(R.id.design_menu_item_text), withText("Clear database"), isDisplayed
                         ()));
         appCompatCheckedTextView.perform(click());
     }

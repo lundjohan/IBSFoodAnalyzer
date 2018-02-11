@@ -21,6 +21,12 @@ public class TagPointMaker {
             double quantity = tag.getSize();
 
             double pointsForTag = chunk.calcAvgScoreFromToTime(tag.getTime().plusHours(startHoursAfterEvent), stopHoursAfterEvent);
+
+            //if no ratings exist in chunk, nothing should be added to Tagpoint map
+            if (pointsForTag == -1.0){
+                return;
+            }
+
             TagPoint tpInMap = tagPoints.get(name);
             TagPoint tpToInsert = null;
 
