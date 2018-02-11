@@ -20,7 +20,7 @@ public class IBSUtil {
      * @return
      */
     public static double retrieveLastScore(Chunk ch) {
-        List<Rating> divs = ch.getDivs();
+        List<Rating> divs = ch.getRatings();
         Rating lastDiv = divs.get(divs.size() - 1);
         return lastDiv.getAfter();
     }

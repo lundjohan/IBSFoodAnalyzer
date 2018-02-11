@@ -14,24 +14,47 @@ public class TagPointMaker {
      * Each TagPoint consist of name, quantity, orig_tot_points (the latter based on avg score
      * hours ahead).
      */
-    private static void makeTagPoints(Chunk chunk, int startHoursAfterEvent, int stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
-        List<Tag> tagsMaterial = chunk.getTags(stopHoursAfterEvent);
+    private static void makeTagPoints(Chunk chunk, int startHoursAfterEvent, int
+            stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
+
+        //stopHoursAfterStart should not be negative or zero, restricted higher up in hierarchy
+        int stopHoursAfterStart = stopHoursAfterEvent - startHoursAfterEvent;
+        List<Tag> tagsMaterial = chunk.getTags();
         for (Tag tag : tagsMaterial) {
             String name = tag.getName();
             double quantity = tag.getSize();
+            double pointsForTag = 0.0;
 
-            double pointsForTag = chunk.calcAvgScoreFromToTime(tag.getTime().plusHours(startHoursAfterEvent), stopHoursAfterEvent);
+            //if tag needs more rating score after it than Chunk allows, the algorithm takes the
+            // time that exist after and drags out the score for that time. But the weigh of this
+            // tag (its quantity) will be reduced with the same factor it is prolonged.)
+            if (chunk.tagTimePlusStopHoursOverridesChunkEnd(tag.getTime().plusHours(stopHoursAfterEvent))) {
 
-            //if no ratings exist in chunk, nothing should be added to Tagpoint map
-            if (pointsForTag == -1.0){
-                return;
+
+                double[] scoreAndQuantForOverridingTag = chunk.calcAvgScoreForOverridingTag(tag.getTime(),
+                        startHoursAfterEvent*60, stopHoursAfterStart*60);
+                if (scoreAndQuantForOverridingTag == null){
+                    return;
+                }
+                double factor = scoreAndQuantForOverridingTag[0];
+                quantity = tag.getSize()*factor;
+                pointsForTag = scoreAndQuantForOverridingTag[1];
             }
 
+            //normal case, no overriding of chunks last time.
+            else {
+                pointsForTag = chunk.calcAvgScoreFromToTime(tag.getTime(),
+                        startHoursAfterEvent*60, stopHoursAfterStart*60);
+            }
+            //if no ratings exist in chunk, nothing should be added to Tagpoint map
+            if (pointsForTag == -1.0) {
+                return;
+            }
             TagPoint tpInMap = tagPoints.get(name);
             TagPoint tpToInsert = null;
 
             if (tpInMap == null) {
-                tpToInsert = new TagPoint(name, tag.getSize(), pointsForTag * quantity);
+                tpToInsert = new TagPoint(name, quantity, pointsForTag * quantity);
             } else {
                 tpToInsert = new TagPoint(name, tpInMap.getQuantity() + quantity, tpInMap
                         .getOrig_tot_points() + pointsForTag * quantity);
@@ -46,7 +69,8 @@ public class TagPointMaker {
         return tagPoints;
     }*/
 
-    public static Map<String, TagPoint> doAvgScore(List<Chunk> chunks, int waitHoursAfterEvent, int stopHoursAfterEvent, Map<String,
+    public static Map<String, TagPoint> doAvgScore(List<Chunk> chunks, int waitHoursAfterEvent,
+                                                   int stopHoursAfterEvent, Map<String,
             TagPoint> tagPoints) {
         for (Chunk chunk : chunks) {
             makeTagPoints(chunk, waitHoursAfterEvent, stopHoursAfterEvent, tagPoints);
@@ -54,7 +78,7 @@ public class TagPointMaker {
         return tagPoints;
     }
     /*public static Map<String, TagPoint> calcTagPoints(List<Chunk> chunks,
-			int buffertHoursEnd) {
+            int buffertHoursEnd) {
 		Map<String, TagPoint> tagPoints = initTagPoints(chunks);
 		int i = Constants.LOOPS_FOR_TAGPOINTS;
 		while (i > 0) {
@@ -108,7 +132,8 @@ public class TagPointMaker {
 	    	    for tag in otherTags:
 	    	        tagPoint = tagPoint[tag.name]
 	    	        weight = calcWeight(tag0.datetime, tag.datetime, timeDeltaSurrounder)
-	    	        othersTot = (othersAvg * othersQuantity + tagPoint.avgPoints()-othersAvg)/(othersQuantity+1)
+	    	        othersTot = (othersAvg * othersQuantity + tagPoint.avgPoints()-othersAvg)/
+	    	        (othersQuantity+1)
 	    	        othersQuantity += 1
 	    	    return othersAvg
 	}*/

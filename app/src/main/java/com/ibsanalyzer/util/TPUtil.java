@@ -67,7 +67,7 @@ public class TPUtil {
             Chunk chunk, LocalDateTime from, LocalDateTime to) {
         // get firstInd
         int firstInd = 0;
-        List<Rating> divs = chunk.getDivs();
+        List<Rating> divs = chunk.getRatings();
         for (int i = 0; i < divs.size(); i++) {
             LocalDateTime divTime = divs.get(i).getTime();
             if (divTime.isBefore(from) || divTime.isEqual(from)) {

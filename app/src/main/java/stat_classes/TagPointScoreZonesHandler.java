@@ -89,7 +89,7 @@ public class TagPointScoreZonesHandler {
      */
     private static List<TimePeriod> retrieveScorePeriods(Chunk ch, double scoreFrom, double
             scoreTo) {
-        List<Rating> divs = ch.getDivs();
+        List<Rating> divs = ch.getRatings();
         IBSUtil.addLastDiv(ch, divs);
         return retrieveScorePeriods(divs, scoreFrom, scoreTo);
     }

@@ -10,9 +10,12 @@ import org.threeten.bp.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ibsanalyzer.diary.DiaryFragment.startTime;
+
 //class solely in use for legacy reasons with TagPoints.
 
 public class Chunk {
+    private final ZoneId ZONE_ID = ZoneId.systemDefault();
     List<Event> events = new ArrayList<>();
 
     public Chunk(List<Event> events) {
@@ -22,7 +25,7 @@ public class Chunk {
     /**
      * NB: first and last breaks are never before or after first/last event
      *
-     * sorry for the mess, this is way to complicated. But it is tested.
+     * sorry for the mess, this is way too complicated. But it is tested.
      *
      * @param events should be in chronological order
      * @param breaks should be in chronological order
@@ -85,7 +88,7 @@ public class Chunk {
                 break;
             }
         }
-        //remember sublist is exclusive second parameter
+        //remember sublist is exclusive second parameter, therefore +1
         return new Chunk (events.subList(startIndEvents, endIndEvents +1));
     }
 
@@ -94,7 +97,7 @@ public class Chunk {
         return events;
     }
 
-    public List<Rating> getDivs() {
+    public List<Rating> getRatings() {
         List<Rating> ratings = new ArrayList<>();
         for (Event e : events) {
             if (e instanceof Rating) {
@@ -122,6 +125,8 @@ public class Chunk {
     /**
      * @return tags from start time of chunk to (endtime of chunk - hours)
      * Preequisite: events are sorted by time (latest last)
+     *
+     * Obsolete
      */
     public List<Tag> getTags(int hours) {
         List<Tag> tags = new ArrayList<>();
@@ -152,9 +157,10 @@ public class Chunk {
      *
      * Returns -1.0 if no appropriate rating events are found in chunk
      */
-    public double calcAvgScoreFromToTime(LocalDateTime from, long hoursAhead) {
-        ZoneId zoneId = ZoneId.systemDefault();
-        List<Rating> divs = getDivsBetweenAndSometimesOneBefore(from, hoursAhead); //ok!
+    public double calcAvgScoreFromToTime(LocalDateTime tagTime, long minutesAheadStart, long minutesAheadStop) {
+        LocalDateTime startTime = tagTime.plusMinutes(minutesAheadStart);
+        LocalDateTime endTime = tagTime.plusMinutes(minutesAheadStop);
+        List<Rating> divs = getDivsBetweenAndSometimesOneBefore(startTime, minutesAheadStop); //ok!
         if (divs.isEmpty()){
             return -1.0;
         }
@@ -164,38 +170,62 @@ public class Chunk {
         }
         //time of div before <from> (the first div to take into account) is not interesting (it
         // can have happened many days before), only its score.
-        long startLong = from.atZone(zoneId).toEpochSecond();
+        long startLong = startTime.atZone(ZONE_ID).toEpochSecond();
         double scoreMultWithTime = 0;
         for (int i = 1; i < divs.size(); i++) {
             LocalDateTime t = divs.get(i).getTime();
-            double timeDifInSec = t.atZone(zoneId).toEpochSecond() - startLong;
+            double timeDifInSec = t.atZone(ZONE_ID).toEpochSecond() - startLong;
             scoreMultWithTime += divs.get(i - 1).getAfter() * timeDifInSec;
-            startLong = divs.get(i).getTime().atZone(zoneId).toEpochSecond();
+            startLong = divs.get(i).getTime().atZone(ZONE_ID).toEpochSecond();
         }
         //the last one
-        long toLong = from.plusHours(hoursAhead).atZone(zoneId).toEpochSecond();
+        long toLong = endTime.atZone(ZONE_ID).toEpochSecond();
         double lastTimeDif = toLong - startLong;
         scoreMultWithTime += divs.get(divs.size() - 1).getAfter() * lastTimeDif;
 
-        double avgScore = scoreMultWithTime / (hoursAhead * 3600);
+        double avgScore = scoreMultWithTime / ((minutesAheadStop - minutesAheadStart) * 60);
         return avgScore;
     }
+
+    /**
+     *
+     * @param
+     * @param minutesAheadStop
+     * @return [factor, Score]. Explanation of factor: if 10 hours is needed ahead to see tag score,
+     * and only 5 h exists, then the factor is 0.5  (the score is dragged out to the double
+     * (double as in "twice") it's time.)
+     */
+    public double [] calcAvgScoreForOverridingTag(LocalDateTime tagTime, long minutesAheadStart, long minutesAheadStop){
+        LocalDateTime preferredLastTimeOfChunk = tagTime.plusMinutes(minutesAheadStop);
+        LocalDateTime deFactoLastTimeOfChunk = getLastTime();
+        long secondsDiff = preferredLastTimeOfChunk.atZone(ZONE_ID).toEpochSecond()-deFactoLastTimeOfChunk.atZone(ZONE_ID).toEpochSecond();
+        double factor = ((double)secondsDiff) /(minutesAheadStop*60);
+
+        //calculate score
+        long minutesToEndOfChunk = secondsDiff/60;
+        double score = calcAvgScoreFromToTime(tagTime, minutesAheadStart, minutesToEndOfChunk);
+        if (score == -1.0){
+            return null;
+        }
+        return new double[]{factor, score};
+    }
+
 
     /**
      * @return If there is no div on same time as from, then an earlier div is returned as well.
      *
      * Given Chunk must at least have one div, and that one should be at start
      */
-    public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, long hoursAhead) {
-        return getDivsBetweenAndSometimesOneBefore(from, from.plusHours(hoursAhead));
+    public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, long minutesAhead) {
+        return getDivsBetweenAndSometimesOneBefore(from, from.plusMinutes(minutesAhead));
     }
-    /**current problem if only one div from getDivs, it should still return one div but it returns zero.
+    /**current problem if only one div from getRatings, it should still return one div but it returns zero.
      * If there are no divs in chunk, an empty List is returned.
      */
     public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to) {
         //get firstInd
         int firstInd = 0;
-        List<Rating> divs = getDivs();
+        List<Rating> divs = getRatings();
         if (divs.isEmpty()){
             return divs;
         }
@@ -267,5 +297,9 @@ public class Chunk {
     public List<Tag> getTagsForPeriod(TimePeriod tp) {
         List<Event> trimmedEvents = IBSUtil.trimEventsToPeriod(getEvents(), tp);
         return Util.getTags(trimmedEvents);
+    }
+
+    public boolean tagTimePlusStopHoursOverridesChunkEnd(LocalDateTime preferredStopTime) {
+        return preferredStopTime.isAfter(getLastTime());
     }
 }
