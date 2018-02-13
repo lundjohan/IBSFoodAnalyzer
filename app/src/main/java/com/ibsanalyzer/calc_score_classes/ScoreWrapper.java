@@ -42,7 +42,10 @@ public abstract class ScoreWrapper {
      */
     public List<TagPoint> toSortedList(Map<String, TagPoint> tagPoints) {
         List<TagPoint> toBeSorted = new ArrayList<>( tagPoints.values());
-        Collections.sort(toBeSorted, new Comparator<TagPoint>()
+
+        //without this later sort can crasch
+        List<TagPoint> validTPList = removeNaNFromList(toBeSorted);
+        Collections.sort(validTPList, new Comparator<TagPoint>()
                 {
                     @Override
                     public int compare(TagPoint t1, TagPoint t2)
@@ -51,7 +54,22 @@ public abstract class ScoreWrapper {
                     }
                 }
         );
-        return toBeSorted;
+        return validTPList;
+    }
+
+    /**
+     * Removes TagPoint that shows a  getScore of "NaN" (can be becouse of 0.0/0.0 for example).
+     * @param tagPoints
+     * @return
+     */
+    private List<TagPoint> removeNaNFromList(List<TagPoint> tagPoints) {
+        List<TagPoint>tagPointsToReturn = new ArrayList<>();
+        for (TagPoint tp: tagPoints){
+            if (!Double.isNaN(getScore(tp))){
+                tagPointsToReturn.add(tp);
+            }
+        }
+        return tagPointsToReturn;
     }
 
     /**
