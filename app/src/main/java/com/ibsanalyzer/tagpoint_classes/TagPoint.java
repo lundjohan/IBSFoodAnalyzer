@@ -30,6 +30,10 @@ public class TagPoint {
         this.quantity = quantity;
     }
 
+    public int getNrOfBMs(){
+        return nrOfBMs;
+    }
+
     public TagPoint(String name, double quantity, double orig_tot_points) {
         super();
         this.name = name;

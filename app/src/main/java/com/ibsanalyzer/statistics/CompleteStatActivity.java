@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
+import com.ibsanalyzer.adapters.BmStatAdapter;
+import com.ibsanalyzer.adapters.StatAdapter;
 import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.ScoreWrapper;
 
@@ -29,5 +31,10 @@ public class CompleteStatActivity extends StatActivity {
     @Override
     public String getStringForTitle() {
         return "Complete Score";
+    }
+
+    @Override
+    public StatAdapter getStatAdapter() {
+        return new BmStatAdapter(getScoreWrapper());
     }
 }

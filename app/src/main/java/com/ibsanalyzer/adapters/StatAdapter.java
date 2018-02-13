@@ -23,8 +23,8 @@ import java.util.List;
 
 public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //list needs to be initiated, otherwise getItemCount crashes.
-    private List<TagPoint>tagPointsList = new ArrayList<>();
-    private ScoreWrapper scoreWrapper;
+    protected List<TagPoint>tagPointsList = new ArrayList<>();
+    protected ScoreWrapper scoreWrapper;
 
     public StatAdapter(ScoreWrapper scoreWrapper) {
         this.scoreWrapper = scoreWrapper;
@@ -57,7 +57,7 @@ public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.tagPointsList = tagPointsList;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tagName;
         public TextView scoreField;
         public TextView quantity;

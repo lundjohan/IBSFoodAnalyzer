@@ -66,7 +66,7 @@ public abstract class StatActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager
                 .VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new StatAdapter(getScoreWrapper());
+        adapter = getStatAdapter();
         recyclerView.setAdapter(adapter);
         //add line separator
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
@@ -114,6 +114,7 @@ public abstract class StatActivity extends AppCompatActivity {
     }
 
     public abstract ScoreWrapper getScoreWrapper();
+    public abstract StatAdapter getStatAdapter();
     public abstract String getStringForTitle();
 
 

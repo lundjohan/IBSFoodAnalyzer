@@ -24,6 +24,7 @@ public class TagPointBmHandler {
                     hoursAheadForBm);
             int completeness = 0;
             double sumBristol = 0;
+
             for (Bm bm : bmsAhead) {
                 completeness += bm.getComplete();
                 sumBristol += bm.getBristol();
