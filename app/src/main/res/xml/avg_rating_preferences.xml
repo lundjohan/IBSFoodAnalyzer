@@ -6,7 +6,7 @@
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="0"
             android:enabled="true"
-            android:key="avg_rating_stat_wait_hours_after_event"
+            android:key="@string/avg_rating_pref_wait_key"
             android:title="Hours to wait"
             android:summary="A wait hour of zero (0) means that rating starts affecting the event-type's score immediately after the event."
             sample:msbp_dialogEnabled="false"
@@ -18,7 +18,7 @@
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="24"
             android:enabled="true"
-            android:key="avg_rating_stat_stop_hours_after_event"
+            android:key="@string/avg_rating_pref_stop_key"
             android:title="Hours before stop"
             android:summary="A stop hour of 24h means that rating stops affecting the event-type's score 24 hours after the event."
             sample:msbp_dialogEnabled="false"
@@ -30,7 +30,7 @@
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="0"
             android:enabled="true"
-            android:key="avg_rating_quantity_min_limit"
+            android:key="@string/avg_rating_pref_quant_key"
             android:title="Minimum quantity limit"
             android:summary="The tag should occur at minimum this amount to be shown in statistics."
             sample:msbp_dialogEnabled="false"

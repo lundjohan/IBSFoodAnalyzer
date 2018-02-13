@@ -6,7 +6,7 @@
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="24"
             android:enabled="true"
-            android:key="avg_bm_stat_start_hours_before_bm"
+            android:key="@string/avg_bm_pref_start_key"
             android:summary="Start limit before a bowel movement when events matter.
             The events closer or at same time as the start limit (and earlier than the stop limit below) will get affected of the bowel movements
              score (Completeness and Bristol)."
@@ -20,7 +20,7 @@
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="0"
             android:enabled="true"
-            android:key="avg_rating_stop_hours_before_bm"
+            android:key="@string/avg_bm_pref_stop_key"
             android:summary="End limit before a bowel movement when events matter."
             android:title="End Hours Before BM"
             sample:msbp_dialogEnabled="false"
@@ -32,7 +32,7 @@
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="0"
             android:enabled="true"
-            android:key="bm_rating_quantity_min_limit"
+            android:key="@string/avg_bm_pref_quant_key"
             android:title="Minimum quantity limit"
             android:summary="The accumulation of this tag type should be followed at minimum by this amount of bowel movements."
             sample:msbp_dialogEnabled="false"
