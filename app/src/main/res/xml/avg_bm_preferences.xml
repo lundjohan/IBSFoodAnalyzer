@@ -29,5 +29,17 @@
             sample:msbp_measurementUnit="h"
             sample:msbp_minValue="0"
             />
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:defaultValue="0"
+            android:enabled="true"
+            android:key="bm_rating_quantity_min_limit"
+            android:title="Minimum quantity limit"
+            android:summary="The accumulation of this tag type should be followed at minimum by this amount of bowel movements."
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_maxValue="20"
+            sample:msbp_measurementUnit="min quantity"
+            sample:msbp_minValue="0"
+            />
     </PreferenceCategory>
 </PreferenceScreen>
