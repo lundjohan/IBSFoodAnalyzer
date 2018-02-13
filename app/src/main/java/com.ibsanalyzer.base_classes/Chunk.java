@@ -251,13 +251,14 @@ public class Chunk {
         //sublist(incl, excl (therefore +1))
         return divs.subList(firstInd, lastInd+1);
     }
+    //incl, incl
+    public List<Bm> getBMsBetweenTimes(LocalDateTime searchForBMStartTime, LocalDateTime
+            searchForBMStopTime) {
 
-    public List<Bm> getBMsAfterTime(Chunk chunk, LocalDateTime time,
-                                    long hoursAhead) {
         List<Bm> filteredBms = new ArrayList<>();
         List<Bm> bms = getBMs();
         for (Bm bm : bms) {
-            if (bm.getTime().isAfter(time) && bm.getTime().isBefore(time.plusHours(hoursAhead))) {
+            if (!bm.getTime().isBefore(searchForBMStartTime) && !bm.getTime().isAfter(searchForBMStopTime)) {
                 filteredBms.add(bm);
             }
         }
@@ -302,4 +303,6 @@ public class Chunk {
     public boolean tagTimePlusStopHoursOverridesChunkEnd(LocalDateTime preferredStopTime) {
         return preferredStopTime.isAfter(getLastTime());
     }
+
+
 }

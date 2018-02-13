@@ -101,8 +101,7 @@ public class Constants {
     //====================FOR HEURISTIC TOOLS=================================
     public static int HOURS_AHEAD_FOR_AVG = 24; //in hours
     public static final int HOURS_AHEAD_FOR_BLUEZONES = 24; //in hours
-    public static final int HOURS_AHEAD_FOR_COMPLETE = 30; //in hours
-    public static final int HOURS_AHEAD_FOR_BRISTOL = 30; //in hours
+    public static final int HOURS_AHEAD_FOR_BM = 30; //in hours
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
     //==================== HEURISTIC FLAGS======================================
     public static String PACKAGE_NAME;

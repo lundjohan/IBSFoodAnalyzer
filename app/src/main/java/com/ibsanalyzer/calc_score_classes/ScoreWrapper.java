@@ -15,14 +15,16 @@ import java.util.Map;
  */
 
 public abstract class ScoreWrapper {
+    int quantLimit;
     int startHoursAfterEvent;
     int stopHoursAfterEvent;
 
 
 
-    public ScoreWrapper(int startHoursAfterEvent, int stopHoursAfterEvent) {
+    public ScoreWrapper(int startHoursAfterEvent, int stopHoursAfterEvent, int quantLimit) {
         this.startHoursAfterEvent = startHoursAfterEvent;
         this.stopHoursAfterEvent = stopHoursAfterEvent;
+        this.quantLimit = quantLimit;
     }
 
     public ScoreWrapper(int stopHoursAfterEvent) {

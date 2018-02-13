@@ -7,8 +7,9 @@ import com.ibsanalyzer.tagpoint_classes.TagPoint;
  */
 
 public class CompleteScoreWrapper extends BristolScoreWrapper {
-    public CompleteScoreWrapper(int hoursAheadForBm) {
-        super(hoursAheadForBm);
+    public CompleteScoreWrapper(int start_hours_before_bm, int stop_hours_before_bm, int
+            quantLimit) {
+        super(start_hours_before_bm, stop_hours_before_bm, quantLimit);
     }
 
     @Override

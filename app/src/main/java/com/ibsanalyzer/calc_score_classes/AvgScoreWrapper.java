@@ -16,11 +16,9 @@ import stat_classes.TagPointMaker;
  */
 
 public class AvgScoreWrapper extends ScoreWrapper {
-    int quantLimit = 0;
 
     public AvgScoreWrapper(int waitHoursAfterEvent, int stopHoursAfterEvent, int quantLimit) {
-        super(waitHoursAfterEvent, stopHoursAfterEvent);
-        this.quantLimit = quantLimit;
+        super(waitHoursAfterEvent, stopHoursAfterEvent, quantLimit);
     }
 
     @Override
