@@ -31,7 +31,7 @@
             android:defaultValue="0"
             android:enabled="true"
             android:key="@string/avg_bm_pref_quant_key"
-            android:summary="The tag type should be followed at minimum by this amount of bowel movements to be shown in statistics list."
+            android:summary="The total sum of this tag type should be followed at minimum by this amount of bowel movements to be shown in statistics list."
             android:title="Minimum quantity limit"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
