@@ -89,11 +89,11 @@
         </activity>
         <activity android:name="com.ibsanalyzer.statistics.BristolStatActivity">
         </activity>
-        <activity android:name="com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity">
-            android:label="Portion Stat Settings"
+        <activity android:name="com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity"
+            android:label="Portion Stat Settings">
         </activity>
-        <activity android:name="com.ibsanalyzer.statistics.NewPortionRangeActivity">
-            android:parentActivityName=".PortionStatSettingsActivity">
+        <activity android:name="com.ibsanalyzer.statistics.NewPortionRangeActivity"
+            android:parentActivityName="com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ibsanalyzer.statistics_settings.PortionStatSettingsActivity"/>
@@ -113,6 +113,12 @@
         <activity android:name="com.ibsanalyzer.statistics_settings.AvgBmSettingsActivity">
         </activity>
         <activity android:name="com.ibsanalyzer.info.InfoActivity">
+        </activity>
+        <activity android:name="com.ibsanalyzer.about.AboutActivity"
+                  android:parentActivityName="com.ibsanalyzer.drawer.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ibsanalyzer.drawer.DrawerActivity"/>
         </activity>
     </application>
 

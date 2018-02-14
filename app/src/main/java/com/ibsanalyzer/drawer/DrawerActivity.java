@@ -17,10 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.ibsanalyzer.about.AboutActivity;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.diary.DiaryContainerFragment;
 import com.ibsanalyzer.diary.DiaryFragment;
+import com.ibsanalyzer.diary.EditEventsTemplateActivity;
 import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
@@ -186,7 +188,8 @@ public class DrawerActivity extends AppCompatActivity
                 break;
 
             case R.id.aboutItem:
-                //TODO: Apache 2.0 talk about the external libraries.
+                Intent intentAbout = new Intent(this, AboutActivity.class);
+                startActivity(intentAbout);
                 break;
         }
 

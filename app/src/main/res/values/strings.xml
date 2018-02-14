@@ -25,7 +25,7 @@
     <string name="time_info">UPCOMING FEATURE. Shows the time periods that the diary has been within a certain score (Rating, Bm Completeness or Bm Bristol) interval.</string>
     <string name="portions_info">UPCOMING FEATURE. Gives average score of meal sizes (meal portions) based on their relationships to Rating, Bm Completeness or Bm Bristol.</string>
 
-    <string name = "avg_info_score">SCORE\tNAME\n
+    <string name="avg_info_score">SCORE\tNAME\n
         7.0\tPhenomenal\n
         6.0\tGreat\n
         5.0\tGood\n
