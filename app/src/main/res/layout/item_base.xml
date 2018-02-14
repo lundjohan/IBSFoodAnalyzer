@@ -6,6 +6,18 @@
                                              android:layout_height="wrap_content"
 
        tools:showIn="@layout/item_rating" >
+    <View
+        android:id="@+id/break_line"
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="0dp"
+        android:background="#d4000e"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/item_icon"
@@ -19,7 +31,7 @@
         app:layout_constraintHorizontal_bias="0.29"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/break_line"
         app:layout_constraintVertical_bias="0.0"/>
 
     <TextView
@@ -33,7 +45,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/guideline2"
         app:layout_constraintRight_toLeftOf="@+id/rightLine"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/break_line"/>
 
     <TextView
         android:id="@+id/secondLine"
@@ -59,7 +71,7 @@
         android:layout_marginTop="8dp"
         android:textSize="24sp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/break_line"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
@@ -95,7 +107,7 @@
         android:minHeight="40dp"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintEnd_toStartOf="@+id/tagQuantities"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/break_line"
         app:layout_constraintVertical_bias="0.0"/>
 
     <LinearLayout
@@ -108,6 +120,6 @@
         android:layout_marginTop="2dp"
         android:orientation="vertical"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/break_line"
         app:layout_constraintVertical_bias="0.0"/>
 </merge>

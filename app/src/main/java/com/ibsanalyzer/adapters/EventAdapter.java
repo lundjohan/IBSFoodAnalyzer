@@ -147,10 +147,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         });
         EventViewHolder eventHolder = (EventViewHolder) holder;
         //check for breaks
-        if (!(holder instanceof DateMarkerViewHolder)) {
-            if (event.hasBreak()) {
-                eventHolder.setBreakLayout();
-            }
+        if (event.hasBreak()) {
+            eventHolder.setBreakLayout();
         }
         //add comments, same for all events
         if (eventHolder.comment != null) {
@@ -161,7 +159,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case MEAL:
                 Meal meal = (Meal) event;
                 InputEventViewHolder mealHolder = (InputEventViewHolder) holder;
-                mealHolder.secondLine.setText("Portions: "+String.valueOf(meal.getPortions()));
+                mealHolder.secondLine.setText("Portions: " + String.valueOf(meal.getPortions()));
                 bindTagsToTagEventViewHolder(meal, mealHolder);
                 break;
             case OTHER:
@@ -182,7 +180,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ViewHolderWithoutTagList bmHolder = (ViewHolderWithoutTagList) holder;
                 setTime(bm, bmHolder.firstLine);
                 bmHolder.rightLine.setText(Bm.completenessScoreToText(bm.getComplete()));
-                bmHolder.secondLine.setText("Bristol: "+ String.valueOf(bm.getBristol()));
+                bmHolder.secondLine.setText("Bristol: " + String.valueOf(bm.getBristol()));
                 break;
             case RATING:
                 Rating rating = (Rating) event;
@@ -213,23 +211,21 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         //used for type of exercise for Exercise, Bristol for BM, time for Rating, portions for Meal
         public TextView secondLine;
 
+        public View breakLine;
         public EventViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             comment = (TextView) itemView.findViewById(R.id.commentInItem);
             firstLine = (TextView) itemView.findViewById(R.id.firstLine);
             secondLine = (TextView) itemView.findViewById(R.id.secondLine);
+            breakLine = (View) itemView.findViewById(R.id.break_line);
         }
 
         public void setBreakLayout() {
-            //TODO Problem in below is that it takes makes competition with marked_event
-            //=> solution seems to be to implement some top id in every item and then make it
-            // visible here or similiar
-            //  itemView.setBackgroundResource(R.drawable.frame_top_bold);
+            breakLine.setVisibility(View.VISIBLE);
 
         }
     }
-
     //this is for Meal and Other Events
     class InputEventViewHolder extends EventViewHolder {
         public LinearLayout tagQuantsLayout;
