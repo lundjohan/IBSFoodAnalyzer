@@ -97,8 +97,30 @@ public abstract class EventActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        Log.d("Debug", "Indide EventActivity onBackPressed before finished()");
-        finish();
+        giveOptionToQuitOrCancel();
+    }
+
+    private void giveOptionToQuitOrCancel() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false).
+                setTitle("Leave changes undone?").
+                setCancelable(true).
+                setNegativeButton(android.R.string.cancel, new DialogInterface
+                        .OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).
+                setMessage("Are you sure you want to go back to diary without saving changes?").
+                setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //finish this Activity
+                        finish();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     //in case API<21 onBackPressed is not called
@@ -178,7 +200,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         builder.setCancelable(false).
                 setTitle("Event already exists").
                 setMessage("A(n) " + Event.getEventTypeStr(eventType) + " at this date and time " +
-                "already exists in diary. Change the date or time of the event.").
+                        "already exists in diary. Change the date or time of the event.").
                 setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //don't do anything
@@ -187,7 +209,8 @@ public abstract class EventActivity extends AppCompatActivity implements
         AlertDialog alert = builder.create();
         alert.show();
         final Button positiveButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
-        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton
+                .getLayoutParams();
         positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;
         positiveButton.setLayoutParams(positiveButtonLL);
     }
@@ -195,10 +218,13 @@ public abstract class EventActivity extends AppCompatActivity implements
     public void doneClicked(View view) {
         int type = getEventType();
 
-        /*condition will happen if 1. an event with this eventype already exists and it is not a changing event
-         2. an event with this eventype already exists, AND is a changing event, datetime has been changed to other datetime than start.
+        /*condition will happen if 1. an event with this eventype already exists and it is not a
+        changing event
+         2. an event with this eventype already exists, AND is a changing event, datetime has
+         been changed to other datetime than start.
           */
-        if (eventTypeAtSameTimeAlreadyExists(type) && (!isChangingEvent() || changingEventHasDifferentDateTimeThanStart())) {
+        if (eventTypeAtSameTimeAlreadyExists(type) && (!isChangingEvent() ||
+                changingEventHasDifferentDateTimeThanStart())) {
             showEventAlreadyExistsPopUp(type);
         } else {
             buildEvent();
@@ -209,10 +235,11 @@ public abstract class EventActivity extends AppCompatActivity implements
     /**
      * Prerequisite: changingEventStartingDateTime must be initatied with a ldt =>
      * this method should only be called if we are in a ChangingEventActivity
+     *
      * @return
      */
-    private boolean changingEventHasDifferentDateTimeThanStart(){
-        if (!getIntent().hasExtra(EVENT_TO_CHANGE)){
+    private boolean changingEventHasDifferentDateTimeThanStart() {
+        if (!getIntent().hasExtra(EVENT_TO_CHANGE)) {
             //could throw exception, but feels a bit unecessary. Just use this method with caution!
         }
         return !getLocalDateTime().isEqual(changingEventStartingDateTime);
