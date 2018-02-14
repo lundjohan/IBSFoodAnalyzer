@@ -15,7 +15,6 @@ import static com.ibsanalyzer.diary.DiaryFragment.startTime;
 //class solely in use for legacy reasons with TagPoints.
 
 public class Chunk {
-    private final ZoneId ZONE_ID = ZoneId.systemDefault();
     List<Event> events = new ArrayList<>();
 
     public Chunk(List<Event> events) {
@@ -170,16 +169,16 @@ public class Chunk {
         }
         //time of div before <startTime> (the first div to take into account) is not interesting (it
         // can have happened many days before), only its score.
-        long startLong = startTime.atZone(ZONE_ID).toEpochSecond();
+        long startLong = startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
         double scoreMultWithTime = 0;
         for (int i = 1; i < divs.size(); i++) {
             LocalDateTime t = divs.get(i).getTime();
-            double timeDifInSec = t.atZone(ZONE_ID).toEpochSecond() - startLong;
+            double timeDifInSec = t.atZone(ZoneId.systemDefault()).toEpochSecond() - startLong;
             scoreMultWithTime += divs.get(i - 1).getAfter() * timeDifInSec;
-            startLong = divs.get(i).getTime().atZone(ZONE_ID).toEpochSecond();
+            startLong = divs.get(i).getTime().atZone(ZoneId.systemDefault()).toEpochSecond();
         }
         //the last one
-        long toLong = endTime.atZone(ZONE_ID).toEpochSecond();
+        long toLong = endTime.atZone(ZoneId.systemDefault()).toEpochSecond();
         double lastTimeDif = toLong - startLong;
         scoreMultWithTime += divs.get(divs.size() - 1).getAfter() * lastTimeDif;
 
@@ -198,7 +197,7 @@ public class Chunk {
     public double [] calcAvgScoreForOverridingTag(LocalDateTime tagTime, long minutesAheadStart, long minutesAheadStop){
         LocalDateTime preferredLastTimeOfChunk = tagTime.plusMinutes(minutesAheadStop);
         LocalDateTime deFactoLastTimeOfChunk = getLastTime();
-        long secondsDiff = preferredLastTimeOfChunk.atZone(ZONE_ID).toEpochSecond()-deFactoLastTimeOfChunk.atZone(ZONE_ID).toEpochSecond();
+        long secondsDiff = preferredLastTimeOfChunk.atZone(ZoneId.systemDefault()).toEpochSecond()-deFactoLastTimeOfChunk.atZone(ZoneId.systemDefault()).toEpochSecond();
         double factor = ((double)secondsDiff) /(minutesAheadStop*60);
 
         //calculate score
