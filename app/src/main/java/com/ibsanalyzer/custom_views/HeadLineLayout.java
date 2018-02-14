@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.diary.R;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
+
 
 /**
  * Created by Johan on 2018-01-28.
@@ -41,13 +43,18 @@ public class HeadLineLayout extends ConstraintLayout {
 
         boolean notReady = arr.getBoolean(R.styleable.HeadLineLayout_notReady, false);
         //in case function is not ready for production, do the following
-        if (notReady){
-            headLineText.setTextColor(getResources().getColor(R.color.colorWeakGrey,null));
+        if (notReady) {
+            headLineText.setTextColor(getResources().getColor(R.color.colorWeakGrey, null));
         }
+
+        boolean infoBtnExists = arr.getBoolean(R.styleable.HeadLineLayout_infoBtnExists, true);
 
         //set id of info
         ImageButton infoBtn = (ImageButton) findViewById(R.id.headLineInfoBtn);
-        int id = arr.getResourceId(R.styleable.HeadLineLayout_idOfInfoBtn,0);
+        int id = arr.getResourceId(R.styleable.HeadLineLayout_idOfInfoBtn, 0);
         infoBtn.setId(id);
+        if (!infoBtnExists) {
+            infoBtn.setVisibility(GONE);
+        }
     }
 }

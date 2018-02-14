@@ -42,4 +42,6 @@
     <string name="hours_before_bm_furthest_distance_limit">avg_bm_stat_start_hours_before_bm</string>
     <string name="hours_before_bm_closest_distance_limit">avg_rating_stop_hours_before_bm</string>
     <string name="avg_bm_pref_quant_key">bm_rating_quantity_min_limit</string>
+    <string name="about_external_libraries">This app is using the following external libraries:</string>
+    <string name="apache_license">The above mentioned libraries are licensed under the Apache License, Version 2.0 (the "License") you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0</string>
 </resources>

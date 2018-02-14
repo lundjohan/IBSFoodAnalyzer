@@ -23,6 +23,7 @@
         <!-- the text string of textview-->
         <attr name="textString" format="string"/>
         <attr name="notReady" format="boolean" />
+        <attr name="infoBtnExists" format="boolean" />
         <attr name ="idOfInfoBtn" format="integer"/>
     </declare-styleable>
     <declare-styleable name="StatMenuItemLayout">

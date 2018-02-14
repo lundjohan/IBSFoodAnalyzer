@@ -2,9 +2,113 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ibsanalyzer.about.AboutActivity">
+
+    <com.ibsanalyzer.custom_views.HeadLineLayout
+        android:id="@+id/firstAboutHeadLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        custom:textString="External Libraries"
+        custom:idOfInfoBtn="@+id/uniqueNotImportantName1"
+        custom:infoBtnExists="false"/>
+
+    <TextView
+        android:id="@+id/externalLibrariesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_external_libraries"
+        tools:layout_editor_absoluteY="80dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstAboutHeadLine"
+        app:layout_constraintHorizontal_bias="0.0"/>
+
+    <TextView
+        android:id="@+id/aFileChooserHeadLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="aFileChooser"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/externalLibrariesText"
+        tools:layout_editor_absoluteY="80dp"/>
+    <TextView
+        android:id="@+id/aFileChooserText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Copyright (C) 2011 Paul Burke\nhttps://github.com/iPaulPro/aFileChooser"
+        tools:layout_editor_absoluteY="80dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aFileChooserHeadLine"
+        app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+        android:id="@+id/materialSeekBarPreferenceHeadLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="MaterialSeekBarPreference"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aFileChooserText"
+        tools:layout_editor_absoluteY="80dp"/>
+    <TextView
+        android:id="@+id/materialSeekBarPreferenceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Creator (with contributors): Pavel Sikun\nhttps://github.com/MrBIMC/MaterialSeekBarPreference"
+        tools:layout_editor_absoluteY="80dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialSeekBarPreferenceHeadLine"
+        app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+        android:id="@+id/apacheHeadLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Apache License 2.0"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialSeekBarPreferenceText"
+        tools:layout_editor_absoluteY="80dp"/>
+    <TextView
+        android:id="@+id/apacheText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apache_license"
+        tools:layout_editor_absoluteY="80dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apacheHeadLine"
+        app:layout_constraintHorizontal_bias="0.0"/>
 
 </android.support.constraint.ConstraintLayout>
