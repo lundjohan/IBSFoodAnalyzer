@@ -13,8 +13,8 @@ public class CompleteStatActivity extends BristolStatActivity {
         super.onCreate(savedInstanceState);
     }
     @Override
-    protected BristolScoreWrapper getBMScoreWrapper(int start_hours_before_bm, int stop_hours_before_bm, int quantLimit) {
-        return new CompleteScoreWrapper(start_hours_before_bm, stop_hours_before_bm, quantLimit);
+    protected BristolScoreWrapper getBMScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int quantLimit) {
+        return new CompleteScoreWrapper(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);
     }
 
     @Override

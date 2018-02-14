@@ -20,7 +20,12 @@ public abstract class ScoreWrapper {
     int stopHoursAfterEvent;
 
 
-
+    /**
+     *
+     * @param startHoursAfterEvent
+     * @param stopHoursAfterEvent
+     * @param quantLimit
+     */
     public ScoreWrapper(int startHoursAfterEvent, int stopHoursAfterEvent, int quantLimit) {
         this.startHoursAfterEvent = startHoursAfterEvent;
         this.stopHoursAfterEvent = stopHoursAfterEvent;

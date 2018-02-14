@@ -27,15 +27,18 @@ public class TagPointBmHandler {
      * In practice it is the same thing of course.
      * @param chunk
      * @param tagPoints
-     * @param start_hours_before_bm => this is the longest distance
-     * @param stop_hours_before_bm => this is the shortest distance
+     * @param furthest_distance_hours_before_bm_limit => this is the longest distance
+     * @param shortest_distance_hours_before_bm_limit => this is the shortest distance
      */
     public static void addBmScore(Chunk chunk, Map<String, TagPoint> tagPoints,
-                                  long start_hours_before_bm, long stop_hours_before_bm) {
+                                  long furthest_distance_hours_before_bm_limit, long shortest_distance_hours_before_bm_limit) {
 
-        //reverse it. Draw distance interval on a paper if you cannot get your head around it!
-        long hoursAfterTagToStartLookingForBM = stop_hours_before_bm;
-        long hoursAfterTagToStopLookingForBM = start_hours_before_bm;
+        /*rename the variables to tags point of view, so that it easier to get a hang of it.
+          Draw distance interval on a paper if you cannot get your head around it!
+          The shortest distance remain the shortest distance (the same for the longest difference).
+         */
+        long hoursAfterTagToStartLookingForBM = shortest_distance_hours_before_bm_limit;
+        long hoursAfterTagToStopLookingForBM = furthest_distance_hours_before_bm_limit;
 
 
         List<Tag> allTags = chunk.getTags();
@@ -67,9 +70,9 @@ public class TagPointBmHandler {
     }
 
     public static Map<String, TagPoint> addBmScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints,
-                                                   long start_hours_before_bm, long stop_hours_before_bm) {
+                                                   long furthest_distance_hours_before_bm_limit, long shortest_distance_hours_before_bm_limit) {
         for (Chunk chunk : chunks) {
-            addBmScore(chunk, tagPoints, start_hours_before_bm, stop_hours_before_bm);
+            addBmScore(chunk, tagPoints, furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit);
         }
         return tagPoints;
     }

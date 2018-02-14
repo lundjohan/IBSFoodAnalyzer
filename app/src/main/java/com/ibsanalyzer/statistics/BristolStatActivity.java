@@ -23,22 +23,22 @@ public class BristolStatActivity extends StatActivity {
     public ScoreWrapper getScoreWrapper() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
-        int start_hours_before_bm = preferences.getInt(getResources().getString(R.string
-                .avg_bm_pref_start_key), 0);
-        int stop_hours_before_bm = preferences.getInt(getResources().getString(R.string
-                        .avg_bm_pref_stop_key),
+        int furthest_distance_hours_before_bm_limit = preferences.getInt(getResources().getString(R.string
+                .hours_before_bm_furthest_distance_limit), 0);
+        int shortest_distance_hours_before_bm_limit = preferences.getInt(getResources().getString(R.string
+                        .hours_before_bm_closest_distance_limit),
 
                 HOURS_AHEAD_FOR_BM);
         int quantLimit = preferences.getInt(getResources().getString(R.string
                 .avg_bm_pref_quant_key), 0);
-        return getBMScoreWrapper(start_hours_before_bm, stop_hours_before_bm, quantLimit);
+        return getBMScoreWrapper(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);
     }
 
     /**
      * Perhaps overkill, but reduces code for CompleteStatActivity.
      */
-    protected BristolScoreWrapper getBMScoreWrapper(int start_hours_before_bm, int stop_hours_before_bm, int quantLimit) {
-        return new BristolScoreWrapper(start_hours_before_bm, stop_hours_before_bm, quantLimit);
+    protected BristolScoreWrapper getBMScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int quantLimit) {
+        return new BristolScoreWrapper(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);
     }
 
     @Override

@@ -4,26 +4,26 @@
     <PreferenceCategory
         android:title="Settings for BM Avg Statistics">
         <com.pavelsikun.seekbarpreference.SeekBarPreference
-            android:defaultValue="24"
-            android:enabled="true"
-            android:key="@string/avg_bm_pref_start_key"
-            android:summary="Max limit of hours before a bowel movement when tags are seen as affecting it."
-            android:title="Furthest Limit Before BM"
-            sample:msbp_dialogEnabled="false"
-            sample:msbp_interval="1"
-            sample:msbp_maxValue="72"
-            sample:msbp_measurementUnit="h"
-            sample:msbp_minValue="0"
-            />
-        <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="0"
             android:enabled="true"
-            android:key="@string/avg_bm_pref_stop_key"
-            android:summary="Min limit of hours before a bowel movement when tags are seen as affecting it."
+            android:key="@string/hours_before_bm_closest_distance_limit"
+            android:summary="Min limit of hours before a bowel movement when tags are seen as affecting it. This limit lays closest to the BM."
             android:title="Closest Limit Before BM"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
             sample:msbp_maxValue="24"
+            sample:msbp_measurementUnit="h"
+            sample:msbp_minValue="0"
+            />
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:defaultValue="24"
+            android:enabled="true"
+            android:key="@string/hours_before_bm_furthest_distance_limit"
+            android:summary="Max limit of hours before a bowel movement when tags are seen as affecting it. This limit lays furthest from the BM."
+            android:title="Furthest Limit Before BM"
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_maxValue="72"
             sample:msbp_measurementUnit="h"
             sample:msbp_minValue="0"
             />

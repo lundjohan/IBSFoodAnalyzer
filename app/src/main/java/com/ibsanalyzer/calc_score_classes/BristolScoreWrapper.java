@@ -14,9 +14,9 @@ import stat_classes.TagPointBmHandler;
 
 public class BristolScoreWrapper extends ScoreWrapper {
 
-    public BristolScoreWrapper(int start_hours_before_bm, int stop_hours_before_bm, int
+    public BristolScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int
             quantLimit) {
-        super(start_hours_before_bm, stop_hours_before_bm, quantLimit);
+        super(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);
     }
 
     @Override
@@ -27,6 +27,8 @@ public class BristolScoreWrapper extends ScoreWrapper {
     //this is essentially same as for CompleteScoreWrapper, they are calculated in same method.
     @Override
     public Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints) {
+        /*notice that furthest_distance_hours_before_bm_limit == startHoursAfterEvent,
+        and shortest_distance_hours_before_bm_limit == stopHoursAfterEvent*/
         return TagPointBmHandler.addBmScore(chunks,
                 tagPoints, startHoursAfterEvent, stopHoursAfterEvent);
     }

@@ -39,7 +39,7 @@
     <string name="avg_rating_pref_stop_key">avg_rating_stat_stop_hours_after_event</string>
     <string name="avg_rating_pref_quant_key">avg_rating_quantity_min_limit</string>
 
-    <string name="avg_bm_pref_start_key">avg_bm_stat_start_hours_before_bm</string>
-    <string name="avg_bm_pref_stop_key">avg_rating_stop_hours_before_bm</string>
+    <string name="hours_before_bm_furthest_distance_limit">avg_bm_stat_start_hours_before_bm</string>
+    <string name="hours_before_bm_closest_distance_limit">avg_rating_stop_hours_before_bm</string>
     <string name="avg_bm_pref_quant_key">bm_rating_quantity_min_limit</string>
 </resources>
