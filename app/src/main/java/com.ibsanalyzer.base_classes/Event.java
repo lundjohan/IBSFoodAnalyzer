@@ -7,6 +7,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.BM;
+import static com.ibsanalyzer.constants.Constants.EXERCISE;
+import static com.ibsanalyzer.constants.Constants.MEAL;
+import static com.ibsanalyzer.constants.Constants.OTHER;
+import static com.ibsanalyzer.constants.Constants.RATING;
+
 
 //baseclass only exists to avoid duplication of code.
 //implemts serializable so it can be passed in putExtra to Fragments
@@ -83,6 +89,38 @@ public abstract class Event implements Comparable<Event>, Serializable {
     }
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    /**
+     *
+     * @param eventType
+     * @return null if eventype is not a valid one
+     */
+    public static String getEventTypeStr(int eventType){
+        String str = null;
+        switch (eventType) {
+            case MEAL: {
+                str = "Meal";
+                break;
+            }
+            case OTHER: {
+                str = "Other";
+                break;
+            }
+            case EXERCISE: {
+                str = "Exercise";
+                break;
+            }
+            case BM: {
+                str = "Bm";
+                break;
+            }
+            case RATING: {
+                str = "Rating";
+                break;
+            }
+        }
+        return str;
     }
 
     //classes for parceable, most of them are implemented higher up in hierarchy.

@@ -12,6 +12,7 @@ import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.model.TagTemplate;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
@@ -75,6 +76,11 @@ public class ExerciseActivity extends EventActivity {
             String type = exercise.getTypeOfExercise().getName();
             typeOfExercise.setText(type);
         }
+    }
+
+    @Override
+    protected int getEventType() {
+        return EXERCISE;
     }
 
     public void newTagAdderActivity(View view) {

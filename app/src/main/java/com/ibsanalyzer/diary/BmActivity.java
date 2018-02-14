@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.ibsanalyzer.base_classes.Bm;
 
+import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 
@@ -110,6 +111,12 @@ public class BmActivity extends EventActivity {
         }
 
     }
+
+    @Override
+    protected int getEventType() {
+        return BM;
+    }
+
     private static void setBristolNrAndText(TextView v, int bristolScore) {
         v.setText("("+bristolScore + ") "+ Bm.bristolToText(bristolScore));
     }

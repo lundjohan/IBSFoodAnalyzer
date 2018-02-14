@@ -29,6 +29,7 @@ import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.os.Build.VERSION_CODES.M;
 import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.MEAL;
@@ -378,12 +379,54 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     //gets
     //-----------------------------------------------------------------------------------
+
+    /**
+     *
+     * @param typeOfEvent
+     * @param ldt
+     * @return null if no event exists for the type or datetime
+     */
+    public Event getEvent(int typeOfEvent, LocalDateTime ldt){
+        long eventId = getEventId(typeOfEvent, ldt);
+        if (eventId == -1){
+            return null;
+        }
+        Event e = null;
+        try {
+            switch (typeOfEvent) {
+                case MEAL:
+                    e = retrieveMeal(eventId, ldt);
+                    break;
+                case OTHER:
+                    e = retrieveOther(eventId, ldt);
+                    break;
+                case EXERCISE:
+                    e = retrieveExercise(eventId, ldt);
+                    break;
+
+                case BM:
+                    e = retrieveBm(eventId, ldt);
+                    break;
+
+                case RATING:
+                    e = retrieveRating(eventId, ldt);
+                    break;
+            }
+        }
+        catch (CorruptedEventException ex){
+            e = null;
+        }
+        return e;
+    }
+
     public long getEventId(Event event) {
         int type = Util.getTypeOfEvent(event);
         String time = DateTimeFormat.toSqLiteFormat(event.getTime());
         return getEventId(type, time);
     }
-
+    private long getEventId(int typeOfEvent, LocalDateTime ldt) {
+        return getEventId(typeOfEvent,DateTimeFormat.toSqLiteFormat(ldt));
+    }
     /**
      * @param typeOfEvent
      * @param time
@@ -665,9 +708,15 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //There can be several events one time, but only one meal.
-    //apart from testing, is this method useless???
+    //apart from testing, is this method useless??? (use getEvent(type, ldt) instead???)
     // => depends on how statistics classes will be formed and how events will be retrieved from
     // diary list.
+
+    /**
+     *
+     * @param ldt
+     * @return null if no meal is found at time
+     */
     public Meal retrieveMealByTime(LocalDateTime ldt) {
 
         //select from meals where its event has time ...
@@ -685,14 +734,16 @@ public class DBHandler extends SQLiteOpenHelper {
 
         double portions = -1.;
         long eventId = -1;
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                portions = cursor.getDouble(cursor.getColumnIndex(COLUMN_PORTIONS));
-                eventId = cursor.getLong(cursor.getColumnIndex(COLUMN_EVENT));
-            }
+        if (cursor != null && cursor.moveToFirst()) {
+            portions = cursor.getDouble(cursor.getColumnIndex(COLUMN_PORTIONS));
+            eventId = cursor.getLong(cursor.getColumnIndex(COLUMN_EVENT));
         }
         cursor.close();
         db.close();
+        if (eventId == -1){
+            //this would mean that cursor don't have a row with meal.
+            return null;
+        }
         List<Tag> tags = getTagsWithEventId(eventId);
         return new Meal(ldt, tags, portions);
     }

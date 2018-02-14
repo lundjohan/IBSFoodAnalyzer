@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.ibsanalyzer.base_classes.Other;
 
+import static com.ibsanalyzer.constants.Constants.OTHER;
 import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 
 public class OtherActivity extends TagEventActivity {
@@ -23,6 +24,11 @@ public class OtherActivity extends TagEventActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected int getEventType() {
+        return OTHER;
     }
 
 }

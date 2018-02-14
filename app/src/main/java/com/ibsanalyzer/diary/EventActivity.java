@@ -4,8 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -57,6 +60,10 @@ public abstract class EventActivity extends AppCompatActivity implements
     Button dateBtn;
     Button timeBtn;
 
+    //this is solely used to see if a ChangingEvent has changed its time during this interaction
+    //it should not be used in a context of a new event
+    LocalDateTime changingEventStartingDateTime;
+
     protected boolean isChangingEvent() {
         return eventId > -1;
     }
@@ -77,18 +84,20 @@ public abstract class EventActivity extends AppCompatActivity implements
     }
 
     protected abstract int getLayoutRes();
+
     protected abstract void buildEvent();
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("localDateStr", (String) dateView.getText().toString());
         outState.putString("localTimeStr", (String) timeView.getText().toString());
-        outState.putString("commentStr",  (String)commentView.getText().toString());
+        outState.putString("commentStr", (String) commentView.getText().toString());
         super.onSaveInstanceState(outState);
     }
+
     @Override
     public void onBackPressed() {
-        Log.d("Debug","Indide EventActivity onBackPressed before finished()");
+        Log.d("Debug", "Indide EventActivity onBackPressed before finished()");
         finish();
     }
 
@@ -104,6 +113,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         }
         return true;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,18 +134,18 @@ public abstract class EventActivity extends AppCompatActivity implements
             DBHandler dbHandler = new DBHandler(getApplicationContext());
             eventId = dbHandler.getEventId(e);
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
+            changingEventStartingDateTime = e.getTime();
             setDateView(e.getTime().toLocalDate());
             setTimeView(e.getTime().toLocalTime());
             commentView.setText(e.getComment());
+
         }
         //is the event created from scratch, inside diary, the get the start date from open day
-        else if(intent.hasExtra(DATE_TO_START_NEW_EVENTACTIVITY)){
+        else if (intent.hasExtra(DATE_TO_START_NEW_EVENTACTIVITY)) {
             LocalDate ld = (LocalDate) intent.getSerializableExtra(DATE_TO_START_NEW_EVENTACTIVITY);
             setDateView(ld);
             setTimeView(LocalTime.now()); //must still be set
-        }
-
-        else {
+        } else {
             setDateView(LocalDate.now());
             setTimeView(LocalTime.now());
         }
@@ -154,9 +164,58 @@ public abstract class EventActivity extends AppCompatActivity implements
         }
     }
 
+    protected abstract int getEventType();
+
+    private boolean eventTypeAtSameTimeAlreadyExists(int type) {
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+        LocalDateTime ldt = getLocalDateTime();
+        Event e = dbHandler.getEvent(type, ldt);
+        return e != null;
+    }
+
+    private void showEventAlreadyExistsPopUp(int eventType) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false).
+                setTitle("Event already exists").
+                setMessage("A(n) " + Event.getEventTypeStr(eventType) + " at this date and time " +
+                "already exists in diary. Change the date or time of the event.").
+                setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //don't do anything
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        final Button positiveButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        positiveButton.setLayoutParams(positiveButtonLL);
+    }
+
     public void doneClicked(View view) {
-        buildEvent();
-        finish();
+        int type = getEventType();
+
+        /*condition will happen if 1. an event with this eventype already exists and it is not a changing event
+         2. an event with this eventype already exists, AND is a changing event, datetime has been changed to other datetime than start.
+          */
+        if (eventTypeAtSameTimeAlreadyExists(type) && (!isChangingEvent() || changingEventHasDifferentDateTimeThanStart())) {
+            showEventAlreadyExistsPopUp(type);
+        } else {
+            buildEvent();
+            finish();
+        }
+    }
+
+    /**
+     * Prerequisite: changingEventStartingDateTime must be initatied with a ldt =>
+     * this method should only be called if we are in a ChangingEventActivity
+     * @return
+     */
+    private boolean changingEventHasDifferentDateTimeThanStart(){
+        if (!getIntent().hasExtra(EVENT_TO_CHANGE)){
+            //could throw exception, but feels a bit unecessary. Just use this method with caution!
+        }
+        return !getLocalDateTime().isEqual(changingEventStartingDateTime);
     }
 
     public void startTimePicker(View view) {

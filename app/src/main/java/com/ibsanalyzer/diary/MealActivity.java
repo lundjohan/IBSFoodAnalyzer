@@ -11,6 +11,7 @@ import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.MEAL;
 import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 public class MealActivity extends TagEventActivity {
@@ -37,6 +38,11 @@ public class MealActivity extends TagEventActivity {
             Meal meal = (Meal) intent.getSerializableExtra(EVENT_TO_CHANGE);
             portionView.setText(Double.toString(meal.getPortions()));
         }
+    }
+
+    @Override
+    protected int getEventType() {
+        return MEAL;
     }
 
     @Override

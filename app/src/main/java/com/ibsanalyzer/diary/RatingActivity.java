@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.ibsanalyzer.base_classes.Rating;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.RATING;
 import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
 
 /**
@@ -74,6 +75,11 @@ public class RatingActivity extends EventActivity {
             Rating rating = (Rating) intent.getSerializableExtra(EVENT_TO_CHANGE);
             scoreBar.setProgress(rating.getAfter() - 1);
         }
+    }
+
+    @Override
+    protected int getEventType() {
+        return RATING;
     }
 
 }
