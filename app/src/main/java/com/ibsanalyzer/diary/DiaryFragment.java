@@ -21,12 +21,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.adapters.EventsTemplateAdapter;
-import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.base_classes.Exercise;
 import com.ibsanalyzer.base_classes.Meal;
-import com.ibsanalyzer.base_classes.Other;
-import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.model.EventsTemplate;
@@ -45,11 +41,7 @@ import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
-import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.SWIPING_TO_DATE;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_BM;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_EXERCISE;
@@ -225,7 +217,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = eventsMarked.size()-1; i >=0; i--){
+                for (int i = eventsMarked.size() - 1; i >= 0; i--) {
                     View itemView = ec.getItemView(eventsMarked.get(i));
                     if (itemView != null) {
                         removeEventsMarked(itemView, eventsMarked.get(i));
@@ -250,54 +242,13 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     @Override
     public void executeNewEvent(int requestCode, Intent data) {
-        //common for all
         DBHandler dbHandler = new DBHandler(getContext());
-        Event event = null;
-
-        switch (requestCode) {
-
-            case NEW_MEAL:
-                if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
-                    //add to database
-                    event = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
-                    dbHandler.addMeal((Meal) event);
-                }
-                break;
-            case NEW_OTHER:
-                if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
-                    event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
-                    dbHandler.addOther((Other) event);
-                }
-                break;
-            case NEW_EXERCISE:
-                if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
-                    event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
-                    dbHandler.addExercise((Exercise) event);
-                }
-                break;
-            case NEW_BM:
-                if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
-                    event = (Bm) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
-                    dbHandler.addBm((Bm) event);
-                }
-                break;
-            case NEW_RATING:
-                if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
-                    event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
-                    dbHandler.addRating((Rating) event);
-                }
-                break;
+        if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
+            Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
+            dbHandler.addEvent(event);
+            addEventToList(event);
         }
-        addEventToList(event);
     }
-
-    /**
-     * Comment 2018-02-15
-     * Since nowadays only one type of event can be stored at one time in database,
-     * this method can probably be done much simpler
-     * @param requestCode
-     * @param data
-     */
 
     @Override
     public void executeChangedEvent(int requestCode, Intent data) {
@@ -311,39 +262,12 @@ public class DiaryFragment extends Fragment implements EventsContainer
                     "(MealActivity etc)");
         }
         DBHandler dbHandler = new DBHandler(getContext());
-        Event event = null;
-
-        switch (requestCode) {
-            case CHANGED_MEAL:
-                if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
-                    event = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
-                }
-                break;
-            case CHANGED_OTHER:
-                if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
-                    event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
-                }
-                break;
-            case CHANGED_EXERCISE:
-                if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
-                    event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
-                }
-                break;
-            case CHANGED_BM:
-                if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
-                    event = (Bm) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
-                }
-                break;
-            case CHANGED_RATING:
-                if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
-                    event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
-                }
-                break;
+        if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
+            Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
+            dbHandler.changeEvent(eventId, event);
+            ec.changeEventInList(posInList, event);
         }
-        dbHandler.changeEvent(event);
-        ec.changeEventInList(posInList, event);
     }
-
 
     /*This is needed since onClick otherwise goes to parent Activity*/
     @Override
@@ -472,12 +396,13 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
 
     //add break both to event and to inside event table in database
-    private void addBreakToEvent(Event e){
+    private void addBreakToEvent(Event e) {
         e.setHasBreak(true);
         DBHandler dbHandler = new DBHandler(getContext());
         dbHandler.changeEvent(e);
     }
-    private void removeBreakFromevent(Event e){
+
+    private void removeBreakFromevent(Event e) {
         e.setHasBreak(false);
         DBHandler dbHandler = new DBHandler(getContext());
         dbHandler.changeEvent(e);
@@ -498,7 +423,8 @@ public class DiaryFragment extends Fragment implements EventsContainer
             v.setBackgroundColor(BACKGROUND_COLOR);
         }
     }
-    private void removeEventsMarked(View v, int position){
+
+    private void removeEventsMarked(View v, int position) {
 
         eventsMarked.remove(Integer.valueOf(position)); //remove special case integer
         v.setBackgroundColor(Color.WHITE);
@@ -509,6 +435,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
         }
     }
+
     private List<Event> retrieveMarkedEvents() {
         List<Event> eventsToSend = new ArrayList<>();
         for (int i : eventsMarked) {

@@ -37,6 +37,7 @@ import java.util.Calendar;
 import static com.ibsanalyzer.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-03.
@@ -296,13 +297,11 @@ public abstract class EventActivity extends AppCompatActivity implements
         return (String) commentView.getText().toString();
     }
 
-    //If it doesnt' work it can be because <this> in parameter to returnChangedEvent should be
-    // MealActivity etc and not this Activity
-    protected void returnEvent(Event event, String returnString) {
+    protected void returnEvent(Event event) {
         if (isChangingEvent()) {
-            Util.returnChangedEvent(event, returnString, this, eventId, posOfEvent);
+            Util.returnChangedEvent(event, RETURN_EVENT_SERIALIZABLE, this, eventId, posOfEvent);
         } else {
-            Util.returnNewEvent(event, returnString, this);
+            Util.returnNewEvent(event, RETURN_EVENT_SERIALIZABLE, this);
         }
     }
 

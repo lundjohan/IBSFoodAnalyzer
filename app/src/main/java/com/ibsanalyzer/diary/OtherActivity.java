@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.ibsanalyzer.base_classes.Other;
 
 import static com.ibsanalyzer.constants.Constants.OTHER;
-import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
 
 public class OtherActivity extends TagEventActivity {
 
@@ -18,7 +17,7 @@ public class OtherActivity extends TagEventActivity {
     protected void buildEvent() {
         //create event
         Other other = new Other(getLocalDateTime(), getComment(), tagsList);
-        returnEvent(other, RETURN_OTHER_SERIALIZABLE);
+        returnEvent(other);
     }
 
     @Override

@@ -32,11 +32,7 @@ public class Constants {
     public final static String PUT_TAG_TEMPLATE = "tagTemplateToBeSent";
     public final static String TAGNAME_SEARCH_STRING = "tagNameSearchString";
     public final static int NEW_TYPE_FOR_TAGTEMPLATE = 8888;
-    public final static String RETURN_MEAL_SERIALIZABLE = "returnMealSer";
-    public final static String RETURN_OTHER_SERIALIZABLE = "returnOtherSer";
-    public final static String RETURN_EXERCISE_SERIALIZABLE = "returnExerciseSer";
-    public final static String RETURN_BM_SERIALIZABLE = "returnBmSer";
-    public final static String RETURN_RATING_SERIALIZABLE = "returnRatingSer";
+    public final static String RETURN_EVENT_SERIALIZABLE = "returnMealSer";
     //sent to new Event activities if all you want to do is change an event
     public final static String EVENT_TO_CHANGE = "eventToChange";
     //changed event or new event?

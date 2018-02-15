@@ -13,7 +13,6 @@ import com.ibsanalyzer.model.TagTemplate;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGS_TO_ADD;
 
@@ -35,7 +34,7 @@ public class ExerciseActivity extends EventActivity {
         Tag typeOfExercise = new Tag(getLocalDateTime(), (String) this.typeOfExercise.getText(),
                 1.0);
         Exercise event = new Exercise(getLocalDateTime(), getComment(), typeOfExercise, intensity);
-        returnEvent(event, RETURN_EXERCISE_SERIALIZABLE);
+        returnEvent(event);
     }
 
     @Override

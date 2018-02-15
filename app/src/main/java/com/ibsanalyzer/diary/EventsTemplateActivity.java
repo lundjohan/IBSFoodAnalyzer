@@ -28,11 +28,7 @@ import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
-import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_BM;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_EXERCISE;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_MEAL;
@@ -149,50 +145,15 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec.adapter.notifyDataSetChanged();
 
     }
-
+    //TODO code is extremly similar to DiaryFragment (except for database handling)
     @Override
     public void executeNewEvent(int requestCode, Intent data) {
-        Event event = null;
-        switch (requestCode) {
-
-            case NEW_MEAL:
-                if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
-                    //add to database
-                    event = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
-                }
-                break;
-            case NEW_OTHER:
-                if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
-                    event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
-                }
-                break;
-            case NEW_EXERCISE:
-                if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
-                    event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
-                }
-                break;
-            case NEW_BM:
-                if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
-                    event = (Bm) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
-                }
-                break;
-            case NEW_RATING:
-                if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
-                    event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
-                }
-                break;
+        if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
+            Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
+            addEventToList(event);
         }
-        addEventToList(event);
     }
-
-    /**
-     * TODO RETURN_MEAL_SER... => RETURN_EVENT... should make this method way smaller. But have
-     * to check that's all alright in DiaryFragment same name method also (must do meal.getClass
-     * == Meal.class checks in there. But that's all)
-     *
-     * @param requestCode
-     * @param data
-     */
+    //TODO code is extremly similar to DiaryFragment (except for database handling)
     @Override
     public void executeChangedEvent(int requestCode, Intent data) {
         int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
@@ -200,38 +161,10 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
             throw new RuntimeException("Received no EVENT POSITION from New/Changed Event " +
                     "Activity (MealActivity etc)");
         }
-        Event event = null;
-
-
-        switch (requestCode) {
-
-            case CHANGED_MEAL:
-                if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
-                    event = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
-                }
-                break;
-            case CHANGED_OTHER:
-                if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
-                    event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
-                }
-                break;
-            case CHANGED_EXERCISE:
-                if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
-                    event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
-                }
-                break;
-            case CHANGED_BM:
-                if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
-                    event = (Bm) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
-                }
-                break;
-            case CHANGED_RATING:
-                if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
-                    event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
-                }
-                break;
+        if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
+            Event event = (Meal) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
+            ec.changeEventInList(posInList, event);
         }
-        ec.changeEventInList(posInList, event);
     }
 
     public void newMealActivity(View view) {

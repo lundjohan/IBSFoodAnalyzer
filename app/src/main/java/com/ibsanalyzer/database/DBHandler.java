@@ -306,6 +306,31 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
 
     /**
+     * Used for all cases when an Event of any type should be added.
+     * NB. EventsTemplates should NOT use this method.
+     * @param e
+     */
+    public void addEvent(Event e){
+        int type = e.getType();
+        switch (type) {
+            case MEAL:
+                addMeal((Meal)e);
+                break;
+            case OTHER:
+                addOther((Other)e);
+                break;
+            case EXERCISE:
+                addExercise((Exercise) e);
+                break;
+            case BM:
+                addBm((Bm)e);
+                break;
+            case RATING:
+                addRating((Rating) e);
+                break;
+        }
+    }
+    /**
      * This is used when creating Events inside an EventsTemplate
      * <p>
      * returns id of event added
@@ -323,7 +348,7 @@ public class DBHandler extends SQLiteOpenHelper {
      * This is used when creating Events NOT inside an EventsTemplate.
      * This is the "normal" use case.
      */
-    public long addEventBase(Event e, long typeOfEvent) {
+    private long addEventBase(Event e, long typeOfEvent) {
         ContentValues values = new ContentValues();
         //conditional/ ternary operator. "If e hasBreak, store a 1 (true), else store a 0(false)"
         values.put(COLUMN_HAS_BREAK, e.hasBreak() ? 1 : 0);
@@ -452,16 +477,17 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
 
-    /**
-     * The id will be mantained
-     * @param e
-     */
+
     public void changeEvent(Event e) {
         long eventId = getEventId(e);
         changeEvent(eventId, e);
     }
-
-    private void changeEvent(long eventId, Event e){
+    /**
+     * The id is important initially, because the datetime might have changed.
+     * But the event after the change has occurred doesn't have to have the same id.
+     * @param e
+     */
+    public void changeEvent(long eventId, Event e){
         int type = e.getType();
         switch(type){
             case MEAL:

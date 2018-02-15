@@ -35,7 +35,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -43,11 +42,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ibsanalyzer.constants.Constants.NEW_EVENT;
-import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_EXERCISE_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_OTHER_SERIALIZABLE;
-import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static org.hamcrest.Matchers.allOf;
 
 /**
@@ -100,7 +95,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         tags.add(honey);
         Meal meal = new Meal(ldt, tags, 1.0);
 
-        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_MEAL_SERIALIZABLE, meal);
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE, meal);
         stubOutActivity(MealActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
@@ -134,7 +129,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         tags.add(new Tag(ldt, "happy", 1.0));
         Other other = new Other(ldt, tags);
 
-        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_OTHER_SERIALIZABLE,
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 other);
         stubOutActivity(OtherActivity.class.getName(), result);
 
@@ -168,7 +163,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         //a 4 means Intense
         Exercise exercise = new Exercise(ldt, running, 4);
 
-        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EXERCISE_SERIALIZABLE,
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 exercise);
         stubOutActivity(ExerciseActivity.class.getName(), result);
 
@@ -204,7 +199,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 18, 0);
         Bm bm = new Bm(ldt, 5, 2);
 
-        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_BM_SERIALIZABLE,
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 bm);
         stubOutActivity(BmActivity.class.getName(), result);
 
@@ -236,7 +231,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 19, 0);
         Rating rating = new Rating(ldt, 6);
 
-        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_RATING_SERIALIZABLE,
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 rating);
         stubOutActivity(RatingActivity.class.getName(), result);
 
@@ -266,7 +261,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         Meal meal1 = new Meal(ldt, new ArrayList<Tag>(), 1.0);
 
 
-        Instrumentation.ActivityResult result1 = buildAnIntentResult(RETURN_MEAL_SERIALIZABLE,
+        Instrumentation.ActivityResult result1 = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 meal1);
         stubOutActivity(MealActivity.class.getName(), result1);
 
@@ -282,7 +277,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         //do same thing again with another meal-object
         LocalDateTime ldt2 = LocalDateTime.of(2017, Month.MAY, 23, 20, 0);
         Meal meal2 = new Meal(ldt2, new ArrayList<Tag>(), 1.0);
-        Instrumentation.ActivityResult result2 = buildAnIntentResult(RETURN_MEAL_SERIALIZABLE,
+        Instrumentation.ActivityResult result2 = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 meal2);
         stubOutActivity(MealActivity.class.getName(), result2);
         ViewInteraction appCompatImageButton2 = onView(

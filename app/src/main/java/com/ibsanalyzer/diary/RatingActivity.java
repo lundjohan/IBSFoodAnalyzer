@@ -10,7 +10,6 @@ import com.ibsanalyzer.base_classes.Rating;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.RATING;
-import static com.ibsanalyzer.constants.Constants.RETURN_RATING_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -30,7 +29,7 @@ public class RatingActivity extends EventActivity {
         //scoreBar starts from zero
         int after = scoreBar.getProgress() + 1;
         Rating rating = new Rating(getLocalDateTime(), getComment(), after);
-        returnEvent(rating, RETURN_RATING_SERIALIZABLE);
+        returnEvent(rating);
     }
 
     @Override

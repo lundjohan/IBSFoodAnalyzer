@@ -9,7 +9,6 @@ import com.ibsanalyzer.base_classes.Bm;
 
 import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
-import static com.ibsanalyzer.constants.Constants.RETURN_BM_SERIALIZABLE;
 
 /**
  * Created by Johan on 2017-05-01.
@@ -32,7 +31,7 @@ public class BmActivity extends EventActivity {
         int complete = completeBar.getProgress() + 1;
         int bristol = bristolBar.getProgress() + 1;
         Bm bm = new Bm(getLocalDateTime(), getComment(), complete, bristol);
-        returnEvent(bm, RETURN_BM_SERIALIZABLE);
+        returnEvent(bm);
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {

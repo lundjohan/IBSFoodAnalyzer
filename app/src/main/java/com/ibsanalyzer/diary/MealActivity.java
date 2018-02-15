@@ -12,7 +12,6 @@ import com.ibsanalyzer.util.Util;
 
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.MEAL;
-import static com.ibsanalyzer.constants.Constants.RETURN_MEAL_SERIALIZABLE;
 
 public class MealActivity extends TagEventActivity {
     private TextView portionView;
@@ -51,6 +50,6 @@ public class MealActivity extends TagEventActivity {
         Log.d("Debug", "finish inside MealActivity");
         double portions = Double.parseDouble((String) portionView.getText());
         Meal event = new Meal(getLocalDateTime(), getComment(), tagsList, portions);
-        returnEvent(event, RETURN_MEAL_SERIALIZABLE);
+        returnEvent(event);
     }
 }
