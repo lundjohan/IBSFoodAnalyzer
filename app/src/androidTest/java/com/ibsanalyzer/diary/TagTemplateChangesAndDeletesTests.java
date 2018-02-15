@@ -1,5 +1,6 @@
 package com.ibsanalyzer.diary;
 
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -20,6 +21,7 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
@@ -139,6 +141,12 @@ public class TagTemplateChangesAndDeletesTests {
 
         //Press back btn again.
         pressBack();
+
+        //press ok in pop up
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(android.R.id.button1), withText("OK")));
+        appCompatButton.perform(scrollTo(), click());
+
         //You should now be inside DiaryFragment, and
         // the tag should not be found anywhere.
         onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());

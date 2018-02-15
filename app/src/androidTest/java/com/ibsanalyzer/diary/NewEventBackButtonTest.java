@@ -16,6 +16,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -60,6 +61,11 @@ public class NewEventBackButtonTest {
 
         //Inside NewMealActivity, press back button
         pressBack();
+
+        //press ok in pop up
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(android.R.id.button1), withText("OK")));
+        appCompatButton.perform(scrollTo(), click());
 
         //check that recyclerview in Diary still contains an event item (the Rating item created
         // before)
