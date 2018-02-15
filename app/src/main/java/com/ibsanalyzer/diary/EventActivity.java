@@ -191,7 +191,7 @@ public abstract class EventActivity extends AppCompatActivity implements
     private boolean eventTypeAtSameTimeAlreadyExists(int type) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         LocalDateTime ldt = getLocalDateTime();
-        Event e = dbHandler.getEvent(type, ldt);
+        Event e = dbHandler.getPartsOfEventIfItExists(type, ldt);
         return e != null;
     }
 

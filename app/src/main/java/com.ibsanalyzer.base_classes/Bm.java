@@ -1,5 +1,7 @@
 package com.ibsanalyzer.base_classes;
 
+import com.ibsanalyzer.constants.Constants;
+
 import org.threeten.bp.LocalDateTime;
 
 public class Bm extends Event {
@@ -82,5 +84,10 @@ public class Bm extends Event {
 
     public int getComplete() {
         return complete;
+    }
+
+    @Override
+    public int getType() {
+        return Constants.BM;
     }
 }

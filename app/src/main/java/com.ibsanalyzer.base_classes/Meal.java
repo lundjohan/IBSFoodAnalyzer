@@ -1,5 +1,7 @@
 package com.ibsanalyzer.base_classes;
 
+import com.ibsanalyzer.constants.Constants;
+
 import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
@@ -22,6 +24,10 @@ public class Meal extends InputEvent {
         return portions;
     }
 
+    @Override
+    public int getType() {
+        return Constants.MEAL;
+    }
 
     //parceable methods
     /*@Override

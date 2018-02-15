@@ -5,7 +5,7 @@ package com.ibsanalyzer.database;
  */
 
 public class TablesAndStrings {
-    public static final int DATABASE_VERSION = 33;
+    public static final int DATABASE_VERSION = 34;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -30,8 +30,8 @@ public class TablesAndStrings {
 
     //Event
     public static final String TABLE_EVENTS = "events";
-    public static final String COLUMN_TAGS = "tags";
     public static final String COLUMN_COMMENT = "comment";
+    public static final String COLUMN_HAS_BREAK = "has_break";
 
     //Event => many-to-many =>  Tags
     public static final String COLUMN_TYPE_OF_EVENT = "type_of_event";
@@ -98,6 +98,10 @@ public class TablesAndStrings {
             //this column is only used when event is inside a EventsTemplate, otherwise null
             COLUMN_EVENTSTEMPLATE + " INTEGER, " +
             COLUMN_COMMENT + " TEXT, " +
+            /*SQLite does not have a separate Boolean storage class. Instead, Boolean values are
+            stored as integers 0 (false) and 1 (true).
+            this column should always be 0 (false) inside an EventsTemplate*/
+            COLUMN_HAS_BREAK + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_EVENTSTEMPLATE + " ) REFERENCES " + TABLE_EVENTSTEMPLATES
             + " ( " + COLUMN_ID + ") ON DELETE CASCADE " +
             ");";

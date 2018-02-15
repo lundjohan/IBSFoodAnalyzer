@@ -152,26 +152,6 @@ public class Util {
         return tags;
     }
 
-    /**
-     * @param e not allowed to be null or other classes than listed in conditionals here.
-     * @return
-     */
-    public static int getTypeOfEvent(Event e) {
-        if (e instanceof Meal) {
-            return MEAL;
-        } else if (e instanceof Other) {
-            return OTHER;
-        } else if (e instanceof Exercise) {
-            return EXERCISE;
-        } else if (e instanceof Bm) {
-            return BM;
-        } else if (e instanceof Rating) {
-            return RATING;
-        } else if (e == null) {
-            throw new NullPointerException("Event should not be null here");
-        }
-        return -1;
-    }
     private static void setNrsForNumberPicker (NumberPicker np, boolean startValueIsOne){
         np.setMinValue(0);
         np.setMaxValue(9);

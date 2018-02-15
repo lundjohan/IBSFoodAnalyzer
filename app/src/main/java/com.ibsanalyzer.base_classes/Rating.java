@@ -1,5 +1,7 @@
 package com.ibsanalyzer.base_classes;
 
+import com.ibsanalyzer.constants.Constants;
+
 import org.threeten.bp.LocalDateTime;
 
 ;
@@ -49,5 +51,10 @@ public class Rating extends Event {
 
     public int getAfter() {
         return after;
+    }
+
+    @Override
+    public int getType() {
+        return Constants.RATING;
     }
 }

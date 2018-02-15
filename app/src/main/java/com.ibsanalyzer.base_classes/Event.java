@@ -18,19 +18,24 @@ import static com.ibsanalyzer.constants.Constants.RATING;
 //implemts serializable so it can be passed in putExtra to Fragments
 public abstract class Event implements Comparable<Event>, Serializable {
     protected LocalDateTime time;
-    protected boolean isBreak;
+    protected boolean hasBreak = false;
     protected String comment;
 
     public Event(LocalDateTime time) {
         this.time = time;
         comment = "";
     }
+
     public Event(LocalDateTime time, String comment) {
         this.time = time;
         this.comment = comment;
     }
 
-
+    public Event(LocalDateTime time, String comment, boolean hasBreak) {
+        this.time = time;
+        this.comment = comment;
+        this.hasBreak = hasBreak;
+    }
 
     public LocalDateTime getTime() {
         return time;
@@ -51,11 +56,11 @@ public abstract class Event implements Comparable<Event>, Serializable {
     }
 
     public boolean hasBreak() {
-        return isBreak;
+        return hasBreak;
     }
 
-    public void setBreak(boolean b) {
-        isBreak = b;
+    public void setHasBreak(boolean b) {
+        hasBreak = b;
     }
 
     /**
@@ -90,6 +95,8 @@ public abstract class Event implements Comparable<Event>, Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+ public abstract int getType();
 
     /**
      *

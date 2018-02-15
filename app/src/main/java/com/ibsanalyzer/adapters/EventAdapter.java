@@ -18,7 +18,6 @@ import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.base_classes.Tag;
 import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.diary.R;
-import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
@@ -85,7 +84,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemViewType(int position) {
         Event e = events.get(position);
-        return Util.getTypeOfEvent(e);
+        return e.getType();
     }
 
     @Override

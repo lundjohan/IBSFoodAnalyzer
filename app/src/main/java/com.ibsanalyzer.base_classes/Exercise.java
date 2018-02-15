@@ -1,5 +1,7 @@
 package com.ibsanalyzer.base_classes;
 
+import com.ibsanalyzer.constants.Constants;
+
 import org.threeten.bp.LocalDateTime;
 
 public class Exercise extends Event {
@@ -46,5 +48,10 @@ public class Exercise extends Event {
 
     public int getIntensity() {
         return intensity;
+    }
+
+    @Override
+    public int getType() {
+        return Constants.EXERCISE;
     }
 }

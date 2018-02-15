@@ -21,7 +21,6 @@ import com.ibsanalyzer.date_time.DateTimeFormat;
 import com.ibsanalyzer.exceptions.CorruptedEventException;
 import com.ibsanalyzer.model.EventsTemplate;
 import com.ibsanalyzer.model.TagTemplate;
-import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -29,7 +28,6 @@ import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.os.Build.VERSION_CODES.M;
 import static com.ibsanalyzer.constants.Constants.BM;
 import static com.ibsanalyzer.constants.Constants.EXERCISE;
 import static com.ibsanalyzer.constants.Constants.MEAL;
@@ -43,6 +41,7 @@ import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATE;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_DATETIME;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENT;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_EVENTSTEMPLATE;
+import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_HAS_BREAK;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_ID;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_INTENSITY;
 import static com.ibsanalyzer.database.TablesAndStrings.COLUMN_NAME;
@@ -197,7 +196,7 @@ public class DBHandler extends SQLiteOpenHelper {
         long template_id = db.insert(TABLE_EVENTSTEMPLATES, null, values);
         db.close();
         for (Event e : et.getEvents()) {
-            int type = Util.getTypeOfEvent(e);
+            int type = e.getType();
             long idOfEventAdded = addEventToRefEventsTemplate(e, type, template_id);
             Log.d("Debug", "id of event added to EventsTemplate: " + idOfEventAdded);
             addToChildrenOfEventTables(idOfEventAdded, e, type);
@@ -281,8 +280,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 while (!c.isAfterLast()) {
                     try {
                         long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                        Log.d("Debug", "eventId loaded from inside an EventsTemplate: " + eventId);
-                        Event e = getEvent(eventId);
+                        Event e = getEvent(eventId, c);
                         events.add(e); //här: e == null
                     } catch (CorruptedEventException e) {
                         Log.e("CorruptedEvent ", e.getMessage());
@@ -316,6 +314,8 @@ public class DBHandler extends SQLiteOpenHelper {
             idOfEventsTemplate) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENTSTEMPLATE, idOfEventsTemplate);
+        //break should always be 0 (false) inside a EventsTemplate
+        values.put(COLUMN_HAS_BREAK, 0);
         return addEventHelper1(event, values, typeOfEvent);
     }
 
@@ -323,17 +323,19 @@ public class DBHandler extends SQLiteOpenHelper {
      * This is used when creating Events NOT inside an EventsTemplate.
      * This is the "normal" use case.
      */
-    public long addEvent(Event event, long typeOfEvent) {
+    public long addEventBase(Event e, long typeOfEvent) {
         ContentValues values = new ContentValues();
-        return addEventHelper1(event, values, typeOfEvent);
+        //conditional/ ternary operator. "If e hasBreak, store a 1 (true), else store a 0(false)"
+        values.put(COLUMN_HAS_BREAK, e.hasBreak() ? 1 : 0);
+        return addEventHelper1(e, values, typeOfEvent);
     }
 
-    private long addEventHelper1(Event event, ContentValues values, long typeOfEvent) {
-        values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(event.getTime()));
-        values.put(COLUMN_DATE, DateTimeFormat.dateToSqLiteFormat(event.getTime().toLocalDate()));
+    private long addEventHelper1(Event e, ContentValues values, long typeOfEvent) {
+        values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(e.getTime()));
+        values.put(COLUMN_DATE, DateTimeFormat.dateToSqLiteFormat(e.getTime().toLocalDate()));
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
-        values.put(COLUMN_COMMENT, event.getComment());
-        return addEventHelper2(event, values);
+        values.put(COLUMN_COMMENT, e.getComment());
+        return addEventHelper2(e, values);
     }
 
     private long addEventHelper2(Event event, ContentValues values) {
@@ -382,11 +384,12 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      *
+     * This method is only used in specific case, and it does not take into account comments or breaks
      * @param typeOfEvent
      * @param ldt
      * @return null if no event exists for the type or datetime
      */
-    public Event getEvent(int typeOfEvent, LocalDateTime ldt){
+    public Event getPartsOfEventIfItExists(int typeOfEvent, LocalDateTime ldt){
         long eventId = getEventId(typeOfEvent, ldt);
         if (eventId == -1){
             return null;
@@ -420,7 +423,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public long getEventId(Event event) {
-        int type = Util.getTypeOfEvent(event);
+        int type = event.getType();
         String time = DateTimeFormat.toSqLiteFormat(event.getTime());
         return getEventId(type, time);
     }
@@ -448,6 +451,36 @@ public class DBHandler extends SQLiteOpenHelper {
         return eventId;
     }
 
+
+    /**
+     * The id will be mantained
+     * @param e
+     */
+    public void changeEvent(Event e) {
+        long eventId = getEventId(e);
+        changeEvent(eventId, e);
+    }
+
+    private void changeEvent(long eventId, Event e){
+        int type = e.getType();
+        switch(type){
+            case MEAL:
+                changeMeal(eventId, (Meal)e);
+                break;
+            case OTHER:
+                changeOther(eventId, (Other)e);
+                break;
+            case EXERCISE:
+                changeExercise(eventId, (Exercise)e);
+                break;
+            case BM:
+                changeBm(eventId, (Bm)e);
+                break;
+            case RATING:
+                changeRating(eventId, (Rating) e);
+                break;
+        }
+    }
     /**
      * Changes a Meal in database to toMeal (id:s doesn't have to be the same afterwards).
      *
@@ -455,27 +488,27 @@ public class DBHandler extends SQLiteOpenHelper {
      * @param toMeal
      * @return
      */
-    public void changeMeal(long eventId, Meal toMeal) {
+    private void changeMeal(long eventId, Meal toMeal) {
         deleteEvent(eventId);
         addMeal(toMeal);
     }
 
-    public void changeOther(long eventId, Other toOther) {
+    private void changeOther(long eventId, Other toOther) {
         deleteEvent(eventId);
         addOther(toOther);
     }
 
-    public void changeExercise(long eventId, Exercise toExercise) {
+    private void changeExercise(long eventId, Exercise toExercise) {
         deleteEvent(eventId);
         addExercise(toExercise);
     }
 
-    public void changeBm(long eventId, Bm toBm) {
+    private void changeBm(long eventId, Bm toBm) {
         deleteEvent(eventId);
         addBm(toBm);
     }
 
-    public void changeRating(long eventId, Rating toRating) {
+    private void changeRating(long eventId, Rating toRating) {
         deleteEvent(eventId);
         addRating(toRating);
     }
@@ -498,25 +531,26 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(QUERY, new String[]{DateTimeFormat.dateToSqLiteFormat(currentDate)});
         return getSortedEventsHelper(c);
     }
-    private Event getEvent(long eventId) throws CorruptedEventException {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Event e = null;
-        final String QUERY = "SELECT *  FROM " + TABLE_EVENTS + " WHERE " +
-                COLUMN_ID + " = ?";
-        Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(eventId)});
-        if (c != null) {
-            if (c.moveToFirst()) {
-                String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                int type = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
-                String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
-                e = getEvent(eventId, DateTimeFormat.fromSqLiteFormat(datetime), comment, type);
-            }
-        }
-        db.close();
-        return e;
+
+    private Event getEvent(long eventId, Cursor c) throws CorruptedEventException{
+        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+        int type = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
+        String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
+        boolean hasBreak = getHasBreak(c);
+        return getEvent(eventId, DateTimeFormat.fromSqLiteFormat(datetime), comment, hasBreak, type);
     }
 
-    private Event getEvent(long eventId, LocalDateTime ldt, String comment, int typeOfEvent) throws
+    /**
+     * 0 (false), 1 (true)
+     * @param c
+     * @return
+     */
+    private boolean getHasBreak(Cursor c){
+        return c.getInt(c.getColumnIndex(COLUMN_HAS_BREAK)) == 1;
+    }
+
+
+    private Event getEvent(long eventId, LocalDateTime ldt, String comment, boolean hasBreak, int typeOfEvent) throws
             CorruptedEventException {
         Event event = null;
         switch (typeOfEvent) {
@@ -540,6 +574,7 @@ public class DBHandler extends SQLiteOpenHelper {
             throw new CorruptedEventException("Event should not be null here");
         }
         event.setComment(comment);
+        event.setHasBreak(hasBreak);
         return event;
     }
 
@@ -693,7 +728,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void addMeal(Meal meal) {
         //first create event and obtain its id
-        long eventId = addEvent(meal, MEAL);
+        long eventId = addEventBase(meal, MEAL);
         addToMealTable(eventId, meal);
 
     }
@@ -753,7 +788,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //==============================================================================================
     public void addOther(Other other) {
         //first create event and obtain its id
-        long eventId = addEvent(other, OTHER);
+        long eventId = addEventBase(other, OTHER);
         addToOtherTable(eventId, other);
     }
 
@@ -770,7 +805,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //==============================================================================================
     public void addExercise(Exercise exercise) {
         //first create event and obtain its id
-        long eventId = addEvent(exercise, EXERCISE);
+        long eventId = addEventBase(exercise, EXERCISE);
         addTag(exercise.getTypeOfExercise(), eventId);
         addToExerciseTable(eventId, exercise);
     }
@@ -789,7 +824,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //==============================================================================================
     public void addBm(Bm bm) {
         //first create event and obtain its id
-        long eventId = addEvent(bm, BM);
+        long eventId = addEventBase(bm, BM);
         addToBmTable(eventId, bm);
     }
 
@@ -807,7 +842,7 @@ public class DBHandler extends SQLiteOpenHelper {
     // RATING
     //==============================================================================================
     public void addRating(Rating rating) {
-        long eventId = addEvent(rating, RATING);
+        long eventId = addEventBase(rating, RATING);
         addToRatingTable(eventId, rating);
     }
 
@@ -1117,11 +1152,8 @@ public class DBHandler extends SQLiteOpenHelper {
                     try {
 
                         long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
-                        String dateTime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(dateTime);
-                        int typeOfEvent = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
-                        String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
-                        Event event = getEvent(eventId, ldt, comment, typeOfEvent);
+                        Event event = getEvent(eventId, c);
+
                         eventList.add(event);
                         c.moveToNext();
                     } catch (CorruptedEventException e) {

@@ -291,6 +291,14 @@ public class DiaryFragment extends Fragment implements EventsContainer
         addEventToList(event);
     }
 
+    /**
+     * Comment 2018-02-15
+     * Since nowadays only one type of event can be stored at one time in database,
+     * this method can probably be done much simpler
+     * @param requestCode
+     * @param data
+     */
+
     @Override
     public void executeChangedEvent(int requestCode, Intent data) {
         int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
@@ -305,41 +313,34 @@ public class DiaryFragment extends Fragment implements EventsContainer
         DBHandler dbHandler = new DBHandler(getContext());
         Event event = null;
 
-
         switch (requestCode) {
-
             case CHANGED_MEAL:
                 if (data.hasExtra(RETURN_MEAL_SERIALIZABLE)) {
-                    //add to database
                     event = (Meal) data.getSerializableExtra(RETURN_MEAL_SERIALIZABLE);
-                    dbHandler.changeMeal(eventId, (Meal) event);
                 }
                 break;
             case CHANGED_OTHER:
                 if (data.hasExtra(RETURN_OTHER_SERIALIZABLE)) {
                     event = (Other) data.getSerializableExtra(RETURN_OTHER_SERIALIZABLE);
-                    dbHandler.changeOther(eventId, (Other) event);
                 }
                 break;
             case CHANGED_EXERCISE:
                 if (data.hasExtra(RETURN_EXERCISE_SERIALIZABLE)) {
                     event = (Exercise) data.getSerializableExtra(RETURN_EXERCISE_SERIALIZABLE);
-                    dbHandler.changeExercise(eventId, (Exercise) event);
                 }
                 break;
             case CHANGED_BM:
                 if (data.hasExtra(RETURN_BM_SERIALIZABLE)) {
                     event = (Bm) data.getSerializableExtra(RETURN_BM_SERIALIZABLE);
-                    dbHandler.changeBm(eventId, (Bm) event);
                 }
                 break;
             case CHANGED_RATING:
                 if (data.hasExtra(RETURN_RATING_SERIALIZABLE)) {
                     event = (Rating) data.getSerializableExtra(RETURN_RATING_SERIALIZABLE);
-                    dbHandler.changeRating(eventId, (Rating) event);
                 }
                 break;
         }
+        dbHandler.changeEvent(event);
         ec.changeEventInList(posInList, event);
     }
 
@@ -442,12 +443,14 @@ public class DiaryFragment extends Fragment implements EventsContainer
                     //options down here for break/ unbreak
                     else if (item.getItemId() == R.id.insertBreakMenuItem) {
                         //1. make that event in item have a break true
-                        pressedEvent.setBreak(true);
+                        addBreakToEvent(pressedEvent);
+
                         //2. update ec.adapter for that position
                         ec.adapter.notifyItemChanged(position);
                     } else if (item.getItemId() == R.id.removeBreakMenuItem) {
                         //1. make that event in item lose break
-                        pressedEvent.setBreak(false);
+                        removeBreakFromevent(pressedEvent);
+
                         //2. update ec.adapter for that position
                         ec.adapter.notifyItemChanged(position);
                     } else if (item.getItemId() == R.id.deleteEvent) {
@@ -466,6 +469,18 @@ public class DiaryFragment extends Fragment implements EventsContainer
             clickHelper(v, position);
         }
         return false;
+    }
+
+    //add break both to event and to inside event table in database
+    private void addBreakToEvent(Event e){
+        e.setHasBreak(true);
+        DBHandler dbHandler = new DBHandler(getContext());
+        dbHandler.changeEvent(e);
+    }
+    private void removeBreakFromevent(Event e){
+        e.setHasBreak(false);
+        DBHandler dbHandler = new DBHandler(getContext());
+        dbHandler.changeEvent(e);
     }
 
     //same actions for short and long clicks
