@@ -96,6 +96,9 @@ public class Exporter {
         //cannot now allow linebreak in comments, fucks line up
         out.print(e.getComment().replace(System.getProperty("line.separator"),""));
         out.print(Constants.DELIMETER);
+        //print f for false, t for true
+        out.print(Boolean.toString(e.hasBreak()).charAt(0));
+        out.print(Constants.DELIMETER);
     }
     private static void printTags(PrintWriter out, List<Tag> tags) {
         for (int i=0;i<tags.size();i++) {

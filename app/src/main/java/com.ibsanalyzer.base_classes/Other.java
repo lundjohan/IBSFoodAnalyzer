@@ -17,6 +17,10 @@ public class Other extends InputEvent {
         super(time, comment, tags);
     }
 
+    public Other(LocalDateTime ldt, String comment, boolean hasBreak, List<Tag> tags) {
+        super(ldt, comment, hasBreak,tags);
+    }
+
     @Override
     public int getType() {
         return Constants.OTHER;

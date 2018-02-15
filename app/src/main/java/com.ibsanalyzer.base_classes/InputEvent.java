@@ -21,6 +21,10 @@ public abstract class InputEvent extends Event {
         super(time, comment);
         this.tags = tags;
     }
+    public InputEvent(LocalDateTime time, String comment, boolean hasBreak, List<Tag> tags) {
+        super(time, comment, hasBreak);
+        this.tags = tags;
+    }
 
 
 

@@ -19,6 +19,10 @@ public class Rating extends Event {
         this.after = after;
     }
 
+    public Rating(LocalDateTime ldt, String comment, boolean hasBreak, int after) {
+        super(ldt, comment, hasBreak);
+        this.after = after;
+    }
 
 
     public static String pointsToText(int score) {

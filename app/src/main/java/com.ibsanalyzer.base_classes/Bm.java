@@ -22,6 +22,11 @@ public class Bm extends Event {
 
     }
 
+    public Bm(LocalDateTime ldt, String comment, boolean hasBreak, int completeness, int bristol) {
+        super(ldt, comment, hasBreak);
+        this.complete = completeness;
+        this.bristol = bristol;
+    }
 
 
     public static String completenessScoreToText(int score) {

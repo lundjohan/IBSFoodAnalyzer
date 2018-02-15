@@ -20,6 +20,12 @@ public class Exercise extends Event {
         this.intensity = intensity;
     }
 
+    public Exercise(LocalDateTime ldt, String comment, boolean hasBreak, Tag t, int intensity) {
+        super(ldt, comment, hasBreak);
+        this.typeOfExercise = t;
+        this.intensity = intensity;
+    }
+
     public static String intensityLevelToText(int score) {
         String text = "OUT OF RANGE";
         switch (score) {

@@ -562,7 +562,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
         int type = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
         String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
-        boolean hasBreak = getHasBreak(c);
+        boolean hasBreak = false;//getHasBreak(c);
         return getEvent(eventId, DateTimeFormat.fromSqLiteFormat(datetime), comment, hasBreak, type);
     }
 

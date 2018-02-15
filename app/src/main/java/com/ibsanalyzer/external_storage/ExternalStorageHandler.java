@@ -167,6 +167,11 @@ public class ExternalStorageHandler {
         }
 
     }
+
+    /**
+     * Saves all events to a csv file. NB: eventstemplates are not saved.
+     * @param context
+     */
     public static void saveCSVFile(Context context) {
         File outFile = makeFileToSaveTo(LocalDateTime.now() + ".csv");
         DBHandler dbHandler = new DBHandler(context);

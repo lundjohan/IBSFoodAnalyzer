@@ -19,6 +19,10 @@ public class Meal extends InputEvent {
         super(time, comment, tags);
         this.portions = portions;
     }
+    public Meal(LocalDateTime time, String comment, boolean hasBreak, List<Tag> tags, double portions) {
+        super(time, comment, hasBreak, tags);
+        this.portions = portions;
+    }
 
     public double getPortions() {
         return portions;
