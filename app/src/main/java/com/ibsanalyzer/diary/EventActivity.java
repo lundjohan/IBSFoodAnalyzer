@@ -40,6 +40,7 @@ import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.TITLE_STRING;
 
 /**
  * Created by Johan on 2017-05-03.
@@ -144,6 +145,7 @@ public abstract class EventActivity extends AppCompatActivity implements
                 else if (item.getItemId() == R.id.menu_info){
                     Intent intent = new Intent(getApplicationContext(), InfoActivityContent.class);
                     intent.putExtra(LAYOUT_RESOURCE, getInfoLayout());
+                    intent.putExtra(TITLE_STRING, getTitleStr());
                     startActivity(intent);
                 }
                 return true;
