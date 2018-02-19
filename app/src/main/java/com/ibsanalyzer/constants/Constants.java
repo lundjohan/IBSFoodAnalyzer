@@ -47,7 +47,7 @@ public class Constants {
 
     public final static String DATE_TO_START_NEW_EVENTACTIVITY = "dateToStartNewEventActivity";
 
-    //For TagTemplateEditActivity
+    //For TagTypeEditActivity
     public final static int TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED = 1357;
     public final static String TAG_TEMPLATE_POS = "posOfTagTemplateInList";
     public final static String TAG_TEMPLATE_TO_EDIT = "tagTemplateToEdit";
@@ -57,10 +57,10 @@ public class Constants {
     public final static String TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED = "delete_or_edited_tagTemplate";
 
     //note: IDS_OF_EDITED_TAG_TEMPLATES & IDS_OF_EARLIER_EDITED_TAG_TEMPLATES are closely related.
-    // TagAdderActivity -> TagEventActivity, //TagTemplateEditActivity -> TagAdderActivity
+    // TagAdderActivity -> TagEventActivity, //TagTypeEditActivity -> TagAdderActivity
     public final static String IDS_OF_EDITED_TAG_TEMPLATES = "idsOfEditedTagTemplates";
 
-    //TagAdderActivity -> TagTemplateEditActivity
+    //TagAdderActivity -> TagTypeEditActivity
     public final static String IDS_OF_EARLIER_EDITED_TAG_TEMPLATES = "idsOfEditedTagTemplates";
  //sent to Activity handling of EventsTemplates
     public final static String EVENTSTEMPLATE_TO_CHANGE = "eventsTemplateToChange";

@@ -42,7 +42,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     ListView tagsList;
     DBHandler dbHandler;
     TagTemplate chosenTagTemplate = null;
-    //if calling Activity is a TagTemplateActivity that requests a "type-of" TagTemplate, then
+    //if calling Activity is a TagTypeActivity that requests a "type-of" TagTemplate, then
     // this int stores which of type_of is meant. Default is -1 (<0 means other request than above).
     int typeOf = -1;
     private TagnameCursorAdapter adapter;
@@ -153,7 +153,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     }
 
     public void doneClickedNew() {
-        Intent intent = new Intent(this, TagTemplateAdderActivity.class);
+        Intent intent = new Intent(this, TagTypeAdderActivity.class);
         String searchStr = tagSearch.getQuery().toString();
         intent.putExtra(TAGNAME_SEARCH_STRING, searchStr);
         startActivityForResult(intent, TAGTEMPLATE_TO_ADD);
@@ -171,7 +171,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         if (resultCode != RESULT_OK) {
             return;
         }
-        //code coming back from TagTemplateEditActivity
+        //code coming back from TagTypeEditActivity
         if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED) {
             if (data.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)){
                 idsOfChangedTagTemplates = data.getLongArrayExtra(IDS_OF_EDITED_TAG_TEMPLATES);
@@ -202,7 +202,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public void editTagTemplate(long tagTemplateId) {
-        Intent intent = new Intent(getApplicationContext(), TagTemplateEditActivity.class);
+        Intent intent = new Intent(getApplicationContext(), TagTypeEditActivity.class);
         intent.putExtra(TAG_TEMPLATE_TO_EDIT, dbHandler.findTagTemplate(tagTemplateId));
         intent.putExtra(TAG_TEMPLATE_ID, tagTemplateId);
         intent.putExtra(IDS_OF_EDITED_TAG_TEMPLATES, idsOfChangedTagTemplates);

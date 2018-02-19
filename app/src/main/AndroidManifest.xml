@@ -52,13 +52,13 @@
         </service>
 
         <activity
-            android:name=".TagTemplateAdderActivity"
+            android:name=".TagTypeAdderActivity"
             android:parentActivityName=".TagAdderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ibsanalyzer.diary.TagAdderActivity"/>
         </activity>
-        <activity android:name=".TagTemplateEditActivity">
+        <activity android:name=".TagTypeEditActivity">
         </activity>
         <activity android:name="com.ibsanalyzer.settings.StatSettingsActivity">
         </activity>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.ibsanalyzer.custom_views.HeadLineLayout
+        android:id="@+id/zeroAboutHeadLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        custom:idOfInfoBtn="@+id/uniqueNotImportantName0"
+        custom:infoBtnExists="false"
+        custom:textString="Concepts"/>
+    <com.ibsanalyzer.custom_views.SecondHeadLine
+        android:id="@+id/z"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
+        custom:textForH2="When to add/ edit a Tag Type?"/>
+
+    <TextView
+        android:id="@+id/infoMealText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="A Tag Type is a product or action, like 'Milk' or 'Running'. It has no quantity, and is used by a Tag (which has both a Tag Type and a quantity). Add one if it is lacking in the lists for Tag Types in the former view."
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/z"/>
+
+    <com.ibsanalyzer.custom_views.SecondHeadLine
+        android:id="@+id/FirstHeadLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoMealText"
+        custom:textForH2="How to add a Tag Type?"/>
+
+    <TextView
+        android:id="@+id/infoTypeOfExercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Write the title of the Tag Type to the right of 'Name'. A Tag Type can inherit from a another Tag Type. For example is 'Butter' a type of 'Lacteo' product. Use this function (you can anytime you want add or change an inheritance later) by clicking right of 'Type of'. You should then come back to the view where you can add a Tag."
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FirstHeadLine"/>
+
+    <com.ibsanalyzer.custom_views.SecondHeadLine
+        android:id="@+id/FirstHeadLin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoTypeOfExercise"
+        custom:textForH2="How to edit a Tag Type?"/>
+
+    <TextView
+        android:id="@+id/infoTypeOfExercis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Edit a Tag Type by going back to the former view and click the three dots of the Tag Type. Then choose Edit."
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FirstHeadLin"/>
+</android.support.constraint.ConstraintLayout>

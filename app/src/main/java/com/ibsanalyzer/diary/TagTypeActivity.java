@@ -11,19 +11,23 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.info.EventActivityInfoContent;
 import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.util.Util;
 
 import java.io.Serializable;
 
+import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
 import static com.ibsanalyzer.constants.Constants.NEW_TYPE_FOR_TAGTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TAGNAME_SEARCH_STRING;
+import static com.ibsanalyzer.constants.Constants.TITLE_STRING;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
 
-public abstract class TagTemplateActivity extends AppCompatActivity implements View
+public abstract class TagTypeActivity extends AppCompatActivity implements View
         .OnClickListener {
+    final private String TAG_TYPE_TITLE = "Add Tag Type";
     protected TagTemplate is_a = null;
 
     protected EditText name;
@@ -58,6 +62,19 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_info, menu);
+        menu.findItem(R.id.menu_info).setOnMenuItemClickListener(new MenuItem
+                .OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(getApplicationContext(), EventActivityInfoContent.class);
+                intent.putExtra(LAYOUT_RESOURCE, R.layout.activity_add_tag_type_info);
+                intent.putExtra(TITLE_STRING, getTitleStr());
+                startActivity(intent);
+                return true;
+            }
+        });
         inflater.inflate(R.menu.done_menu, menu);
         menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
                 .OnMenuItemClickListener() {
@@ -75,6 +92,7 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_template_adder);
+        setTitle(getTitleStr());
         name = (EditText) findViewById(R.id.name_box);
         type_of = (EditText) findViewById(R.id.is_a_type_of);
         Intent intent = getIntent();
@@ -114,4 +132,6 @@ public abstract class TagTemplateActivity extends AppCompatActivity implements V
             type_of.setText(is_a.get_tagname());
         }
     }
+
+    protected abstract String getTitleStr();
 }
