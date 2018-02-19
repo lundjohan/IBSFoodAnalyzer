@@ -21,7 +21,7 @@ public class RatingActivity extends EventActivity {
 
     @Override
     protected int getInfoLayout() {
-        return 0;
+        return R.layout.activity_rating_info;
     }
 
     @Override

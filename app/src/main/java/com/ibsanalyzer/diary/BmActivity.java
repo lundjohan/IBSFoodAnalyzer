@@ -22,7 +22,7 @@ public class BmActivity extends EventActivity {
 
     @Override
     protected int getInfoLayout() {
-        return 0;
+        return R.layout.activity_bm_info;
     }
 
     @Override
