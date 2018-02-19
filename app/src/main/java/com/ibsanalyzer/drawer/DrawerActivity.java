@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.diary.DiaryContainerFragment;
 import com.ibsanalyzer.diary.DiaryFragment;
-import com.ibsanalyzer.diary.EditEventsTemplateActivity;
 import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.diary.TemplateFragment;
 import com.ibsanalyzer.external_storage.ExternalStorageHandler;
@@ -42,7 +40,6 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import org.threeten.bp.LocalDate;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
@@ -50,7 +47,6 @@ import static com.ibsanalyzer.constants.Constants.IMPORT_DATABASE;
 import static com.ibsanalyzer.constants.Constants.IMPORT_FROM_CSV_FILE;
 import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.LOCALDATE;
-import static com.ibsanalyzer.external_storage.ExternalStorageHandler.getFolderToSaveIn;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment
@@ -213,23 +209,26 @@ public class DrawerActivity extends AppCompatActivity
 
                 onOptionsItemSelected(item);
     }
+
     private void showPopUpWithSavedFileLocationSavedFile(File file) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false).
-                    setTitle("Saved file location").
-                    setCancelable(false).
-                    setMessage("Files are saved in folder "+ file.getPath()+". The folders except the last might differ depending on your system.").
-                    setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //empty, only this pop-up should be closed
-                        }
-                    });
+        builder.setCancelable(false).
+                setTitle("Saved file location").
+                setCancelable(false).
+                setMessage("Files are saved in folder " + file.getPath() + ". The folders except " +
+                        "the last might differ depending on your system.").
+                setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //empty, only this pop-up should be closed
+                    }
+                });
         AlertDialog alert = builder.create();
         alert.show();
 
         //center positive button
         final Button positiveButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
-        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton
+                .getLayoutParams();
         positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;
         positiveButton.setLayoutParams(positiveButtonLL);
     }
@@ -262,6 +261,7 @@ public class DrawerActivity extends AppCompatActivity
             // The reason for the existence of aFileChooser
         }
     }
+
     @Override
     public void startTemplateFragment(LocalDate date) {
         //toggle.setHomeAsUpIndicator(null);
@@ -368,7 +368,8 @@ public class DrawerActivity extends AppCompatActivity
                 break;
         }
     }
-    private File getChosenFile(Intent data){
+
+    private File getChosenFile(Intent data) {
         // Get the URI of the selected file
         final Uri uri = data.getData();
         File file = null;
@@ -387,6 +388,7 @@ public class DrawerActivity extends AppCompatActivity
         }
         return file;
     }
+
     public LocalDate addEventsToDatabase(List<Event> events) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         dbHandler.addEventsWithUnknownTagTemplates(events);
@@ -427,9 +429,12 @@ public class DrawerActivity extends AppCompatActivity
             startDiaryAtDate(lastDateOfEvents);
         }
     }
-    /**Database will not be cleared, this is an adder function. However, conflicting events (
-     with same date and event type) will be ignored (no override or duplication).
-     Best ways to fix that? => probably in database (similar to "unique ignore" or something like it)
+
+    /**
+     * Database will not be cleared, this is an adder function. However, conflicting events (
+     * with same date and event type) will be ignored (no override or duplication).
+     * Best ways to fix that? => probably in database (similar to "unique ignore" or something
+     * like it)
      */
     private class ImportCsvAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
