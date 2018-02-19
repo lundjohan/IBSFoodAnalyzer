@@ -20,6 +20,11 @@ public class RatingActivity extends EventActivity {
     SeekBar scoreBar;
 
     @Override
+    protected int getInfoLayout() {
+        return 0;
+    }
+
+    @Override
     protected int getLayoutRes() {
         return R.layout.activity_rating;
     }

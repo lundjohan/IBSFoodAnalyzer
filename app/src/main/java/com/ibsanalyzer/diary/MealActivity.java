@@ -17,6 +17,11 @@ public class MealActivity extends TagEventActivity {
     private TextView portionView;
 
     @Override
+    protected int getInfoLayout() {
+        return R.layout.activity_meal_info;
+    }
+
+    @Override
     protected int getLayoutRes() {
         return R.layout.activity_meal;
     }

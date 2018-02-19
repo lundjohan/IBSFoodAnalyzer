@@ -109,4 +109,5 @@ public class Constants {
 
     //=================================INFO===================================
     public static String INFO_STR = "shouldHaveDate";
+    public static String LAYOUT_RESOURCE = "resource_file_for_layout";
 }

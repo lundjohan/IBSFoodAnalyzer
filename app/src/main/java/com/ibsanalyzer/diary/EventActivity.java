@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
@@ -26,6 +27,7 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.date_time.DateTimeFormat;
+import com.ibsanalyzer.info.InfoFragment;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
@@ -37,6 +39,7 @@ import java.util.Calendar;
 import static com.ibsanalyzer.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
+import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
 import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 
 /**
@@ -71,6 +74,7 @@ public abstract class EventActivity extends AppCompatActivity implements
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.info_menu, menu);
         inflater.inflate(R.menu.done_menu, menu);
         menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
                 .OnMenuItemClickListener() {
@@ -81,8 +85,29 @@ public abstract class EventActivity extends AppCompatActivity implements
                 return true;
             }
         });
+        menu.findItem(R.id.menu_info).setOnMenuItemClickListener(new MenuItem
+                .OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_done){
+                    doneClicked(null);
+                }
+                else if (item.getItemId() == R.id.menu_info){
+                    Fragment infoFragment = new InfoFragment();
+                    Bundle b = new Bundle();
+                    b.putSerializable(LAYOUT_RESOURCE, getInfoLayout());
+                    infoFragment.setArguments(b);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.base_layout, infoFragment).addToBackStack(null)
+                            .commit();
+                }
+                return true;
+            }
+        });
         return true;
     }
+    protected abstract int getInfoLayout();
 
     protected abstract int getLayoutRes();
 

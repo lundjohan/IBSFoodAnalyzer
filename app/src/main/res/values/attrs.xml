@@ -31,4 +31,8 @@
         <attr name="textStatMenu" format="string" />
         <attr name ="idOfSettingsBtn" format="integer"/>
     </declare-styleable>
+    <declare-styleable name="SecondHeadLineLayout">
+        <!-- the text string of textview-->
+        <attr name="textForH2" format="string"/>
+    </declare-styleable>
 </resources>
