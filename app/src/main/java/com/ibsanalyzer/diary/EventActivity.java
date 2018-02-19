@@ -7,7 +7,6 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
@@ -27,7 +26,7 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.date_time.DateTimeFormat;
-import com.ibsanalyzer.info.InfoFragment;
+import com.ibsanalyzer.info.InfoActivityContent;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
@@ -67,7 +66,55 @@ public abstract class EventActivity extends AppCompatActivity implements
     //this is solely used to see if a ChangingEvent has changed its time during this interaction
     //it should not be used in a context of a new event
     LocalDateTime changingEventStartingDateTime;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_event);
+        ViewGroup content = (ViewGroup) findViewById(R.id.appendingLayout);
+        getLayoutInflater().inflate(getLayoutRes(), content, true);
+        dateBtn = (Button) findViewById(R.id.dateBtn);
+        timeBtn = (Button) findViewById(R.id.timeBtn);
 
+        dateView = (TextView) findViewById(R.id.date);
+        timeView = (TextView) findViewById(R.id.secondLine);
+        commentView = (TextView) findViewById(R.id.commentView);
+
+        //is the event mean to be changed (as opposition to new event to be created)?
+        Intent intent = getIntent();
+        if (intent.hasExtra(EVENT_TO_CHANGE)) {
+            Event e = (Event) intent.getSerializableExtra(EVENT_TO_CHANGE);
+            DBHandler dbHandler = new DBHandler(getApplicationContext());
+            eventId = dbHandler.getEventId(e);
+            posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
+            changingEventStartingDateTime = e.getTime();
+            setDateView(e.getTime().toLocalDate());
+            setTimeView(e.getTime().toLocalTime());
+            commentView.setText(e.getComment());
+
+        }
+        //is the event created from scratch, inside diary, the get the start date from open day
+        else if (intent.hasExtra(DATE_TO_START_NEW_EVENTACTIVITY)) {
+            LocalDate ld = (LocalDate) intent.getSerializableExtra(DATE_TO_START_NEW_EVENTACTIVITY);
+            setDateView(ld);
+            setTimeView(LocalTime.now()); //must still be set
+        } else {
+            setDateView(LocalDate.now());
+            setTimeView(LocalTime.now());
+        }
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("localDateStr")) {
+                LocalDate localDate = LocalDate.parse((CharSequence) savedInstanceState.get
+                        ("localDateStr"));
+                setDateView(localDate);
+            }
+            if (savedInstanceState.containsKey("localTimeStr")) {
+                LocalTime localTime = LocalTime.parse((CharSequence) savedInstanceState.get
+                        ("localTimeStr"));
+                setTimeView(localTime);
+            }
+        }
+    }
     protected boolean isChangingEvent() {
         return eventId > -1;
     }
@@ -94,13 +141,9 @@ public abstract class EventActivity extends AppCompatActivity implements
                     doneClicked(null);
                 }
                 else if (item.getItemId() == R.id.menu_info){
-                    Fragment infoFragment = new InfoFragment();
-                    Bundle b = new Bundle();
-                    b.putSerializable(LAYOUT_RESOURCE, getInfoLayout());
-                    infoFragment.setArguments(b);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.base_layout, infoFragment).addToBackStack(null)
-                            .commit();
+                    Intent intent = new Intent(getApplicationContext(), InfoActivityContent.class);
+                    intent.putExtra(LAYOUT_RESOURCE, getInfoLayout());
+                    startActivity(intent);
                 }
                 return true;
             }
@@ -162,55 +205,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         return true;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
-        ViewGroup content = (ViewGroup) findViewById(R.id.appendingLayout);
-        getLayoutInflater().inflate(getLayoutRes(), content, true);
-        dateBtn = (Button) findViewById(R.id.dateBtn);
-        timeBtn = (Button) findViewById(R.id.timeBtn);
 
-        dateView = (TextView) findViewById(R.id.date);
-        timeView = (TextView) findViewById(R.id.secondLine);
-        commentView = (TextView) findViewById(R.id.commentView);
-
-        //is the event mean to be changed (as opposition to new event to be created)?
-        Intent intent = getIntent();
-        if (intent.hasExtra(EVENT_TO_CHANGE)) {
-            Event e = (Event) intent.getSerializableExtra(EVENT_TO_CHANGE);
-            DBHandler dbHandler = new DBHandler(getApplicationContext());
-            eventId = dbHandler.getEventId(e);
-            posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
-            changingEventStartingDateTime = e.getTime();
-            setDateView(e.getTime().toLocalDate());
-            setTimeView(e.getTime().toLocalTime());
-            commentView.setText(e.getComment());
-
-        }
-        //is the event created from scratch, inside diary, the get the start date from open day
-        else if (intent.hasExtra(DATE_TO_START_NEW_EVENTACTIVITY)) {
-            LocalDate ld = (LocalDate) intent.getSerializableExtra(DATE_TO_START_NEW_EVENTACTIVITY);
-            setDateView(ld);
-            setTimeView(LocalTime.now()); //must still be set
-        } else {
-            setDateView(LocalDate.now());
-            setTimeView(LocalTime.now());
-        }
-
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey("localDateStr")) {
-                LocalDate localDate = LocalDate.parse((CharSequence) savedInstanceState.get
-                        ("localDateStr"));
-                setDateView(localDate);
-            }
-            if (savedInstanceState.containsKey("localTimeStr")) {
-                LocalTime localTime = LocalTime.parse((CharSequence) savedInstanceState.get
-                        ("localTimeStr"));
-                setTimeView(localTime);
-            }
-        }
-    }
 
     protected abstract int getEventType();
 
