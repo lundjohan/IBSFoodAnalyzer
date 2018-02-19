@@ -218,7 +218,7 @@ public class DrawerActivity extends AppCompatActivity
             builder.setCancelable(false).
                     setTitle("Saved file location").
                     setCancelable(false).
-                    setMessage("File is saved in folder "+ file.getPath()+". The folders except the last might differ depending on your system.").
+                    setMessage("Files are saved in folder "+ file.getPath()+". The folders except the last might differ depending on your system.").
                     setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //empty, only this pop-up should be closed
