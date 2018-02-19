@@ -94,10 +94,13 @@ public class ExternalStorageHandler {
         ActivityCompat.requestPermissions(activity,
                 new String[]{permissionName}, permissionRequestCode);
     }
+    public static File getFolderToSaveIn(){
+     return Environment.getExternalStoragePublicDirectory
+             (DIRECTORY_IBSFOODANALYZER);
+    }
 
     private static File makeFileToSaveTo(String nameOfFile){
-        File directoryToSaveIn = Environment.getExternalStoragePublicDirectory
-                (DIRECTORY_IBSFOODANALYZER);
+        File directoryToSaveIn = getFolderToSaveIn();
         if (!directoryToSaveIn.exists()) {
             directoryToSaveIn.mkdirs();
         }

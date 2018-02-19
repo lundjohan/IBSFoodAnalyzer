@@ -1,6 +1,7 @@
 package com.ibsanalyzer.drawer;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -11,10 +12,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ibsanalyzer.about.AboutActivity;
@@ -36,6 +42,7 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import org.threeten.bp.LocalDate;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
@@ -43,6 +50,7 @@ import static com.ibsanalyzer.constants.Constants.IMPORT_DATABASE;
 import static com.ibsanalyzer.constants.Constants.IMPORT_FROM_CSV_FILE;
 import static com.ibsanalyzer.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.ibsanalyzer.constants.Constants.LOCALDATE;
+import static com.ibsanalyzer.external_storage.ExternalStorageHandler.getFolderToSaveIn;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment
@@ -159,6 +167,9 @@ public class DrawerActivity extends AppCompatActivity
                 //IntentService
                 Intent intent = new Intent(this, SaveDBIntentService.class);
                 startService(intent);
+
+                //show pop up that shows location where file was saved.
+                showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
                 break;
 
             case R.id.importFromCsvMenuItem:
@@ -173,6 +184,8 @@ public class DrawerActivity extends AppCompatActivity
                 //IntentService
                 Intent csvIntent = new Intent(this, SaveToCSVIntentService.class);
                 startService(csvIntent);
+                //show pop up that shows location where file was saved.
+                showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
                 break;
             case R.id.exportCsvForGraph:
                 //ok, write to file? Otherwise ask for permission
@@ -180,6 +193,7 @@ public class DrawerActivity extends AppCompatActivity
                 //IntentService
                 Intent csvGraphIntent = new Intent(this, SaveToCSVForGraphIntentService.class);
                 startService(csvGraphIntent);
+                showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
                 break;
             case R.id.clearDBItem:
                 DBHandler dbHandler = new DBHandler(getApplicationContext());
@@ -199,6 +213,27 @@ public class DrawerActivity extends AppCompatActivity
 
                 onOptionsItemSelected(item);
     }
+    private void showPopUpWithSavedFileLocationSavedFile(File file) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false).
+                    setTitle("Saved file location").
+                    setCancelable(false).
+                    setMessage("File is saved in folder "+ file.getPath()+". The folders except the last might differ depending on your system.").
+                    setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //empty, only this pop-up should be closed
+                        }
+                    });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+        //center positive button
+        final Button positiveButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        positiveButton.setLayoutParams(positiveButtonLL);
+    }
+
 
     //code reused from aFileChooser example
     private void showChooser() {

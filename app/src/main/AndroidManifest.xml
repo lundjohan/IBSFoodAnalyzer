@@ -79,8 +79,6 @@
                 <data android:mimeType="*/*"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.ibsanalyzer.external_storage.FilePicker">
-        </activity>
         <activity android:name="com.ibsanalyzer.statistics.AverageStatActivity">
         </activity>
         <activity android:name="com.ibsanalyzer.statistics.BlueZoneStatActivity">
