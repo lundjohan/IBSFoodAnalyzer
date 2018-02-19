@@ -121,7 +121,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ibsanalyzer.drawer.DrawerActivity"/>
         </activity>
-        <activity android:name="com.ibsanalyzer.info.InfoActivityContent">
+        <activity android:name="com.ibsanalyzer.info.EventActivityInfoContent">
         </activity>
     </application>
 
