@@ -16,7 +16,7 @@ import android.widget.SearchView;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.database.TagnameCursorAdapter;
-import com.ibsanalyzer.info.EventActivityInfoContent;
+import com.ibsanalyzer.info.ActivityInfoContent;
 import com.ibsanalyzer.model.TagTemplate;
 
 import java.io.Serializable;
@@ -59,7 +59,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent(getApplicationContext(), EventActivityInfoContent.class);
+                Intent intent = new Intent(getApplicationContext(), ActivityInfoContent.class);
                 intent.putExtra(LAYOUT_RESOURCE, R.layout.activity_add_tag_info);
                 intent.putExtra(TITLE_STRING, TAG_TITLE);
                 startActivity(intent);

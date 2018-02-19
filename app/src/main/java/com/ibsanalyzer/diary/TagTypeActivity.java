@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.ibsanalyzer.database.DBHandler;
-import com.ibsanalyzer.info.EventActivityInfoContent;
+import com.ibsanalyzer.info.ActivityInfoContent;
 import com.ibsanalyzer.model.TagTemplate;
 import com.ibsanalyzer.util.Util;
 
@@ -68,7 +68,7 @@ public abstract class TagTypeActivity extends AppCompatActivity implements View
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent(getApplicationContext(), EventActivityInfoContent.class);
+                Intent intent = new Intent(getApplicationContext(), ActivityInfoContent.class);
                 intent.putExtra(LAYOUT_RESOURCE, R.layout.activity_add_tag_type_info);
                 intent.putExtra(TITLE_STRING, getTitleStr());
                 startActivity(intent);

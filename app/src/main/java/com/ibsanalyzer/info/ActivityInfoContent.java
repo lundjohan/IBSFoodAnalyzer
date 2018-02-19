@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
 import static com.ibsanalyzer.constants.Constants.TITLE_STRING;
 
-public class EventActivityInfoContent extends AppCompatActivity {
+public class ActivityInfoContent extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

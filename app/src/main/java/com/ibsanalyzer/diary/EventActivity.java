@@ -26,7 +26,7 @@ import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DatePickerFragment;
 import com.ibsanalyzer.date_time.DateTimeFormat;
-import com.ibsanalyzer.info.EventActivityInfoContent;
+import com.ibsanalyzer.info.ActivityInfoContent;
 import com.ibsanalyzer.util.Util;
 
 import org.threeten.bp.LocalDate;
@@ -143,7 +143,7 @@ public abstract class EventActivity extends AppCompatActivity implements
                     doneClicked(null);
                 }
                 else if (item.getItemId() == R.id.menu_info){
-                    Intent intent = new Intent(getApplicationContext(), EventActivityInfoContent.class);
+                    Intent intent = new Intent(getApplicationContext(), ActivityInfoContent.class);
                     intent.putExtra(LAYOUT_RESOURCE, getInfoLayout());
                     intent.putExtra(TITLE_STRING, getTitleStr());
                     startActivity(intent);

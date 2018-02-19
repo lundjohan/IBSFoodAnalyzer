@@ -22,9 +22,9 @@ import android.widget.ViewSwitcher;
 
 import com.ibsanalyzer.adapters.EventsTemplateAdapter;
 import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.base_classes.Meal;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.date_time.DatePickerFragment;
+import com.ibsanalyzer.info.ActivityInfoContent;
 import com.ibsanalyzer.model.EventsTemplate;
 
 import org.threeten.bp.LocalDate;
@@ -39,10 +39,12 @@ import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT_RETURNED;
+import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
 import static com.ibsanalyzer.constants.Constants.LIST_OF_EVENTS;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.SWIPING_TO_DATE;
+import static com.ibsanalyzer.constants.Constants.TITLE_STRING;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_BM;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_EXERCISE;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_MEAL;
@@ -195,6 +197,16 @@ public class DiaryFragment extends Fragment implements EventsContainer
             @Override
             public void onClick(View v) {
                 diaryListener.startTemplateFragment(currentDate);
+            }
+        });
+        ImageButton infoBtn = (ImageButton) view.findViewById(R.id.info_dairy_btn);
+        infoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ActivityInfoContent.class);
+                intent.putExtra(LAYOUT_RESOURCE, R.layout.dairy_info);
+                intent.putExtra(TITLE_STRING, "Diary");
+                startActivity(intent);
             }
         });
 
