@@ -16,11 +16,13 @@ import android.widget.SearchView;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.database.TagnameCursorAdapter;
+import com.ibsanalyzer.info.EventActivityInfoContent;
 import com.ibsanalyzer.model.TagTemplate;
 
 import java.io.Serializable;
 
 import static com.ibsanalyzer.constants.Constants.IDS_OF_EDITED_TAG_TEMPLATES;
+import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
 import static com.ibsanalyzer.constants.Constants.PUT_TAG_TEMPLATE;
 import static com.ibsanalyzer.constants.Constants.TAGNAME_SEARCH_STRING;
 import static com.ibsanalyzer.constants.Constants.TAGTEMPLATE_TO_ADD;
@@ -28,12 +30,14 @@ import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_ID;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 import static com.ibsanalyzer.constants.Constants.TAG_TEMPLATE_TO_EDIT;
+import static com.ibsanalyzer.constants.Constants.TITLE_STRING;
 import static com.ibsanalyzer.constants.Constants.WHICH_TYPE;
 
 /**
  * This is the acticity that is seen when in Meal-, Other- or ExerciseActivity button "Add Tags" is pressed
  */
 public class TagAdderActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, TagnameCursorAdapter.ChangingTagTemplate {
+    final String TAG_TITLE ="Add Tag";
     SearchView tagSearch;
     ListView tagsList;
     DBHandler dbHandler;
@@ -49,6 +53,19 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_info, menu);
+        menu.findItem(R.id.menu_info).setOnMenuItemClickListener(new MenuItem
+                .OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(getApplicationContext(), EventActivityInfoContent.class);
+                intent.putExtra(LAYOUT_RESOURCE, R.layout.activity_add_tag_info);
+                intent.putExtra(TITLE_STRING, TAG_TITLE);
+                startActivity(intent);
+                return true;
+            }
+        });
         inflater.inflate(R.menu.add_tagtemplate_menu, menu);
         menu.findItem(R.id.menu_add_new).setOnMenuItemClickListener(new MenuItem
                 .OnMenuItemClickListener() {
@@ -59,6 +76,10 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                 return true;
             }
         });
+
+
+
+
         return true;
     }
 
@@ -66,6 +87,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_adder);
+        setTitle(TAG_TITLE);
         //handle type of request
         dbHandler = new DBHandler(this);
         //only in developing mode
