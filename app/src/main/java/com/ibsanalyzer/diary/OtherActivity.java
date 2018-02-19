@@ -37,7 +37,7 @@ public class OtherActivity extends TagEventActivity {
 
     @Override
     protected int getInfoLayout() {
-        return R.layout.activity_meal_info;
+        return R.layout.activity_other_info;
     }
 
 }
