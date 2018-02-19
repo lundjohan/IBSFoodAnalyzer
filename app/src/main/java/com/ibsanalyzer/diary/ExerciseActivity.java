@@ -24,7 +24,7 @@ public class ExerciseActivity extends EventActivity {
 
     @Override
     protected int getInfoLayout() {
-        return 0;
+        return R.layout.activity_exercise_info;
     }
 
     @Override

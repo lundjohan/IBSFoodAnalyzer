@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
-        custom:textForH2="When to use Meal"/>
+        custom:textForH2="When to use Exercise"/>
 
     <TextView
         android:id="@+id/infoMealText"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Use it whenever you can set a portion of a meal, for example a banana can be a small meal. For making it faster for you add drinks to meal event also (the statistics algorithms will not care). If you only drink, or eat chewing gum etc, it is probably more convenient to use an Other event instead."
+        android:text="When you have been DOING something, like running, meditating etc."
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoMealText"
-        custom:textForH2="Setting Portions"/>
+        custom:textForH2="Type of Exercise"/>
 
     <TextView
         android:id="@+id/infoTypeOfExercise"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Portions refers to the size of the meal itself. The portion size has nothing to do with the individual sizes of tags. They do not affect each other in any way. There will be special statistics that calculates the effects of portion sizes relative to Rating and bowel movements."
+        android:text="A tag will be added when you add 'Type of Exercise'. Internally this will work in the same way as tags do for Meals and Other events."
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoTypeOfExercise"
-        custom:textForH2="Adding Tags"/>
+        custom:textForH2="Level of Intensity"/>
 
     <TextView
         android:id="@+id/infoTagText"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="In the concept of meal, read Tag as 'type of product', 'type of ingredient', 'type of liquid' etc. You can set the amount of them here also. If you use 1 or 2 in quantity for a glass of milk doesn't really matter as long as you are consistent through out the diary."
+        android:text="Did you run until you tasted blood, or was it a relaxed walk in the city?"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
