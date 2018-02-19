@@ -70,7 +70,7 @@ public abstract class EventActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        setTitle(getTitle());
+        setTitle(getTitleStr());
         ViewGroup content = (ViewGroup) findViewById(R.id.appendingLayout);
         getLayoutInflater().inflate(getLayoutRes(), content, true);
         dateBtn = (Button) findViewById(R.id.dateBtn);
