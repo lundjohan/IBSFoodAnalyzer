@@ -70,6 +70,7 @@ public abstract class EventActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+        setTitle(getTitle());
         ViewGroup content = (ViewGroup) findViewById(R.id.appendingLayout);
         getLayoutInflater().inflate(getLayoutRes(), content, true);
         dateBtn = (Button) findViewById(R.id.dateBtn);
@@ -155,6 +156,8 @@ public abstract class EventActivity extends AppCompatActivity implements
     protected abstract int getLayoutRes();
 
     protected abstract void buildEvent();
+
+    protected abstract String getTitleStr();
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

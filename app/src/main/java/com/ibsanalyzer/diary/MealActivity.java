@@ -57,4 +57,10 @@ public class MealActivity extends TagEventActivity {
         Meal event = new Meal(getLocalDateTime(), getComment(), tagsList, portions);
         returnEvent(event);
     }
+
+    @Override
+    protected String getTitleStr() {
+        return "New Meal";
+    }
+
 }

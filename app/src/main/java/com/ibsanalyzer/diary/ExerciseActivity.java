@@ -43,6 +43,11 @@ public class ExerciseActivity extends EventActivity {
     }
 
     @Override
+    protected String getTitleStr() {
+        return "New Exercise";
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         typeOfExercise = (TextView) findViewById(R.id.exercise_type);

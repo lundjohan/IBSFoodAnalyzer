@@ -7,6 +7,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.ibsanalyzer.custom_views.HeadLineLayout
+        android:id="@+id/zeroAboutHeadLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        custom:idOfInfoBtn="@+id/uniqueNotImportantName0"
+        custom:infoBtnExists="false"
+        custom:textString="Concepts of Meal"/>
 
     <com.ibsanalyzer.custom_views.SecondHeadLine
         android:id="@+id/FirstHeadLine"

@@ -38,6 +38,11 @@ public class RatingActivity extends EventActivity {
     }
 
     @Override
+    protected String getTitleStr() {
+        return "New Rating";
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("seekBar", scoreBar.getProgress());
         super.onSaveInstanceState(outState);

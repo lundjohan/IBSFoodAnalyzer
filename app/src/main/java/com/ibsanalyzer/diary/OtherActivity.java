@@ -21,6 +21,11 @@ public class OtherActivity extends TagEventActivity {
     }
 
     @Override
+    protected String getTitleStr() {
+        return "New Other";
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }

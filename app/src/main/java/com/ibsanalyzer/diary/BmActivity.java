@@ -38,6 +38,12 @@ public class BmActivity extends EventActivity {
         Bm bm = new Bm(getLocalDateTime(), getComment(), complete, bristol);
         returnEvent(bm);
     }
+
+    @Override
+    protected String getTitleStr() {
+        return "New BM";
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("bristolBar", bristolBar.getProgress());
