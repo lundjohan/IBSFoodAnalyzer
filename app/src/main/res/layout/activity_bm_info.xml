@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.ibsanalyzer.custom_views.HeadLineLayout
+        android:id="@+id/zeroAboutHeadLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        custom:idOfInfoBtn="@+id/uniqueNotImportantName0"
+        custom:infoBtnExists="false"
+        custom:textString="Concepts"/>
+    <com.ibsanalyzer.custom_views.SecondHeadLine
+        android:id="@+id/z"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
+        custom:textForH2="When to use BM"/>
+
+    <TextView
+        android:id="@+id/infoMealText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="BM stands for Bowel Movement. Some people have massive problems with incomplete evacuations, constipations, diarrhea etc. If you are not one of these people (perhaps your problem is only gut pain for example), you don't have to use this event. Then rating will do fine."
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/z"/>
+
+    <com.ibsanalyzer.custom_views.SecondHeadLine
+        android:id="@+id/FirstHeadLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoMealText"
+        custom:textForH2="Setting Bristol"/>
+
+    <TextView
+        android:id="@+id/infoTypeOfExercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Some curious doctors in Bristol developed the Bristol Scale, which describes the texture of the poo. If you write this down, you might soon see a clear pattern in the statistics part on which tags make you harder or looser."
+         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FirstHeadLine"/>
+
+    <com.ibsanalyzer.custom_views.SecondHeadLine
+        android:id="@+id/SecHeadLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoTypeOfExercise"
+        custom:textForH2="Setting Completeness"/>
+
+    <TextView
+        android:id="@+id/infoTagText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Incomplete bowel movements can be a major issue for some with dysfunctional guts. Statistics will show which tags are more likely to give you a complete bowel movement."
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SecHeadLine"/>
+</android.support.constraint.ConstraintLayout>
