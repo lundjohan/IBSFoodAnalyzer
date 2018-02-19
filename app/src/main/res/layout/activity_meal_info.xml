@@ -17,13 +17,32 @@
         custom:idOfInfoBtn="@+id/uniqueNotImportantName0"
         custom:infoBtnExists="false"
         custom:textString="Concepts"/>
+    <com.ibsanalyzer.custom_views.SecondHeadLine
+        android:id="@+id/z"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
+        custom:textForH2="When to use Meal"/>
+
+    <TextView
+        android:id="@+id/infoMealText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Use it whenever you can set a portion of a meal, for example a banana can be a small meal. For making it faster for you add drinks to meal event also (the statistics algorithms will not care). If you only drink, or eat chewing gum etc, it is probably more convenient to use an Other event instead."
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/z"/>
 
     <com.ibsanalyzer.custom_views.SecondHeadLine
         android:id="@+id/FirstHeadLine"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
+        app:layout_constraintTop_toBottomOf="@+id/infoMealText"
         custom:textForH2="Setting Portions"/>
 
     <TextView
