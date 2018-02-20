@@ -360,10 +360,10 @@ public class DrawerActivity extends AppCompatActivity
                 if (data.hasExtra(EVENTS_TO_LOAD)) {
                     List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra
                             (EVENTS_TO_LOAD);
-                    LocalDate ld = addEventsToDatabase(eventsToReturn);
-                    startDiaryAtDate(ld);
-
-
+                    if (!eventsToReturn.isEmpty()) {
+                        LocalDate ld = addEventsToDatabase(eventsToReturn);
+                        startDiaryAtDate(ld);
+                    }
                 }
                 break;
         }

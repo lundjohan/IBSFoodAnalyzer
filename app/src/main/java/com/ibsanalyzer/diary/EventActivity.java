@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -86,7 +87,7 @@ public abstract class EventActivity extends AppCompatActivity implements
         if (intent.hasExtra(EVENT_TO_CHANGE)) {
             Event e = (Event) intent.getSerializableExtra(EVENT_TO_CHANGE);
             DBHandler dbHandler = new DBHandler(getApplicationContext());
-            eventId = dbHandler.getEventId(e);
+            eventId = dbHandler.getEventIdOutsideEventsTemplate(e);
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
             changingEventStartingDateTime = e.getTime();
             setDateView(e.getTime().toLocalDate());
@@ -214,11 +215,9 @@ public abstract class EventActivity extends AppCompatActivity implements
 
     protected abstract int getEventType();
 
-    private boolean eventTypeAtSameTimeAlreadyExists(int type) {
-        DBHandler dbHandler = new DBHandler(getApplicationContext());
-        LocalDateTime ldt = getLocalDateTime();
-        Event e = dbHandler.getPartsOfEventIfItExists(type, ldt);
-        return e != null;
+    public static boolean eventTypeAtSameTimeAlreadyExists(int type, LocalDateTime ldt, Context context) {
+        DBHandler dbHandler = new DBHandler(context);
+        return dbHandler.eventDoesExistOutsideOfEventsTemplate(type, ldt);
     }
 
     private void showEventAlreadyExistsPopUp(int eventType) {
@@ -249,7 +248,7 @@ public abstract class EventActivity extends AppCompatActivity implements
          2. an event with this eventype already exists, AND is a changing event, datetime has
          been changed to other datetime than start.
           */
-        if (eventTypeAtSameTimeAlreadyExists(type) && (!isChangingEvent() ||
+        if (eventTypeAtSameTimeAlreadyExists(type, getLocalDateTime(), getApplicationContext()) && (!isChangingEvent() ||
                 changingEventHasDifferentDateTimeThanStart())) {
             showEventAlreadyExistsPopUp(type);
         } else {

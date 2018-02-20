@@ -387,11 +387,11 @@ public class DBHandler extends SQLiteOpenHelper {
     //delete
     //-----------------------------------------------------------------------------------
     public void deleteEvent(Event event) {
-        long eventId = getEventId(event);
+        long eventId = getEventIdOutsideEventsTemplate(event);
         if (eventId < 0) {
             throw new RuntimeException("Trying to delete event with invalid eventId");
         }
-        deleteEvent(getEventId(event));
+        deleteEvent(getEventIdOutsideEventsTemplate(event));
     }
 
     /**
@@ -406,66 +406,46 @@ public class DBHandler extends SQLiteOpenHelper {
     //-----------------------------------------------------------------------------------
     //gets
     //-----------------------------------------------------------------------------------
-
     /**
      *
-     * This method is only used in specific case, and it does not take into account comments or breaks
+     * This method is only used in specific case , and it does not take into account comments or breaks.
      * @param typeOfEvent
      * @param ldt
-     * @return null if no event exists for the type or datetime
+     * @return true if it exists like a normal event inside diary.
+     * false if event does not exist at all, and return false if event exists in EventsTemplate.
      */
-    public Event getPartsOfEventIfItExists(int typeOfEvent, LocalDateTime ldt){
-        long eventId = getEventId(typeOfEvent, ldt);
-        if (eventId == -1){
-            return null;
+    public boolean eventDoesExistOutsideOfEventsTemplate(int typeOfEvent, LocalDateTime ldt) {
+        long eventId = getEventIdOutsideEventsTemplate(typeOfEvent, ldt);
+        if (eventId == -1) {
+            return false;
         }
-        Event e = null;
-        try {
-            switch (typeOfEvent) {
-                case MEAL:
-                    e = retrieveMeal(eventId, ldt);
-                    break;
-                case OTHER:
-                    e = retrieveOther(eventId, ldt);
-                    break;
-                case EXERCISE:
-                    e = retrieveExercise(eventId, ldt);
-                    break;
-
-                case BM:
-                    e = retrieveBm(eventId, ldt);
-                    break;
-
-                case RATING:
-                    e = retrieveRating(eventId, ldt);
-                    break;
-            }
-        }
-        catch (CorruptedEventException ex){
-            e = null;
-        }
-        return e;
+        return true;
     }
 
-    public long getEventId(Event event) {
+    public long getEventIdOutsideEventsTemplate(Event event) {
         int type = event.getType();
         String time = DateTimeFormat.toSqLiteFormat(event.getTime());
-        return getEventId(type, time);
+        return getEventIdOutsideEventsTemplate(type, time);
     }
-    private long getEventId(int typeOfEvent, LocalDateTime ldt) {
-        return getEventId(typeOfEvent,DateTimeFormat.toSqLiteFormat(ldt));
+
+    //returns -1 if no such event exists
+    private long getEventIdOutsideEventsTemplate(int typeOfEvent, LocalDateTime ldt) {
+        return getEventIdOutsideEventsTemplate(typeOfEvent,DateTimeFormat.toSqLiteFormat(ldt));
     }
     /**
+     * Not that there can exist several events in database with same typeofEvent and time.
+     *  (Because of EventsTemplate) This must be handled here (eventstemplate IS NULL).
+     *
      * @param typeOfEvent
      * @param time
      * @return returns -1 if no such event exists
      */
-    private long getEventId(int typeOfEvent, String time) {
+    private long getEventIdOutsideEventsTemplate(int typeOfEvent, String time) {
         long eventId = -1;
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT " + COLUMN_ID + " FROM " + TABLE_EVENTS + " WHERE " +
                 COLUMN_TYPE_OF_EVENT +
-                " = ? AND " + COLUMN_DATETIME + " = ?";
+                " = ? AND " + COLUMN_DATETIME + " = ? AND " + COLUMN_EVENTSTEMPLATE + " IS NULL";
         Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(typeOfEvent), time});
         if (c != null) {
             if (c.moveToFirst()) {
@@ -479,7 +459,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     public void changeEvent(Event e) {
-        long eventId = getEventId(e);
+        long eventId = getEventIdOutsideEventsTemplate(e);
         changeEvent(eventId, e);
     }
     /**

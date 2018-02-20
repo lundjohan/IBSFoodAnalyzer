@@ -486,7 +486,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         intent.putExtra(EVENT_TO_CHANGE, event);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getContext());
-        long eventId = dbHandler.getEventId(event);
+        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);
         intent.putExtra(ID_OF_EVENT, eventId);
         startActivityForResult(intent, valueToReturn);
     }

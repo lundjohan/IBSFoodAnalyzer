@@ -16,6 +16,7 @@ import com.ibsanalyzer.model.EventsTemplate;
 import org.threeten.bp.LocalDate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.ibsanalyzer.constants.Constants.EVENTSTEMPLATE_TO_LOAD;
@@ -70,14 +71,18 @@ public class LoadEventsTemplateActivity extends EventsTemplateActivity implement
 
     @Override
     protected void saveToDiary() {
-        List<Event> eventsToReturn = et.getEvents();
-        for (Event e : eventsToReturn) {
+        List<Event> eventsFromTemplate = et.getEvents();
+        List<Event> eventsToReturnWithUniqueTypeAndTimes = new ArrayList<>();
+        for (Event e : eventsFromTemplate) {
             String ldStr = (String) dateView.getText();
             LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);
             e.setDate(ld);
+            if (!EventActivity.eventTypeAtSameTimeAlreadyExists(e.getType(),e.getTime(), getApplicationContext())){
+                eventsToReturnWithUniqueTypeAndTimes.add(e);
+            }
         }
         Intent intent = new Intent();
-        intent.putExtra(EVENTS_TO_LOAD, (Serializable) eventsToReturn);
+        intent.putExtra(EVENTS_TO_LOAD, (Serializable) eventsToReturnWithUniqueTypeAndTimes);
         setResult(RESULT_OK, intent);
         super.finish();
     }

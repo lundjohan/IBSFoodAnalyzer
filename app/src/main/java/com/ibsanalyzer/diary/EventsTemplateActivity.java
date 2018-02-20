@@ -11,12 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ibsanalyzer.base_classes.Bm;
 import com.ibsanalyzer.base_classes.Event;
-import com.ibsanalyzer.base_classes.Exercise;
-import com.ibsanalyzer.base_classes.Meal;
-import com.ibsanalyzer.base_classes.Other;
-import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
 import com.ibsanalyzer.info.ActivityInfoContent;
@@ -32,11 +27,6 @@ import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.ibsanalyzer.constants.Constants.TITLE_STRING;
-import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_BM;
-import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_EXERCISE;
-import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_MEAL;
-import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_OTHER;
-import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_RATING;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_BM;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_EXERCISE;
 import static com.ibsanalyzer.diary.EventsContainer.NEW_MEAL;
@@ -184,7 +174,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
                     "Activity (MealActivity etc)");
         }
         if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
-            Event event = (Meal) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
+            Event event = (Event)data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
             ec.changeEventInList(posInList, event);
         }
     }
@@ -257,7 +247,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         intent.putExtra(EVENT_TO_CHANGE, event);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        long eventId = dbHandler.getEventId(event);
+        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);
         intent.putExtra(ID_OF_EVENT, eventId);
         startActivityForResult(intent, valueToReturn);
     }
