@@ -204,7 +204,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ActivityInfoContent.class);
-                intent.putExtra(LAYOUT_RESOURCE, R.layout.dairy_info);
+                intent.putExtra(LAYOUT_RESOURCE, R.layout.info_diary);
                 intent.putExtra(TITLE_STRING, "Diary");
                 startActivity(intent);
             }
