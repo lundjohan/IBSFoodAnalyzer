@@ -10,10 +10,8 @@
     tools:layout_editor_absoluteY="8dp">
 
     <android.support.constraint.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <com.ibsanalyzer.custom_views.HeadLineLayout
             android:id="@+id/zeroAboutHeadLine"

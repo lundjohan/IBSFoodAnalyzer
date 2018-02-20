@@ -69,7 +69,7 @@ public abstract class TagTypeActivity extends AppCompatActivity implements View
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Intent intent = new Intent(getApplicationContext(), ActivityInfoContent.class);
-                intent.putExtra(LAYOUT_RESOURCE, R.layout.activity_add_tag_type_info);
+                intent.putExtra(LAYOUT_RESOURCE, R.layout.info_add_tag_type);
                 intent.putExtra(TITLE_STRING, getTitleStr());
                 startActivity(intent);
                 return true;

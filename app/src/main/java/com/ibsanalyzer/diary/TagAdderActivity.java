@@ -60,7 +60,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Intent intent = new Intent(getApplicationContext(), ActivityInfoContent.class);
-                intent.putExtra(LAYOUT_RESOURCE, R.layout.activity_add_tag_info);
+                intent.putExtra(LAYOUT_RESOURCE, R.layout.info_add_tag);
                 intent.putExtra(TITLE_STRING, TAG_TITLE);
                 startActivity(intent);
                 return true;
