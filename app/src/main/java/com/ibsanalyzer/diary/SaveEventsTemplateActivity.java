@@ -17,6 +17,11 @@ public class SaveEventsTemplateActivity extends EventsTemplateActivity {
     TextView nameView;
 
     @Override
+    protected String getTitleStr() {
+        return "Save EventsTemplate";
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

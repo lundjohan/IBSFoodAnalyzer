@@ -19,6 +19,7 @@ import com.ibsanalyzer.base_classes.Other;
 import com.ibsanalyzer.base_classes.Rating;
 import com.ibsanalyzer.constants.Constants;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.info.ActivityInfoContent;
 import com.ibsanalyzer.model.EventsTemplate;
 
 import java.util.Collections;
@@ -27,8 +28,10 @@ import java.util.List;
 import static com.ibsanalyzer.constants.Constants.EVENT_POSITION;
 import static com.ibsanalyzer.constants.Constants.EVENT_TO_CHANGE;
 import static com.ibsanalyzer.constants.Constants.ID_OF_EVENT;
+import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
 import static com.ibsanalyzer.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.ibsanalyzer.constants.Constants.RETURN_EVENT_SERIALIZABLE;
+import static com.ibsanalyzer.constants.Constants.TITLE_STRING;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_BM;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_EXERCISE;
 import static com.ibsanalyzer.diary.DiaryFragment.CHANGED_MEAL;
@@ -54,6 +57,20 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_info, menu);
+        menu.findItem(R.id.menu_info).setOnMenuItemClickListener(new MenuItem
+                .OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(getApplicationContext(), ActivityInfoContent.class);
+                intent.putExtra(LAYOUT_RESOURCE, R.layout.info_events_template);
+                intent.putExtra(TITLE_STRING, getTitleStr());
+                startActivity(intent);
+                return true;
+            }
+        });
+
         inflater.inflate(R.menu.done_menu, menu);
         menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
                 .OnMenuItemClickListener() {
@@ -68,6 +85,8 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         });
         return true;
     }
+
+    protected abstract String getTitleStr();
 
     private EventsTemplate createEventsTemplateForReturn() {
         String nameOfTemplate = getEndingName();

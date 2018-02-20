@@ -12,7 +12,6 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <com.ibsanalyzer.custom_views.HeadLineLayout
             android:id="@+id/zeroAboutHeadLine"
             android:layout_width="0dp"
@@ -30,7 +29,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
-            custom:textForH2="When to use Rating"/>
+            custom:textForH2="How to save an EventsTemplate?"/>
 
         <TextView
             android:id="@+id/infoMealText"
@@ -38,19 +37,38 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="This is a very special event type. Rating is forward-looking and, it will in last until the next Rating comes (unless there as been a break set on an event, or if the diary has been empty for too long - you can set how long in Settings). The idea is that every time should have a rating. Use it not only when you are feeling bad, bad also when you are feeling ok or phenomenal. The Rating event is essential for the calculations of statistics."
+            android:text="Mark an event item in the diary and press the disquette menu, and you should come here. Add a name for the EventsTemplate. You can add more events to your EventsTemplate or change them as you please. Note that the date of your events doesn't matter, they will be overridden by the date you choose to import it into. Time matters though."
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/z"/>
+        <com.ibsanalyzer.custom_views.SecondHeadLine
+            android:id="@+id/zi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoMealText"
+            custom:textForH2="How to load an EventsTemplate?"/>
+
+        <TextView
+            android:id="@+id/infoMealTex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Press the three dots of an EventsTemplate item, and choose 'Load into Diary'. Choose the date you want to load the diary into."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/zi"/>
 
         <com.ibsanalyzer.custom_views.SecondHeadLine
             android:id="@+id/FirstHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/infoMealText"
-            custom:textForH2="Setting Score"/>
+            app:layout_constraintTop_toBottomOf="@+id/infoMealTex"
+            custom:textForH2="How to edit an EventsTemplate"/>
 
         <TextView
             android:id="@+id/infoTypeOfExercise"
@@ -58,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="Are your symptoms making them being felt today? Awful? Or perhaps you feel great? (If it is not the latter, keep faith in that even the bad days are good for understanding your problems and what to do or avoid in the future)."
+            android:text="Edit the events of the EventsTemplate like you would have edited events in the diary. You can add and remove events as you please."
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

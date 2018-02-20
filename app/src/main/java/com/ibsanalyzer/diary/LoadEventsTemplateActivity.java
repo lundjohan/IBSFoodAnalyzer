@@ -27,6 +27,11 @@ public class LoadEventsTemplateActivity extends EventsTemplateActivity implement
     EventsTemplate et;
 
     @Override
+    protected String getTitleStr() {
+        return "Load EventsTemplate";
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
         if (intent.hasExtra(EVENTSTEMPLATE_TO_LOAD)) {

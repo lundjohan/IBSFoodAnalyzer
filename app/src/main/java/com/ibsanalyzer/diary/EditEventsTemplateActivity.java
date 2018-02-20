@@ -25,6 +25,11 @@ public class EditEventsTemplateActivity extends EventsTemplateActivity {
     }
 
     @Override
+    protected String getTitleStr() {
+        return "Edit EventsTemplate";
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
         if (intent.hasExtra(EVENTSTEMPLATE_TO_CHANGE)) {
