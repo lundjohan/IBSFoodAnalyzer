@@ -1,25 +1,33 @@
 package com.ibsanalyzer.diary;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.ibsanalyzer.adapters.EventsTemplateAdapter;
 import com.ibsanalyzer.base_classes.Event;
 import com.ibsanalyzer.database.DBHandler;
+import com.ibsanalyzer.info.ActivityInfoContent;
 import com.ibsanalyzer.util.Util;
 
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.LAYOUT_RESOURCE;
+import static com.ibsanalyzer.constants.Constants.TITLE_STRING;
+
 
 public class TemplateFragment extends Fragment {
+    final String TITLE_STR = "EventsTemplates";
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -50,7 +58,23 @@ public class TemplateFragment extends Fragment {
         adapter = new EventsTemplateAdapter(this, cursor, width);
         recyclerView.setAdapter(adapter);
         callback = (TemplateFragmentListener) getActivity();
-        callback.fixToolBarForTemplateFragment();
+
+        ImageButton infoBtn = (ImageButton) v.findViewById(R.id.info_eventsTemplate_btn);
+        infoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ActivityInfoContent.class);
+                intent.putExtra(LAYOUT_RESOURCE, R.layout.info_events_template_fragment);
+                intent.putExtra(TITLE_STRING, "Diary");
+                startActivity(intent);
+            }
+        });
+
+
+        Toolbar eventsTemplateToolBar = (Toolbar)v.findViewById(R.id.toolbar4);
+        eventsTemplateToolBar.setTitle(TITLE_STR);
+        //v.setSupportActionBar(eventsTemplateToolBar);
+        //callback.fixToolBarForTemplateFragment();
         return v;
     }
 
