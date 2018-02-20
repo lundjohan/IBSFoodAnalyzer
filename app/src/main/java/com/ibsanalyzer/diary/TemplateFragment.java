@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -65,14 +66,14 @@ public class TemplateFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ActivityInfoContent.class);
                 intent.putExtra(LAYOUT_RESOURCE, R.layout.info_events_template_fragment);
-                intent.putExtra(TITLE_STRING, "Diary");
+                intent.putExtra(TITLE_STRING, TITLE_STR);
                 startActivity(intent);
             }
         });
 
-
-        Toolbar eventsTemplateToolBar = (Toolbar)v.findViewById(R.id.toolbar4);
-        eventsTemplateToolBar.setTitle(TITLE_STR);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(TITLE_STR);
+        //Toolbar eventsTemplateToolBar = (Toolbar)v.findViewById(R.id.toolbar4);
+        //eventsTemplateToolBar.setTitle(TITLE_STR);
         //v.setSupportActionBar(eventsTemplateToolBar);
         //callback.fixToolBarForTemplateFragment();
         return v;
