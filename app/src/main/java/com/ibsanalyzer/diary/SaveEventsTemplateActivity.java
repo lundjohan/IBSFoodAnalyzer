@@ -54,6 +54,9 @@ public class SaveEventsTemplateActivity extends EventsTemplateActivity {
     }
 
     @Override
+    protected void saveToDiary() {}
+
+    @Override
     protected String getEndingName() {
         return nameView.getText().toString();
     }

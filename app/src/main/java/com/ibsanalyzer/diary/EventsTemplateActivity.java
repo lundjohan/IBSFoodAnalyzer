@@ -79,6 +79,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
             public boolean onMenuItemClick(MenuItem item) {
                 EventsTemplate toReturn = createEventsTemplateForReturn();
                 saveToDB(toReturn);
+                saveToDiary();
                 finish();
                 return true;
             }
@@ -137,9 +138,11 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
     protected abstract void saveToDB(EventsTemplate et);
 
+    protected abstract void saveToDiary();
+
     @Override
     public void onBackPressed() {
-        finish();
+        super.onBackPressed();
     }
 
     //in case API<21 onBackPressed is not called
@@ -265,4 +268,5 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec.eventList = getStartingEvents();
         ec.adapter.notifyDataSetChanged();
     }
+
 }

@@ -68,14 +68,8 @@ public class LoadEventsTemplateActivity extends EventsTemplateActivity implement
     protected void saveToDB(EventsTemplate et) {
     }
 
-
-    /**
-     * Send back data to TemplateFragment
-     *
-     * @param
-     */
     @Override
-    public void finish() {
+    protected void saveToDiary() {
         List<Event> eventsToReturn = et.getEvents();
         for (Event e : eventsToReturn) {
             String ldStr = (String) dateView.getText();
@@ -87,6 +81,8 @@ public class LoadEventsTemplateActivity extends EventsTemplateActivity implement
         setResult(RESULT_OK, intent);
         super.finish();
     }
+
+
     /**
      * when user wants to change date.
      */

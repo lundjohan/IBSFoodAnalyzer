@@ -25,6 +25,9 @@ public class EditEventsTemplateActivity extends EventsTemplateActivity {
     }
 
     @Override
+    protected void saveToDiary() { }
+
+    @Override
     protected String getTitleStr() {
         return "Edit EventsTemplate";
     }
