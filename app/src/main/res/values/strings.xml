@@ -34,6 +34,22 @@
         2.0\tAwful\n
         1.0\tAbysmal
     </string>
+    <string name="complete_info_score">SCORE\tNAME\n
+        5.0\tPhenomenal\n
+        4.0\tGood\n
+        3.0\tDeficient\n
+        2.0\tBad\n
+        1.0\tAbysmal
+    </string>
+    <string name="bristol_info_score">SCALE\tDESCRIPTION\n
+        7.0\tLiquid\n
+        6.0\tMushy with ragged edges\n
+        5.0\tSoft blobs with clear edges\n
+        4.0\tSmooth sausaget\n
+        3.0\tSausage with cracked surface\n
+        2.0\tLumpy Sausage\n
+        1.0\tSeperate hard lumps
+    </string>
 
     <string name="avg_rating_pref_wait_key">avg_rating_stat_wait_hours_after_event</string>
     <string name="avg_rating_pref_stop_key">avg_rating_stat_stop_hours_after_event</string>

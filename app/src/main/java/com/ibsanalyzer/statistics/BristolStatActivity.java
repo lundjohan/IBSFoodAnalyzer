@@ -50,4 +50,9 @@ public class BristolStatActivity extends StatActivity {
     public String getStringForTitle() {
         return "Bristol Type";
     }
+
+    @Override
+    protected String getInfoStr() {
+        return getResources().getString(R.string.bristol_info_score);
+    }
 }

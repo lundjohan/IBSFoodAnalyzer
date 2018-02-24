@@ -6,6 +6,7 @@ import com.ibsanalyzer.adapters.BmStatAdapter;
 import com.ibsanalyzer.adapters.StatAdapter;
 import com.ibsanalyzer.calc_score_classes.BristolScoreWrapper;
 import com.ibsanalyzer.calc_score_classes.CompleteScoreWrapper;
+import com.ibsanalyzer.diary.R;
 
 public class CompleteStatActivity extends BristolStatActivity {
     @Override
@@ -20,5 +21,10 @@ public class CompleteStatActivity extends BristolStatActivity {
     @Override
     public String getStringForTitle() {
         return "Complete Score";
+    }
+
+    @Override
+    protected String getInfoStr() {
+        return getResources().getString(R.string.complete_info_score);
     }
 }

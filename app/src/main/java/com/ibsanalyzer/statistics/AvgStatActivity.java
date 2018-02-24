@@ -13,6 +13,11 @@ import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_AVG;
 
 public class AvgStatActivity extends StatActivity {
     @Override
+    protected String getInfoStr() {
+        return getResources().getString(R.string.avg_info_score);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

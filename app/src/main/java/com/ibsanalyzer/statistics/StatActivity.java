@@ -1,6 +1,5 @@
 package com.ibsanalyzer.statistics;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,16 +47,18 @@ public abstract class StatActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                doneClicked();
+                infoClicked();
                 return true;
             }
         });
         return true;
     }
 
-    private void doneClicked(){
-        InfoActivity.newInfoActivity(this, getResources().getString(R.string.avg_info_score));
+    private void infoClicked(){
+        InfoActivity.newInfoActivity(this, getInfoStr());
     }
+    protected abstract String getInfoStr();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
