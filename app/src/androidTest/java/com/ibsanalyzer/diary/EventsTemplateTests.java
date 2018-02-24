@@ -127,10 +127,6 @@ public class EventsTemplateTests {
                 allOf(withId(R.id.menu_done), withText("DONE"), withContentDescription("DONE"),
                         isDisplayed())).perform(click());
 
-//ok inside templates view?
-        onView(
-                allOf(withId(R.id.template_btn), isDisplayed())).perform(click());
-
         //TODO here, check that one item is in eventstemplate list
 
         //ok inside diary view

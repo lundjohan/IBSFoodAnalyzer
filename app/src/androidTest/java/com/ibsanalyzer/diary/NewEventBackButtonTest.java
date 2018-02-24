@@ -7,7 +7,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.ibsanalyzer.drawer.DrawerActivity;
+import com.ibsanalyzer.help_classes.AndroidTestUtil;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +37,11 @@ public class NewEventBackButtonTest {
     @Rule
     public IntentsTestRule<DrawerActivity> mActivityTestRule = new IntentsTestRule<DrawerActivity>
             (DrawerActivity.class);
+
+    @Before
+    public void clearDatabase(){
+        AndroidTestUtil.clearDatabaseByClicking();
+    }
 
 
     //create a rating event in beginning, it will later check that it remains in view after back

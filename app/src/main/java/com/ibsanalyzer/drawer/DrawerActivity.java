@@ -168,7 +168,7 @@ public class DrawerActivity extends AppCompatActivity
             case R.id.nav_statistics:
                 fragment = new StatOptionsFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
+                        .replace(R.id.fragment_container, fragment)
                         .commit();
                 break;
 
@@ -311,7 +311,7 @@ public class DrawerActivity extends AppCompatActivity
         this.dateBeforeTemplate = date;
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, DIARY_CONTAINER).addToBackStack(null)
+                .replace(R.id.fragment_container, fragment).addToBackStack(null)
                 .commit();
     }
 
