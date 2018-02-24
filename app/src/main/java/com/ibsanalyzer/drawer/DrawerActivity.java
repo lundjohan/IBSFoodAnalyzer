@@ -284,15 +284,6 @@ public class DrawerActivity extends AppCompatActivity
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
 
     }
-    /*
-    This is needed to avoid duplication of views over each other when resuming
-     */
-    @Override
-    public void onResume(){
-        super.onResume();
-        //this date should be cached.
-        startDiaryAtDate(LocalDate.now());
-    }
 
     @Override
     public void fixToolBarForTemplateFragment() {
@@ -413,7 +404,21 @@ public class DrawerActivity extends AppCompatActivity
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
+    /*
+This is needed to avoid duplication of views over each other when resuming
+ */
+    @Override
+    public void onResume(){
+        super.onResume();
+        startDiaryAtLastDate();
+    }
 
+    private void startDiaryAtLastDate(){
+        final DBHandler dbImport = new DBHandler(getApplication());
+        LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
+        lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
+        startDiaryAtDate(lastDateOfEvents);
+    }
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
         File file = null;
@@ -432,10 +437,7 @@ public class DrawerActivity extends AppCompatActivity
         protected void onPostExecute(Void notUsed) {
             //after db has been replaced, make the date shown for user the last date filled in
             // new db.
-            final DBHandler dbImport = new DBHandler(getApplication());
-            LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
-            lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
-            startDiaryAtDate(lastDateOfEvents);
+            startDiaryAtLastDate();
         }
     }
 
@@ -472,5 +474,7 @@ public class DrawerActivity extends AppCompatActivity
             lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
             startDiaryAtDate(lastDateOfEvents);
         }
+
+
     }
 }
