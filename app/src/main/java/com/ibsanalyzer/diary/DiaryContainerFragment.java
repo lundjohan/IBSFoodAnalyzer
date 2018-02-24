@@ -52,6 +52,12 @@ public class DiaryContainerFragment extends Fragment {
         return view;
     }
 
+    //just testing
+    public LocalDate extractDateFromDiary(){
+        return startDate;
+    }
+
+
     //Internal adapter class
     private class DiarySlidePagerAdapter extends FragmentStatePagerAdapter {
         public DiarySlidePagerAdapter(FragmentManager fm) {

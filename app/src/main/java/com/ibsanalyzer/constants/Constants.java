@@ -24,6 +24,9 @@ public class Constants {
     //Swipe in Diary
     public final static String SWIPING_TO_DATE = "swipingToDate";
 
+    //saved instance state drawer activity
+    public final static String DIARY_CONTAINER = "dairyContainerFragment";
+
 
     public final static int TAGS_TO_ADD = 4444;
     public final static int TAGTEMPLATE_TO_ADD = 4445;

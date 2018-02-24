@@ -42,6 +42,7 @@ import org.threeten.bp.LocalDate;
 import java.io.File;
 import java.util.List;
 
+import static com.ibsanalyzer.constants.Constants.DIARY_CONTAINER;
 import static com.ibsanalyzer.constants.Constants.EVENTS_TO_LOAD;
 import static com.ibsanalyzer.constants.Constants.IMPORT_DATABASE;
 import static com.ibsanalyzer.constants.Constants.IMPORT_FROM_CSV_FILE;
@@ -78,13 +79,33 @@ public class DrawerActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initiateFragment();
+
+        //TODO problably could easily integrate below into initiateFragment or something like that.
+        //Problably very inefficient right now, with fragment being drawn several times over
+        //and nb: this is called all the time
+        if(savedInstanceState!= null){
+            dateBeforeTemplate = (LocalDate)savedInstanceState.getSerializable(LOCALDATE);
+            startDiaryAtDate(dateBeforeTemplate);
+
+        }
+        else{
+            //this is important because it is cleaned of screen behind. Otherwise double views on top of each other.
+            startDiaryAtLastDate();
+        }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        DiaryContainerFragment diaryContainer= (DiaryContainerFragment) getSupportFragmentManager().findFragmentByTag(DIARY_CONTAINER);
+        if (diaryContainer != null && diaryContainer.isVisible()) {
+            savedInstanceState.putSerializable(LOCALDATE, diaryContainer.extractDateFromDiary());
+        }
+    }
     private void initiateFragment() {
         Fragment fragment = new DiaryContainerFragment();
         FragmentManager transaction = getSupportFragmentManager();
         transaction.beginTransaction()
-                .add(R.id.fragment_container, fragment)
+                .add(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
     }
 
@@ -140,14 +161,14 @@ public class DrawerActivity extends AppCompatActivity
             case R.id.nav_diary:
                 fragment = new DiaryContainerFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
+                        .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
                         .commit();
                 break;
 
             case R.id.nav_statistics:
                 fragment = new StatOptionsFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
+                        .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
                         .commit();
                 break;
 
@@ -290,7 +311,7 @@ public class DrawerActivity extends AppCompatActivity
         this.dateBeforeTemplate = date;
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment).addToBackStack(null)
+                .replace(R.id.fragment_container, fragment, DIARY_CONTAINER).addToBackStack(null)
                 .commit();
     }
 
@@ -346,7 +367,7 @@ public class DrawerActivity extends AppCompatActivity
         args.putSerializable(LOCALDATE, dateBeforeTemplate);
         fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
     }
 
@@ -420,16 +441,8 @@ public class DrawerActivity extends AppCompatActivity
         args.putSerializable(LOCALDATE, ld);
         fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
-    }
-    /*
-This is needed to avoid duplication of views over each other when resuming
- */
-    @Override
-    public void onResume(){
-        super.onResume();
-        startDiaryAtLastDate();
     }
 
     private void startDiaryAtLastDate(){
