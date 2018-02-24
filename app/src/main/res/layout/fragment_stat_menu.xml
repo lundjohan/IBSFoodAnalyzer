@@ -13,7 +13,7 @@
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent">
 
-        <com.ibsanalyzer.custom_views.HeadLineLayout
+        <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/firstHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             custom:textString="Average Stat"
             custom:idOfInfoBtn="@+id/avgInfoItem"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/avgRatingItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             custom:idOfSettingsBtn="@+id/avgSettingsRatingItem"
             custom:textStatMenu="Rating"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/avgCompleteItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             custom:idOfSettingsBtn="@+id/avgSettingsCompleteItem"
             custom:textStatMenu="Completeness"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/avgBristolItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             custom:idOfSettingsBtn="@+id/avgSettingsBristolItem"
             custom:textStatMenu="Bristol"/>
 
-        <com.ibsanalyzer.custom_views.HeadLineLayout
+        <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/secondHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             custom:notReady="true"
             custom:idOfInfoBtn="@+id/freqInfoItem"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/freqRatingItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
             custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
             custom:textStatMenu="Rating"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/freqCompleteItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
             custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
             custom:textStatMenu="Completeness"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/freqBristolItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
             custom:textStatMenu="Bristol"/>
 
-        <com.ibsanalyzer.custom_views.HeadLineLayout
+        <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/thirdHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
             custom:notReady="true"
             custom:idOfInfoBtn="@+id/timeInfoItem"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/timeRatingItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
             custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
             custom:textStatMenu="Rating"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/timeCompleteItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
             custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
             custom:textStatMenu="Completeness"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/timeBristolItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
             custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
             custom:textStatMenu="Bristol"/>
 
-        <com.ibsanalyzer.custom_views.HeadLineLayout
+        <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/fourthHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
             custom:notReady="true"
             custom:idOfInfoBtn="@+id/portionsInfoItem"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/portionsRatingItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
             custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
             custom:textStatMenu="Rating"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/portionsCompleteItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -207,7 +207,7 @@
             custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
             custom:textStatMenu="Completeness"/>
 
-        <com.ibsanalyzer.custom_views.StatMenuItemLayout
+        <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/portionsBristolItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.ibsanalyzer.custom_views.HeadLineLayout
+        <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/zeroAboutHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             custom:infoBtnExists="false"
             custom:textString="Concepts"/>
 
-        <com.ibsanalyzer.custom_views.SecondHeadLine
+        <com.johanlund.custom_views.SecondHeadLine
             android:id="@+id/z"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/z"/>
 
-        <com.ibsanalyzer.custom_views.SecondHeadLine
+        <com.johanlund.custom_views.SecondHeadLine
             android:id="@+id/FirstHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/FirstHeadLine"/>
 
-        <com.ibsanalyzer.custom_views.SecondHeadLine
+        <com.johanlund.custom_views.SecondHeadLine
             android:id="@+id/FirstHeadLin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

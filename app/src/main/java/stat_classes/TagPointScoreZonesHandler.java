@@ -1,11 +1,11 @@
 package stat_classes;
 
-import com.ibsanalyzer.base_classes.Chunk;
-import com.ibsanalyzer.base_classes.Rating;
-import com.ibsanalyzer.base_classes.Tag;
-import com.ibsanalyzer.tagpoint_classes.TagPoint;
-import com.ibsanalyzer.util.IBSUtil;
-import com.ibsanalyzer.util.TimePeriod;
+import com.johanlund.base_classes.Chunk;
+import com.johanlund.base_classes.Rating;
+import com.johanlund.base_classes.Tag;
+import com.johanlund.tagpoint_classes.TagPoint;
+import com.johanlund.util.IBSUtil;
+import com.johanlund.util.TimePeriod;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ibsanalyzer.constants.Constants.MAX_RATING_SCORE;
+import static com.johanlund.constants.Constants.MAX_RATING_SCORE;
 
 public class TagPointScoreZonesHandler {
     /*

@@ -10,9 +10,9 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.ibsanalyzer.about.AboutActivity">
+        tools:context="com.johanlund.about.AboutActivity">
 
-        <com.ibsanalyzer.custom_views.HeadLineLayout
+        <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/zeroAboutHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
             tools:layout_editor_absoluteY="80dp"/>
 
-        <com.ibsanalyzer.custom_views.HeadLineLayout
+        <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/firstAboutHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
             app:layout_constraintTop_toBottomOf="@+id/apacheHeadLine"
             tools:layout_editor_absoluteY="80dp"/>
 
-        <com.ibsanalyzer.custom_views.HeadLineLayout
+        <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/developerHeadLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

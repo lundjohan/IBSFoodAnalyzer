@@ -1,16 +1,16 @@
 package stat_classes;
 
-import com.ibsanalyzer.base_classes.Chunk;
-import com.ibsanalyzer.base_classes.Meal;
-import com.ibsanalyzer.tagpoint_classes.TagPoint;
-import com.ibsanalyzer.util.TPUtil;
+import com.johanlund.base_classes.Chunk;
+import com.johanlund.base_classes.Meal;
+import com.johanlund.tagpoint_classes.TagPoint;
+import com.johanlund.util.TPUtil;
 
 import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.ibsanalyzer.constants.Constants.ZONE_ID;
+import static com.johanlund.constants.Constants.ZONE_ID;
 
 public class TagPointPortionsHandler {
 

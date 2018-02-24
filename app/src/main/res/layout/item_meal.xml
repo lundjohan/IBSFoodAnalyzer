@@ -5,7 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
-    <com.ibsanalyzer.custom_views.EventLayout
+    <com.johanlund.custom_views.EventLayout
         android:id="@+id/meal_item_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
