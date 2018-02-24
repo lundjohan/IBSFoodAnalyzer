@@ -192,9 +192,28 @@ public class DrawerActivity extends AppCompatActivity
                 showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
                 break;
             case R.id.clearDBItem:
-                DBHandler dbHandler = new DBHandler(getApplicationContext());
-                dbHandler.deleteAllTablesRowsExceptTagTemplates();
-                startDiaryAtDate(LocalDate.now());
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(false).
+                        setTitle("Clear Database?").
+                        setMessage("Warning! Are you sure you want to erase all of the diary?").
+                        setCancelable(true).
+                        setNegativeButton(android.R.string.cancel, new DialogInterface
+                                .OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).
+                        setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                DBHandler dbHandler = new DBHandler(getApplicationContext());
+                                dbHandler.deleteAllTablesRowsExceptTagTemplates();
+                                startDiaryAtDate(LocalDate.now());
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+
                 break;
 
             case R.id.aboutItem:
