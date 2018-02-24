@@ -284,6 +284,15 @@ public class DrawerActivity extends AppCompatActivity
     public void addEventsFromEventsTemplateToDiary(List<Event> events) {
 
     }
+    /*
+    This is needed to avoid duplication of views over each other when resuming
+     */
+    @Override
+    public void onResume(){
+        super.onResume();
+        //this date should be cached.
+        startDiaryAtDate(LocalDate.now());
+    }
 
     @Override
     public void fixToolBarForTemplateFragment() {
