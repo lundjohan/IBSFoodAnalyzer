@@ -1162,7 +1162,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
                         eventList.add(event);
                         c.moveToNext();
-                    } catch (CorruptedEventException e) {
+                    } catch (Exception e) {
                         Log.e(TAG, "Something went wrong reading an event, jumping to next");
                         Log.e(TAG, "exception", e);
                         c.moveToNext();

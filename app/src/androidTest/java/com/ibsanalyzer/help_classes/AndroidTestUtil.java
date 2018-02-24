@@ -9,10 +9,10 @@ import com.ibsanalyzer.diary.R;
 import com.ibsanalyzer.drawer.DrawerActivity;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.Month;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -25,26 +25,16 @@ import static org.hamcrest.Matchers.allOf;
  */
 
 public class AndroidTestUtil {
-    public static void clearDatabase(Context context){
+    public static void clearDatabaseByClickingAndInternally(Context context){
         DBHandler dbHandler = new DBHandler(context);
         dbHandler.deleteAllTablesRows();
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Open navigation drawer"),
-                        withParent(withId(R.id.toolbar)),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
-
-        ViewInteraction appCompatCheckedTextView = onView(
-                allOf(withId(R.id.design_menu_item_text), withText("Clear database"), isDisplayed
-                        ()));
-        appCompatCheckedTextView.perform(click());
+        clearDatabaseByClicking();
     }
 
     /*
     In case context is not available
      */
-    public static void clearDatabase() {
+    public static void clearDatabaseByClicking() {
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open navigation drawer"),
                         withParent(withId(R.id.toolbar)),
@@ -55,6 +45,10 @@ public class AndroidTestUtil {
                 allOf(withId(R.id.design_menu_item_text), withText("Clear database"), isDisplayed
                         ()));
         appCompatCheckedTextView.perform(click());
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(android.R.id.button1), withText("OK")));
+        appCompatButton.perform(scrollTo(), click());
     }
     public static void changeDate (ActivityTestRule<DrawerActivity> activityTestRule, LocalDate date){
         activityTestRule.getActivity().changeDate(date);

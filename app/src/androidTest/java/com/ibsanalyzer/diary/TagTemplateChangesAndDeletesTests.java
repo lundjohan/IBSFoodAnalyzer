@@ -47,7 +47,7 @@ public class TagTemplateChangesAndDeletesTests {
 
     @Before
     public void clearDatabase(){
-        AndroidTestUtil.clearDatabase(mActivityTestRule.getActivity().getApplicationContext());
+        AndroidTestUtil.clearDatabaseByClickingAndInternally(mActivityTestRule.getActivity().getApplicationContext());
     }
 
     private void goToTagAdderActivity(){

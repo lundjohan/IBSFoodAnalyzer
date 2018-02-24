@@ -69,7 +69,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
 
     @Before
     public void clearDatabase(){
-        AndroidTestUtil.clearDatabase();
+        AndroidTestUtil.clearDatabaseByClicking();
     }
 
     public static Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event event) {

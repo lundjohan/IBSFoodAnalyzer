@@ -26,14 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -59,7 +56,7 @@ public class EventsTemplateTests {
 
     @Before
     public void clearDatabase() {
-        AndroidTestUtil.clearDatabase(mActivityTestRule.getActivity().getApplicationContext());
+        AndroidTestUtil.clearDatabaseByClickingAndInternally(mActivityTestRule.getActivity().getApplicationContext());
     }
 
     @Before
@@ -130,9 +127,6 @@ public class EventsTemplateTests {
                 allOf(withId(R.id.menu_done), withText("DONE"), withContentDescription("DONE"),
                         isDisplayed())).perform(click());
 
-
-        onView(
-                allOf(withId(R.id.cancel_btn), isDisplayed())).perform(click());
 //ok inside templates view?
         onView(
                 allOf(withId(R.id.template_btn), isDisplayed())).perform(click());
