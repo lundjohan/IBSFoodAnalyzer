@@ -79,7 +79,7 @@
                 <data android:mimeType="*/*"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.ibsanalyzer.statistics.AverageStatActivity">
+        <activity android:name="com.ibsanalyzer.statistics.AvgStatActivity">
         </activity>
         <activity android:name="com.ibsanalyzer.statistics.BlueZoneStatActivity">
         </activity>

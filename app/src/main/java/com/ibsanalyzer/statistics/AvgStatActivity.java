@@ -11,7 +11,7 @@ import com.ibsanalyzer.diary.R;
 
 import static com.ibsanalyzer.constants.Constants.HOURS_AHEAD_FOR_AVG;
 
-public class AverageStatActivity extends StatActivity {
+public class AvgStatActivity extends StatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

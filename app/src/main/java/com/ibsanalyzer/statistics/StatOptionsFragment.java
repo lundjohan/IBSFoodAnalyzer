@@ -70,7 +70,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
             //to stat
             case avgRatingItem:
-                newStatActivity(new AverageStatActivity());
+                newStatActivity(new AvgStatActivity());
                 break;
             case R.id.avgCompleteItem:
                 newStatActivity(new CompleteStatActivity());
