@@ -34,7 +34,12 @@ public class BristolScoreWrapper extends ScoreWrapper {
     }
 
     @Override
+    protected double getQuantityOfTagPoint(TagPoint tp) {
+        return tp.getNrOfBMs();
+    }
+
+    @Override
     public int getQuantityLimit() {
-        return 0;
+        return quantLimit;
     }
 }

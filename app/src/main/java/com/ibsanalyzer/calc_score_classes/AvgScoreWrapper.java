@@ -33,6 +33,11 @@ public class AvgScoreWrapper extends ScoreWrapper {
     }
 
     @Override
+    protected double getQuantityOfTagPoint(TagPoint tp) {
+        return tp.getQuantity();
+    }
+
+    @Override
     public int getQuantityLimit() {
         return quantLimit;
     }

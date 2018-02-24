@@ -85,15 +85,21 @@ public abstract class ScoreWrapper {
      * @param limit inclusive
      * @return
      */
-    public static List<TagPoint> removeTagPointsWithTooLowQuant(List<TagPoint> tpList, int limit){
+    public List<TagPoint> removeTagPointsWithTooLowQuant(List<TagPoint> tpList, int limit){
         List<TagPoint>trimmedTpList = new ArrayList<>();
         for (TagPoint tp:tpList){
-            if(tp.getQuantity()>=limit){
+            if(getQuantityOfTagPoint(tp)>=limit){
                 trimmedTpList.add(tp);
             }
         }
         return trimmedTpList;
     }
+
+    /**
+     * Statistics counting on Average and BM uses different quanitity parameters (quantity and nrOfBms)
+     * @return
+     */
+    protected abstract double getQuantityOfTagPoint(TagPoint tp);
 
     public abstract int getQuantityLimit();
 }

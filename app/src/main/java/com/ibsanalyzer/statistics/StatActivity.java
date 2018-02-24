@@ -145,7 +145,7 @@ public abstract class StatActivity extends AppCompatActivity {
             List<TagPoint> sortedList = wrapper.toSortedList(tagPoints);
 
             //remove tagPoints with too low amount of quantity
-            return ScoreWrapper.removeTagPointsWithTooLowQuant(sortedList, wrapper.getQuantityLimit());
+            return wrapper.removeTagPointsWithTooLowQuant(sortedList, wrapper.getQuantityLimit());
         }
 
 
