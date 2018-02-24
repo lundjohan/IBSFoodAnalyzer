@@ -11,5 +11,5 @@
         android:layout_height="wrap_content"
         custom:hasTags="false"
         custom:itemColor="@color/colorWineRed"
-        custom:itemImg="@drawable/ic_grade_black_24dp"/>
+        custom:itemImg="@drawable/event_rating_24dp"/>
 </LinearLayout>

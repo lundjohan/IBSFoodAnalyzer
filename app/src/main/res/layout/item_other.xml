@@ -11,5 +11,5 @@
         android:layout_height="wrap_content"
         custom:hasTags="true"
         custom:itemColor="@color/colorPurple"
-        custom:itemImg="@drawable/ic_help_outline_black_24dp"/>
+        custom:itemImg="@drawable/event_other_24dp"/>
 </LinearLayout>

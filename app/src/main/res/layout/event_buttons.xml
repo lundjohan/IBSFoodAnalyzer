@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/otherBtn"
-        app:srcCompat="@drawable/meal_34dp"/>
+        app:srcCompat="@drawable/event_meal_34dp"/>
 
     <ImageButton
         android:id="@+id/otherBtn"
@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/mealBtn"
         app:layout_constraintRight_toLeftOf="@+id/exerciseBtn"
-        app:srcCompat="@drawable/ic_help_outline_black_34dp"/>
+        app:srcCompat="@drawable/event_other_34dp"/>
 
     <ImageButton
         android:id="@+id/exerciseBtn"
@@ -46,7 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/otherBtn"
         app:layout_constraintRight_toLeftOf="@+id/bmBtn"
-        app:srcCompat="@drawable/ic_pool_black_34dp"/>
+        app:srcCompat="@drawable/event_exercise_34dp"/>
 
     <ImageButton
         android:id="@+id/bmBtn"
@@ -61,7 +61,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/exerciseBtn"
         app:layout_constraintRight_toLeftOf="@+id/ratingBtn"
-        app:srcCompat="@drawable/ic_wc_black_34dp"/>
+        app:srcCompat="@drawable/event_bm_34dp"/>
 
     <ImageButton
         android:id="@+id/ratingBtn"
@@ -74,5 +74,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/bmBtn"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_grade_black_34dp"/>
+        app:srcCompat="@drawable/event_rating_34dp"/>
 </android.support.constraint.ConstraintLayout>
