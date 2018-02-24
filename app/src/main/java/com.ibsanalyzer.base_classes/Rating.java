@@ -41,7 +41,7 @@ public class Rating extends Event {
                 text = "Deficient";
                 break;
             case 5:
-                text = "Good";
+                text = "OK";
                 break;
             case 6:
                 text = "Great";
