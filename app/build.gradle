@@ -1,14 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        Release {
+            keyAlias 'johanlund'
+            keyPassword 'snorre1241'
+            storeFile file('C:/Users/Johan/.android/deployment_cert.der')
+            storePassword 'MD5: 46:FC:63:CC:EC:39:BE:19:FA:7E:DA:1D:FE:13:DE:22'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.johanlund.ibsfoodanalyzer"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.01"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
     }
@@ -18,11 +26,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
         // Necessary to avoid version conflicts
         exclude group: 'com.android.support', module: 'appcompat'
@@ -31,13 +41,10 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
     /*Works as replacement for java 8 missing features in android, specifiacally java.time.api - Johan*/
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
-
-    compile project(":aFileChooser")
-
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile project(':aFileChooser')
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
-
+    compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:preference-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
