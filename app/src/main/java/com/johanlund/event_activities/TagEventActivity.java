@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.event_activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -14,6 +14,8 @@ import com.johanlund.adapters.TagAdapter;
 import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.database.DBHandler;
+import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.ibsfoodanalyzer.TagAdderActivity;
 import com.johanlund.model.TagTemplate;
 
 import java.util.ArrayList;

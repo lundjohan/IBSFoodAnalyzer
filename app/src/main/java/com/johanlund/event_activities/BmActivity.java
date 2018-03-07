@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.event_activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.johanlund.base_classes.Bm;
+import com.johanlund.ibsfoodanalyzer.R;
 
 import static com.johanlund.constants.Constants.BM;
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;

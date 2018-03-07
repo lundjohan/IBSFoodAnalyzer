@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.event_activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.johanlund.base_classes.Meal;
+import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.util.Util;
 
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;

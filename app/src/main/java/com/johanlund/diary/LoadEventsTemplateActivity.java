@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.diary;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.johanlund.base_classes.Event;
 import com.johanlund.date_time.DatePickerFragment;
 import com.johanlund.date_time.DateTimeFormat;
+import com.johanlund.event_activities.EventActivity;
+import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
 
 import org.threeten.bp.LocalDate;

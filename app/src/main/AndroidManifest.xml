@@ -13,28 +13,28 @@
         android:roundIcon="@mipmap/foodanalyzer_rounded"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.johanlund.ibsfoodanalyzer.MealActivity">
+        <activity android:name="com.johanlund.event_activities.MealActivity">
         </activity>
-        <activity android:name="com.johanlund.ibsfoodanalyzer.RatingActivity">
+        <activity android:name="com.johanlund.event_activities.RatingActivity">
         </activity>
-        <activity android:name="com.johanlund.ibsfoodanalyzer.BmActivity">
+        <activity android:name="com.johanlund.event_activities.BmActivity">
         </activity>
         <activity android:name="com.johanlund.ibsfoodanalyzer.TagAdderActivity"/>
-        <activity android:name="com.johanlund.ibsfoodanalyzer.OtherActivity">
+        <activity android:name="com.johanlund.event_activities.OtherActivity">
         </activity>
-        <activity android:name="com.johanlund.ibsfoodanalyzer.ExerciseActivity">
+        <activity android:name="com.johanlund.event_activities.ExerciseActivity">
         </activity>
         <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
         <activity
-            android:name="com.johanlund.ibsfoodanalyzer.SaveEventsTemplateActivity"
+            android:name="com.johanlund.diary.SaveEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name="com.johanlund.ibsfoodanalyzer.EditEventsTemplateActivity"
+            android:name="com.johanlund.diary.EditEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name="com.johanlund.ibsfoodanalyzer.LoadEventsTemplateActivity"
+            android:name = "com.johanlund.diary.LoadEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
@@ -97,7 +97,7 @@
                 android:value="com.johanlund.statistics_settings.PortionStatSettingsActivity"/>
         </activity>
         <activity
-            android:name="com.johanlund.drawer.DrawerActivity"
+            android:name="com.johanlund.main.DrawerActivity"
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -114,10 +114,10 @@
         </activity>
         <activity
             android:name="com.johanlund.about.AboutActivity"
-            android:parentActivityName="com.johanlund.drawer.DrawerActivity">
+            android:parentActivityName="com.johanlund.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.johanlund.drawer.DrawerActivity"/>
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
         <activity android:name="com.johanlund.info.ActivityInfoContent">
         </activity>

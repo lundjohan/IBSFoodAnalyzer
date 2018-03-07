@@ -1,8 +1,9 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.event_activities;
 
 import android.os.Bundle;
 
 import com.johanlund.base_classes.Other;
+import com.johanlund.ibsfoodanalyzer.R;
 
 import static com.johanlund.constants.Constants.OTHER;
 

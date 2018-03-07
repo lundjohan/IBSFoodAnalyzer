@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.event_activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -27,6 +27,7 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.date_time.DatePickerFragment;
 import com.johanlund.date_time.DateTimeFormat;
+import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.ActivityInfoContent;
 import com.johanlund.util.Util;
 

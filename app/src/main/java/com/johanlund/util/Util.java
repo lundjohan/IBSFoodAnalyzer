@@ -19,7 +19,7 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Exercise;
 import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Tag;
-import com.johanlund.ibsfoodanalyzer.EventActivity;
+import com.johanlund.event_activities.EventActivity;
 import com.johanlund.ibsfoodanalyzer.R;
 
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.diary;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
+import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
 
 import java.util.List;

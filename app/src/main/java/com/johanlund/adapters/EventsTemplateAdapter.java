@@ -18,8 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.johanlund.database.DBHandler;
-import com.johanlund.ibsfoodanalyzer.EditEventsTemplateActivity;
-import com.johanlund.ibsfoodanalyzer.LoadEventsTemplateActivity;
+import com.johanlund.diary.EditEventsTemplateActivity;
+import com.johanlund.diary.LoadEventsTemplateActivity;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.ibsfoodanalyzer.TemplateFragment;
 import com.johanlund.model.EventsTemplate;

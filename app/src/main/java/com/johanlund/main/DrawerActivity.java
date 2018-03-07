@@ -1,4 +1,4 @@
-package com.johanlund.drawer;
+package com.johanlund.main;
 
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -22,20 +22,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.johanlund.about.AboutActivity;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
-import com.johanlund.ibsfoodanalyzer.DiaryContainerFragment;
-import com.johanlund.ibsfoodanalyzer.DiaryFragment;
-import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.ibsfoodanalyzer.TemplateFragment;
+import com.johanlund.diary.DiaryContainerFragment;
 import com.johanlund.external_storage.ExternalStorageHandler;
 import com.johanlund.external_storage.SaveDBIntentService;
 import com.johanlund.external_storage.SaveToCSVForGraphIntentService;
 import com.johanlund.external_storage.SaveToCSVIntentService;
+import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.ibsfoodanalyzer.TemplateFragment;
 import com.johanlund.settings.GeneralSettingsActivity;
 import com.johanlund.statistics.StatOptionsFragment;
-import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.threeten.bp.LocalDate;
 
@@ -50,15 +49,11 @@ import static com.johanlund.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.johanlund.constants.Constants.LOCALDATE;
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DiaryFragment
-        .DiaryFragmentListener, TemplateFragment
+        implements NavigationView.OnNavigationItemSelectedListener, DiaryContainerFragment.DiaryContainerListener, TemplateFragment
         .TemplateFragmentListener {
-
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
-    //used for restablishing date when pressing backButton from TemplateFragment
-    LocalDate dateBeforeTemplate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,28 +74,8 @@ public class DrawerActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initiateFragment();
-
-        //TODO problably could easily integrate below into initiateFragment or something like that.
-        //Problably very inefficient right now, with fragment being drawn several times over
-        //and nb: this is called all the time
-        if(savedInstanceState!= null){
-            dateBeforeTemplate = (LocalDate)savedInstanceState.getSerializable(LOCALDATE);
-            startDiaryAtDate(dateBeforeTemplate);
-
-        }
-        else{
-            //this is important because it is cleaned of screen behind. Otherwise double views on top of each other.
-            startDiaryAtLastDate();
-        }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        DiaryContainerFragment diaryContainer= (DiaryContainerFragment) getSupportFragmentManager().findFragmentByTag(DIARY_CONTAINER);
-        if (diaryContainer != null && diaryContainer.isVisible()) {
-            savedInstanceState.putSerializable(LOCALDATE, diaryContainer.extractDateFromDiary());
-        }
-    }
     private void initiateFragment() {
         Fragment fragment = new DiaryContainerFragment();
         FragmentManager transaction = getSupportFragmentManager();
@@ -108,6 +83,34 @@ public class DrawerActivity extends AppCompatActivity
                 .add(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
     }
+
+
+    private void startDiaryAtDate(LocalDate ld) {
+        Fragment fragment = new DiaryContainerFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(LOCALDATE, ld);
+        fragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
+                .commit();
+    }
+
+    private void startDiaryAtLastDateInDB() {
+        final DBHandler dbImport = new DBHandler(getApplication());
+        LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
+        lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
+        startDiaryAtDate(lastDateOfEvents);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        DiaryContainerFragment diaryContainer = (DiaryContainerFragment)
+                getSupportFragmentManager().findFragmentByTag(DIARY_CONTAINER);
+        if (diaryContainer != null && diaryContainer.isVisible()) {
+            savedInstanceState.putSerializable(LOCALDATE, diaryContainer.extractDateFromDiary());
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -225,7 +228,8 @@ public class DrawerActivity extends AppCompatActivity
                                 dialog.cancel();
                             }
                         }).
-                        setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        setPositiveButton(android.R.string.ok, new DialogInterface
+                                .OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 DBHandler dbHandler = new DBHandler(getApplicationContext());
                                 dbHandler.deleteAllTablesRowsExceptTagTemplates();
@@ -303,21 +307,12 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     @Override
-    public void startTemplateFragment(LocalDate date) {
+    public void startTemplateFragment() {
         //toggle.setHomeAsUpIndicator(null);
         Fragment fragment = new TemplateFragment();
-        //save old date in case backbutton is pressen (spaghetti-code, can I get backstack to
-        // work properly is this unnecessary)
-        this.dateBeforeTemplate = date;
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment).addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void changeDate(LocalDate date) {
-        startDiaryAtDate(date);
     }
 
     @Override
@@ -362,10 +357,6 @@ public class DrawerActivity extends AppCompatActivity
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         Fragment fragment = new DiaryContainerFragment();
-        //here place date that was before (this whole method stinks of spaghetti code, but...)
-        Bundle args = new Bundle();
-        args.putSerializable(LOCALDATE, dateBeforeTemplate);
-        fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
@@ -396,6 +387,8 @@ public class DrawerActivity extends AppCompatActivity
                     }
                 }
                 break;
+
+            //TODO shoudln't this be transfered to Diary- or DiaryContainerFragment
             case LOAD_EVENTS_FROM_EVENTSTEMPLATE:
                 if (data.hasExtra(EVENTS_TO_LOAD)) {
                     List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra
@@ -435,22 +428,6 @@ public class DrawerActivity extends AppCompatActivity
         return events.get(events.size() - 1).getTime().toLocalDate();
     }
 
-    private void startDiaryAtDate(LocalDate ld) {
-        Fragment fragment = new DiaryContainerFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(LOCALDATE, ld);
-        fragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
-                .commit();
-    }
-
-    private void startDiaryAtLastDate(){
-        final DBHandler dbImport = new DBHandler(getApplication());
-        LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
-        lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
-        startDiaryAtDate(lastDateOfEvents);
-    }
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
         File file = null;
@@ -469,7 +446,7 @@ public class DrawerActivity extends AppCompatActivity
         protected void onPostExecute(Void notUsed) {
             //after db has been replaced, make the date shown for user the last date filled in
             // new db.
-            startDiaryAtLastDate();
+            startDiaryAtLastDateInDB();
         }
     }
 

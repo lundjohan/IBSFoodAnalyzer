@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.johanlund.base_classes.Tag;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.ibsfoodanalyzer.TagEventActivity;
+import com.johanlund.event_activities.TagEventActivity;
 import com.johanlund.util.Util;
 
 import java.util.List;

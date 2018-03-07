@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.diary;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,14 @@ import android.view.ViewGroup;
 import com.johanlund.base_classes.Event;
 import com.johanlund.constants.Constants;
 import com.johanlund.database.DBHandler;
+import com.johanlund.diary.EventButtonsContainer;
+import com.johanlund.diary.EventsContainer;
+import com.johanlund.event_activities.BmActivity;
+import com.johanlund.event_activities.ExerciseActivity;
+import com.johanlund.event_activities.MealActivity;
+import com.johanlund.event_activities.OtherActivity;
+import com.johanlund.event_activities.RatingActivity;
+import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.ActivityInfoContent;
 import com.johanlund.model.EventsTemplate;
 
@@ -27,11 +35,11 @@ import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_BM;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_EXERCISE;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_MEAL;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_OTHER;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_RATING;
+import static com.johanlund.diary.EventsContainer.NEW_BM;
+import static com.johanlund.diary.EventsContainer.NEW_EXERCISE;
+import static com.johanlund.diary.EventsContainer.NEW_MEAL;
+import static com.johanlund.diary.EventsContainer.NEW_OTHER;
+import static com.johanlund.diary.EventsContainer.NEW_RATING;
 
 /**
  * Reuses a lot of code from DiaryFragment.
@@ -40,9 +48,10 @@ import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_RATING;
  * should be abstracted completely in this parent class.
  */
 public abstract class EventsTemplateActivity extends AppCompatActivity implements EventsContainer
-        .EventsContainerUser {
+        .EventsContainerUser, EventButtonsContainer.EventButtonContainerUser {
 
     protected EventsContainer ec;
+    protected EventButtonsContainer ebc;
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,15 +104,20 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
         setUpNameViewIfExisting();
 
+
+        //Set up EventsContainer
         ec = new EventsContainer(this);
         ec.eventList = getStartingEvents();
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         View buttons = findViewById(R.id.buttons);
-
-        ec.setUpEventButtons(buttons);
         ec.initiateRecyclerView(recyclerView, this);
         ec.adapter.notifyDataSetChanged();
+
+        //Set up EventButtonsContainer
+        ebc = new EventButtonsContainer(this);
+        ebc.setUpEventButtons(buttons);
+
+
 
     }
 
@@ -111,6 +125,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ec.onActivityResult(requestCode, resultCode, data);
+        ebc.onActivityResult(requestCode, resultCode, data);
     }
 
     protected abstract int getLayoutRes();
@@ -212,7 +227,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
     @Override
     public void onClick(View v) {
-        ec.doOnClick(v);
+        ebc.doOnClick(v);
     }
 
     @Override

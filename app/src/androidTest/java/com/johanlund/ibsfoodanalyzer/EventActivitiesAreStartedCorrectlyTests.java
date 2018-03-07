@@ -7,7 +7,8 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.view.ViewPager;
 
-import com.johanlund.drawer.DrawerActivity;
+import com.johanlund.main.DrawerActivity;
+import com.johanlund.event_activities.OtherActivity;
 
 import org.junit.After;
 import org.junit.Before;

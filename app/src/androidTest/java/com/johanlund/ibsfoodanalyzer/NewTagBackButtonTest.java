@@ -4,7 +4,7 @@ package com.johanlund.ibsfoodanalyzer;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.johanlund.drawer.DrawerActivity;
+import com.johanlund.main.DrawerActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

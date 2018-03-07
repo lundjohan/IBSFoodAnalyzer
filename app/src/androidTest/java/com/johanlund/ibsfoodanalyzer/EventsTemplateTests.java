@@ -9,7 +9,7 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.database.DBHandler;
-import com.johanlund.drawer.DrawerActivity;
+import com.johanlund.main.DrawerActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.model.TagTemplate;

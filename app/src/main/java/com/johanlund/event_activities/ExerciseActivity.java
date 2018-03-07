@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.event_activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.johanlund.base_classes.Exercise;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.ibsfoodanalyzer.TagAdderActivity;
 import com.johanlund.model.TagTemplate;
 
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;

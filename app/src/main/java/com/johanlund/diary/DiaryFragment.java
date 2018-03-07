@@ -1,4 +1,4 @@
-package com.johanlund.ibsfoodanalyzer;
+package com.johanlund.diary;
 
 
 import android.app.DatePickerDialog;
@@ -24,6 +24,7 @@ import com.johanlund.adapters.EventsTemplateAdapter;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.date_time.DatePickerFragment;
+import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.ActivityInfoContent;
 import com.johanlund.model.EventsTemplate;
 
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.johanlund.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
 import static com.johanlund.constants.Constants.EVENT_POSITION;
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
@@ -45,30 +45,17 @@ import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_BM;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_EXERCISE;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_MEAL;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_OTHER;
-import static com.johanlund.ibsfoodanalyzer.EventsContainer.NEW_RATING;
+import static com.johanlund.ibsfoodanalyzer.R.id.dateView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DiaryFragment extends Fragment implements EventsContainer
-        .EventsContainerUser, DatePickerDialog.OnDateSetListener {
-
-    // Container Activity must implement this interface
-    public interface DiaryFragmentListener {
-        void startTemplateFragment(LocalDate date);
-
-        //when user picks a date from calendar.
-        void changeDate(LocalDate date);
-    }
+        .EventsContainerUser {
 
     //the date of the day as put by calender.
     LocalDate currentDate;
-    TextView dateView;
 
     public static final int CHANGED_MEAL = 1010;
     public static final int CHANGED_OTHER = 1011;
@@ -88,8 +75,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     //for pinning/ marking events, this must be cleaned when user quits application or app
     // crashes etc. List is sorted when added in asc order.
     List<Integer> eventsMarked = new ArrayList<>();
-    //switcher tab and it's tabs
-    ViewSwitcher tabsLayoutSwitcher;
+
 
 //==================================================================================================
     //as recommended for communication between Fragment to Activity.
@@ -97,8 +83,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
 //==================================================================================================
 
     EventsContainer ec;
-    DiaryFragmentListener diaryListener;
-
+    DiaryFragmentUser listener;
     public DiaryFragment() {
 
     }
@@ -126,42 +111,21 @@ public class DiaryFragment extends Fragment implements EventsContainer
 //==================================================================================================
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        diaryListener = (DiaryFragmentListener) context;
-        Bundle args = getArguments();
-        setHasOptionsMenu(true);
-    }
-
-    //p. 121 Android Essentials
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //    outState.putParcelableArrayList("ec.eventList", new ArrayList<Event>(ec.eventList));
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
-        setUpMenu(view);
+        ec = new EventsContainer(this);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
+        ec.initiateRecyclerView(recyclerView, this.getContext());
 
         //this is used to set date after swipe
         Bundle b = this.getArguments();
         if (b != null) {
-            changeToDate((LocalDate) b.getSerializable(SWIPING_TO_DATE));
+            currentDate = ((LocalDate) b.getSerializable(SWIPING_TO_DATE));
         } else {
-            changeToDate(LocalDate.now());
+            currentDate = LocalDate.now();
         }
-
-        //starts as invisible appBarLayout but when user marks something this pops up
-        tabsLayoutSwitcher = (ViewSwitcher) view.findViewById(R.id.tabLayoutSwitcher);
-        ec = new EventsContainer(this);
-        ec.setUpEventButtons(view);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
-        ec.initiateRecyclerView(recyclerView, this.getContext());
-
 
         fillEventListWithDatabase(currentDate);
         if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventList")) {
@@ -182,69 +146,11 @@ public class DiaryFragment extends Fragment implements EventsContainer
         return view;
     }
 
-    private void setUpMenu(View view) {
-        //cant come up with better solution for gaining access to toolbar buttons that lie on
-        // main_activity.xml
-        dateView = (TextView) view.findViewById(R.id.diaryDateView);
-        dateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDatePickerInDiary();
-            }
-        });
-        ImageButton templateBtn = (ImageButton) view.findViewById(R.id.template_btn);
-        templateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                diaryListener.startTemplateFragment(currentDate);
-            }
-        });
-        ImageButton infoBtn = (ImageButton) view.findViewById(R.id.info_dairy_btn);
-        infoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ActivityInfoContent.class);
-                intent.putExtra(LAYOUT_RESOURCE, R.layout.info_diary);
-                intent.putExtra(TITLE_STRING, "Diary");
-                startActivity(intent);
-            }
-        });
-
-        ImageButton toTemplateBtn = (ImageButton) view.findViewById(R.id.to_template_btn);
-        toTemplateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doEventsTemplateAdder(retrieveMarkedEvents());
-            }
-        });
-        ImageButton copyBtn = (ImageButton) view.findViewById(R.id.copy_btn);
-        copyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventsTemplate et = new EventsTemplate(retrieveMarkedEvents(), "");
-                EventsTemplateAdapter.startLoadEventsTemplate(et, getActivity());
-            }
-        });
-        ImageButton cancelBtn = (ImageButton) view.findViewById(R.id.cancel_btn);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = eventsMarked.size() - 1; i >= 0; i--) {
-                    View itemView = ec.getItemView(eventsMarked.get(i));
-                    if (itemView != null) {
-                        removeEventsMarked(itemView, eventsMarked.get(i));
-                    }
-                }
-            }
-        });
-    }
-
-    private void doEventsTemplateAdder(List<Event> events) {
-        Intent intent = new Intent(getActivity(), SaveEventsTemplateActivity.class);
-        //Gson gson = new Gson();
-        //String objAsJSON = gson.toJson(events);
-        intent.putExtra(LIST_OF_EVENTS, (Serializable) events);
-        startActivity(intent);
+    //Will this work??? A Fragment (DiaryContainerFragment) listening to a Fragment (this)
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (DiaryFragmentUser) getParentFragment();
     }
 
     @Override
@@ -252,15 +158,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         ec.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void executeNewEvent(int requestCode, Intent data) {
-        DBHandler dbHandler = new DBHandler(getContext());
-        if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
-            Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
-            dbHandler.addEvent(event);
-            addEventToList(event);
-        }
-    }
+
 
     @Override
     public void executeChangedEvent(int requestCode, Intent data) {
@@ -281,49 +179,9 @@ public class DiaryFragment extends Fragment implements EventsContainer
         }
     }
 
-    /*This is needed since onClick otherwise goes to parent Activity*/
-    @Override
-    public void onClick(View v) {
-        ec.doOnClick(v);
-    }
-
-    public void newMealActivity(View view) {
-        Intent intent = new Intent(getActivity(), MealActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_MEAL);
-    }
-
-    public void newOtherActivity(View v) {
-        Intent intent = new Intent(getActivity(), OtherActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_OTHER);
-    }
-
-    public void newExerciseActivity(View v) {
-        Intent intent = new Intent(getActivity(), ExerciseActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_EXERCISE);
-    }
-
-    public void newBmActivity(View v) {
-        Intent intent = new Intent(getActivity(), BmActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_BM);
-    }
-
-    public void newScoreItem(View view) {
-        Intent intent = new Intent(getActivity(), RatingActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_RATING);
-    }
-
     @Override
     public void updateTagsInListOfEventsAfterTagTemplateChange() {
         fillEventListWithDatabase(currentDate);
-    }
-
-    private void addDateToNewEventIntent(Intent intent) {
-        intent.putExtra(DATE_TO_START_NEW_EVENTACTIVITY, (Serializable) currentDate);
     }
 
     /*
@@ -373,7 +231,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
                     if (item.getItemId() == R.id.markedMenuItem) {
                         eventsMarked.add(position);
                         v.setBackgroundColor(BACKGROUND_COLOR);
-                        changeToMarkedMenu();
+                        listener.changeToMarkedMenu();
                     }
 
                     //options down here for break/ unbreak
@@ -443,12 +301,12 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
         //if last item now is unmarked, then change back menu.
         if (!markingModeIsOn()) {
-            changeToTabbedMenu();
+            listener.changeToTabbedMenu();
 
         }
     }
 
-    private List<Event> retrieveMarkedEvents() {
+    List<Event> retrieveMarkedEvents() {
         List<Event> eventsToSend = new ArrayList<>();
         for (int i : eventsMarked) {
             eventsToSend.add(ec.eventList.get(i));
@@ -458,21 +316,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         return eventsToSend;
     }
 
-    /*
-        When user markes list items for template or copying
-     */
-    private void changeToMarkedMenu() {
-        tabsLayoutSwitcher.showNext();
-        //callBack.viewPager do something here to stop swipe
-    }
 
-    /*
-        When user unmarkes list items
-     */
-    private void changeToTabbedMenu() {
-        tabsLayoutSwitcher.showNext();
-
-    }
 
     private boolean markingModeIsOn() {
         return eventsMarked.size() > 0;
@@ -514,29 +358,19 @@ public class DiaryFragment extends Fragment implements EventsContainer
         return ec.eventList;
     }
 
-    public void changeToDate(LocalDate ld) {
-        currentDate = ld;
-        setDateView(ld);
-    }
 
-    private void setDateView(LocalDate ld) {
-        dateView.setText(ld.getDayOfWeek().toString() + " " + ld.getDayOfMonth() + " " + ld
-                .getMonth().toString() + ", " + Integer.toString(ld.getYear()));
-    }
-
-    public void startDatePickerInDiary() {
-        DatePickerFragment newFragment = new DatePickerFragment();
-        newFragment.setContext(getContext());
-        newFragment.setListener(this);
-        newFragment.show(getActivity().getFragmentManager(), "datePicker");
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        //month datepicker +1 == LocalDate.Month
-        LocalDate d = LocalDate.of(year, month + 1, dayOfMonth);
-        if (d != currentDate) {
-            diaryListener.changeDate(d);
+    void unmarkAllEvents() {
+        for (int i = eventsMarked.size() - 1; i >= 0; i--) {
+            View itemView = ec.getItemView(eventsMarked.get(i));
+            if (itemView != null) {
+                removeEventsMarked(itemView, eventsMarked.get(i));
+            }
         }
+    }
+
+    public interface DiaryFragmentUser {
+        void changeToTabbedMenu();
+
+        void changeToMarkedMenu();
     }
 }
