@@ -74,10 +74,16 @@ public class DrawerActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initiateFragment();
+        if (savedInstanceState != null) {
+            LocalDate ld = (LocalDate) savedInstanceState.getSerializable(LOCALDATE);
+            restartContainerDiary(ld);
+
+        } else {
+            initiateDiary();
+        }
     }
 
-    private void initiateFragment() {
+    private void initiateDiary() {
         Fragment fragment = new DiaryContainerFragment();
         FragmentManager transaction = getSupportFragmentManager();
         transaction.beginTransaction()
@@ -340,21 +346,6 @@ public class DrawerActivity extends AppCompatActivity
     private void backToDiaryFragment() {
         //pop away TemplateFragment from BackStack
         getSupportFragmentManager().popBackStackImmediate();
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);// unshow back button
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string
-                .navigation_drawer_close);
-        toggle.setDrawerIndicatorEnabled(true);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        getSupportActionBar().setTitle(R.string.app_name);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        Fragment fragment = new DiaryContainerFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
-                .commit();
     }
 
     @Override
@@ -423,6 +414,13 @@ public class DrawerActivity extends AppCompatActivity
         return events.get(events.size() - 1).getTime().toLocalDate();
     }
 
+    private void startDiaryAtLastDate() {
+        final DBHandler dbImport = new DBHandler(getApplication());
+        LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
+        lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
+        restartContainerDiary(lastDateOfEvents);
+    }
+
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
         File file = null;
@@ -441,7 +439,7 @@ public class DrawerActivity extends AppCompatActivity
         protected void onPostExecute(Void notUsed) {
             //after db has been replaced, make the date shown for user the last date filled in
             // new db.
-            restartContainerDiary(null);
+            startDiaryAtLastDate();
         }
     }
 
@@ -473,10 +471,7 @@ public class DrawerActivity extends AppCompatActivity
         protected void onPostExecute(Void notUsed) {
             //after db has been replaced, make the date shown for user the last date filled in
             // new db.
-            final DBHandler dbImport = new DBHandler(getApplication());
-            LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
-            lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
-            restartContainerDiary(lastDateOfEvents);
+            startDiaryAtLastDate();
         }
 
 

@@ -36,10 +36,12 @@ import org.threeten.bp.LocalDate;
 import java.io.Serializable;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.johanlund.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
 import static com.johanlund.constants.Constants.LOCALDATE;
+import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
@@ -52,10 +54,12 @@ import static com.johanlund.diary.EventsContainer.NEW_RATING;
 /**
  * This class uses an adapter that is using DiaryFragment
  */
-public class DiaryContainerFragment extends Fragment implements DiaryFragment.DiaryFragmentUser, EventButtonsContainer
+public class DiaryContainerFragment extends Fragment implements DiaryFragment.DiaryFragmentUser,
+        EventButtonsContainer
         .EventButtonContainerUser, DatePickerDialog.OnDateSetListener {
     public interface DiaryContainerListener {
         void startTemplateFragment();
+
         void restartContainerDiary(LocalDate ld);
     }
 
@@ -65,7 +69,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     private static int START_POS_VIEWPAGER = MAX_SLIDES / 2;
     ViewPager pager;
     DiarySlidePagerAdapter adapter;
-    //startDate should be initialized only once, and never change
+    //startDate should be initialized only once, and never change. Adapter (positioning) uses it.
     LocalDate startDate;
     LocalDate currentDate;
     TextView dateView;
@@ -73,27 +77,50 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     private DiaryContainerListener listener;
     //switcher tab and it's tabs
     ViewSwitcher tabsLayoutSwitcher;
+
     public DiaryContainerFragment() {
         // Required empty public constructor
     }
 
     /**
-     * Which Date should diary start at? It depends.
+     * Which Date should diary start at? It depends. And that makes code more complicated.
      * <p>
      * If a date is choosen from the Calendar, start at that date.
+     * => uses restartDiaryAdapterOnDate
      * <p>
      * If a new event (the date can be changed inside EventActivity by user) has been created and
-     * Done has been pressed, then the diary should start at that date. (This is done in
-     * onActivityResult).
+     * Done has been pressed, then the diary should start at that date.
+     * <p>
+     * =>(This is done in executeNewEvent via buttons.onActivityResult).
+     * <p>
+     * => Not done right now...
+     * <p>
+     * <p>
      * <p>
      * When importing diary, you want the date to be at the last used day in database.
+     * <p>
+     * <p>
+     * => this is done in in DrawerActivity.startDiaryAtLastDate. OK!
+     * <p>
      * <p>
      * On resuming app from inactivity, or turning around phone, or pressing back from
      * EventActivity etc => start at the same date you were at latest.
      * <p>
+     * <p>
+     * On pressing Back from TemplateFragment. Here (since TemplateFragment is a Fragment)
+     * onCreate in DrawerActivity is not called. Another solution is needed.
+     *
+     * => Easiest is to save a variable in DrawerActivity.
+     * <p>
+     * <p>
+     * => OK! Handled by DrawerActivity saving date in savedInstanceState.
+     * <p>
      * First time using app, or if none of the above works, start at the date of the current
      * (real) day.
+     * <p>
+     * => working
      */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,41 +133,40 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         setUpMenu(view);
 
         Bundle args = getArguments();
-        if (args != null && args.getSerializable(LOCALDATE)!= null) {
+        //if started from Activity...
+        if (args != null && args.getSerializable(LOCALDATE) != null) {
             startDate = (LocalDate) args.getSerializable(LOCALDATE);
             changeToDate(startDate);
         }
         //App is starting from scratch (diary is empty)
-        else if (diaryIsEmpty()) {
-            startDate = LocalDate.now();
+        else if (startDate == null) {
+            startDate = (LocalDate.now());
             changeToDate(startDate);
         }
-        //App is starting at the time of the date with the last events.
-        else {
-            startDate = getDateOfLastEventInDiary();
-            changeToDate(startDate);
-        }
+
+        //else, we come back to original place, this is good on backpress for example
         adapter = new DiarySlidePagerAdapter(getChildFragmentManager());
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(MAX_SLIDES / 2);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             public void onPageSelected(int position) {
-                Log.d("DiaryContainerFragment", "currentDatebefore "+currentDate);
-                Log.d("DiaryContainerFragment", "position "+ position);
+                Log.d("DiaryContainerFragment", "currentDatebefore " + currentDate);
+                Log.d("DiaryContainerFragment", "position " + position);
 
 
                 //this one returns null for DiaryFragments currentDate
-                changeToDate(((DiaryFragment)adapter.getItem(position)).getCurrentDate());
+                changeToDate(((DiaryFragment) adapter.getItem(position)).getCurrentDate());
 
                 //this one is not in sync with diartFragment
                 //changeToDate(currentDate.plusDays(position - START_POS_VIEWPAGER));
-                Log.d("DiaryContainerFragment", "currentDateAfterSwipe "+currentDate);
+                Log.d("DiaryContainerFragment", "currentDateAfterSwipe " + currentDate);
             }
         });
         return view;
     }
-    private boolean diaryIsEmpty(){
+
+    private boolean diaryIsEmpty() {
         final DBHandler dbHandler = new DBHandler(getContext());
         return dbHandler.diaryIsEmpty();
     }
@@ -159,8 +185,8 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
 
     /**
      * Menu
-    /*
-        When user markes list items for template or copying
+     * /*
+     * When user markes list items for template or copying
      */
     public void changeToMarkedMenu() {
         tabsLayoutSwitcher.showNext();
@@ -174,6 +200,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         tabsLayoutSwitcher.showNext();
 
     }
+
     private void setUpMenu(View view) {
         dateView = (TextView) view.findViewById(R.id.diaryDateView);
         dateView.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +238,8 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         copyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DiaryFragment currentDiary = (DiaryFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
+                DiaryFragment currentDiary = (DiaryFragment) adapter.instantiateItem(pager, pager
+                        .getCurrentItem());
                 EventsTemplate et = new EventsTemplate(currentDiary.retrieveMarkedEvents(), "");
                 EventsTemplateAdapter.startLoadEventsTemplate(et, getActivity());
             }
@@ -225,7 +253,6 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
             }
         });
     }
-
 
 
     private void doEventsTemplateAdder(List<Event> events) {
@@ -249,42 +276,58 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
             Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
             dbHandler.addEvent(event);
             getCurrentDiary().addEventToList(event);
+
+            //it can be that the new event should be created at another date.
+            LocalDate dateForEventCreation = event.getTime().toLocalDate();
+            if (!dateForEventCreation.equals(currentDate)) {
+                listener.restartContainerDiary(dateForEventCreation);
+            }
         }
     }
+
     @Override
     public void newMealActivity(View view) {
         Intent intent = new Intent(getActivity(), MealActivity.class);
         addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_MEAL);
     }
+
     @Override
     public void newOtherActivity(View v) {
         Intent intent = new Intent(getActivity(), OtherActivity.class);
         addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_OTHER);
     }
+
     @Override
     public void newExerciseActivity(View v) {
         Intent intent = new Intent(getActivity(), ExerciseActivity.class);
         addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_EXERCISE);
     }
+
     @Override
     public void newBmActivity(View v) {
         Intent intent = new Intent(getActivity(), BmActivity.class);
         addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_BM);
     }
+
     @Override
     public void newScoreItem(View view) {
         Intent intent = new Intent(getActivity(), RatingActivity.class);
         addDateToNewEventIntent(intent);
         startActivityForResult(intent, NEW_RATING);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        buttons.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data.hasExtra(NEW_EVENT)) {
+            buttons.onActivityResult(requestCode, resultCode, data);
+        }
+
     }
+
     private void addDateToNewEventIntent(Intent intent) {
         intent.putExtra(DATE_TO_START_NEW_EVENTACTIVITY, (Serializable) currentDate);
     }
@@ -295,13 +338,15 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     }
 
     //date
-     void changeToDate(LocalDate ld) {
+    void changeToDate(LocalDate ld) {
         currentDate = ld;
         setDateView(ld);
     }
-    private void restartDiaryAdapterOnDate(LocalDate ld){
+
+    private void restartDiaryAdapterOnDate(LocalDate ld) {
         listener.restartContainerDiary(ld);
     }
+
     private void setDateView(LocalDate ld) {
         dateView.setText(ld.getDayOfWeek().toString() + " " + ld.getDayOfMonth() + " " + ld
                 .getMonth().toString() + ", " + Integer.toString(ld.getYear()));
@@ -319,13 +364,14 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         //month datepicker +1 == LocalDate.Month
         LocalDate d = LocalDate.of(year, month + 1, dayOfMonth);
         if (d != currentDate) {
-            startDate = d;
             restartDiaryAdapterOnDate(d);
         }
     }
-    private DiaryFragment getCurrentDiary(){
+
+    private DiaryFragment getCurrentDiary() {
         return (DiaryFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
     }
+
     //Internal adapter class
     private class DiarySlidePagerAdapter extends FragmentStatePagerAdapter {
         public DiarySlidePagerAdapter(FragmentManager fm) {
@@ -337,6 +383,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
          * @return
          */
         private DiaryFragment diaryFragment;
+
         @Override
         public Fragment getItem(int position) {
             diaryFragment = new DiaryFragment();
