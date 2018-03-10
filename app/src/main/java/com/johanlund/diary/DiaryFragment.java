@@ -119,13 +119,9 @@ public class DiaryFragment extends Fragment implements EventsContainer
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
         ec.initiateRecyclerView(recyclerView, this.getContext());
 
-        //this is used to set date after swipe
+        //b is not allowed to be null
         Bundle b = this.getArguments();
-        if (b != null) {
-            currentDate = ((LocalDate) b.getSerializable(SWIPING_TO_DATE));
-        } else {
-            currentDate = LocalDate.now();
-        }
+        currentDate = ((LocalDate) b.getSerializable(SWIPING_TO_DATE));
 
         fillEventListWithDatabase(currentDate);
         if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventList")) {

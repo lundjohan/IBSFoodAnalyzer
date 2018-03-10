@@ -85,22 +85,14 @@ public class DrawerActivity extends AppCompatActivity
     }
 
 
-    private void startDiaryAtDate(LocalDate ld) {
+    private void restartContainerDiary() {
         Fragment fragment = new DiaryContainerFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(LOCALDATE, ld);
-        fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
     }
 
-    private void startDiaryAtLastDateInDB() {
-        final DBHandler dbImport = new DBHandler(getApplication());
-        LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
-        lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
-        startDiaryAtDate(lastDateOfEvents);
-    }
+
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -233,7 +225,7 @@ public class DrawerActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int id) {
                                 DBHandler dbHandler = new DBHandler(getApplicationContext());
                                 dbHandler.deleteAllTablesRowsExceptTagTemplates();
-                                startDiaryAtDate(LocalDate.now());
+                                restartContainerDiary();
                             }
                         });
                 AlertDialog alert = builder.create();
@@ -395,7 +387,7 @@ public class DrawerActivity extends AppCompatActivity
                             (EVENTS_TO_LOAD);
                     if (!eventsToReturn.isEmpty()) {
                         LocalDate ld = addEventsToDatabase(eventsToReturn);
-                        startDiaryAtDate(ld);
+                        restartContainerDiary();
                     }
                 }
                 break;
@@ -446,7 +438,7 @@ public class DrawerActivity extends AppCompatActivity
         protected void onPostExecute(Void notUsed) {
             //after db has been replaced, make the date shown for user the last date filled in
             // new db.
-            startDiaryAtLastDateInDB();
+            restartContainerDiary();
         }
     }
 
@@ -481,7 +473,7 @@ public class DrawerActivity extends AppCompatActivity
             final DBHandler dbImport = new DBHandler(getApplication());
             LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
             lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
-            startDiaryAtDate(lastDateOfEvents);
+            restartContainerDiary();
         }
 
 

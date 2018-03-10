@@ -1197,5 +1197,16 @@ public class DBHandler extends SQLiteOpenHelper {
         return ld;
 
     }
+
+    public boolean diaryIsEmpty() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String count = "SELECT count(*) FROM " + TABLE_EVENTS;
+        Cursor c = db.rawQuery(count, null);
+        c.moveToFirst();
+        if (c.getInt(0) > 0) {
+            return false;
+        }
+        return true;
+    }
 }
 

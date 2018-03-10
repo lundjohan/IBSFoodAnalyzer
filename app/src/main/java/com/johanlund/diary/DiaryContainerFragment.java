@@ -38,7 +38,6 @@ import java.util.List;
 import static com.johanlund.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
-import static com.johanlund.constants.Constants.LOCALDATE;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
@@ -97,16 +96,17 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
 
         //starts as invisible appBarLayout but when user marks something this pops up
         tabsLayoutSwitcher = (ViewSwitcher) view.findViewById(R.id.tabLayoutSwitcher);
-
-        Bundle args = getArguments();
         buttons = new EventButtonsContainer(this);
         buttons.setUpEventButtons(view);
         setUpMenu(view);
-        if (args != null) {
-            changeToDate((LocalDate) args.getSerializable(LOCALDATE));
-        }
-        else {
+
+        //App is starting from scratch (diary is empty)
+        if (diaryIsEmpty()) {
             changeToDate(LocalDate.now());
+        }
+        //App is starting at the time of the date with the last events.
+        else {
+            changeToDate(getDateOfLastEventInDiary());
         }
         adapter = new DiarySlidePagerAdapter(getChildFragmentManager());
         pager = (ViewPager) view.findViewById(R.id.pager);
@@ -114,6 +114,16 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         pager.setCurrentItem(MAX_SLIDES / 2);
         return view;
     }
+    private boolean diaryIsEmpty(){
+        final DBHandler dbHandler = new DBHandler(getContext());
+        return dbHandler.diaryIsEmpty();
+    }
+
+    private LocalDate getDateOfLastEventInDiary() {
+        final DBHandler dbHandler = new DBHandler(getContext());
+        return dbHandler.getDateOfLastEvent();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
