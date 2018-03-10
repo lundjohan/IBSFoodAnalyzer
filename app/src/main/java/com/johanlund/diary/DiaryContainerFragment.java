@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,9 @@ import static com.johanlund.diary.EventsContainer.NEW_RATING;
  * Done has been pressed, then the diary should start at that date.
  * =>(This is done in executeNewEvent via buttons.onActivityResult).
  * <p>
+ * On loading from TemplateFragment, diary should start at that date.
+ * => not done right now...
+ *
  * When importing diary, you want the date to be at the last used day in database.
  * => this is done in in DrawerActivity.startDiaryAtLastDate. OK!
  * <p>
@@ -109,6 +113,14 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         // Required empty public constructor
     }
 
+    //I need this since pressing back button from TemplateFragment
+    @Override
+    public void onResume() {
+        super.onResume();
+        setDateView(currentDate);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

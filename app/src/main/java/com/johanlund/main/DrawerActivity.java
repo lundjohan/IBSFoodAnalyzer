@@ -126,7 +126,8 @@ public class DrawerActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (sizeOfStack > 0) {
-            backToDiaryFragment();
+            //pop away TemplateFragment from BackStack
+            getSupportFragmentManager().popBackStackImmediate();
         } else {
             super.onBackPressed();
         }
@@ -155,7 +156,8 @@ public class DrawerActivity extends AppCompatActivity
         }
         //this is solely used from TemplateFragment
         if (id == android.R.id.home) {
-            backToDiaryFragment();
+            //pop away TemplateFragment from BackStack
+            getSupportFragmentManager().popBackStackImmediate();
 
         }
 
