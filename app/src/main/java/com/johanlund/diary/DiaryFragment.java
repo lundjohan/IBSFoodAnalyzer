@@ -141,6 +141,14 @@ public class DiaryFragment extends Fragment implements EventsContainer
         //==========================================================================================
         return view;
     }
+    //this might be called before onCreateView is finished (/started?).
+    LocalDate getCurrentDate(){
+        if (currentDate!= null){
+            return currentDate;
+        }
+        Bundle b = this.getArguments();
+        return((LocalDate) b.getSerializable(SWIPING_TO_DATE));
+    }
 
     //Will this work??? A Fragment (DiaryContainerFragment) listening to a Fragment (this)
     @Override

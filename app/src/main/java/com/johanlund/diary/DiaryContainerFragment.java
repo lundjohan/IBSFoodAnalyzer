@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import java.util.List;
 import static com.johanlund.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
+import static com.johanlund.constants.Constants.LOCALDATE;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
@@ -54,6 +56,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         .EventButtonContainerUser, DatePickerDialog.OnDateSetListener {
     public interface DiaryContainerListener {
         void startTemplateFragment();
+        void restartContainerDiary(LocalDate ld);
     }
 
 
@@ -62,6 +65,8 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     private static int START_POS_VIEWPAGER = MAX_SLIDES / 2;
     ViewPager pager;
     DiarySlidePagerAdapter adapter;
+    //startDate should be initialized only once, and never change
+    LocalDate startDate;
     LocalDate currentDate;
     TextView dateView;
     private EventButtonsContainer buttons;
@@ -100,18 +105,39 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         buttons.setUpEventButtons(view);
         setUpMenu(view);
 
+        Bundle args = getArguments();
+        if (args != null && args.getSerializable(LOCALDATE)!= null) {
+            startDate = (LocalDate) args.getSerializable(LOCALDATE);
+            changeToDate(startDate);
+        }
         //App is starting from scratch (diary is empty)
-        if (diaryIsEmpty()) {
-            changeToDate(LocalDate.now());
+        else if (diaryIsEmpty()) {
+            startDate = LocalDate.now();
+            changeToDate(startDate);
         }
         //App is starting at the time of the date with the last events.
         else {
-            changeToDate(getDateOfLastEventInDiary());
+            startDate = getDateOfLastEventInDiary();
+            changeToDate(startDate);
         }
         adapter = new DiarySlidePagerAdapter(getChildFragmentManager());
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(MAX_SLIDES / 2);
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            public void onPageSelected(int position) {
+                Log.d("DiaryContainerFragment", "currentDatebefore "+currentDate);
+                Log.d("DiaryContainerFragment", "position "+ position);
+
+
+                //this one returns null for DiaryFragments currentDate
+                changeToDate(((DiaryFragment)adapter.getItem(position)).getCurrentDate());
+
+                //this one is not in sync with diartFragment
+                //changeToDate(currentDate.plusDays(position - START_POS_VIEWPAGER));
+                Log.d("DiaryContainerFragment", "currentDateAfterSwipe "+currentDate);
+            }
+        });
         return view;
     }
     private boolean diaryIsEmpty(){
@@ -273,10 +299,8 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         currentDate = ld;
         setDateView(ld);
     }
-    private void changeDiaryToDate(LocalDate ld){
-        changeToDate(ld);
-        //is this working?
-        adapter = new DiarySlidePagerAdapter(getFragmentManager());
+    private void restartDiaryAdapterOnDate(LocalDate ld){
+        listener.restartContainerDiary(ld);
     }
     private void setDateView(LocalDate ld) {
         dateView.setText(ld.getDayOfWeek().toString() + " " + ld.getDayOfMonth() + " " + ld
@@ -295,7 +319,8 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         //month datepicker +1 == LocalDate.Month
         LocalDate d = LocalDate.of(year, month + 1, dayOfMonth);
         if (d != currentDate) {
-            changeDiaryToDate(d);
+            startDate = d;
+            restartDiaryAdapterOnDate(d);
         }
     }
     private DiaryFragment getCurrentDiary(){
@@ -316,12 +341,9 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         public Fragment getItem(int position) {
             diaryFragment = new DiaryFragment();
             Bundle args = new Bundle();
-            LocalDate nextDate = currentDate.plusDays(position - START_POS_VIEWPAGER);
+            LocalDate nextDate = startDate.plusDays(position - START_POS_VIEWPAGER);
             args.putSerializable(SWIPING_TO_DATE, nextDate);
             diaryFragment.setArguments(args);
-
-            //change currentDate to the new date
-            changeToDate(nextDate);
             return diaryFragment;
         }
 
