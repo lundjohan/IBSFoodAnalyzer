@@ -53,10 +53,37 @@ import static com.johanlund.diary.EventsContainer.NEW_RATING;
 
 /**
  * This class uses an adapter that is using DiaryFragment
+ * <p>
+ * Various handling of dates makes this class very intertwined with DiaryDrawer, and a bit
+ * complicated.
+ * Which Date should diary start at? It depends. And that makes code more complicated.
+ * <p>
+ * If a date is choosen from the Calendar, start at that date.
+ * => uses restartDiaryAdapterOnDate
+ * <p>
+ * If a new event (the date can be changed inside EventActivity by user) has been created and
+ * Done has been pressed, then the diary should start at that date.
+ * =>(This is done in executeNewEvent via buttons.onActivityResult).
+ * <p>
+ * When importing diary, you want the date to be at the last used day in database.
+ * => this is done in in DrawerActivity.startDiaryAtLastDate. OK!
+ * <p>
+ * On resuming app from inactivity, or turning around phone, or pressing back from
+ * EventActivity etc, diary should be back at the same date you were at latest.
+ * => savingInstanceState in DrawerActivity
+ * <p>
+ * <p>
+ * On pressing Back from TemplateFragment. Here (since TemplateFragment is a Fragment)
+ * onCreate in DrawerActivity is not called. Another solution is needed.
+ * => OK! oopBackStack is used in DrawerActivity.
+ * <p>
+ * First time using app, or if none of the above works, start at the date of the current
+ * (real) day.
+ * => if-statement in this onCreateView
  */
 public class DiaryContainerFragment extends Fragment implements DiaryFragment.DiaryFragmentUser,
         EventButtonsContainer
-        .EventButtonContainerUser, DatePickerDialog.OnDateSetListener {
+                .EventButtonContainerUser, DatePickerDialog.OnDateSetListener {
     public interface DiaryContainerListener {
         void startTemplateFragment();
 
@@ -82,44 +109,6 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         // Required empty public constructor
     }
 
-    /**
-     * Which Date should diary start at? It depends. And that makes code more complicated.
-     * <p>
-     * If a date is choosen from the Calendar, start at that date.
-     * => uses restartDiaryAdapterOnDate
-     * <p>
-     * If a new event (the date can be changed inside EventActivity by user) has been created and
-     * Done has been pressed, then the diary should start at that date.
-     * <p>
-     * =>(This is done in executeNewEvent via buttons.onActivityResult).
-     * <p>
-     * => Not done right now...
-     * <p>
-     * <p>
-     * <p>
-     * When importing diary, you want the date to be at the last used day in database.
-     * <p>
-     * <p>
-     * => this is done in in DrawerActivity.startDiaryAtLastDate. OK!
-     * <p>
-     * <p>
-     * On resuming app from inactivity, or turning around phone, or pressing back from
-     * EventActivity etc => start at the same date you were at latest.
-     * <p>
-     * <p>
-     * On pressing Back from TemplateFragment. Here (since TemplateFragment is a Fragment)
-     * onCreate in DrawerActivity is not called. Another solution is needed.
-     *
-     * => Easiest is to save a variable in DrawerActivity.
-     * <p>
-     * <p>
-     * => OK! Handled by DrawerActivity saving date in savedInstanceState.
-     * <p>
-     * First time using app, or if none of the above works, start at the date of the current
-     * (real) day.
-     * <p>
-     * => working
-     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

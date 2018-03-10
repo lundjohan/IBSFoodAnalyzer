@@ -7,16 +7,18 @@ import android.widget.ImageButton;
 import com.johanlund.ibsfoodanalyzer.R;
 
 import static android.app.Activity.RESULT_OK;
-import static com.johanlund.constants.Constants.CHANGED_EVENT;
 import static com.johanlund.constants.Constants.NEW_EVENT;
-import static com.johanlund.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 
 /**
  * Created by Johan on 2018-03-07.
+ * <p>
+ * This class takes care of the Event Buttons used by several activities.
+ * <p>
+ * Users of this class must implement functions related to new creations of events.
  */
 public class EventButtonsContainer {
 
-    public interface EventButtonContainerUser extends View.OnClickListener{
+    public interface EventButtonContainerUser extends View.OnClickListener {
         void newMealActivity(View view);
 
         void newOtherActivity(View v);
@@ -73,11 +75,12 @@ public class EventButtonsContainer {
                 break;
         }
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
             return;
         }
-        if (data.hasExtra(NEW_EVENT)){
+        if (data.hasExtra(NEW_EVENT)) {
             user.executeNewEvent(requestCode, data);
         }
     }

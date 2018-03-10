@@ -48,6 +48,11 @@ import static com.johanlund.constants.Constants.IMPORT_FROM_CSV_FILE;
 import static com.johanlund.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.johanlund.constants.Constants.LOCALDATE;
 
+/**
+ * The Main Activity in the app.
+ * <p>
+ * For handling of dates: see comments in DiaryContainerFragment
+ */
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiaryContainerFragment
         .DiaryContainerListener, TemplateFragment

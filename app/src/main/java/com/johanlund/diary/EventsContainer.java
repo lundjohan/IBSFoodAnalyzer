@@ -25,7 +25,6 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.johanlund.constants.Constants.CHANGED_EVENT;
-import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 import static com.johanlund.diary.DiaryFragment.CHANGED_BM;
 import static com.johanlund.diary.DiaryFragment.CHANGED_EXERCISE;
@@ -37,8 +36,11 @@ import static com.johanlund.diary.DiaryFragment.CHANGED_RATING;
  * Created by Johan on 2017-08-30.
  * <p>
  * Common class for Activities or Fragments that has a graphically container that handles listing
- * of events.
- * Can be used together with its interface EventsContainerUser
+ * of events. A recyclerview is used as the list.
+ * <p>
+ * Users of this class must implement EventsContainerUser.
+ * <p>
+ * The class handles changes of events, and potential updates of tagtemplates in diary.
  */
 
 public class EventsContainer {
@@ -73,14 +75,13 @@ public class EventsContainer {
         if (resultCode != RESULT_OK) {
             return;
         }
-        if (data.hasExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED)){
+        if (data.hasExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED)) {
             user.updateTagsInListOfEventsAfterTagTemplateChange();
         }
         if (data.hasExtra(CHANGED_EVENT)) {
             user.executeChangedEvent(requestCode, data);
         }
     }
-    
 
 
     public void initiateRecyclerView(RecyclerView recyclerView, Context layoutInitiator) {
@@ -122,8 +123,9 @@ public class EventsContainer {
         adapter.notifyItemRemoved(pos);
         user.addEventToList(e);
     }
-    public View getItemView(int pos){
-       return layoutManager.findViewByPosition(pos);
+
+    public View getItemView(int pos) {
+        return layoutManager.findViewByPosition(pos);
     }
 
 
