@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:sample="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="Settings for Time Rating Statistics">
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:defaultValue="5.0"
+            android:enabled="true"
+            android:key="@string/time_rating_start"
+            android:title="Rating start"
+            android:summary="The lowest score the time period is allowed to have."
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_minValue="0"
+            sample:msbp_maxValue="7"
+            sample:msbp_measurementUnit="points"
+            />
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:defaultValue="7"
+            android:enabled="true"
+            android:key="@string/time_rating_end"
+            android:title="Rating end"
+            android:summary="The highest score the time period is allowed to have."
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_minValue="0"
+            sample:msbp_maxValue="7"
+            sample:msbp_measurementUnit="points"
+            />
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:defaultValue="24"
+            android:enabled="true"
+            android:key="@string/time_rating_duration_key"
+            android:title="Min duration"
+            android:summary="The minimum time in hours the period should last."
+            sample:msbp_dialogEnabled="false"
+            sample:msbp_interval="1"
+            sample:msbp_minValue="1"
+            sample:msbp_maxValue="72"
+            sample:msbp_measurementUnit="h"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

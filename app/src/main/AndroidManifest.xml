@@ -85,6 +85,12 @@
         </activity>
         <activity android:name="com.johanlund.statistics.BristolStatActivity">
         </activity>
+        <activity android:name="com.johanlund.statistics.TimeRatingStatActivity">
+        </activity>
+        <activity android:name="com.johanlund.statistics.TimeCompleteStatActivity">
+        </activity>
+        <activity android:name="com.johanlund.statistics.TimeBristolStatActivity">
+        </activity>
         <activity
             android:name="com.johanlund.statistics_settings.PortionStatSettingsActivity"
             android:label="Portion Stat Settings">
@@ -109,6 +115,12 @@
         <activity android:name="com.johanlund.statistics_settings.AvgRatingSettingsActivity">
         </activity>
         <activity android:name="com.johanlund.statistics_settings.AvgBmSettingsActivity">
+        </activity>
+        <activity android:name="com.johanlund.statistics_settings.TimeRatingSettingsActivity">
+        </activity>
+        <activity android:name="com.johanlund.statistics_settings.TimeCompleteSettingsActivity">
+        </activity>
+        <activity android:name="com.johanlund.statistics_settings.TimeBristolSettingsActivity">
         </activity>
         <activity android:name="com.johanlund.info.InfoActivity">
         </activity>

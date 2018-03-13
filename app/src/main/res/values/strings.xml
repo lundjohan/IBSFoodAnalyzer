@@ -22,7 +22,7 @@
     <string name="action_settings">Settings</string>
     <string name="avg_info">Gives an average score of an event type based on its relationship to Rating, Bm Completeness or Bm Bristol.</string>
     <string name="freq_info">UPCOMING FEATURE. Shows a percentage for event types that describes how often they have been within a certain score (Rating, Bm Completeness or Bm Bristol) interval</string>
-    <string name="time_info">UPCOMING FEATURE. Shows the time periods that the diary has been within a certain score (Rating, Bm Completeness or Bm Bristol) interval.</string>
+    <string name="time_info">Shows the time periods that the diary has been within a certain score (Rating, Bm Completeness or Bm Bristol) interval.</string>
     <string name="portions_info">UPCOMING FEATURE. Gives average score of meal sizes (meal portions) based on their relationships to Rating, Bm Completeness or Bm Bristol.</string>
 
     <string name="avg_info_score">SCORE\tNAME\n
@@ -51,9 +51,23 @@
         1.0\tSeperate hard lumps
     </string>
 
+    <!--Stat Settings variables-->
+    
     <string name="avg_rating_pref_wait_key">avg_rating_stat_wait_hours_after_event</string>
     <string name="avg_rating_pref_stop_key">avg_rating_stat_stop_hours_after_event</string>
     <string name="avg_rating_pref_quant_key">avg_rating_quantity_min_limit</string>
+
+    <string name="time_rating_start">time_rating_start</string>
+    <string name="time_rating_end">time_rating_end</string>
+    <string name="time_rating_duration_key">time_rating_duration_key</string>
+
+    <string name="time_complete_start">time_complete_start</string>
+    <string name="time_complete_end">time_complete_end</string>
+    <string name="time_complete_duration_key">time_complete_duration_key</string>
+
+    <string name="time_bristol_start">time_bristol_start</string>
+    <string name="time_bristol_end">time_bristol_end</string>
+    <string name="time_bristol_duration_key">time_bristol_duration_key</string>
 
     <string name="hours_before_bm_furthest_distance_limit">avg_bm_stat_start_hours_before_bm</string>
     <string name="hours_before_bm_closest_distance_limit">avg_rating_stop_hours_before_bm</string>
