@@ -14,21 +14,21 @@ import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.InfoActivity;
 import com.johanlund.statistics_settings.AvgBmSettingsActivity;
 import com.johanlund.statistics_settings.AvgRatingSettingsActivity;
+import com.johanlund.statistics_settings.PortionStatSettingsActivity;
 import com.johanlund.statistics_settings.TimeBristolSettingsActivity;
 import com.johanlund.statistics_settings.TimeCompleteSettingsActivity;
 import com.johanlund.statistics_settings.TimeRatingSettingsActivity;
-import com.johanlund.statistics_settings.PortionStatSettingsActivity;
 
-import static com.johanlund.ibsfoodanalyzer.R.id.avgBristolItem;
-import static com.johanlund.ibsfoodanalyzer.R.id.avgCompleteItem;
+import static com.johanlund.ibsfoodanalyzer.R.id.avgBristolItemTextView;
+import static com.johanlund.ibsfoodanalyzer.R.id.avgCompleteItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgInfoItem;
-import static com.johanlund.ibsfoodanalyzer.R.id.avgRatingItem;
+import static com.johanlund.ibsfoodanalyzer.R.id.avgRatingItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.freqInfoItem;
 import static com.johanlund.ibsfoodanalyzer.R.id.portionsInfoItem;
-import static com.johanlund.ibsfoodanalyzer.R.id.timeBristolItem;
-import static com.johanlund.ibsfoodanalyzer.R.id.timeCompleteItem;
+import static com.johanlund.ibsfoodanalyzer.R.id.timeBristolItemTextView;
+import static com.johanlund.ibsfoodanalyzer.R.id.timeCompleteItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.timeInfoItem;
-import static com.johanlund.ibsfoodanalyzer.R.id.timeRatingItem;
+import static com.johanlund.ibsfoodanalyzer.R.id.timeRatingItemTextView;
 
 /**
  * Gives the user options for statistics
@@ -39,14 +39,14 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stat_menu, container, false);
 
-        //make them clickable
-        view.findViewById(avgRatingItem).setOnClickListener(this);
-        view.findViewById(avgCompleteItem).setOnClickListener(this);
-        view.findViewById(avgBristolItem).setOnClickListener(this);
+        //make them clickable => this should change to textView instead!
+        view.findViewById(avgRatingItemTextView).setOnClickListener(this);
+        view.findViewById(avgCompleteItemTextView).setOnClickListener(this);
+        view.findViewById(avgBristolItemTextView).setOnClickListener(this);
 
-        view.findViewById(timeRatingItem).setOnClickListener(this);
-        view.findViewById(timeCompleteItem).setOnClickListener(this);
-        view.findViewById(timeBristolItem).setOnClickListener(this);
+        view.findViewById(timeRatingItemTextView).setOnClickListener(this);
+        view.findViewById(timeCompleteItemTextView).setOnClickListener(this);
+        view.findViewById(timeBristolItemTextView).setOnClickListener(this);
 
         /*since some ids are set dynamically through custom views, the builder seem to need some
         help to find them*/
@@ -87,23 +87,23 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         switch (v.getId()) {
 
             //to stat
-            case avgRatingItem:
+            case avgRatingItemTextView:
                 newStatActivity(new AvgStatActivity());
                 break;
-            case R.id.avgCompleteItem:
+            case R.id.avgCompleteItemTextView:
                 newStatActivity(new CompleteStatActivity());
                 break;
-            case avgBristolItem:
+            case avgBristolItemTextView:
                 newStatActivity(new BristolStatActivity());
                 break;
 
-            case timeRatingItem:
+            case timeRatingItemTextView:
                 newStatActivity(new TimeRatingStatActivity());
                 break;
-            case R.id.timeCompleteItem:
+            case R.id.timeCompleteItemTextView:
                 newStatActivity(new TimeCompleteStatActivity());
                 break;
-            case timeBristolItem:
+            case timeBristolItemTextView:
                 newStatActivity(new TimeBristolStatActivity());
                 break;
 
