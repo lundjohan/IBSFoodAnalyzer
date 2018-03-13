@@ -1,4 +1,4 @@
-package stat_classes;
+package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Meal;

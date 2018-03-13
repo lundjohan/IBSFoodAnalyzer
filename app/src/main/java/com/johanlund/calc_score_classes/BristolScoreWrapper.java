@@ -6,7 +6,7 @@ import com.johanlund.tagpoint_classes.TagPoint;
 import java.util.List;
 import java.util.Map;
 
-import stat_classes.TagPointBmHandler;
+import com.johanlund.stat_classes.TagPointBmHandler;
 
 /**
  * Created by Johan on 2017-06-26.

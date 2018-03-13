@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import stat_classes.TagPointMaker;
+import com.johanlund.stat_classes.TagPointMaker;
 
 import static junit.framework.Assert.assertEquals;
 
