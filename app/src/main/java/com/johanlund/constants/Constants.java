@@ -35,7 +35,7 @@ public class Constants {
     public final static String PUT_TAG_TEMPLATE = "tagTemplateToBeSent";
     public final static String TAGNAME_SEARCH_STRING = "tagNameSearchString";
     public final static int NEW_TYPE_FOR_TAGTEMPLATE = 8888;
-    public final static String RETURN_EVENT_SERIALIZABLE = "returnMealSer";
+    public final static String RETURN_EVENT_SERIALIZABLE = "returnEventSer";
     //sent to new Event activities if all you want to do is change an event
     public final static String EVENT_TO_CHANGE = "eventToChange";
     //changed event or new event?

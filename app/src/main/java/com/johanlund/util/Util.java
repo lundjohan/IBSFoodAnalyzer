@@ -56,7 +56,7 @@ public class Util {
     }
 
     /**
-     * Method used by MealActivity, TagAdderActivity etc as part of creating a new Event.
+     * Method used by EventActivity, TagAdderActivity etc as part of creating a new Event.
      *
      * @param serializable
      * @param putExtraString
