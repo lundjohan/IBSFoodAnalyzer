@@ -51,6 +51,6 @@ public class AndroidTestUtil {
         appCompatButton.perform(scrollTo(), click());
     }
     public static void changeDate (ActivityTestRule<DrawerActivity> activityTestRule, LocalDate date){
-        activityTestRule.getActivity().changeDate(date);
+        activityTestRule.getActivity().restartContainerDiary(date);
     }
 }

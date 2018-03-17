@@ -15,7 +15,7 @@ import java.util.List;
 public class Chunk {
     List<Event> events = new ArrayList<>();
 
-    public Chunk(List<Event> events) {
+    private Chunk(List<Event> events) {
         this.events = events;
     }
 
