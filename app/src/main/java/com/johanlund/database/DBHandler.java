@@ -322,6 +322,11 @@ public class DBHandler extends SQLiteOpenHelper {
                 break;
         }
     }
+    public void addEvents(List<Event>events){
+        for (Event e: events){
+            addEvent(e);
+        }
+    }
 
     /**
      * This is used when creating Events inside an EventsTemplate
@@ -1104,60 +1109,6 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return tagTemplates;
-    }
-
-
-    public void createSomeTagTemplates() {
-        addTagTemplate(new TagTemplate("dairy"));
-        addTagTemplate(new TagTemplate("yoghurt"));
-        addTagTemplate(new TagTemplate("wheat"));
-        addTagTemplate(new TagTemplate("running"));
-        addTagTemplate(new TagTemplate("sleep"));
-        addTagTemplate(new TagTemplate("sugar"));
-        addTagTemplate(new TagTemplate("honey"));
-        addTagTemplate(new TagTemplate("pizza", findTagTemplate("wheat")));
-    }
-
-    //===================================================================================
-    //Import from txt
-    //===================================================================================
-    //this comes from txt file
-    //important to add TagTemplates before adding events
-    public void addEventsWithUnknownTagTemplates(List<Event> events) {
-        for (Event e : events) {
-            if (e instanceof com.johanlund.base_classes.Meal) {
-                com.johanlund.base_classes.Meal meal = (com.johanlund.base_classes.Meal) e;
-                List<Tag> tags = meal.getTags();
-                addNewTagTemplateFromTags(tags);
-                addMeal((meal));
-            } else if (e instanceof com.johanlund.base_classes.Other) {
-                com.johanlund.base_classes.Other other = (com.johanlund.base_classes.Other) e;
-                List<Tag> tags = other.getTags();
-                addNewTagTemplateFromTags(tags);
-                addOther((other));
-            } else if (e instanceof com.johanlund.base_classes.Exercise) {
-                com.johanlund.base_classes.Exercise exercise = (com.johanlund.base_classes
-                        .Exercise) e;
-                Tag tag = exercise.getTypeOfExercise();
-                addTagTemplate(new TagTemplate(tag.getName()));
-                addExercise((exercise));
-            } else if (e instanceof com.johanlund.base_classes.Bm) {
-                com.johanlund.base_classes.Bm bm = (com.johanlund.base_classes.Bm) e;
-                addBm((bm));
-            } else if (e instanceof Rating) {
-                Rating rating = (Rating) e;
-                addRating((rating));
-            }
-
-        }
-
-
-    }
-
-    private void addNewTagTemplateFromTags(List<Tag> tags) {
-        for (Tag t : tags) {
-            addTagTemplate(new TagTemplate(t.getName()));
-        }
     }
 
     private List<Event> getSortedEventsHelper(Cursor c) {

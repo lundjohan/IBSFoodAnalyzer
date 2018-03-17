@@ -417,7 +417,7 @@ public class DrawerActivity extends AppCompatActivity
 
     public LocalDate addEventsToDatabase(List<Event> events) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        dbHandler.addEventsWithUnknownTagTemplates(events);
+        dbHandler.addEvents(events);
         return events.get(events.size() - 1).getTime().toLocalDate();
     }
 
@@ -470,7 +470,7 @@ public class DrawerActivity extends AppCompatActivity
             DBHandler db = new DBHandler(getApplicationContext());
             // db.deleteAllTablesRows(); This is not meant to be here,
             // better just to add events and cascade ignore on existing ones (same type, same time).
-            db.addEventsWithUnknownTagTemplates(importedEvents);
+            db.addEvents(importedEvents);
             return null;
         }
 
