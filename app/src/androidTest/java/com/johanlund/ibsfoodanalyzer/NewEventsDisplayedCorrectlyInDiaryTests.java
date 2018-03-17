@@ -96,13 +96,6 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     public void testReturnValueFromMealActivity() {
         ldt = LocalDateTime.of(2017, Month.MAY, 23, 16, 0);
 
-        //it is needed to add TagTemplate first otherwise problems in DbHandler.addTags() (getTagTemplateId)
-        TagTemplate tt = new TagTemplate("banana", null);
-        TagTemplate tt2 = new TagTemplate("honey", null);
-        DBHandler dbHandler = new DBHandler(intentsRule.getActivity());
-        dbHandler.addTagTemplate(tt);
-        dbHandler.addTagTemplate(tt2);
-
         // Create a meal object
         Tag sugar = new Tag(ldt, "banana", 2.0);
         Tag honey = new Tag(ldt, "honey", 1.0);
@@ -140,12 +133,6 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     @Test
     public void testReturnValueFromOtherActivity() {
         ldt = LocalDateTime.of(2017, Month.MAY, 24, 23, 22);
-
-        //it is needed to add TagTemplate first otherwise problems in DbHandler.addTags() (getTagTemplateId)
-        TagTemplate tt = new TagTemplate("happy", null);
-        DBHandler dbHandler = new DBHandler(intentsRule.getActivity());
-        dbHandler.addTagTemplate(tt);
-
         tags.add(new Tag(ldt, "happy", 1.0));
         Other other = new Other(ldt, tags);
 
@@ -178,12 +165,6 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     public void testReturnValueFromExerciseActivity() {
         // Create a meal object with timeView 16:00
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 17, 30);
-
-        //it is needed to add TagTemplate first otherwise problems in DbHandler.addTags() (getTagTemplateId)
-        TagTemplate tt = new TagTemplate("running", null);
-        DBHandler dbHandler = new DBHandler(intentsRule.getActivity());
-        dbHandler.addTagTemplate(tt);
-
         Tag running = new Tag(ldt, "running", 1.0);
 
         //a 4 means Intense

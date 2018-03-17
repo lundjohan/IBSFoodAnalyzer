@@ -363,14 +363,14 @@ public class DBHandler extends SQLiteOpenHelper {
         if (event instanceof InputEvent) {
             InputEvent ie = (InputEvent) event;
             for (Tag t : ie.getTags()) {
-                addTag(t, eventId);
+                addTagAndPossiblyTagTemplate(t, eventId);
 
             }
         }
         //Exercise is does not inherit InputEvent but has one tag
         else if (event instanceof com.johanlund.base_classes.Exercise) {
             Tag t = ((com.johanlund.base_classes.Exercise) event).getTypeOfExercise();
-            addTag(t, eventId);
+            addTagAndPossiblyTagTemplate(t, eventId);
         }
         db.close();
         return eventId;
@@ -813,7 +813,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addExercise(com.johanlund.base_classes.Exercise exercise) {
         //first create event and obtain its id
         long eventId = addEventBase(exercise, EXERCISE);
-        addTag(exercise.getTypeOfExercise(), eventId);
+        addTagAndPossiblyTagTemplate(exercise.getTypeOfExercise(), eventId);
         addToExerciseTable(eventId, exercise);
     }
 
@@ -891,13 +891,22 @@ public class DBHandler extends SQLiteOpenHelper {
         return tags;
     }
 
-    private void addTag(Tag t, long eventId) {
+    /**
+     * Note that this method also adds TagTemplate in case it is missing
+     * @param t
+     * @param eventId
+     */
+    private void addTagAndPossiblyTagTemplate(Tag t, long eventId) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
         values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(t.getTime()));
         values.put(COLUMN_SIZE, t.getSize());
 
         long tagTemplateId = getTagTemplateId(t.getName());
+        if (tagTemplateId == -1){
+            TagTemplate tt = new TagTemplate(t.getName(), null);
+            tagTemplateId = addTagTemplate(tt);
+        }
         values.put(COLUMN_TAGTEMPLATE, tagTemplateId);
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_TAGS, null, values);
@@ -907,11 +916,12 @@ public class DBHandler extends SQLiteOpenHelper {
     //===================================================================================
     //TagTemplate
     //===================================================================================
-    public void addTagTemplate(TagTemplate tagTemplate) {
+    public long addTagTemplate(TagTemplate tagTemplate) {
         ContentValues values = makeTagTemplateContentValues(tagTemplate);
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_TAGTEMPLATES, null, values);
+        long id = db.insert(TABLE_TAGTEMPLATES, null, values);
         db.close();
+        return id;
         //Log.d("Debug", "addTagTemplate completed! TagTemplate " + tagTemplate.get_tagname() + "
         // with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
     }
