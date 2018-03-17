@@ -252,15 +252,4 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             rightLine = (TextView) itemView.findViewById(R.id.rightLine);
         }
     }
-
-    //special case -> this one is not a REAL event. Its only purpose is to show start (actually
-    // placed at the end)of Day
-    class DateMarkerViewHolder extends RecyclerView.ViewHolder {
-        public TextView dateView;
-
-        public DateMarkerViewHolder(View itemView) {
-            super(itemView);
-            this.dateView = (TextView) itemView.findViewById(R.id.dateMarker);
-        }
-    }
 }
