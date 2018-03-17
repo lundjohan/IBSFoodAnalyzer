@@ -8,6 +8,12 @@ android {
             storeFile file('C:/Users/Johan/.android/deployment_cert.der')
             storePassword 'MD5: 46:FC:63:CC:EC:39:BE:19:FA:7E:DA:1D:FE:13:DE:22'
         }
+        Debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('C:/Users/Johan/.android/debug.keystore')
+            storePassword 'android'
+        }
     }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -20,10 +26,24 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
     }
+    /**
+     * The buildTypes block is where you can configure multiple build types.
+     * By default, the build system defines two build types: debug and release. The
+     * debug build type is not explicitly shown in the default build configuration,
+     * but it includes debugging tools and is signed with the debug key. The release
+     * build type applies Proguard settings and is not signed by default.
+     */
     buildTypes {
+        /**
+         * By default, Android Studio configures the release build type to enable code
+         * shrinking, using minifyEnabled, and specifies the Proguard settings file.
+         */
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.Debug
         }
     }
     lintOptions {

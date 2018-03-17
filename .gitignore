@@ -12,6 +12,7 @@
 /.idea/libraries
 .DS_Store
 build/
+!app/build.gradle
 aFileChooser/build
 /captures
 .externalNativeBuild
