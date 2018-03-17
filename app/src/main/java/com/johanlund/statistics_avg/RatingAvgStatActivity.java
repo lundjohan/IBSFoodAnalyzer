@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_avg;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import com.johanlund.ibsfoodanalyzer.R;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_AVG;
 
-public class AvgStatActivity extends StatActivity {
+public class RatingAvgStatActivity extends AvgStatActivity {
     @Override
     protected String getInfoStr() {
         return getResources().getString(R.string.avg_info_score);

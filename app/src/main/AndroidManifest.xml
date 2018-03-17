@@ -79,17 +79,17 @@
                 <data android:mimeType="*/*"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.johanlund.statistics.AvgStatActivity">
+        <activity android:name="com.johanlund.statistics_avg.RatingAvgStatActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics.CompleteStatActivity">
+        <activity android:name="com.johanlund.statistics_avg.CompleteAvgStatActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics.BristolStatActivity">
+        <activity android:name="com.johanlund.statistics_avg.BristolAvgStatActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics.TimeRatingStatActivity">
+        <activity android:name="com.johanlund.statistics_time.TimeRatingStatActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics.TimeCompleteStatActivity">
+        <activity android:name="com.johanlund.statistics_time.TimeCompleteStatActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics.TimeBristolStatActivity">
+        <activity android:name="com.johanlund.statistics_time.TimeBristolStatActivity">
         </activity>
         <activity
             android:name="com.johanlund.statistics_settings.PortionStatSettingsActivity"

@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_avg;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -29,7 +29,7 @@ import java.util.Map;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
 
-public abstract class StatActivity extends AppCompatActivity {
+public abstract class AvgStatActivity extends AppCompatActivity {
     static final String TAG = "STAT_ACTIVITY";
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;

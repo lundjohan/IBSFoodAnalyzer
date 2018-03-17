@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_avg;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import com.johanlund.ibsfoodanalyzer.R;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BM;
 
-public class BristolStatActivity extends StatActivity {
+public class BristolAvgStatActivity extends AvgStatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class BristolStatActivity extends StatActivity {
     }
 
     /**
-     * Perhaps overkill, but reduces code for CompleteStatActivity.
+     * Perhaps overkill, but reduces code for CompleteAvgStatActivity.
      */
     protected BristolScoreWrapper getBMScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int quantLimit) {
         return new BristolScoreWrapper(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);

@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_avg;
 
 /**
  * Created by Johan on 2018-02-10.

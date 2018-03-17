@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_avg;
 
 import android.os.Bundle;
 
@@ -6,7 +6,7 @@ import com.johanlund.calc_score_classes.BristolScoreWrapper;
 import com.johanlund.calc_score_classes.CompleteScoreWrapper;
 import com.johanlund.ibsfoodanalyzer.R;
 
-public class CompleteStatActivity extends BristolStatActivity {
+public class CompleteAvgStatActivity extends BristolAvgStatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

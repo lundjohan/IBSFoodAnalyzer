@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_time;
 
 import android.app.Activity;
 

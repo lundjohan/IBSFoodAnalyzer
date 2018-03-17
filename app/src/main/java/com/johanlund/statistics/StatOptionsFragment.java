@@ -12,12 +12,18 @@ import android.view.ViewGroup;
 
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.InfoActivity;
+import com.johanlund.statistics_avg.BristolAvgStatActivity;
+import com.johanlund.statistics_avg.CompleteAvgStatActivity;
+import com.johanlund.statistics_avg.RatingAvgStatActivity;
 import com.johanlund.statistics_settings.AvgBmSettingsActivity;
 import com.johanlund.statistics_settings.AvgRatingSettingsActivity;
 import com.johanlund.statistics_settings.PortionStatSettingsActivity;
 import com.johanlund.statistics_settings.TimeBristolSettingsActivity;
 import com.johanlund.statistics_settings.TimeCompleteSettingsActivity;
 import com.johanlund.statistics_settings.TimeRatingSettingsActivity;
+import com.johanlund.statistics_time.TimeBristolStatActivity;
+import com.johanlund.statistics_time.TimeCompleteStatActivity;
+import com.johanlund.statistics_time.TimeRatingStatActivity;
 
 import static com.johanlund.ibsfoodanalyzer.R.id.avgBristolItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgCompleteItemTextView;
@@ -88,13 +94,13 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
             //to stat
             case avgRatingItemTextView:
-                newStatActivity(new AvgStatActivity());
+                newStatActivity(new RatingAvgStatActivity());
                 break;
             case R.id.avgCompleteItemTextView:
-                newStatActivity(new CompleteStatActivity());
+                newStatActivity(new CompleteAvgStatActivity());
                 break;
             case avgBristolItemTextView:
-                newStatActivity(new BristolStatActivity());
+                newStatActivity(new BristolAvgStatActivity());
                 break;
 
             case timeRatingItemTextView:
