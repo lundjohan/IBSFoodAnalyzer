@@ -52,7 +52,7 @@
     </string>
 
     <!--Stat Settings variables-->
-    
+
     <string name="avg_rating_pref_wait_key">avg_rating_stat_wait_hours_after_event</string>
     <string name="avg_rating_pref_stop_key">avg_rating_stat_stop_hours_after_event</string>
     <string name="avg_rating_pref_quant_key">avg_rating_quantity_min_limit</string>

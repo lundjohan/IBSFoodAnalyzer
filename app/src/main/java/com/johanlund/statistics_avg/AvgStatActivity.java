@@ -21,6 +21,7 @@ import com.johanlund.calc_score_classes.ScoreWrapper;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.InfoActivity;
+import com.johanlund.statistics.StatBaseActivity;
 import com.johanlund.tagpoint_classes.TagPoint;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
 
-public abstract class AvgStatActivity extends AppCompatActivity {
+public abstract class AvgStatActivity extends StatBaseActivity {
     static final String TAG = "STAT_ACTIVITY";
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;

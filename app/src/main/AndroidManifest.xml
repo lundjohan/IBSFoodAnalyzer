@@ -19,7 +19,7 @@
         </activity>
         <activity android:name="com.johanlund.event_activities.BmActivity">
         </activity>
-        <activity android:name="com.johanlund.ibsfoodanalyzer.TagAdderActivity"/>
+        <activity android:name=".TagAdderActivity"/>
         <activity android:name="com.johanlund.event_activities.OtherActivity">
         </activity>
         <activity android:name="com.johanlund.event_activities.ExerciseActivity">
@@ -34,7 +34,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name = "com.johanlund.diary.LoadEventsTemplateActivity"
+            android:name="com.johanlund.diary.LoadEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
@@ -52,13 +52,13 @@
         </service>
 
         <activity
-            android:name="com.johanlund.ibsfoodanalyzer.TagTypeAdderActivity"
-            android:parentActivityName="com.johanlund.ibsfoodanalyzer.TagAdderActivity">
+            android:name=".TagTypeAdderActivity"
+            android:parentActivityName=".TagAdderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.ibsfoodanalyzer.TagAdderActivity"/>
         </activity>
-        <activity android:name="com.johanlund.ibsfoodanalyzer.TagTypeEditActivity">
+        <activity android:name=".TagTypeEditActivity">
         </activity>
         <activity android:name="com.johanlund.settings.StatSettingsActivity">
         </activity>
@@ -85,11 +85,11 @@
         </activity>
         <activity android:name="com.johanlund.statistics_avg.BristolAvgStatActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics_time.TimeRatingStatActivity">
+        <activity android:name="com.johanlund.statistics_time.RatingTimeStatActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics_time.TimeCompleteStatActivity">
+        <activity android:name="com.johanlund.statistics_time.CompleteTimeStatActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics_time.TimeBristolStatActivity">
+        <activity android:name="com.johanlund.statistics_time.BristolTimeStatActivity">
         </activity>
         <activity
             android:name="com.johanlund.statistics_settings.PortionStatSettingsActivity"
@@ -132,6 +132,8 @@
                 android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
         <activity android:name="com.johanlund.info.ActivityInfoContent">
+        </activity>
+        <activity android:name="com.johanlund.statistics.StatBaseActivity">
         </activity>
     </application>
 

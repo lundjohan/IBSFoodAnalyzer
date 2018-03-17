@@ -21,9 +21,9 @@ import com.johanlund.statistics_settings.PortionStatSettingsActivity;
 import com.johanlund.statistics_settings.TimeBristolSettingsActivity;
 import com.johanlund.statistics_settings.TimeCompleteSettingsActivity;
 import com.johanlund.statistics_settings.TimeRatingSettingsActivity;
-import com.johanlund.statistics_time.TimeBristolStatActivity;
-import com.johanlund.statistics_time.TimeCompleteStatActivity;
-import com.johanlund.statistics_time.TimeRatingStatActivity;
+import com.johanlund.statistics_time.BristolTimeStatActivity;
+import com.johanlund.statistics_time.CompleteTimeStatActivity;
+import com.johanlund.statistics_time.RatingTimeStatActivity;
 
 import static com.johanlund.ibsfoodanalyzer.R.id.avgBristolItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgCompleteItemTextView;
@@ -104,13 +104,13 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
                 break;
 
             case timeRatingItemTextView:
-                newStatActivity(new TimeRatingStatActivity());
+                newStatActivity(new RatingTimeStatActivity());
                 break;
             case R.id.timeCompleteItemTextView:
-                newStatActivity(new TimeCompleteStatActivity());
+                newStatActivity(new CompleteTimeStatActivity());
                 break;
             case timeBristolItemTextView:
-                newStatActivity(new TimeBristolStatActivity());
+                newStatActivity(new BristolTimeStatActivity());
                 break;
 
             //info buttons

@@ -61,10 +61,9 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
     /*Works as replacement for java 8 missing features in android, specifiacally java.time.api - Johan*/
-    compile 'com.google.code.gson:gson:2.8.0'
     compile project(':aFileChooser')
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:preference-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
