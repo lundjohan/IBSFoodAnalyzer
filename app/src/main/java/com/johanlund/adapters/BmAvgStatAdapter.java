@@ -3,14 +3,14 @@ package com.johanlund.adapters;
 import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.calc_score_classes.ScoreWrapper;
-import com.johanlund.tagpoint_classes.TagPoint;
+import com.johanlund.statistics_point_classes.TagPoint;
 
 /**
  * Created by Johan on 2018-02-13.
  */
 
-public class BmStatAdapter extends StatAdapter {
-    public BmStatAdapter(ScoreWrapper scoreWrapper) {
+public class BmAvgStatAdapter extends AvgStatAdapter {
+    public BmAvgStatAdapter(ScoreWrapper scoreWrapper) {
         super(scoreWrapper);
     }
     //this is the essential one

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.johanlund.calc_score_classes.ScoreWrapper;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.tagpoint_classes.TagPoint;
+import com.johanlund.statistics_point_classes.TagPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +21,12 @@ import java.util.List;
  * this equivalent of a get, or is a list created every time?
  */
 
-public class StatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AvgStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //list needs to be initiated, otherwise getItemCount crashes.
     protected List<TagPoint>tagPointsList = new ArrayList<>();
     protected ScoreWrapper scoreWrapper;
 
-    public StatAdapter(ScoreWrapper scoreWrapper) {
+    public AvgStatAdapter(ScoreWrapper scoreWrapper) {
         this.scoreWrapper = scoreWrapper;
     }
     @Override

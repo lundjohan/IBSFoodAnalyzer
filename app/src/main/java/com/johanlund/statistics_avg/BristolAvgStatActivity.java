@@ -4,8 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
-import com.johanlund.adapters.BmStatAdapter;
-import com.johanlund.adapters.StatAdapter;
+import com.johanlund.adapters.BmAvgStatAdapter;
+import com.johanlund.adapters.AvgStatAdapter;
 import com.johanlund.calc_score_classes.BristolScoreWrapper;
 import com.johanlund.calc_score_classes.ScoreWrapper;
 import com.johanlund.ibsfoodanalyzer.R;
@@ -42,8 +42,8 @@ public class BristolAvgStatActivity extends AvgStatActivity {
     }
 
     @Override
-    public StatAdapter getStatAdapter() {
-        return new BmStatAdapter(getScoreWrapper());
+    public AvgStatAdapter getStatAdapter() {
+        return new BmAvgStatAdapter(getScoreWrapper());
     }
 
     @Override

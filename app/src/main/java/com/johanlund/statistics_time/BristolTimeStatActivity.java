@@ -5,4 +5,14 @@ package com.johanlund.statistics_time;
  */
 
 public class BristolTimeStatActivity extends TimeStatActivity  {
+
+    @Override
+    protected String getInfoStr() {
+        return null;
+    }
+
+    @Override
+    public String getStringForTitle() {
+        return null;
+    }
 }

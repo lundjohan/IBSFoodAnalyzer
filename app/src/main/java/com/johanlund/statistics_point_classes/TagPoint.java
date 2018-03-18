@@ -1,6 +1,6 @@
-package com.johanlund.tagpoint_classes;
+package com.johanlund.statistics_point_classes;
 
-public class TagPoint {
+public class TagPoint{
     private String name;
     private double quantity;
 

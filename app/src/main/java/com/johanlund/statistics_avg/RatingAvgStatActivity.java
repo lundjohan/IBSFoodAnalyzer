@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
-import com.johanlund.adapters.StatAdapter;
+import com.johanlund.adapters.AvgStatAdapter;
 import com.johanlund.calc_score_classes.AvgScoreWrapper;
 import com.johanlund.calc_score_classes.ScoreWrapper;
 import com.johanlund.ibsfoodanalyzer.R;
@@ -35,8 +35,8 @@ public class RatingAvgStatActivity extends AvgStatActivity {
     }
 
     @Override
-    public StatAdapter getStatAdapter() {
-        return new StatAdapter(getScoreWrapper());
+    public AvgStatAdapter getStatAdapter() {
+        return new AvgStatAdapter(getScoreWrapper());
     }
 
     @Override

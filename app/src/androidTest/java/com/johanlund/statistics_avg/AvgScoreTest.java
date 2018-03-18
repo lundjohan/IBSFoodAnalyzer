@@ -10,7 +10,7 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
-import com.johanlund.tagpoint_classes.TagPoint;
+import com.johanlund.statistics_point_classes.TagPoint;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package com.johanlund.calc_score_classes;
 
 import com.johanlund.base_classes.Chunk;
-import com.johanlund.tagpoint_classes.TagPoint;
+import com.johanlund.statistics_point_classes.TagPoint;
 
 import java.util.List;
 import java.util.Map;

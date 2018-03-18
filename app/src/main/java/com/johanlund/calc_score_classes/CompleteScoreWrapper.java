@@ -1,6 +1,6 @@
 package com.johanlund.calc_score_classes;
 
-import com.johanlund.tagpoint_classes.TagPoint;
+import com.johanlund.statistics_point_classes.TagPoint;
 
 /**
  * Created by Johan on 2017-06-26.

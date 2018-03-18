@@ -2,7 +2,7 @@ package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Meal;
-import com.johanlund.tagpoint_classes.TagPoint;
+import com.johanlund.statistics_point_classes.TagPoint;
 import com.johanlund.util.TPUtil;
 
 import org.threeten.bp.LocalDateTime;

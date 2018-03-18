@@ -178,7 +178,7 @@ public class ExternalStorageHandler {
     public static void saveCSVFile(Context context) {
         File outFile = makeFileToSaveTo(LocalDateTime.now() + ".csv");
         DBHandler dbHandler = new DBHandler(context);
-        List<Event>allEvents = dbHandler.getAllEventsMinusEventsTemplateSorted();
+        List<Event>allEvents = dbHandler.getAllEventsMinusEventsTemplatesSorted();
         try {
             Exporter.saveToTxt(outFile, allEvents);
             scanFile(context, outFile, "text/csv");
@@ -189,7 +189,7 @@ public class ExternalStorageHandler {
     public static void saveCSVForGraphFile(Context context) {
         File outFile = makeFileToSaveTo(LocalDateTime.now() + ".csv");
         DBHandler dbHandler = new DBHandler(context);
-        List<Event>allEvents = dbHandler.getAllEventsMinusEventsTemplateSorted();
+        List<Event>allEvents = dbHandler.getAllEventsMinusEventsTemplatesSorted();
         try {
             Exporter.saveTimeAndScoreToTxt(outFile, allEvents);
             scanFile(context, outFile, "text/csv");

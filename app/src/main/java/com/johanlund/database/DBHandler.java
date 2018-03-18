@@ -524,7 +524,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //notice how this method use null in select statement to avoid retrieving events from
     // eventstemplates
-    public List<Event> getAllEventsMinusEventsTemplateSorted() {
+    public List<Event> getAllEventsMinusEventsTemplatesSorted() {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENTSTEMPLATE +
                 " IS NULL " + " ORDER BY " + COLUMN_DATETIME + "" + " ASC";
