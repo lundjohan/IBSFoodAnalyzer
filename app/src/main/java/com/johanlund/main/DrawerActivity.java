@@ -34,7 +34,7 @@ import com.johanlund.external_storage.SaveToCSVIntentService;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.ibsfoodanalyzer.TemplateFragment;
 import com.johanlund.settings.GeneralSettingsActivity;
-import com.johanlund.statistics.StatOptionsFragment;
+import com.johanlund.statistics_general.StatOptionsFragment;
 
 import org.threeten.bp.LocalDate;
 

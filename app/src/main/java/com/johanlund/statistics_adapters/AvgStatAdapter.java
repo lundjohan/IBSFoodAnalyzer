@@ -1,4 +1,4 @@
-package com.johanlund.adapters;
+package com.johanlund.statistics_adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.johanlund.calc_score_classes.ScoreWrapper;
+import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_point_classes.TagPoint;
 
@@ -24,10 +24,10 @@ import java.util.List;
 public class AvgStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //list needs to be initiated, otherwise getItemCount crashes.
     protected List<TagPoint>tagPointsList = new ArrayList<>();
-    protected ScoreWrapper scoreWrapper;
+    protected AvgScoreWrapper avgScoreWrapper;
 
-    public AvgStatAdapter(ScoreWrapper scoreWrapper) {
-        this.scoreWrapper = scoreWrapper;
+    public AvgStatAdapter(AvgScoreWrapper avgScoreWrapper) {
+        this.avgScoreWrapper = avgScoreWrapper;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,7 +43,7 @@ public class AvgStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ViewHolder viewHolder = (ViewHolder) holder;
         TagPoint tp = tagPointsList.get(position);
         viewHolder.tagName.setText(tp.getName());
-        viewHolder.scoreField.setText(String.format("%.1f", scoreWrapper.getScore(tp)));
+        viewHolder.scoreField.setText(String.format("%.1f", avgScoreWrapper.getScore(tp)));
         viewHolder.quantity.setText(String.format("%.1f", tp.getQuantity()));
 
     }
@@ -67,7 +67,6 @@ public class AvgStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tagName = (TextView) itemView.findViewById(R.id.tagname_stat);
             scoreField = (TextView) itemView.findViewById(R.id.score_view);
             quantity = (TextView) itemView.findViewById(R.id.quantity_stat);
-
         }
     }
 }

@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.johanlund.adapters.AvgStatAdapter;
+import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.base_classes.Chunk;
-import com.johanlund.calc_score_classes.ScoreWrapper;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics.StatBaseActivity;
+import com.johanlund.statistics_general.StatBaseActivity;
+import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.statistics_point_classes.TagPoint;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,41 +25,40 @@ public abstract class AvgStatActivity extends StatBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stat);
-        recyclerView = (RecyclerView) findViewById(R.id.stat_table);
+        setContentView(R.layout.activity_avg_stat);
+        recyclerView = (RecyclerView) findViewById(R.id.avg_stat_table);
         continueOnCreate();
     }
     @Override
     protected void startAsyncTask(List<Chunk>chunks){
-        StatAsyncTask asyncThread = new StatAsyncTask();
+        AvgStatAsyncTask asyncThread = new AvgStatAsyncTask();
         asyncThread.execute(getScoreWrapper(), chunks);
     }
 
-    public abstract ScoreWrapper getScoreWrapper();
+    public abstract AvgScoreWrapper getScoreWrapper();
 
 
 
     /**
      * This inner class is responsible for putting calculations of stats in new thread
      * <p>
-     * A bit of Spaghetti code (onPostExecute accepts scoreWrapper which seems a little bit odd
+     * A bit of Spaghetti code (onPostExecute accepts avgScoreWrapper which seems a little bit odd
      * for example), but it works.
      */
-    private class StatAsyncTask extends AsyncTask<Object, Void, List<TagPoint>> {
+    private class AvgStatAsyncTask extends AsyncTask<Object, Void, List<TagPoint>> {
         final String TAG = this.getClass().getName();
 
-        public StatAsyncTask() {
+        public AvgStatAsyncTask() {
         }
 
         /**
-         * @param params should be in order. (implementation of) ScoreWrapper, List<Chunk>,
+         * @param params should be in order. (implementation of) AvgScoreWrapper, List<Chunk>,
          *               Map<String, TagPoint>
          * @return
          */
         @Override
         protected List<TagPoint> doInBackground(Object... params) {
-            Log.d(TAG, "Inside doInBackground");
-            ScoreWrapper wrapper = (ScoreWrapper) params[0];
+            AvgScoreWrapper wrapper = (AvgScoreWrapper) params[0];
             List<Chunk> chunks = (List<Chunk>) params[1];
             tagPoints = wrapper.calcScore(chunks, tagPoints);
             //sort tagPoints here

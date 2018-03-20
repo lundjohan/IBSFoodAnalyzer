@@ -1,4 +1,4 @@
-package com.johanlund.calc_score_classes;
+package com.johanlund.statistics_avg_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.TagPoint;
@@ -11,10 +11,10 @@ import java.util.Map;
 
 /**
  * Created by Johan on 2017-06-25.
- * This class is the Stratgy in Strategy Pattern
+ * This class is the Strategy in Strategy Pattern
  */
 
-public abstract class ScoreWrapper {
+public abstract class AvgScoreWrapper {
     int quantLimit;
     int startHoursAfterEvent;
     int stopHoursAfterEvent;
@@ -26,13 +26,13 @@ public abstract class ScoreWrapper {
      * @param stopHoursAfterEvent
      * @param quantLimit
      */
-    public ScoreWrapper(int startHoursAfterEvent, int stopHoursAfterEvent, int quantLimit) {
+    public AvgScoreWrapper(int startHoursAfterEvent, int stopHoursAfterEvent, int quantLimit) {
         this.startHoursAfterEvent = startHoursAfterEvent;
         this.stopHoursAfterEvent = stopHoursAfterEvent;
         this.quantLimit = quantLimit;
     }
 
-    public ScoreWrapper(int stopHoursAfterEvent) {
+    public AvgScoreWrapper(int stopHoursAfterEvent) {
         startHoursAfterEvent = 0;
         this.stopHoursAfterEvent = stopHoursAfterEvent;
     }
@@ -101,6 +101,7 @@ public abstract class ScoreWrapper {
      */
     protected abstract double getQuantityOfTagPoint(TagPoint tp);
 
+    //special case here, since quantity for bm and rating doesnt really mean the same thing.
     public abstract int getQuantityLimit();
 }
 

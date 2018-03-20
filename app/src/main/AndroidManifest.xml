@@ -96,7 +96,7 @@
             android:label="Portion Stat Settings">
         </activity>
         <activity
-            android:name="com.johanlund.statistics.NewPortionRangeActivity"
+            android:name="com.johanlund.statistics_portions.NewPortionRangeActivity"
             android:parentActivityName="com.johanlund.statistics_settings.PortionStatSettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -133,7 +133,7 @@
         </activity>
         <activity android:name="com.johanlund.info.ActivityInfoContent">
         </activity>
-        <activity android:name="com.johanlund.statistics.StatBaseActivity">
+        <activity android:name="com.johanlund.statistics_general.StatBaseActivity">
         </activity>
     </application>
 

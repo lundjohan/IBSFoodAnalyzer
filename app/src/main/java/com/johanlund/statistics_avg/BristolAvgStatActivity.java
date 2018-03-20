@@ -4,11 +4,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
-import com.johanlund.adapters.BmAvgStatAdapter;
-import com.johanlund.adapters.AvgStatAdapter;
-import com.johanlund.calc_score_classes.BristolScoreWrapper;
-import com.johanlund.calc_score_classes.ScoreWrapper;
+import com.johanlund.statistics_adapters.BmAvgStatAdapter;
+import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
+import com.johanlund.statistics_avg_scorewrapper.BristolAvgScoreWrapper;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BM;
 
@@ -20,7 +20,7 @@ public class BristolAvgStatActivity extends AvgStatActivity {
     }
 
     @Override
-    public ScoreWrapper getScoreWrapper() {
+    public AvgScoreWrapper getScoreWrapper() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
         int furthest_distance_hours_before_bm_limit = preferences.getInt(getResources().getString(R.string
@@ -37,8 +37,8 @@ public class BristolAvgStatActivity extends AvgStatActivity {
     /**
      * Perhaps overkill, but reduces code for CompleteAvgStatActivity.
      */
-    protected BristolScoreWrapper getBMScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int quantLimit) {
-        return new BristolScoreWrapper(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);
+    protected BristolAvgScoreWrapper getBMScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int quantLimit) {
+        return new BristolAvgScoreWrapper(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);
     }
 
     @Override

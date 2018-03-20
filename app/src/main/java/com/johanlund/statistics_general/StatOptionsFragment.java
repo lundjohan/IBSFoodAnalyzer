@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_general;
 
 import android.app.Activity;
 import android.content.Intent;

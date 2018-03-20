@@ -1,8 +1,9 @@
-package com.johanlund.adapters;
+package com.johanlund.statistics_adapters;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.johanlund.calc_score_classes.ScoreWrapper;
+import com.johanlund.statistics_adapters.AvgStatAdapter;
+import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.statistics_point_classes.TagPoint;
 
 /**
@@ -10,8 +11,8 @@ import com.johanlund.statistics_point_classes.TagPoint;
  */
 
 public class BmAvgStatAdapter extends AvgStatAdapter {
-    public BmAvgStatAdapter(ScoreWrapper scoreWrapper) {
-        super(scoreWrapper);
+    public BmAvgStatAdapter(AvgScoreWrapper avgScoreWrapper) {
+        super(avgScoreWrapper);
     }
     //this is the essential one
     @Override
@@ -19,7 +20,7 @@ public class BmAvgStatAdapter extends AvgStatAdapter {
         ViewHolder viewHolder = (ViewHolder) holder;
         TagPoint tp = tagPointsList.get(position);
         viewHolder.tagName.setText(tp.getName());
-        viewHolder.scoreField.setText(String.format("%.1f", scoreWrapper.getScore(tp)));
+        viewHolder.scoreField.setText(String.format("%.1f", avgScoreWrapper.getScore(tp)));
 
         //this differs from rating stat
         viewHolder.quantity.setText(Integer.toString(tp.getNrOfBMs()));

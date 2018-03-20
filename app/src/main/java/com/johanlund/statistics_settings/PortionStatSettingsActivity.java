@@ -10,8 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics.NewPortionRangeActivity;
-import com.johanlund.statistics.PortionStatRange;
+import com.johanlund.statistics_portions.NewPortionRangeActivity;
+import com.johanlund.statistics_portions.PortionStatRange;
 import com.johanlund.util.Util;
 
 import static com.johanlund.constants.Constants.CHOSEN_FROM_RANGE;

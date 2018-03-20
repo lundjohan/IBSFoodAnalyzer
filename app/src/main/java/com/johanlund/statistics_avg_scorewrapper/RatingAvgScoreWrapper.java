@@ -1,4 +1,4 @@
-package com.johanlund.calc_score_classes;
+package com.johanlund.statistics_avg_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.TagPoint;
@@ -15,9 +15,9 @@ import com.johanlund.stat_classes.TagPointMaker;
  * this test under AndroidTests
  */
 
-public class AvgScoreWrapper extends ScoreWrapper {
+public class RatingAvgScoreWrapper extends AvgScoreWrapper {
 
-    public AvgScoreWrapper(int waitHoursAfterEvent, int stopHoursAfterEvent, int quantLimit) {
+    public RatingAvgScoreWrapper(int waitHoursAfterEvent, int stopHoursAfterEvent, int quantLimit) {
         super(waitHoursAfterEvent, stopHoursAfterEvent, quantLimit);
     }
 

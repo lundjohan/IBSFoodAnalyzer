@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_portions;
 
 /**
  * Created by Johan on 2018-01-23.

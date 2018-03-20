@@ -1,4 +1,4 @@
-package com.johanlund.calc_score_classes;
+package com.johanlund.statistics_avg_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.TagPoint;
@@ -12,9 +12,9 @@ import com.johanlund.stat_classes.TagPointBmHandler;
  * Created by Johan on 2017-06-26.
  */
 
-public class BristolScoreWrapper extends ScoreWrapper {
+public class BristolAvgScoreWrapper extends AvgScoreWrapper {
 
-    public BristolScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int
+    public BristolAvgScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int
             quantLimit) {
         super(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);
     }
@@ -24,7 +24,7 @@ public class BristolScoreWrapper extends ScoreWrapper {
         return tp.getAvgBristol();
     }
 
-    //this is essentially same as for CompleteScoreWrapper, they are calculated in same method.
+    //this is essentially same as for CompleteAvgScoreWrapper, they are calculated in same method.
     @Override
     public Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints) {
         /*notice that furthest_distance_hours_before_bm_limit == startHoursAfterEvent,

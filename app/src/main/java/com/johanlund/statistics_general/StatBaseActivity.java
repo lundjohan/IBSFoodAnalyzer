@@ -1,4 +1,4 @@
-package com.johanlund.statistics;
+package com.johanlund.statistics_general;
 
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.johanlund.adapters.AvgStatAdapter;
+import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.base_classes.Break;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Event;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.external_classes.TinyDB;
-import com.johanlund.statistics.PortionStatRange;
+import com.johanlund.statistics_portions.PortionStatRange;
 
 import java.util.ArrayList;
 
