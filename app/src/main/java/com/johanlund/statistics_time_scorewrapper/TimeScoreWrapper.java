@@ -1,12 +1,15 @@
 package com.johanlund.statistics_time_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
+import com.johanlund.statistics_point_classes.TagPoint;
 import com.johanlund.statistics_point_classes.TimePoint;
 
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZoneOffset;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -27,6 +30,15 @@ public abstract class TimeScoreWrapper {
     }
 
     public List<TimePoint> toSortedList(List<TimePoint> timePoints){
+        Collections.sort(timePoints, new Comparator<TimePoint>()
+                {
+                    @Override
+                    public int compare(TimePoint t1, TimePoint t2)
+                    {
+                        return (int)((t1.getDurationInHours()- t2.getDurationInHours()));
+                    }
+                }
+        );
         return timePoints;
     }
     /**

@@ -1,7 +1,10 @@
 package com.johanlund.statistics_time_scorewrapper;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Rating;
+import com.johanlund.statistics_adapters.TimeStatAdapter;
 import com.johanlund.statistics_point_classes.TimePoint;
 
 import org.threeten.bp.LocalDateTime;
@@ -14,10 +17,13 @@ import java.util.List;
  */
 
 public class RatingTimeScoreWrapper extends TimeScoreWrapper {
-    public RatingTimeScoreWrapper(int ratingStart, int ratingEnd, int durationLimit) {
-        super(ratingStart, ratingEnd, durationLimit);
+    public RatingTimeScoreWrapper(int scoreStart, int ratingEnd, int durationLimit) {
+        super(scoreStart, ratingEnd, durationLimit);
     }
 
+    public RecyclerView.Adapter<RecyclerView.ViewHolder> getStatAdapter() {
+        return new TimeStatAdapter(new RatingTimeScoreWrapper(scoreStart, scoreEnd, durationLimitInHours));
+    }
     protected List<TimePoint> calcTimePeriods(Chunk c) {
         List<Rating> ratings = c.getRatings();
         return calcTimePeriods(ratings, c.getLastTime());

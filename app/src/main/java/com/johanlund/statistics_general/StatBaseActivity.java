@@ -104,7 +104,7 @@ public abstract class StatBaseActivity extends AppCompatActivity {
         return true;
     }
 
-    public abstract AvgStatAdapter getStatAdapter();
+    public abstract RecyclerView.Adapter<RecyclerView.ViewHolder> getStatAdapter();
 
     public abstract String getStringForTitle();
 

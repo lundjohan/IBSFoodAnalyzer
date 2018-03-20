@@ -1,10 +1,14 @@
 package com.johanlund.statistics_time;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.base_classes.Chunk;
+import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.statistics_adapters.TimeStatAdapter;
+import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.statistics_general.StatBaseActivity;
 import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
@@ -18,9 +22,19 @@ import java.util.List;
 public abstract class TimeStatActivity extends StatBaseActivity{
 
     @Override
-    public AvgStatAdapter getStatAdapter() {
-        return null;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_time_stat);
+        recyclerView = (RecyclerView) findViewById(R.id.time_stat_table);
+        continueOnCreate();
     }
+
+    @Override
+    public TimeStatAdapter getStatAdapter(){
+        return new TimeStatAdapter(getScoreWrapper());
+    }
+    public abstract TimeScoreWrapper getScoreWrapper();
+
 
 
     @Override
@@ -28,18 +42,9 @@ public abstract class TimeStatActivity extends StatBaseActivity{
         TimeStatAsyncTask asyncThread = new TimeStatAsyncTask();
         asyncThread.execute(getScoreWrapper(), chunks);
     }
-    public abstract TimeScoreWrapper getScoreWrapper();
     private class TimeStatAsyncTask extends AsyncTask<Object, Void, List<TimePoint>> {
-        final String TAG = this.getClass().getName();
-
         public TimeStatAsyncTask() {
         }
-
-        /**
-         * @param params should be in order. (implementation of) AvgScoreWrapper, List<Chunk>,
-         *               Map<String, TagPoint>
-         * @return
-         */
         @Override
         protected List<TimePoint> doInBackground(Object... params) {
             TimeScoreWrapper wrapper = (TimeScoreWrapper) params[0];

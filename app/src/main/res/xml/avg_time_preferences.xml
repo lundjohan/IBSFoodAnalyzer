@@ -35,7 +35,7 @@
             android:summary="The minimum time in hours the period should last."
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_minValue="1"
+            sample:msbp_minValue="0"
             sample:msbp_maxValue="72"
             sample:msbp_measurementUnit="h"
             />
