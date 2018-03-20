@@ -26,10 +26,22 @@ public abstract class TimeScoreWrapper {
         this.durationLimitInHours = durationLimitInHours;
     }
 
-    public abstract List<TimePoint> toSortedList(List<TimePoint> timePoints);
+    public List<TimePoint> toSortedList(List<TimePoint> timePoints){
+        return timePoints;
+    }
+    /**
+     * Given: breaks have already been accounted for.
+     * @param chunks
+     * @return
+     */
 
-
-    public abstract List<TimePoint> calcTimePeriods(List<Chunk> chunks);
+   public List<TimePoint> calcTimePeriods(List<Chunk> chunks) {
+        List<TimePoint>timePeriods = new ArrayList<>();
+        for (Chunk c: chunks){
+            timePeriods.addAll(calcTimePeriods(c));
+        }
+        return timePeriods;
+    }
 
     public List<TimePoint> removeTimePointsWithTooLowQuant(List<TimePoint> sortedList){
         List<TimePoint>trimmedTimePointList = new ArrayList<>();
@@ -40,6 +52,6 @@ public abstract class TimeScoreWrapper {
         }
         return trimmedTimePointList;
     }
-
+    protected abstract List<TimePoint> calcTimePeriods(Chunk c);
 }
 
