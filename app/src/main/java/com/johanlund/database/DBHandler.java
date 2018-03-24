@@ -58,7 +58,6 @@ import static com.johanlund.database.TablesAndStrings.DATABASE_VERSION;
 import static com.johanlund.database.TablesAndStrings.ENABLE_FOREIGN_KEYS;
 import static com.johanlund.database.TablesAndStrings.TABLE_BMS;
 import static com.johanlund.database.TablesAndStrings.TABLE_EVENTS;
-import static com.johanlund.database.TablesAndStrings.TABLE_EVENTSTEMPLATEEVENTS;
 import static com.johanlund.database.TablesAndStrings.TABLE_EVENTSTEMPLATES;
 import static com.johanlund.database.TablesAndStrings.TABLE_EXERCISES;
 import static com.johanlund.database.TablesAndStrings.TABLE_MEALS;
@@ -75,6 +74,7 @@ import static com.johanlund.database.TablesAndStrings.TYPE_OF;
  */
 
 public class DBHandler extends SQLiteOpenHelper {
+    private SQLiteDatabase database;
     private final String TAG = DBHandler.class.toString();
 
     public DBHandler(Context context) {
@@ -104,24 +104,27 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {  // Drop older
-        // table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTSTEMPLATEEVENTS);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        //since this version Rating scale has been reduced to 6 from 7. 'Abysmal' has disappeared and will be joined with 'Awful'.
+        if (oldVersion <= 37) {
+            List<Rating> allRatings = getAllRatings();
+            for (Rating r: allRatings){
+                int after = r.getAfter();
+
+                //no need to do anything for abysmal
+                if (after != 1){
+                    r.setAfter(--after);
+                    //A. update event in database
+                    long idEvent = getEventIdOutsideEventsTemplate(r);
+                    changeEvent(r);
+                }
+            }
+        }
+        //since EventsTemplates can have same datetime and type as normal events, and that EventsTemplates can have event dublettes (which forbids obtaining there ids by event as argument)
+        //this can probably be fixed but easiest is to simply drop table...
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTSTEMPLATES);
 
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MEALS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OTHERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BMS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RATINGS);
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAGTEMPLATES);
-
-        // Create tables again
-        onCreate(db);
     }
 
 
@@ -422,6 +425,12 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
+    /**
+     * This method uses datetime of event and type of event to retrieve id.
+     * An eventsTemplate can have same type and datetime as a "real" event
+     * @param event
+     * @return
+     */
     public long getEventIdOutsideEventsTemplate(Event event) {
         int type = event.getType();
         String time = DateTimeFormat.toSqLiteFormat(event.getTime());
@@ -434,7 +443,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Not that there can exist several events in database with same typeofEvent and time.
+     * Note that there can exist several events in database with same typeofEvent and time.
      * (Because of EventsTemplate) This must be handled here (eventstemplate IS NULL).
      *
      * @param typeOfEvent
@@ -522,6 +531,17 @@ public class DBHandler extends SQLiteOpenHelper {
         addRating(toRating);
     }
 
+    /**
+     * Returns ALL events (incl from EventsTemplates)
+     * returning events will not be ordered by time
+     */
+
+    public List<Rating> getAllRatings(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS  + " WHERE " + COLUMN_TYPE_OF_EVENT + " =? ";
+        Cursor c = db.rawQuery(QUERY, new String[]{Integer.toString(RATING)});
+        return getRatingsRetrieverHelper(c);
+    }
     //notice how this method use null in select statement to avoid retrieving events from
     // eventstemplates
     public List<Event> getAllEventsMinusEventsTemplatesSorted() {
@@ -529,7 +549,7 @@ public class DBHandler extends SQLiteOpenHelper {
         final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENTSTEMPLATE +
                 " IS NULL " + " ORDER BY " + COLUMN_DATETIME + "" + " ASC";
         Cursor c = db.rawQuery(QUERY, null);
-        return getSortedEventsHelper(c);
+        return getEventsRetrieverHelper(c);
     }
 
     /**
@@ -544,7 +564,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 " ORDER BY " + COLUMN_DATETIME + "" +
                 " ASC";
         Cursor c = db.rawQuery(QUERY, new String[]{DateTimeFormat.dateToSqLiteFormat(currentDate)});
-        return getSortedEventsHelper(c);
+        return getEventsRetrieverHelper(c);
     }
 
     private Event getEvent(long eventId, Cursor c) throws CorruptedEventException {
@@ -1116,7 +1136,32 @@ public class DBHandler extends SQLiteOpenHelper {
         return tagTemplates;
     }
 
-    private List<Event> getSortedEventsHelper(Cursor c) {
+    //almost copy-pasted from getEventsRetrieverHelper
+    private List<Rating> getRatingsRetrieverHelper(Cursor c){
+        List<Rating> ratingList = new ArrayList<>();
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    try {
+
+                        long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                        Event event = getEvent(eventId, c);
+
+                        ratingList.add((Rating)event);
+                        c.moveToNext();
+                    } catch (Exception e) {
+/*                        Log.e(TAG, "Something went wrong reading an event, jumping to next");
+                        Log.e(TAG, "exception", e);*/
+                        c.moveToNext();
+                    }
+                }
+            }
+        }
+        c.close();
+        this.close();
+        return ratingList;
+    }
+    private List<Event> getEventsRetrieverHelper(Cursor c) {
         List<Event> eventList = new ArrayList<>();
         if (c != null) {
             if (c.moveToFirst()) {

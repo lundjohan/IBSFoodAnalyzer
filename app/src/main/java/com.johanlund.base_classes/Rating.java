@@ -29,24 +29,21 @@ public class Rating extends Event {
         String text = "OUT OF RANGE";
         switch (score) {
             case 1:
-                text = "Abysmal";
-                break;
-            case 2:
                 text = "Awful";
                 break;
-            case 3:
+            case 2:
                 text = "Bad";
                 break;
-            case 4:
+            case 3:
                 text = "Deficient";
                 break;
-            case 5:
+            case 4:
                 text = "OK";
                 break;
-            case 6:
+            case 5:
                 text = "Great";
                 break;
-            case 7:
+            case 6:
                 text = "Phenomenal";
                 break;
         }
@@ -55,6 +52,9 @@ public class Rating extends Event {
 
     public int getAfter() {
         return after;
+    }
+    public void setAfter(int a){
+        after = a;
     }
 
     @Override
