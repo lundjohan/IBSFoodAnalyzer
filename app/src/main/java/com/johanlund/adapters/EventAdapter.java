@@ -1,6 +1,5 @@
 package com.johanlund.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -18,9 +17,11 @@ import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.database.DBHandler;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.ibsfoodanalyzer.R;
 
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 
@@ -220,6 +221,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public TextView secondLine;
 
         public View breakLine;
+
         public EventViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
@@ -235,6 +237,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         }
     }
+
     //this is for Meal and Other Events
     class InputEventViewHolder extends EventViewHolder {
         public LinearLayout tagQuantsLayout;
@@ -268,6 +271,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     /**
      * returns an int reflecting a color
+     * if int is outside of scope, color white will be returned
      */
     private int retrieveRatingColor(int positionInDaysEvent) {
         int ratingOfEvent = retrieveRatingOfEvent(positionInDaysEvent);
@@ -297,9 +301,83 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     /**
      * The rating
+     * returns -1 if event should have no rating (such is the case if event is not a rating, and
+     * is not preceded by a rating)
+     */
+    private int retrieveRatingOfEvent(int posInEventsList) {
+        Event e = daysEvents.get(posInEventsList);
+        int toReturn = -1;
+        if (e.getType() == RATING) {
+            Rating rating = (Rating) e;
+            toReturn = rating.getAfter();
+        }
+        //else event is other than Rating
+        else {
+            toReturn = retrieveScoreRatingOfPrecedingRatingInDay(posInEventsList);
+
+            //there is no preceding rating in days eventlist, but it can be one earlier days.
+            if (toReturn == 0) {
+                LocalDate dayBefore = e.getTime().toLocalDate().minusDays(1);
+                toReturn = retrieveScoreFromLastOccurringRatingFromDay(dayBefore);
+                //if toReturn is still -1, let it be the return value.
+            }
+        }
+        return toReturn;
+    }
+
+    /**
+     * Has to take break into account.
+     * <p>
+     * Returns -1 if there is no preceding rating due to Break, 0 if there is no preceding rating
+     * in the days list.
+     *
+     * @param posInEventsList
      * @return
      */
-    private int retrieveRatingOfEvent(int posInEventsList ){
-        return 5;
+    private int retrieveScoreRatingOfPrecedingRatingInDay(int posInEventsList) {
+        int score = -1;
+        //loop backwards, starting from event in list preceding posIn...
+        for (int i = posInEventsList - 1; i > 0; --i) {
+            Event e = daysEvents.get(i);
+
+            //if you have reach so far in loop, and e has a break, then return value will be -1.
+            if (e.hasBreak()) {
+                break;
+            }
+
+            //hopefully the event is a rating, then we will get our score.
+            else if (e instanceof Rating) {
+                score = ((Rating) e).getAfter();
+                break;
+            }
+        }
+        //-1 if break and no earlier rating exist, 0 if no preceding rating for THIS day exist,
+        // but might very well exist an earlier day.
+        return score;
+    }
+
+    /**
+     * Recursive function.
+     * Searches until preceding rating is found (returns score),
+     * or until break (returns -1),
+     * or until there are no more preceding events to search (returns -1).
+     *
+     * @param theDay
+     * @return
+     */
+    private int retrieveScoreFromLastOccurringRatingFromDay(LocalDate theDay) {
+        //try the day before theDay.
+        DBHandler dbHandler = new DBHandler(context);
+
+        //database returns an empty list, in case there are no events to be retrieved for that day
+        List<Event> eventsDay = dbHandler.getAllEventsMinusEventsTemplateSortedFromDay(theDay);
+
+        //send last position of eventsDay as argument
+        int score = retrieveScoreRatingOfPrecedingRatingInDay(eventsDay.size() - 1);
+        if (score == 0) {
+            LocalDate dayBefore = theDay.minusDays(1);
+            retrieveScoreFromLastOccurringRatingFromDay(dayBefore);
+        }
+        return score;
     }
 }

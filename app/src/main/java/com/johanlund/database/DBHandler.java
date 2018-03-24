@@ -532,6 +532,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return getSortedEventsHelper(c);
     }
 
+    /**
+     *
+     * @param currentDate
+     * @return an empty List<Event> in case the there exists no events that day
+     */
     public List<Event> getAllEventsMinusEventsTemplateSortedFromDay(LocalDate currentDate) {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATE + " =? " +
