@@ -11,6 +11,8 @@ import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +23,18 @@ import java.util.List;
  */
 
 public class TimeStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public interface TimeStatAdapterUser{
+        void restartDiaryAtDate(LocalDate ld);
+    }
+
+    private TimeStatAdapterUser callBack;
+
+
     protected List<TimePoint> timePointsList = new ArrayList<>();
     protected TimeScoreWrapper timeScoreWrapper;
-    public TimeStatAdapter(TimeScoreWrapper timeScoreWrapper) {
+    public TimeStatAdapter(TimeScoreWrapper timeScoreWrapper, TimeStatAdapterUser callBack) {
         this.timeScoreWrapper = timeScoreWrapper;
+        this.callBack = callBack;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -61,6 +71,16 @@ public class TimeStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             startTime = (TextView) itemView.findViewById(R.id.stat_time_start);
             duration = (TextView) itemView.findViewById(R.id.stat_time_duration);
+
+            //make startTime clickable
+            startTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String str = startTime.getText().toString();
+                    LocalDate ld = DateTimeFormat.fromSpreadSheetDateTimeFormat(str).toLocalDate();
+                    callBack.restartDiaryAtDate(ld);
+                }
+            });
         }
     }
 }

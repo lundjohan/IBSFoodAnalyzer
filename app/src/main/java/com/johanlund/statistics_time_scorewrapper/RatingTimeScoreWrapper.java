@@ -21,9 +21,6 @@ public class RatingTimeScoreWrapper extends TimeScoreWrapper {
         super(scoreStart, ratingEnd, durationLimit);
     }
 
-    public RecyclerView.Adapter<RecyclerView.ViewHolder> getStatAdapter() {
-        return new TimeStatAdapter(new RatingTimeScoreWrapper(scoreStart, scoreEnd, durationLimitInHours));
-    }
     protected List<TimePoint> calcTimePeriods(Chunk c) {
         List<Rating> ratings = c.getRatings();
         return calcTimePeriods(ratings, c.getLastTime());

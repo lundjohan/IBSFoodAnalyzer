@@ -27,6 +27,10 @@ public class Constants {
     //saved instance state drawer activity
     public final static String DIARY_CONTAINER = "dairyContainerFragment";
 
+    //the diarystarter can start diary with a date
+    public final static String DATE_TO_START_DIARY = "date_to_start";
+    //this is used as a return value via startActivityForResult
+    public final static int RESTART_DATE_REQUEST = 1242;
 
     public final static int TAGS_TO_ADD = 4444;
     public final static int TAGTEMPLATE_TO_ADD = 4445;

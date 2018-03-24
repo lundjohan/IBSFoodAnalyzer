@@ -41,12 +41,14 @@ import org.threeten.bp.LocalDate;
 import java.io.File;
 import java.util.List;
 
+import static com.johanlund.constants.Constants.DATE_TO_START_DIARY;
 import static com.johanlund.constants.Constants.DIARY_CONTAINER;
 import static com.johanlund.constants.Constants.EVENTS_TO_LOAD;
 import static com.johanlund.constants.Constants.IMPORT_DATABASE;
 import static com.johanlund.constants.Constants.IMPORT_FROM_CSV_FILE;
 import static com.johanlund.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.johanlund.constants.Constants.LOCALDATE;
+import static com.johanlund.constants.Constants.RESTART_DATE_REQUEST;
 
 /**
  * The Main Activity in the app.
@@ -56,7 +58,7 @@ import static com.johanlund.constants.Constants.LOCALDATE;
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiaryContainerFragment
         .DiaryContainerListener, TemplateFragment
-        .TemplateFragmentListener {
+        .TemplateFragmentListener, StatOptionsFragment.DiaryStarterActivity {
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
@@ -106,8 +108,19 @@ public class DrawerActivity extends AppCompatActivity
                 .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
     }
-
-
+    public void startContainerDiary(LocalDate ld) {
+        Fragment fragment = reOrStartContainerDiaryHelper(ld);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, fragment, DIARY_CONTAINER)
+                .commit();
+    }
+    private Fragment reOrStartContainerDiaryHelper(LocalDate ld){
+            Fragment fragment = new DiaryContainerFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(LOCALDATE, ld);
+            fragment.setArguments(args);
+            return fragment;
+    }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         DiaryContainerFragment diaryContainer = (DiaryContainerFragment)
@@ -381,8 +394,8 @@ public class DrawerActivity extends AppCompatActivity
                 }
                 break;
 
-            //TODO shoudln't this be transfered to Diary- or DiaryContainerFragment
-            case LOAD_EVENTS_FROM_EVENTSTEMPLATE:
+            //TODO shoudln't this be transfered to Diary- or DiaryContainerFragment?
+            case LOAD_EVENTS_FROM_EVENTSTEMPLATE: {
                 if (data.hasExtra(EVENTS_TO_LOAD)) {
                     List<Event> eventsToReturn = (List<Event>) data.getSerializableExtra
                             (EVENTS_TO_LOAD);
@@ -392,6 +405,16 @@ public class DrawerActivity extends AppCompatActivity
                     }
                 }
                 break;
+            }
+
+            //used for clicking on date inside TimeStat
+            case RESTART_DATE_REQUEST:{
+                if (data.hasExtra(DATE_TO_START_DIARY)) {
+                    LocalDate ld = (LocalDate)data.getSerializableExtra(DATE_TO_START_DIARY);
+                    restartContainerDiary(ld);
+                }
+                break;
+            }
         }
     }
 
@@ -426,6 +449,11 @@ public class DrawerActivity extends AppCompatActivity
         LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
         lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
         restartContainerDiary(lastDateOfEvents);
+    }
+
+    @Override
+    public void startDiaryWithDate(LocalDate ld) {
+        startContainerDiary(ld);
     }
 
     private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {

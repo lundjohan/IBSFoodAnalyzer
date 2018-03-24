@@ -25,6 +25,9 @@ import com.johanlund.statistics_time.BristolTimeStatActivity;
 import com.johanlund.statistics_time.CompleteTimeStatActivity;
 import com.johanlund.statistics_time.RatingTimeStatActivity;
 
+import org.threeten.bp.LocalDate;
+
+import static com.johanlund.constants.Constants.RESTART_DATE_REQUEST;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgBristolItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgCompleteItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgInfoItem;
@@ -40,6 +43,12 @@ import static com.johanlund.ibsfoodanalyzer.R.id.timeRatingItemTextView;
  * Gives the user options for statistics
  */
 public class StatOptionsFragment extends Fragment implements View.OnClickListener {
+
+    //used for TimeStat
+    public interface DiaryStarterActivity {
+        void startDiaryWithDate(LocalDate ld);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,13 +113,13 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
                 break;
 
             case timeRatingItemTextView:
-                newStatActivity(new RatingTimeStatActivity());
+                newTimeStatActivity(new RatingTimeStatActivity());
                 break;
             case R.id.timeCompleteItemTextView:
-                newStatActivity(new CompleteTimeStatActivity());
+                newTimeStatActivity(new CompleteTimeStatActivity());
                 break;
             case timeBristolItemTextView:
-                newStatActivity(new BristolTimeStatActivity());
+                newTimeStatActivity(new BristolTimeStatActivity());
                 break;
 
             //info buttons
@@ -173,4 +182,15 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         Intent intent = new Intent(getActivity(), instance.getClass());
         startActivity(intent);
     }
+
+    /**
+     * Since it is possible in TimeStatActivities to press a date, and then start diary from that date,
+     * we need to use startActivityForResult.
+     * @param instance
+     */
+    private void newTimeStatActivity(Activity instance) {
+        Intent intent = new Intent(getActivity(), instance.getClass());
+        getActivity().startActivityForResult(intent, RESTART_DATE_REQUEST);
+    }
+
 }
