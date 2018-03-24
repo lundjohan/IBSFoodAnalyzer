@@ -278,22 +278,22 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         int color = ContextCompat.getColor(context, R.color.colorWhite);
         switch (ratingOfEvent) {
             case 1:
-                color = ContextCompat.getColor(context, R.color.ratingDarkestRed);
+                color = ContextCompat.getColor(context, R.color.colorRatingAwful);
                 break;
             case 2:
-                color = ContextCompat.getColor(context, R.color.ratingRed);
+                color = ContextCompat.getColor(context, R.color.colorRatingBad);
                 break;
             case 3:
-                color = ContextCompat.getColor(context, R.color.ratingLightRed);
+                color = ContextCompat.getColor(context, R.color.colorRatingDeficient);
                 break;
             case 4:
-                color = ContextCompat.getColor(context, R.color.ratingLightBlue);
+                color = ContextCompat.getColor(context, R.color.colorRatingOk);
                 break;
             case 5:
-                color = ContextCompat.getColor(context, R.color.ratingBlue);
+                color = ContextCompat.getColor(context, R.color.colorRatingGreat);
                 break;
             case 6:
-                color = ContextCompat.getColor(context, R.color.ratingDarkestBlue);
+                color = ContextCompat.getColor(context, R.color.colorRatingPhenomenal);
                 break;
         }
         return color;
