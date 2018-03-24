@@ -1,7 +1,6 @@
 package com.johanlund.diary;
 
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,22 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
-import com.johanlund.adapters.EventsTemplateAdapter;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
-import com.johanlund.date_time.DatePickerFragment;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.info.ActivityInfoContent;
-import com.johanlund.model.EventsTemplate;
 
 import org.threeten.bp.LocalDate;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,13 +29,9 @@ import static com.johanlund.constants.Constants.EVENT_POSITION;
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.ID_OF_EVENT_RETURNED;
-import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
-import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
-import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.ibsfoodanalyzer.R.id.dateView;
 
 
 /**
@@ -90,11 +76,11 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     @Override
     public void addEventToList(Event event) {
-        ec.eventList.add(event);
+        ec.eventsOfDay.add(event);
         //All dates must be the same, becuase dates are irrellevant in a EventsTemplate,
         // only time matter.
         //TODO: implement constriction for above
-        Collections.sort(ec.eventList);
+        Collections.sort(ec.eventsOfDay);
         ec.adapter.notifyDataSetChanged();
     }
 
@@ -115,7 +101,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
-        ec = new EventsContainer(this);
+        ec = new EventsContainer(this, getContext());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
         ec.initiateRecyclerView(recyclerView, this.getContext());
 
@@ -124,7 +110,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         currentDate = ((LocalDate) b.getSerializable(SWIPING_TO_DATE));
 
         fillEventListWithDatabase(currentDate);
-        if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventList")) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey("ec.eventsOfDay")) {
             //populate array, this will be added to when button is pressed
             //===================================================================
             //  populateList();
@@ -132,7 +118,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
             //=====================================================
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
-            //   ec.eventList = savedInstanceState.getParcelableArrayList("ec.eventList");
+            //   ec.eventsOfDay = savedInstanceState.getParcelableArrayList("ec.eventsOfDay");
         }
 
         //=====================TIMER================================================================
@@ -193,7 +179,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
      */
     @Override
     public void onItemClicked(View v, int position) {
-        final Event pressedEvent = ec.eventList.get(position);
+        final Event pressedEvent = ec.eventsOfDay.get(position);
         Log.d("Debug", "inside fragment, item was clicked");
         if (!markingModeIsOn()) {
             ec.editEvent(position);
@@ -209,7 +195,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     //put in smaller methods to make clearer
     @Override
     public boolean onItemLongClicked(final View v, final int position) {
-        final Event pressedEvent = ec.eventList.get(position);
+        final Event pressedEvent = ec.eventsOfDay.get(position);
         if (!markingModeIsOn()) {
             //initiate pop-up menu
             PopupMenu popup = new PopupMenu(getActivity(), v);
@@ -255,8 +241,8 @@ public class DiaryFragment extends Fragment implements EventsContainer
                         //1. remove event from database
                         DBHandler dbHandler = new DBHandler(getContext());
                         dbHandler.deleteEvent(pressedEvent);
-                        //2 remove event from ec.eventList
-                        ec.eventList.remove(pressedEvent);
+                        //2 remove event from ec.eventsOfDay
+                        ec.eventsOfDay.remove(pressedEvent);
                         ec.adapter.notifyDataSetChanged();
                     }
                     return true;
@@ -313,7 +299,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     List<Event> retrieveMarkedEvents() {
         List<Event> eventsToSend = new ArrayList<>();
         for (int i : eventsMarked) {
-            eventsToSend.add(ec.eventList.get(i));
+            eventsToSend.add(ec.eventsOfDay.get(i));
         }
         //
 
@@ -349,17 +335,17 @@ public class DiaryFragment extends Fragment implements EventsContainer
         //see here why reference just cant be changed. notifyDataSetChanged won't work in that case.
         //https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from
         // -custom-ec.adapter
-        ec.eventList.clear();
+        ec.eventsOfDay.clear();
         List<Event> sortedEvents = dbHandler.getAllEventsMinusEventsTemplateSortedFromDay(theDate);
-        ec.eventList.addAll(sortedEvents);
+        ec.eventsOfDay.addAll(sortedEvents);
         ec.adapter.notifyDataSetChanged();
         //place focus at top (otherwise user has to scroll up, which make time sizeable time for
         // large imports).
-        ec.recyclerView.scrollToPosition(ec.eventList.size() - 1);
+        ec.recyclerView.scrollToPosition(ec.eventsOfDay.size() - 1);
     }
 
     public List<Event> getEvents() {
-        return ec.eventList;
+        return ec.eventsOfDay;
     }
 
 

@@ -58,7 +58,7 @@ public abstract class EventActivity extends AppCompatActivity implements
     //Connected to isChangingEvent. The variable is later used
     // in database to know which event to be changed.
     protected long eventId = -1;
-    //position in eventList (in DiaryFragment) for changing event
+    //position in eventsOfDay (in DiaryFragment) for changing event
     protected int posOfEvent = -1;
     TextView dateView;
     TextView timeView;

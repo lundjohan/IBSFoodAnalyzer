@@ -1,6 +1,8 @@
 package com.johanlund.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,17 +40,20 @@ import static com.johanlund.ibsfoodanalyzer.R.id.tagQuantities;
  */
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Event> events = new ArrayList<>();
+    private List<Event> daysEvents = new ArrayList<>();
     private EventAdapterUser usingEntity;
+    //this is used solely to retrieve resources
+    private Context context;
 
-    public EventAdapter(List<Event> events, EventAdapterUser usingEntity) {
-        this.events = events;
+    public EventAdapter(List<Event> daysEvents, EventAdapterUser usingEntity, Context context) {
+        this.daysEvents = daysEvents;
         this.usingEntity = usingEntity;
+        this.context = context;
     }
 
     @Override
     public int getItemCount() {
-        return events.size();
+        return daysEvents.size();
     }
 
     private void setTime(Event event, TextView timeView) {
@@ -83,7 +88,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     .com/android/Heterogenous-Layouts-inside-RecyclerView#viewholder2-java*/
     @Override
     public int getItemViewType(int position) {
-        Event e = events.get(position);
+        Event e = daysEvents.get(position);
         return e.getType();
     }
 
@@ -125,7 +130,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        Event event = events.get(position);
+        Event event = daysEvents.get(position);
         /*
         Add clickability and holding in to item for copying etc.
 
@@ -149,10 +154,14 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (event.hasBreak()) {
             eventHolder.setBreakLayout();
         }
-        //add comments, same for all events
+        //add comments, same for all daysEvents
         if (eventHolder.comment != null) {
             eventHolder.comment.setText(event.getComment());
         }
+
+        //add color to show rating score graphically
+        eventHolder.colorFromRating.setBackgroundColor(retrieveRatingColor(position));
+
 
         switch (holder.getItemViewType()) {
             case MEAL:
@@ -190,7 +199,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-
     /*
     Click Listeners
      */
@@ -201,10 +209,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     abstract class EventViewHolder extends RecyclerView.ViewHolder {
+        public View colorFromRating;
         public View itemView;
         public TextView comment;
 
-        //used for time for all events except Rating, Rating prints a "From".
+        //used for time for all daysEvents except Rating, Rating prints a "From".
         public TextView firstLine;
 
         //used for type of exercise for Exercise, Bristol for BM, time for Rating, portions for Meal
@@ -214,6 +223,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public EventViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
+            colorFromRating = itemView.findViewById(R.id.color_from_rating);
             comment = (TextView) itemView.findViewById(R.id.commentInItem);
             firstLine = (TextView) itemView.findViewById(R.id.firstLine);
             secondLine = (TextView) itemView.findViewById(R.id.secondLine);
@@ -251,5 +261,45 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             rightLine = (TextView) itemView.findViewById(R.id.rightLine);
         }
+    }
+//==================================================================================================
+//Coloring of Event based on preceding Rating - these calculations are made here
+//==================================================================================================
+
+    /**
+     * returns an int reflecting a color
+     */
+    private int retrieveRatingColor(int positionInDaysEvent) {
+        int ratingOfEvent = retrieveRatingOfEvent(positionInDaysEvent);
+        int color = ContextCompat.getColor(context, R.color.colorWhite);
+        switch (ratingOfEvent) {
+            case 1:
+                color = ContextCompat.getColor(context, R.color.ratingDarkestRed);
+                break;
+            case 2:
+                color = ContextCompat.getColor(context, R.color.ratingRed);
+                break;
+            case 3:
+                color = ContextCompat.getColor(context, R.color.ratingLightRed);
+                break;
+            case 4:
+                color = ContextCompat.getColor(context, R.color.ratingLightBlue);
+                break;
+            case 5:
+                color = ContextCompat.getColor(context, R.color.ratingBlue);
+                break;
+            case 6:
+                color = ContextCompat.getColor(context, R.color.ratingDarkestBlue);
+                break;
+        }
+        return color;
+    }
+
+    /**
+     * The rating
+     * @return
+     */
+    private int retrieveRatingOfEvent(int posInEventsList ){
+        return 5;
     }
 }

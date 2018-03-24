@@ -62,13 +62,16 @@ public class EventsContainer {
     public static final int NEW_BM = 1003;
     public static final int NEW_RATING = 1004;
     public RecyclerView recyclerView;
-    public List<Event> eventList = new ArrayList<>();
+    public List<Event> eventsOfDay = new ArrayList<>();
     EventsContainerUser user;
     LinearLayoutManager layoutManager;
     EventAdapter adapter;
+    //context is solely used to retrieve resources inside EventAdapter
+    private Context context;
 
-    public EventsContainer(EventsContainerUser user) {
+    public EventsContainer(EventsContainerUser user, Context context) {
         this.user = user;
+        this.context = context;
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -89,7 +92,7 @@ public class EventsContainer {
         layoutManager = new LinearLayoutManager(layoutInitiator, LinearLayoutManager
                 .VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new EventAdapter(eventList, user);
+        adapter = new EventAdapter(eventsOfDay, user, context);
         recyclerView.setAdapter(adapter);
         Util.addLineSeparator(recyclerView, layoutManager);
     }
@@ -100,7 +103,7 @@ public class EventsContainer {
      * @param position
      */
     public void editEvent(int position) {
-        Event event = eventList.get(position);
+        Event event = eventsOfDay.get(position);
         Class c = event.getClass();
         if (c.equals(Meal.class)) {
             user.changeEventActivity(event, MealActivity.class, CHANGED_MEAL, position);
@@ -118,7 +121,7 @@ public class EventsContainer {
     //first remove event from list
     //then adds a new
     public void changeEventInList(int pos, Event e) {
-        eventList.remove(pos);
+        eventsOfDay.remove(pos);
         //this line is needed, otherwise ec.adapter cannot handle it.
         adapter.notifyItemRemoved(pos);
         user.addEventToList(e);

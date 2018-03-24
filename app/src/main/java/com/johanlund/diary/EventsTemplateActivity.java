@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import com.johanlund.base_classes.Event;
 import com.johanlund.constants.Constants;
 import com.johanlund.database.DBHandler;
-import com.johanlund.diary.EventButtonsContainer;
-import com.johanlund.diary.EventsContainer;
 import com.johanlund.event_activities.BmActivity;
 import com.johanlund.event_activities.ExerciseActivity;
 import com.johanlund.event_activities.MealActivity;
@@ -90,7 +88,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
     private EventsTemplate createEventsTemplateForReturn() {
         String nameOfTemplate = getEndingName();
-        return new EventsTemplate(ec.eventList, nameOfTemplate);
+        return new EventsTemplate(ec.eventsOfDay, nameOfTemplate);
     }
 
     @Override
@@ -106,8 +104,8 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
 
         //Set up EventsContainer
-        ec = new EventsContainer(this);
-        ec.eventList = getStartingEvents();
+        ec = new EventsContainer(this, getApplicationContext());
+        ec.eventsOfDay = getStartingEvents();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         View buttons = findViewById(R.id.buttons);
         ec.initiateRecyclerView(recyclerView, this);
@@ -164,11 +162,11 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
 
     @Override
     public void addEventToList(Event event) {
-        ec.eventList.add(event);
+        ec.eventsOfDay.add(event);
         //All dates must be the same, becuase dates are irrellevant in a EventsTemplate,
         // only time matter.
         //TODO: implement constriction for above
-        Collections.sort(ec.eventList);
+        Collections.sort(ec.eventsOfDay);
         ec.adapter.notifyDataSetChanged();
 
     }
@@ -244,7 +242,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.deleteEventForEventsTemplate) {
-                    ec.eventList.remove(position);
+                    ec.eventsOfDay.remove(position);
                     ec.adapter.notifyDataSetChanged();
                 }
                 return true;
@@ -270,7 +268,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     public void updateTagsInListOfEventsAfterTagTemplateChange() {
 
         //does this work? Write tests for EventsTemplate classes just as you have for DiaryFragment
-        ec.eventList = getStartingEvents();
+        ec.eventsOfDay = getStartingEvents();
         ec.adapter.notifyDataSetChanged();
     }
 

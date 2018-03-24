@@ -17,4 +17,11 @@
     <color name="colorDarkBrown">#ac904f</color>
     <color name="colorDarkDarkRed">#6b0002</color>
     <color name="colorWeakGrey">#b6b6b6</color>
+    <color name="DarkestRed">#82001e</color>
+    <color name="ratingDarkestBlue">#010050</color>
+    <color name="ratingBlue">#303db1</color>
+    <color name="ratingLightBlue">#7dcef2</color>
+    <color name="ratingLightRed">#ff9591</color>
+    <color name="ratingRed">#ff1818</color>
+    <color name="ratingDarkestRed">#730709</color>
 </resources>
