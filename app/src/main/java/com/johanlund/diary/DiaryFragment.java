@@ -259,13 +259,13 @@ public class DiaryFragment extends Fragment implements EventsContainer
     private void addBreakToEvent(Event e) {
         e.setHasBreak(true);
         DBHandler dbHandler = new DBHandler(getContext());
-        dbHandler.changeEvent(e);
+        dbHandler.changeEventExcludingEventsTemplates(e);
     }
 
     private void removeBreakFromevent(Event e) {
         e.setHasBreak(false);
         DBHandler dbHandler = new DBHandler(getContext());
-        dbHandler.changeEvent(e);
+        dbHandler.changeEventExcludingEventsTemplates(e);
     }
 
     //same actions for short and long clicks

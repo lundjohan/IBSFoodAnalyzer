@@ -74,7 +74,6 @@ import static com.johanlund.database.TablesAndStrings.TYPE_OF;
  */
 
 public class DBHandler extends SQLiteOpenHelper {
-    private SQLiteDatabase database;
     private final String TAG = DBHandler.class.toString();
 
     public DBHandler(Context context) {
@@ -105,27 +104,15 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         //since this version Rating scale has been reduced to 6 from 7. 'Abysmal' has disappeared and will be joined with 'Awful'.
         if (oldVersion <= 37) {
-            List<Rating> allRatings = getAllRatings();
-            for (Rating r: allRatings){
-                int after = r.getAfter();
-
-                //no need to do anything for abysmal
-                if (after != 1){
-                    r.setAfter(--after);
-                    //A. update event in database
-                    long idEvent = getEventIdOutsideEventsTemplate(r);
-                    changeEvent(r);
-                }
-            }
+            db.execSQL(CHANGE_RATING_SCALE);
         }
-        //since EventsTemplates can have same datetime and type as normal events, and that EventsTemplates can have event dublettes (which forbids obtaining there ids by event as argument)
-        //this can probably be fixed but easiest is to simply drop table...
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTSTEMPLATES);
-
     }
+    private String CHANGE_RATING_SCALE =
+            "UPDATE "+ TABLE_RATINGS + " SET " +
+                    COLUMN_AFTER + " = " +COLUMN_AFTER + " -1 " + " WHERE "+ COLUMN_AFTER + " != '1' ";
+
 
 
     //-----------------------------------------------------------------------------------
@@ -467,7 +454,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
 
-    public void changeEvent(Event e) {
+    public void changeEventExcludingEventsTemplates(Event e) {
         long eventId = getEventIdOutsideEventsTemplate(e);
         changeEvent(eventId, e);
     }
@@ -1158,7 +1145,7 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         c.close();
-        this.close();
+        //this.close();
         return ratingList;
     }
     private List<Event> getEventsRetrieverHelper(Cursor c) {

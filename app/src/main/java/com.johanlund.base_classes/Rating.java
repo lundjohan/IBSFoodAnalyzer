@@ -53,9 +53,6 @@ public class Rating extends Event {
     public int getAfter() {
         return after;
     }
-    public void setAfter(int a){
-        after = a;
-    }
 
     @Override
     public int getType() {
