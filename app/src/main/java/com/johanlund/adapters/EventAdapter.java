@@ -313,7 +313,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         //else event is other than Rating
         else {
-            toReturn = retrieveScoreRatingOfPrecedingRatingInDay(posInEventsList);
+            toReturn = retrieveScoreRatingOfPrecedingRatingInDay(posInEventsList, daysEvents);
 
             //there is no preceding rating in days eventlist, but it can be one earlier days.
             if (toReturn == 0) {
@@ -329,19 +329,20 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * Has to take break into account.
      * <p>
      * Returns -1 if there is no preceding rating due to Break, 0 if there is no preceding rating
-     * in the days list.
+     * in this days list.
      *
      * @param posInEventsList
      * @return
      */
-    private int retrieveScoreRatingOfPrecedingRatingInDay(int posInEventsList) {
-        int score = -1;
+    private int retrieveScoreRatingOfPrecedingRatingInDay(int posInEventsList, List<Event>eventsOfDay) {
+        int score = 0;
         //loop backwards, starting from event in list preceding posIn...
-        for (int i = posInEventsList - 1; i > 0; --i) {
-            Event e = daysEvents.get(i);
+        for (int i = posInEventsList - 1; i >= 0; --i) {
+            Event e = eventsOfDay.get(i);
 
             //if you have reach so far in loop, and e has a break, then return value will be -1.
             if (e.hasBreak()) {
+                score = -1;
                 break;
             }
 
@@ -371,9 +372,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         //database returns an empty list, in case there are no events to be retrieved for that day
         List<Event> eventsDay = dbHandler.getAllEventsMinusEventsTemplateSortedFromDay(theDay);
-
+        if (eventsDay.isEmpty()){
+            return -1;
+        }
         //send last position of eventsDay as argument
-        int score = retrieveScoreRatingOfPrecedingRatingInDay(eventsDay.size() - 1);
+        int score = retrieveScoreRatingOfPrecedingRatingInDay(eventsDay.size() - 1, eventsDay);
         if (score == 0) {
             LocalDate dayBefore = theDay.minusDays(1);
             retrieveScoreFromLastOccurringRatingFromDay(dayBefore);

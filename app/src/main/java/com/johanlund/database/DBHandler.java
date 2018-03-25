@@ -518,17 +518,6 @@ public class DBHandler extends SQLiteOpenHelper {
         addRating(toRating);
     }
 
-    /**
-     * Returns ALL events (incl from EventsTemplates)
-     * returning events will not be ordered by time
-     */
-
-    public List<Rating> getAllRatings(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_EVENTS  + " WHERE " + COLUMN_TYPE_OF_EVENT + " =? ";
-        Cursor c = db.rawQuery(QUERY, new String[]{Integer.toString(RATING)});
-        return getRatingsRetrieverHelper(c);
-    }
     //notice how this method use null in select statement to avoid retrieving events from
     // eventstemplates
     public List<Event> getAllEventsMinusEventsTemplatesSorted() {

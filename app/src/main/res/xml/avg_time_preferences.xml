@@ -11,8 +11,8 @@
             android:summary="The lowest score the time period is allowed to have."
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_minValue="0"
-            sample:msbp_maxValue="7"
+            sample:msbp_minValue="1"
+            sample:msbp_maxValue="6"
             sample:msbp_measurementUnit="points"
             />
         <com.pavelsikun.seekbarpreference.SeekBarPreference
@@ -23,8 +23,8 @@
             android:summary="The highest score the time period is allowed to have."
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_minValue="0"
-            sample:msbp_maxValue="7"
+            sample:msbp_minValue="1"
+            sample:msbp_maxValue="6"
             sample:msbp_measurementUnit="points"
             />
         <com.pavelsikun.seekbarpreference.SeekBarPreference

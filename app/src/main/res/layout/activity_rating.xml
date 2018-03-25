@@ -18,7 +18,8 @@
         tools:layout_conversion_absoluteHeight="16dp"
         tools:layout_conversion_absoluteWidth="36dp"
         tools:layout_conversion_absoluteX="8dp"
-        tools:layout_conversion_absoluteY="120dp"/>
+        tools:layout_conversion_absoluteY="120dp"
+        android:layout_marginStart="8dp"/>
 
     <TextView
         android:id="@+id/intensityName"
@@ -42,7 +43,7 @@
     <SeekBar
         android:id="@+id/intensityBar"
         style="@android:style/Widget.SeekBar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -50,7 +51,7 @@
         android:layout_marginTop="11dp"
         android:layout_toEndOf="@+id/textView12"
         android:layout_toRightOf="@+id/textView12"
-        android:max="6"
+        android:max="5"
         android:progress="3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
