@@ -236,7 +236,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     public void testReturnValueFromRatingActivity() {
         // Create a meal object with timeView 16:00
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 19, 0);
-        Rating rating = new Rating(ldt, 6);
+        Rating rating = new Rating(ldt, 5);
 
         Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 rating);
