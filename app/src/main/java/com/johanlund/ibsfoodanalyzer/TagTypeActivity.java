@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.johanlund.database.DBHandler;
 import com.johanlund.info.ActivityInfoContent;
@@ -27,11 +28,10 @@ import static com.johanlund.constants.Constants.WHICH_TYPE;
 
 public abstract class TagTypeActivity extends AppCompatActivity implements View
         .OnClickListener {
-    final private String TAG_TYPE_TITLE = "Add Tag Type";
     protected TagTemplate is_a = null;
 
     protected EditText name;
-    protected EditText type_of;
+    protected TextView type_of;
 
     /**
      * a TagTemplate must be sent back because 1. TagAdderActivity must now which TagTemplate
@@ -94,7 +94,7 @@ public abstract class TagTypeActivity extends AppCompatActivity implements View
         setContentView(R.layout.activity_tag_template_adder);
         setTitle(getTitleStr());
         name = (EditText) findViewById(R.id.name_box);
-        type_of = (EditText) findViewById(R.id.is_a_type_of);
+        type_of = (TextView) findViewById(R.id.is_a_type_of);
         Intent intent = getIntent();
         if (intent.hasExtra(TAGNAME_SEARCH_STRING)) {
             name.setText(intent.getStringExtra(TAGNAME_SEARCH_STRING));

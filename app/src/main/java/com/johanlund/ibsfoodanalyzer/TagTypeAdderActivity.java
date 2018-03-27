@@ -19,7 +19,7 @@ public class TagTypeAdderActivity extends TagTypeActivity {
 
     @Override
     protected String getTitleStr() {
-        return "Add Tag Type";
+        return "Create Tag Type";
     }
 
     public void doneClicked() {

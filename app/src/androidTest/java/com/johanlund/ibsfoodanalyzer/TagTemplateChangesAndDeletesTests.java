@@ -293,8 +293,8 @@ public class TagTemplateChangesAndDeletesTests {
 
         onView(withText("Edit")).check(matches(isDisplayed())).perform(click());
         //need double click
-        onView(withId(R.id.is_a_type_of)).perform(click());
-        onView(withId(R.id.is_a_type_of)).perform(click());
+        onView(withId(R.id.addTagTypeParent)).perform(click());
+        onView(withId(R.id.addTagTypeParent)).perform(click());
         //back in TagAdderActivity?
         onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
 
@@ -305,7 +305,7 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withId(R.id.menu_done)).perform(click());
 
         //now back in Butter edittext view
-        onView(withId(R.id.is_a_type_of)).check(matches(isDisplayed()));
+        onView(withId(R.id.addTagTypeParent)).check(matches(isDisplayed()));
         onView(withText("Butter")).check(matches(isDisplayed()));
         onView(withText("Lacteo")).check(matches(isDisplayed()));
 
