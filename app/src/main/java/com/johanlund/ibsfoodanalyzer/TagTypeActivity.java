@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.johanlund.database.DBHandler;
 import com.johanlund.info.ActivityInfoContent;
+import com.johanlund.info.InfoActivity;
 import com.johanlund.model.TagType;
 import com.johanlund.util.Util;
 
@@ -25,9 +26,9 @@ import static com.johanlund.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE
 import static com.johanlund.constants.Constants.TAGNAME_SEARCH_STRING;
 import static com.johanlund.constants.Constants.TITLE_STRING;
 import static com.johanlund.constants.Constants.WHICH_TYPE;
+import static java.security.AccessController.getContext;
 
-public abstract class TagTypeActivity extends AppCompatActivity implements View
-        .OnClickListener {
+public abstract class TagTypeActivity extends AppCompatActivity {
     protected TagType is_a = null;
 
     protected EditText name;
@@ -99,16 +100,28 @@ public abstract class TagTypeActivity extends AppCompatActivity implements View
         if (intent.hasExtra(TAGNAME_SEARCH_STRING)) {
             name.setText(intent.getStringExtra(TAGNAME_SEARCH_STRING));
         }
-    }
 
-    @Override
-    public void onClick(View v) {
-        startRecursiveIntent();
-    }
+        //onClick
+        findViewById(R.id.is_a_type_of).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRecursiveIntent();
+            }
+        });
+        findViewById(R.id.newTagTypeNameItem).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                infoAddTagTypeName();
+            }
+        });
+        findViewById(R.id.parentOfTagTypeItem).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                infoAddTagTypeParent();
+            }
+        });
 
-    protected void startRecursiveIntent() {
-        Intent intent = new Intent(this, TagAdderActivity.class);
-        startActivityForResult(intent, NEW_TYPE_FOR_TAGTEMPLATE);
+
     }
 
     //data coming back from TagAdderActivity for adding to a is_a_type_of
@@ -134,4 +147,22 @@ public abstract class TagTypeActivity extends AppCompatActivity implements View
     }
 
     protected abstract String getTitleStr();
+
+    //==============================================================================================
+    // on clicks
+    //==============================================================================================
+    /**
+     * Is called when add parent button/ textview is pressed
+     */
+    protected void startRecursiveIntent() {
+        Intent intent = new Intent(this, TagAdderActivity.class);
+        startActivityForResult(intent, NEW_TYPE_FOR_TAGTEMPLATE);
+    }
+    private void infoAddTagTypeName(){
+        InfoActivity.newInfoActivity(this, getResources().getString(R.string.add_new_tagtype_name_info));
+    }
+    private void infoAddTagTypeParent(){
+        InfoActivity.newInfoActivity(this, getResources().getString(R.string.add_new_tagtype_parent_info));
+    }
+
 }
