@@ -25,7 +25,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:hint="butter"
+        android:hint="write here"
         android:inputType="textPersonName"
         android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"

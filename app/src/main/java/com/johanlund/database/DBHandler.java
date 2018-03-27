@@ -1184,8 +1184,16 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public boolean diaryIsEmpty() {
+        return tableIsEmpty(TABLE_EVENTS);
+    }
+
+    public boolean tagTypesTableIsEmpty() {
+        return tableIsEmpty(TABLE_TAGTYPES);
+    }
+
+    private boolean tableIsEmpty(String tablename){
         SQLiteDatabase db = this.getReadableDatabase();
-        String count = "SELECT count(*) FROM " + TABLE_EVENTS;
+        String count = "SELECT count(*) FROM " + tablename;
         Cursor c = db.rawQuery(count, null);
         c.moveToFirst();
         if (c.getInt(0) > 0) {

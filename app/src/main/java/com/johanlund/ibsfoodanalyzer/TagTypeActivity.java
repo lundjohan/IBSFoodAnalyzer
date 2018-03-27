@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.johanlund.custom_views.HeadLineLayout;
 import com.johanlund.database.DBHandler;
 import com.johanlund.info.ActivityInfoContent;
 import com.johanlund.info.InfoActivity;
@@ -26,11 +27,12 @@ import static com.johanlund.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE
 import static com.johanlund.constants.Constants.TAGNAME_SEARCH_STRING;
 import static com.johanlund.constants.Constants.TITLE_STRING;
 import static com.johanlund.constants.Constants.WHICH_TYPE;
+import static com.johanlund.ibsfoodanalyzer.R.id.parentHeadLine;
 import static java.security.AccessController.getContext;
 
 public abstract class TagTypeActivity extends AppCompatActivity {
     protected TagType is_a = null;
-
+    private DBHandler dbHandler;
     protected EditText name;
     protected TextView type_of;
 
@@ -92,6 +94,7 @@ public abstract class TagTypeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbHandler = new DBHandler(getApplicationContext());
         setContentView(R.layout.activity_tag_template_adder);
         setTitle(getTitleStr());
         name = (EditText) findViewById(R.id.name_box);
@@ -102,26 +105,40 @@ public abstract class TagTypeActivity extends AppCompatActivity {
         }
 
         //onClick
-        findViewById(R.id.is_a_type_of).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRecursiveIntent();
-            }
-        });
         findViewById(R.id.newTagTypeNameItem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 infoAddTagTypeName();
             }
         });
-        findViewById(R.id.parentOfTagTypeItem).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                infoAddTagTypeParent();
-            }
-        });
 
+        //If list is empty, hide Tag Type parent functions....
+        if (dbHandler.tagTypesTableIsEmpty()){
+            HeadLineLayout parentHeadLine = (HeadLineLayout) findViewById(R.id.parentHeadLine);
+            makeInvisible(type_of);
+            makeInvisible(parentHeadLine);
+        }
+        //else do onClick for those functions
+        else{
+            type_of.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startRecursiveIntent();
+                }
+            });
 
+            //info for parent
+            findViewById(R.id.parentOfTagTypeItem).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    infoAddTagTypeParent();
+                }
+            });
+        }
+    }
+
+    private void makeInvisible(View name) {
+        name.setVisibility(View.GONE);
     }
 
     //data coming back from TagAdderActivity for adding to a is_a_type_of
