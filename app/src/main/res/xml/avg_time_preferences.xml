@@ -4,7 +4,7 @@
     <PreferenceCategory
         android:title="Settings for Time Rating Statistics">
         <com.pavelsikun.seekbarpreference.SeekBarPreference
-            android:defaultValue="5.0"
+            android:defaultValue="5"
             android:enabled="true"
             android:key="@string/time_rating_start"
             android:title="Rating start"
