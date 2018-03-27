@@ -14,7 +14,7 @@ public class TablesAndStrings {
     public static final String COLUMN_ID = "_id";
 
     //TagType
-    public static final String TABLE_TAGTEMPLATES = "tag_templates";
+    public static final String TABLE_TAGTYPES = "tag_templates";
     public static final String COLUMN_TAGNAME = "_tagname"; //this should be unique
     //make it point to parent TagName and
     // not to id, it make it possible to display in listview after filtering.
@@ -22,7 +22,7 @@ public class TablesAndStrings {
 
     //Tag
     public static final String TABLE_TAGS = "tags";
-    public static final String COLUMN_TAGTEMPLATE = "tagtemplate";
+    public static final String COLUMN_TAGTYPE = "tagtemplate";
     public static final String COLUMN_SIZE = "size";
     public static final String COLUMN_DATETIME = "date";
     public static final String COLUMN_DATE = "date_without_time";
@@ -60,34 +60,31 @@ public class TablesAndStrings {
     public static final String TABLE_EVENTSTEMPLATES = "event_templates";
     public static final String COLUMN_NAME = "eventtemplate_name";
 
-    //EventsTemplate => many-to-many => Events
-    public static final String TABLE_EVENTSTEMPLATEEVENTS = "event_template_events";
     public static final String COLUMN_EVENTSTEMPLATE = "events_template";   //denna => unknown
     // column?
 
     // is_a is set to null when parent tag template is deleted
-    public static final String CREATE_TAGTEMPLATE_TABLE = "CREATE TABLE " +
-            TABLE_TAGTEMPLATES + " (  " +
+    public static final String CREATE_TAGTYPE_TABLE = "CREATE TABLE " +
+            TABLE_TAGTYPES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
             COLUMN_TAGNAME + " TEXT NOT NULL UNIQUE ON CONFLICT IGNORE, " +
             TYPE_OF + " INTEGER CHECK( " + TYPE_OF + " != " + COLUMN_ID + ")," +
             "  " +
-            " FOREIGN KEY( " + TYPE_OF + ") REFERENCES " + TABLE_TAGTEMPLATES
+            " FOREIGN KEY( " + TYPE_OF + ") REFERENCES " + TABLE_TAGTYPES
             + " ( " + COLUMN_ID + ")" + " ON DELETE SET NULL " +
             ");";
     public static final String CREATE_TAG_TABLE = "CREATE TABLE " +
             TABLE_TAGS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
-            COLUMN_TAGTEMPLATE + " INTEGER NOT NULL, " +
+            COLUMN_TAGTYPE + " INTEGER NOT NULL, " +
             COLUMN_SIZE + " REAL NOT NULL, " +
             COLUMN_DATETIME + " TEXT NOT NULL, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
-            " FOREIGN KEY( " + COLUMN_TAGTEMPLATE + ") REFERENCES " + TABLE_TAGTEMPLATES
+            " FOREIGN KEY( " + COLUMN_TAGTYPE + ") REFERENCES " + TABLE_TAGTYPES
             + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
             + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
-
 
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE " +
             TABLE_EVENTS + " (  " +
