@@ -13,7 +13,7 @@ public class TablesAndStrings {
     //for all
     public static final String COLUMN_ID = "_id";
 
-    //TagTemplate
+    //TagType
     public static final String TABLE_TAGTEMPLATES = "tag_templates";
     public static final String COLUMN_TAGNAME = "_tagname"; //this should be unique
     //make it point to parent TagName and

@@ -12,7 +12,7 @@ import com.johanlund.database.DBHandler;
 import com.johanlund.main.DrawerActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
 import com.johanlund.model.EventsTemplate;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -65,15 +65,15 @@ public class EventsTemplateTests {
                 ());
 
         //TagTemplates
-        TagTemplate butter = new TagTemplate("Butter", null);
-        TagTemplate sugar = new TagTemplate("Sugar", null);
+        TagType butter = new TagType("Butter", null);
+        TagType sugar = new TagType("Sugar", null);
         dbHandler.addTagTemplate(butter);
         dbHandler.addTagTemplate(sugar);
 
         //Create an Other Event
         LocalDateTime ldt = LocalDateTime.of(2018, Month.JANUARY, 9, 15, 0);
-        /*TagTemplate t1 = new TagTemplate("Butter");
-        TagTemplate t2 = new TagTemplate("Sugar");*/
+        /*TagType t1 = new TagType("Butter");
+        TagType t2 = new TagType("Sugar");*/
         Tag tag1 = new Tag(ldt, "Butter", 1.0);
         Tag tag2 = new Tag(ldt, "Sugar", 1.0);
         List<Tag> tags = new ArrayList<>();

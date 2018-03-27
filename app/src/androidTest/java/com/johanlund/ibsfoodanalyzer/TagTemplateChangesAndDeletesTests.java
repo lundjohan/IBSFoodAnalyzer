@@ -8,7 +8,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.johanlund.database.DBHandler;
 import com.johanlund.main.DrawerActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,7 +57,7 @@ public class TagTemplateChangesAndDeletesTests {
 
     //starts inside TagAdderActivity
     private void createATagTemplate(String nameOfTagTemplate){
-        //create a new TagTemplate and add it to an OtherEvent and click done in TagAdderActivity
+        //create a new TagType and add it to an OtherEvent and click done in TagAdderActivity
         // and in OtherActivity so it is placed in diary.
         onView(withId(R.id.menu_add_new)).perform(click());
         onView(withId(R.id.name_box)).perform(click()).perform(replaceText(nameOfTagTemplate),
@@ -80,13 +80,13 @@ public class TagTemplateChangesAndDeletesTests {
     public void deletedTagTemplateBackBtnTest() throws InterruptedException {
         goToTagAdderActivity();
         createATagTemplate("Butter");
-        //inside TagAdderActivity, delete Butter TagTemplate
+        //inside TagAdderActivity, delete Butter TagType
         onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
         onView(withText("Delete")).check(matches(isDisplayed())).perform(click());
 
-        //check that you are still in TagAdderView and that the TagTemplate was deleted
+        //check that you are still in TagAdderView and that the TagType was deleted
         onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
         onView(withText(containsString("Butter"))).check(doesNotExist());
 
@@ -110,7 +110,7 @@ public class TagTemplateChangesAndDeletesTests {
     public void editedTagTemplateBackBtnTest() throws InterruptedException {
         goToTagAdderActivity();
         createATagTemplate("Butter");
-        //inside TagAdderActivity, delete Butter TagTemplate
+        //inside TagAdderActivity, delete Butter TagType
         onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
@@ -159,7 +159,7 @@ public class TagTemplateChangesAndDeletesTests {
         goToTagAdderActivity();
         createATagTemplate("Butter");
 
-        //inside TagAdderActivity, add another TagTemplate
+        //inside TagAdderActivity, add another TagType
         onView(withId(R.id.menu_add_new)).perform(click());
         onView(withId(R.id.name_box)).perform(click()).perform(replaceText("Sugar"),
                 closeSoftKeyboard());
@@ -175,7 +175,7 @@ public class TagTemplateChangesAndDeletesTests {
                 .perform(click());
         onView(withText("Delete")).check(matches(isDisplayed())).perform(click());
 
-        //add another TagTemplate, Honey.
+        //add another TagType, Honey.
         onView(withId(R.id.menu_add_new)).perform(click());
         onView(withId(R.id.name_box)).perform(click()).perform(replaceText("Honey"),
                 closeSoftKeyboard());
@@ -198,7 +198,7 @@ public class TagTemplateChangesAndDeletesTests {
     public void editedTagTemplateDoneTest() {
         goToTagAdderActivity();
         createATagTemplate("Butter");
-        //inside TagAdderActivity, edit Butter TagTemplate
+        //inside TagAdderActivity, edit Butter TagType
         onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
@@ -235,14 +235,14 @@ public class TagTemplateChangesAndDeletesTests {
         onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Cream"))))).check(matches(isDisplayed()));
     }
     /**
-     * This test exists simply because there was an error when deleting a tagTemplate say in place 0 in ListView, than it was always the TagTemplate in last position that was deleted instead.
+     * This test exists simply because there was an error when deleting a tagTemplate say in place 0 in ListView, than it was always the TagType in last position that was deleted instead.
      */
     @Test
     public void correctTagTemplateIsDeletedTest() {
         //add 2 TagTemplates
         DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
-        TagTemplate butter = new TagTemplate("Butter", null);
-        TagTemplate sugar = new TagTemplate("Sugar", null);
+        TagType butter = new TagType("Butter", null);
+        TagType sugar = new TagType("Sugar", null);
         dbHandler.addTagTemplate(butter);
         dbHandler.addTagTemplate(sugar);
 
@@ -264,7 +264,7 @@ public class TagTemplateChangesAndDeletesTests {
                         allOf(withId(name_of_stat_option), withText(containsString("Sugar"))))));
 
 
-        //delete the first TagTemplate in list, in this case "Butter"
+        //delete the first TagType in list, in this case "Butter"
         onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
         /*code below didn't work
@@ -282,30 +282,29 @@ public class TagTemplateChangesAndDeletesTests {
     @Test
     public void whileInEditingTagTemplateAddingInheritance() {
         DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
-        TagTemplate butter = new TagTemplate("Butter", null);
+        TagType butter = new TagType("Butter", null);
         dbHandler.addTagTemplate(butter);
 
         goToTagAdderActivity();
 
-        //inside TagAdderActivity, edit Butter TagTemplate
+        //inside TagAdderActivity, edit Butter TagType
         onView(allOf(withId(R.id.settings_btn_inside_listView), hasSibling(withText("Butter"))))
                 .perform(click());
 
         onView(withText("Edit")).check(matches(isDisplayed())).perform(click());
         //need double click
-        onView(withId(R.id.addTagTypeParent)).perform(click());
-        onView(withId(R.id.addTagTypeParent)).perform(click());
+        onView(withId(R.id.is_a_type_of)).perform(click());
         //back in TagAdderActivity?
         onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
 
-        //add another TagTemplate, Lacteo.
+        //add another TagType, Lacteo.
         onView(withId(R.id.menu_add_new)).perform(click());
         onView(withId(R.id.name_box)).perform(click()).perform(replaceText("Lacteo"),
                 closeSoftKeyboard());
         onView(withId(R.id.menu_done)).perform(click());
 
         //now back in Butter edittext view
-        onView(withId(R.id.addTagTypeParent)).check(matches(isDisplayed()));
+        onView(withId(R.id.is_a_type_of)).check(matches(isDisplayed()));
         onView(withText("Butter")).check(matches(isDisplayed()));
         onView(withText("Lacteo")).check(matches(isDisplayed()));
 

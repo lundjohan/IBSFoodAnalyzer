@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.johanlund.database.DBHandler;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 import com.johanlund.util.Util;
 
 import static com.johanlund.constants.Constants.IDS_OF_EARLIER_EDITED_TAG_TEMPLATES;
@@ -13,10 +13,10 @@ import static com.johanlund.constants.Constants.TAG_TEMPLATE_ID;
 import static com.johanlund.constants.Constants.TAG_TEMPLATE_TO_EDIT;
 
 public class TagTypeEditActivity extends TagTypeActivity {
-    //this variable is used to know which TagTemplate in database that should be edited (as name
-    // could have been change there is no other way of knowing original TagTemplate otherwise)
+    //this variable is used to know which TagType in database that should be edited (as name
+    // could have been change there is no other way of knowing original TagType otherwise)
     long idOfTagTemplate = -1;
-    TagTemplate tt;
+    TagType tt;
     //this is stored
     private long [] idsFromEarlierEditedTagTemplates;
     /*
@@ -33,10 +33,10 @@ public class TagTypeEditActivity extends TagTypeActivity {
             throw new IllegalArgumentException("TagTypeEditActivity needs to be started with a valid TAG_TEMPLATE_ID");
         }
         if (intent.hasExtra(TAG_TEMPLATE_TO_EDIT)) {
-            tt = (TagTemplate)intent.getSerializableExtra(TAG_TEMPLATE_TO_EDIT);
+            tt = (TagType)intent.getSerializableExtra(TAG_TEMPLATE_TO_EDIT);
         }
         else{
-            throw new IllegalArgumentException("TagTypeEditActivity needs to be started with a valid TagTemplate");
+            throw new IllegalArgumentException("TagTypeEditActivity needs to be started with a valid TagType");
         }
         if (intent.hasExtra((IDS_OF_EARLIER_EDITED_TAG_TEMPLATES))){
             idsFromEarlierEditedTagTemplates = intent.getLongArrayExtra(IDS_OF_EARLIER_EDITED_TAG_TEMPLATES);
@@ -55,13 +55,13 @@ public class TagTypeEditActivity extends TagTypeActivity {
     }
 
     public void doneClicked() {
-        //1. create a TagTemplate object from name, is_a
-        TagTemplate tagTemplate = new TagTemplate(name.getText().toString(), is_a);
+        //1. create a TagType object from name, is_a
+        TagType tagType = new TagType(name.getText().toString(), is_a);
         //2 update database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         Intent data = new Intent();
         if (idOfTagTemplate >= 0) {
-            dbHandler.editTagTemplate(tagTemplate, idOfTagTemplate);
+            dbHandler.editTagTemplate(tagType, idOfTagTemplate);
             idsFromEarlierEditedTagTemplates = Util.appendToArray(idsFromEarlierEditedTagTemplates, idOfTagTemplate);
             data.putExtra(IDS_OF_EDITED_TAG_TEMPLATES, idsFromEarlierEditedTagTemplates);
         }

@@ -17,7 +17,7 @@ import com.johanlund.constants.Constants;
 import com.johanlund.database.DBHandler;
 import com.johanlund.database.TagnameCursorAdapter;
 import com.johanlund.info.ActivityInfoContent;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 
 import java.io.Serializable;
 
@@ -41,8 +41,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     SearchView tagSearch;
     ListView tagsList;
     DBHandler dbHandler;
-    TagTemplate chosenTagTemplate = null;
-    //if calling Activity is a TagTypeActivity that requests a "type-of" TagTemplate, then
+    TagType chosenTagType = null;
+    //if calling Activity is a TagTypeActivity that requests a "type-of" TagType, then
     // this int stores which of type_of is meant. Default is -1 (<0 means other request than above).
     int typeOf = -1;
     private TagnameCursorAdapter adapter;
@@ -117,14 +117,14 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             // .com/questions/8222229/what-is-the-difference-between-int-and-long-argument-in
             // -onitemclick-in-andro
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                chosenTagTemplate = dbHandler.findTagTemplate((int) id);
+                chosenTagType = dbHandler.findTagTemplate((int) id);
                 returnTag();
             }
         });
     }
     private void returnTag(){
         Intent data = new Intent();
-        data.putExtra(Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable) chosenTagTemplate);
+        data.putExtra(Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable) chosenTagType);
         if (typeOf >= 0) {
             data.putExtra(WHICH_TYPE, typeOf);
         }
@@ -160,7 +160,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
     }
 
     /**
-     * Has gotten result from clicked new (plus button) for adding new TagTemplate
+     * Has gotten result from clicked new (plus button) for adding new TagType
      *
      * @param requestCode
      * @param resultCode
@@ -185,14 +185,14 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
             adapter.notifyDataSetChanged();
 
             //return the tagTemplate that has been added.
-            chosenTagTemplate = (TagTemplate) data.getSerializableExtra(PUT_TAG_TEMPLATE);
+            chosenTagType = (TagType) data.getSerializableExtra(PUT_TAG_TEMPLATE);
             returnTag();
         }
 
     }
         //there is no notifyDataItemChanged for a CursorAdapter. One alternativ is to update the cursor:
         //see https://stackoverflow.com/questions/13953171/update-the-listview-after-inserting-a-new-record-with-simplecursoradapter-requ/13953470#13953470
-        //the only concern I have is that this is ineffective for big sets of TagTemplates. There is only one TagTemplate that needs to be updated so why update the whole set!
+        //the only concern I have is that this is ineffective for big sets of TagTemplates. There is only one TagType that needs to be updated so why update the whole set!
         //perhaps this is relevant? https://stackoverflow.com/questions/3724874/how-can-i-update-a-single-row-in-a-listview
         private void updateListView(){
         Cursor updatedCursor = dbHandler.getCursorToTagTemplates();
@@ -216,10 +216,10 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         dbHandler.removeExercisesWithTagTemplate(tagTemplateId);
 
         synchronized (this) {
-            //Remove the TagTemplate itself from database
+            //Remove the TagType itself from database
             dbHandler.deleteTagTemplate(tagTemplateId);
 
-            //remove TagTemplate from list inside TagAdderView.
+            //remove TagType from list inside TagAdderView.
             updateListView();
             tagTemplateHasBeenEditedOrDeleted = true;
 

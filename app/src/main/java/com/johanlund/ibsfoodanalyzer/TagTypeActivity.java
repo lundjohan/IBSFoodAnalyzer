@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.johanlund.database.DBHandler;
 import com.johanlund.info.ActivityInfoContent;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 import com.johanlund.util.Util;
 
 import java.io.Serializable;
@@ -28,30 +28,30 @@ import static com.johanlund.constants.Constants.WHICH_TYPE;
 
 public abstract class TagTypeActivity extends AppCompatActivity implements View
         .OnClickListener {
-    protected TagTemplate is_a = null;
+    protected TagType is_a = null;
 
     protected EditText name;
     protected TextView type_of;
 
     /**
-     * a TagTemplate must be sent back because 1. TagAdderActivity must now which TagTemplate
+     * a TagType must be sent back because 1. TagAdderActivity must now which TagType
      * has been chosen and 2. TagTemplateEdit/Adder-Activity must now which parent has been
      * created/ chosen.
      *
-     * @param idOfTagTemplate <0 means new TagTemplate. If editing this is
+     * @param idOfTagTemplate <0 means new TagType. If editing this is
      *                        the id.
      */
     protected void finishDoneClicked(long idOfTagTemplate) {
-        //1. create a TagTemplate object from name, is_a
-        TagTemplate tagTemplate = new TagTemplate(Util.makeFirstLetterCapitalAndRestSmall(name.getText().toString()), is_a);
+        //1. create a TagType object from name, is_a
+        TagType tagType = new TagType(Util.makeFirstLetterCapitalAndRestSmall(name.getText().toString()), is_a);
         //2 update database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         Intent data = new Intent();
         if (idOfTagTemplate >= 0) {
-            dbHandler.editTagTemplate(tagTemplate, idOfTagTemplate);
+            dbHandler.editTagTemplate(tagType, idOfTagTemplate);
         } else {
-            dbHandler.addTagTemplate(tagTemplate);
-            data.putExtra(PUT_TAG_TEMPLATE, (Serializable) tagTemplate);
+            dbHandler.addTagTemplate(tagType);
+            data.putExtra(PUT_TAG_TEMPLATE, (Serializable) tagType);
         }
         setResult(RESULT_OK, data);
         finish();
@@ -124,11 +124,11 @@ public abstract class TagTypeActivity extends AppCompatActivity implements View
         if (data.hasExtra(WHICH_TYPE)) {
             whichType = data.getExtras().getInt(WHICH_TYPE);
         }
-        TagTemplate tagTemplateChild = null;
+        TagType tagTypeChild = null;
         if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
-            tagTemplateChild = (TagTemplate) data.getExtras().getSerializable
+            tagTypeChild = (TagType) data.getExtras().getSerializable
                     (RETURN_TAG_TEMPLATE_SERIALIZABLE);
-            is_a = tagTemplateChild;
+            is_a = tagTypeChild;
             type_of.setText(is_a.get_tagname());
         }
     }

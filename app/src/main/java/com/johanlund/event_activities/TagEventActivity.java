@@ -16,7 +16,7 @@ import com.johanlund.base_classes.Tag;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.ibsfoodanalyzer.TagAdderActivity;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,20 +94,20 @@ public abstract class TagEventActivity extends EventActivity {
             return;
         }
         if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
-            TagTemplate tagTemplate = (TagTemplate) data.getExtras().getSerializable
+            TagType tagType = (TagType) data.getExtras().getSerializable
                     (RETURN_TAG_TEMPLATE_SERIALIZABLE);
 
             //create a new Tag
-            Tag tag = new Tag(getLocalDateTime(), tagTemplate.get_tagname(), 1.0);
+            Tag tag = new Tag(getLocalDateTime(), tagType.get_tagname(), 1.0);
             tagsList.add(tag);
             notifyItemInserted();
         }
     }
 
     /**
-     * is called after TagTemplate(s) has been deleted or edited.
+     * is called after TagType(s) has been deleted or edited.
      * This function should be as simple as possible,
-     * simply match this Activity's TagList and TagTemplate in database,
+     * simply match this Activity's TagList and TagType in database,
      * if no match => remove from tagList (it is not so terrible if too many lines become removed)
      */
     private void updateTagsList() {

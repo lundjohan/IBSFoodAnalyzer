@@ -34,7 +34,7 @@ public class AddingTagTemplateAndTagTest {
 
     @Test
     public void addingTagTemplateAndTagTest() {
-        //first, add TagTemplate "butter"
+        //first, add TagType "butter"
 
         onView(allOf(withId(R.id.mealBtn), isDisplayed())).perform(click());
         onView(withId(R.id.addTagsBtn)).perform(click());

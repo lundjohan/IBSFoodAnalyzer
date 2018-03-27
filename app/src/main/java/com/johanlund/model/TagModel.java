@@ -7,7 +7,7 @@ import org.threeten.bp.LocalDateTime;
 public class TagModel {
     protected LocalDateTime time;
     private int _id;
-    private TagTemplate tagTemplate; //fk Hur gör jag?
+    private TagType tagType; //fk Hur gör jag?
     private double size;
 
     public LocalDateTime getTime() {
@@ -26,12 +26,12 @@ public class TagModel {
         this._id = _id;
     }
 
-    public TagTemplate getTagTemplate() {
-        return tagTemplate;
+    public TagType getTagType() {
+        return tagType;
     }
 
-    public void setTagTemplate(TagTemplate tagTemplate) {
-        this.tagTemplate = tagTemplate;
+    public void setTagType(TagType tagType) {
+        this.tagType = tagType;
     }
 
     public double getSize() {

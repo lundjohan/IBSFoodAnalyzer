@@ -3,7 +3,7 @@ package com.johanlund.ibsfoodanalyzer;
 import android.os.Bundle;
 
 /**
- * This Activity can be used to edit or create a new TagTemplate.
+ * This Activity can be used to edit or create a new TagType.
  * <p>
  * One alternative is to have to have a TagTypeActivity as parent for a
  * TagTypeEditActivity and a TagTemplateAddActivity

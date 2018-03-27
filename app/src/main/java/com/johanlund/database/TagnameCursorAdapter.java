@@ -61,7 +61,7 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
                         .getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        /*Ugly solution of using the TagName to get the id of TagTemplate.
+                        /*Ugly solution of using the TagName to get the id of TagType.
                         But the Cursor c is always in last position here (I guess it is not meant
                          to be used in a onClickEvent that is called after the first bindView),
                          so it can't be used (it would of course have been better to retrieve the

@@ -16,7 +16,6 @@ import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
-import com.johanlund.database.DBHandler;
 import com.johanlund.main.DrawerActivity;
 import com.johanlund.event_activities.BmActivity;
 import com.johanlund.event_activities.ExerciseActivity;
@@ -24,7 +23,6 @@ import com.johanlund.event_activities.MealActivity;
 import com.johanlund.event_activities.OtherActivity;
 import com.johanlund.event_activities.RatingActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
-import com.johanlund.model.TagTemplate;
 
 import org.junit.Before;
 import org.junit.Rule;

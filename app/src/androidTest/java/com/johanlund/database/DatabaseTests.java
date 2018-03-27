@@ -5,7 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Tag;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class DatabaseTests {
     DBHandler dbHandler;
 
     private void addTagTemplate(String tagName) {
-        TagTemplate tt = new TagTemplate(tagName);
+        TagType tt = new TagType(tagName);
         dbHandler.addTagTemplate(tt);
     }
 
@@ -47,37 +47,37 @@ public class DatabaseTests {
 
     @Test
     public void onlyOneTagTemplateWithUniqueNameIsAddedTest() {
-        //create a TagTemplate
-        TagTemplate tt = new TagTemplate("milk");
+        //create a TagType
+        TagType tt = new TagType("milk");
         dbHandler.addTagTemplate(tt);
 
-        //TagTemplate Table should only accepts unique names, this should therefore not be added
-        TagTemplate tt2 = new TagTemplate("milk");
+        //TagType Table should only accepts unique names, this should therefore not be added
+        TagType tt2 = new TagType("milk");
         dbHandler.addTagTemplate(tt2);
 
-        List<TagTemplate> allTagTemplates = dbHandler.getAllTagTemplates();
-        assertEquals(1, allTagTemplates.size());
+        List<TagType> allTagTypes = dbHandler.getAllTagTemplates();
+        assertEquals(1, allTagTypes.size());
 
 
     }
 
     @Test
     public void addAndRetrieveTagTemplateTest() {
-        //create a TagTemplate
+        //create a TagType
         addTagTemplate("yoghurt");
 
-        //check that TagTemplate was added.
-        TagTemplate ttRetrieved = dbHandler.findTagTemplate("yoghurt");
+        //check that TagType was added.
+        TagType ttRetrieved = dbHandler.findTagTemplate("yoghurt");
         assertNotNull(ttRetrieved);
 
         //check that null is returned if not added tag is searched
-        TagTemplate ttWrong = dbHandler.findTagTemplate("not_existing_tag");
+        TagType ttWrong = dbHandler.findTagTemplate("not_existing_tag");
         assertNull(ttWrong);
     }
 
     @Test
     public void addAndRetrieveMealTest() {
-        //create a TagTemplate (needed for below)
+        //create a TagType (needed for below)
         addTagTemplate("yoghurt");
 
         //create a meal

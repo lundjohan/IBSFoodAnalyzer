@@ -14,7 +14,7 @@ import com.johanlund.base_classes.Tag;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.exceptions.CorruptedEventException;
 import com.johanlund.model.EventsTemplate;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -898,7 +898,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Note that this method also adds TagTemplate in case it is missing
+     * Note that this method also adds TagType in case it is missing
      * @param t
      * @param eventId
      */
@@ -910,7 +910,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         long tagTemplateId = getTagTemplateId(t.getName());
         if (tagTemplateId == -1){
-            TagTemplate tt = new TagTemplate(t.getName(), null);
+            TagType tt = new TagType(t.getName(), null);
             tagTemplateId = addTagTemplate(tt);
         }
         values.put(COLUMN_TAGTEMPLATE, tagTemplateId);
@@ -920,16 +920,16 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //===================================================================================
-    //TagTemplate
+    //TagType
     //===================================================================================
-    public long addTagTemplate(TagTemplate tagTemplate) {
-        ContentValues values = makeTagTemplateContentValues(tagTemplate);
+    public long addTagTemplate(TagType tagType) {
+        ContentValues values = makeTagTemplateContentValues(tagType);
         SQLiteDatabase db = this.getWritableDatabase();
         long id = db.insert(TABLE_TAGTEMPLATES, null, values);
         db.close();
         return id;
-        //Log.d("Debug", "addTagTemplate completed! TagTemplate " + tagTemplate.get_tagname() + "
-        // with id nr: " + findTagTemplate(tagTemplate.get_tagname()).get_id() + " inserted!");
+        //Log.d("Debug", "addTagTemplate completed! TagType " + tagType.get_tagname() + "
+        // with id nr: " + findTagTemplate(tagType.get_tagname()).get_id() + " inserted!");
     }
 
     public void deleteTagTemplate(long idOfTagTemplate) {
@@ -953,8 +953,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return toReturn;
     }
 
-    public void editTagTemplate(TagTemplate tagTemplate, long idOfTagTemplate) {
-        ContentValues values = makeTagTemplateContentValues(tagTemplate);
+    public void editTagTemplate(TagType tagType, long idOfTagTemplate) {
+        ContentValues values = makeTagTemplateContentValues(tagType);
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TABLE_TAGTEMPLATES, values, "_id=" + idOfTagTemplate, null);
         db.close();
@@ -983,14 +983,14 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    private ContentValues makeTagTemplateContentValues(TagTemplate tagTemplate) {
+    private ContentValues makeTagTemplateContentValues(TagType tagType) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_TAGNAME, tagTemplate.get_tagname());
-        actOnTagTemplateChild(values, tagTemplate.get_type_of(), TYPE_OF);
+        values.put(COLUMN_TAGNAME, tagType.get_tagname());
+        actOnTagTemplateChild(values, tagType.get_type_of(), TYPE_OF);
         return values;
     }
 
-    private void actOnTagTemplateChild(ContentValues values, TagTemplate child, String
+    private void actOnTagTemplateChild(ContentValues values, TagType child, String
             childColumn) {
         if (child == null) {
             values.putNull(childColumn);
@@ -999,39 +999,39 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
-    public List<TagTemplate> getAllTagTemplates() {
-        List<TagTemplate> tagTemplates = new ArrayList<>();
+    public List<TagType> getAllTagTemplates() {
+        List<TagType> tagTypes = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_TAGTEMPLATES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                TagTemplate tt = findTagTemplateHelper2(cursor);
-                tagTemplates.add(tt);
+                TagType tt = findTagTemplateHelper2(cursor);
+                tagTypes.add(tt);
                 cursor.moveToNext();
             }
         }
-        return tagTemplates;
+        return tagTypes;
     }
 
-    public TagTemplate findTagTemplate(String tagName) {
+    public TagType findTagTemplate(String tagName) {
         String query = "SELECT * FROM " + TABLE_TAGTEMPLATES + " WHERE " + COLUMN_TAGNAME + " = " +
                 "\"" + tagName + "\"";
         return findTagTemplateHelper(query);
     }
 
-    public TagTemplate findTagTemplate(long id) {
+    public TagType findTagTemplate(long id) {
         String query = "SELECT * FROM " + TABLE_TAGTEMPLATES + " WHERE " + COLUMN_ID + " = \"" +
                 String.valueOf(id) + "\"";
         return findTagTemplateHelper(query);
     }
 
-    //returns null if there is no such TagTemplate in database
-    private TagTemplate findTagTemplateHelper(String query) {
+    //returns null if there is no such TagType in database
+    private TagType findTagTemplateHelper(String query) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        TagTemplate tt = null;
+        TagType tt = null;
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
             tt = findTagTemplateHelper2(cursor);
@@ -1039,8 +1039,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return tt;
     }
 
-    private TagTemplate findTagTemplateHelper2(Cursor c) {
-        TagTemplate tt = new TagTemplate();
+    private TagType findTagTemplateHelper2(Cursor c) {
+        TagType tt = new TagType();
         tt.set_tagname(c.getString(c.getColumnIndex(COLUMN_TAGNAME)));
 
         //sets nulls or parent tagtemplates
@@ -1053,8 +1053,8 @@ public class DBHandler extends SQLiteOpenHelper {
      * @param columnName
      * @return null if parent doesn't exist, otherwise return the parent
      */
-    private TagTemplate retrieveOneParentToTagTemplate(Cursor c, String columnName) {
-        TagTemplate parent;
+    private TagType retrieveOneParentToTagTemplate(Cursor c, String columnName) {
+        TagType parent;
         if (c.isNull(c.getColumnIndex(columnName))) {
             parent = null;
         } else {
@@ -1092,24 +1092,24 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     //inspired by p. 557
-    public List<TagTemplate> retrieveTagNames() {
+    public List<TagType> retrieveTagNames() {
         String query = "SELECT * FROM " + TABLE_TAGTEMPLATES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        List<TagTemplate> tagTemplates = new ArrayList<>();
+        List<TagType> tagTypes = new ArrayList<>();
 
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                TagTemplate tagTemplate = new TagTemplate("");
-                tagTemplate.set_tagname(cursor.getString(1));
-                tagTemplates.add(tagTemplate);
+                TagType tagType = new TagType("");
+                tagType.set_tagname(cursor.getString(1));
+                tagTypes.add(tagType);
                 cursor.moveToNext();
             }
         }
         cursor.close();
         db.close();
-        return tagTemplates;
+        return tagTypes;
     }
 
     //almost copy-pasted from getEventsRetrieverHelper

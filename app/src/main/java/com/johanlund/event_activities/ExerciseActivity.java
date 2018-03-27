@@ -11,7 +11,7 @@ import com.johanlund.base_classes.Exercise;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.ibsfoodanalyzer.TagAdderActivity;
-import com.johanlund.model.TagTemplate;
+import com.johanlund.model.TagType;
 
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
 import static com.johanlund.constants.Constants.EXERCISE;
@@ -110,9 +110,9 @@ public class ExerciseActivity extends EventActivity {
         }
 
         if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
-            TagTemplate tagTemplate = (TagTemplate) data.getExtras().getSerializable
+            TagType tagType = (TagType) data.getExtras().getSerializable
                     (RETURN_TAG_TEMPLATE_SERIALIZABLE);
-            typeOfExercise.setText(tagTemplate.get_tagname());
+            typeOfExercise.setText(tagType.get_tagname());
         }
     }
 }
