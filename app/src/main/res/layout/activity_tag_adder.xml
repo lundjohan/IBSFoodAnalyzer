@@ -6,6 +6,14 @@
                                              android:layout_height="match_parent"
                                              tools:context="com.johanlund.ibsfoodanalyzer.TagAdderActivity">
 
+
+    <TextView
+        android:id="@+id/infoAboutAddingNewTagType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Tag Type has yet been added. Press the plus button in upper right corner to add a Tag Type."
+        android:visibility="gone"/>
+
     <SearchView
         android:id="@+id/searchTags"
         android:layout_width="0dp"
@@ -18,7 +26,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/infoAboutAddingNewTagType">
 
     </SearchView>
 

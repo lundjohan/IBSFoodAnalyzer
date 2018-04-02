@@ -34,10 +34,12 @@ import static com.johanlund.constants.Constants.TITLE_STRING;
 import static com.johanlund.constants.Constants.WHICH_TYPE;
 
 /**
- * This is the acticity that is seen when in Meal-, Other- or ExerciseActivity button "Add Tags" is pressed
+ * This is the acticity that is seen when in Meal-, Other- or ExerciseActivity button "Add Tags"
+ * is pressed
  */
-public class TagAdderActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, TagnameCursorAdapter.ChangingTagTemplate {
-    final String TAG_TITLE ="Add Tag";
+public class TagAdderActivity extends AppCompatActivity implements SearchView
+        .OnQueryTextListener, TagnameCursorAdapter.ChangingTagTemplate {
+    final String TAG_TITLE = "Add Tag";
     SearchView tagSearch;
     ListView tagsList;
     DBHandler dbHandler;
@@ -49,7 +51,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
     //used for backPress
     private boolean tagTemplateHasBeenEditedOrDeleted;
-    private long [] idsOfChangedTagTemplates;
+    private long[] idsOfChangedTagTemplates;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -78,8 +80,6 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         });
 
 
-
-
         return true;
     }
 
@@ -93,8 +93,13 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         //only in developing mode
         /*dbHandler.deleteAllTagTemplates();
         dbHandler.createSomeTagTemplates();*/
-
         tagSearch = (SearchView) findViewById(R.id.searchTags);
+        if (dbHandler.tagTypesTableIsEmpty()) {
+            findViewById(R.id.infoAboutAddingNewTagType).setVisibility(View.VISIBLE);
+            tagSearch.setVisibility(View.GONE);
+        }
+        //else, still initiate all of this. It will crash otherwise when returning from TagType
+        // (adapter needs to be initiated)
         tagsList = (ListView) findViewById(R.id.listOfTags);
         Cursor cursor = dbHandler.getCursorToTagTemplates();
         adapter = new TagnameCursorAdapter(this,
@@ -121,19 +126,22 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
                 returnTag();
             }
         });
+
     }
-    private void returnTag(){
+
+    private void returnTag() {
         Intent data = new Intent();
         data.putExtra(Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE, (Serializable) chosenTagType);
         if (typeOf >= 0) {
             data.putExtra(WHICH_TYPE, typeOf);
         }
-        if (tagTemplateHasBeenEditedOrDeleted){
+        if (tagTemplateHasBeenEditedOrDeleted) {
             data.putExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED, true);
         }
         setResult(RESULT_OK, data);
         finish();
     }
+
     private void setupSearchView() {
         tagSearch.setIconifiedByDefault(false);
         tagSearch.setOnQueryTextListener(this);
@@ -173,7 +181,7 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         }
         //code coming back from TagTypeEditActivity
         if (requestCode == TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED) {
-            if (data.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)){
+            if (data.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)) {
                 idsOfChangedTagTemplates = data.getLongArrayExtra(IDS_OF_EDITED_TAG_TEMPLATES);
             }
             tagTemplateHasBeenEditedOrDeleted = true;
@@ -190,15 +198,19 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         }
 
     }
-        //there is no notifyDataItemChanged for a CursorAdapter. One alternativ is to update the cursor:
-        //see https://stackoverflow.com/questions/13953171/update-the-listview-after-inserting-a-new-record-with-simplecursoradapter-requ/13953470#13953470
-        //the only concern I have is that this is ineffective for big sets of TagTemplates. There is only one TagType that needs to be updated so why update the whole set!
-        //perhaps this is relevant? https://stackoverflow.com/questions/3724874/how-can-i-update-a-single-row-in-a-listview
-        private void updateListView(){
+
+    //there is no notifyDataItemChanged for a CursorAdapter. One alternativ is to update the cursor:
+    //see https://stackoverflow.com/questions/13953171/update-the-listview-after-inserting-a-new
+    // -record-with-simplecursoradapter-requ/13953470#13953470
+    //the only concern I have is that this is ineffective for big sets of TagTemplates. There is
+    // only one TagType that needs to be updated so why update the whole set!
+    //perhaps this is relevant? https://stackoverflow
+    // .com/questions/3724874/how-can-i-update-a-single-row-in-a-listview
+    private void updateListView() {
         Cursor updatedCursor = dbHandler.getCursorToTagTemplates();
         adapter.changeCursor(updatedCursor);
 
-        }
+    }
 
     @Override
     public void editTagTemplate(long tagTemplateId) {
@@ -211,7 +223,8 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public void delTagTemplate(long tagTemplateId) {
-        //Exercise needs to be removed first with tag that contain a tagTemplate that will no longer exist.
+        //Exercise needs to be removed first with tag that contain a tagTemplate that will no
+        // longer exist.
         //for other tags they will be removed through cascading in database.
         dbHandler.removeExercisesWithTagTemplate(tagTemplateId);
 
@@ -226,11 +239,13 @@ public class TagAdderActivity extends AppCompatActivity implements SearchView.On
         }
 
     }
+
     @Override
     public void onBackPressed() {
         Bundle bundle = new Bundle();
-        bundle.putBoolean(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED, tagTemplateHasBeenEditedOrDeleted);
-        if (idsOfChangedTagTemplates!= null){
+        bundle.putBoolean(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED,
+                tagTemplateHasBeenEditedOrDeleted);
+        if (idsOfChangedTagTemplates != null) {
             bundle.putLongArray(IDS_OF_EDITED_TAG_TEMPLATES, idsOfChangedTagTemplates);
         }
 
