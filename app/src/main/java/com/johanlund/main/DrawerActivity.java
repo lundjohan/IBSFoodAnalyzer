@@ -240,7 +240,7 @@ public class DrawerActivity extends AppCompatActivity
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false).
                         setTitle("Clear Database?").
-                        setMessage("Warning! Are you sure you want to erase all of the diary?").
+                        setMessage("Warning! Are you sure you want to erase all of the diary? (Manually saved files will not be erased.)").
                         setCancelable(true).
                         setNegativeButton(android.R.string.cancel, new DialogInterface
                                 .OnClickListener() {
