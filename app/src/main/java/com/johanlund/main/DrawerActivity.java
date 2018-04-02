@@ -253,7 +253,7 @@ public class DrawerActivity extends AppCompatActivity
                                 .OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 DBHandler dbHandler = new DBHandler(getApplicationContext());
-                                dbHandler.deleteAllTablesRowsExceptTagTypes();
+                                dbHandler.deleteAllTablesRows();
                                 restartContainerDiary(null);
                             }
                         });
