@@ -2,7 +2,7 @@ package com.johanlund.statistics_settings;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.preference.PreferenceFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -10,8 +10,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics_portions.NewPortionRangeActivity;
-import com.johanlund.statistics_portions.PortionStatRange;
+import com.johanlund.statistics_settings_portions.NewPortionRangeActivity;
+import com.johanlund.statistics_settings_portions.PortionStatRange;
+import com.johanlund.statistics_settings_portions.PortionsRatingSettingsFragment;
 import com.johanlund.util.Util;
 
 import static com.johanlund.constants.Constants.CHOSEN_FROM_RANGE;
@@ -21,14 +22,15 @@ import static com.johanlund.constants.Constants.NEW_PORTION_RANGES;
 /**
  * This class, and this class alone, takes care of relevant Shared Preferences (the adapter is agnostic about it)
  */
-public class PortionStatSettingsActivity extends AppCompatActivity {
+public class PortionStatSettingsActivity extends SettingsBaseActivity {
     PortionStatRangeAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Portion Stat Settings");
         setContentView(R.layout.activity_portion_stat_settings);
+        setTitle("Portion Stat Settings");
+
         adapter = new PortionStatRangeAdapter(getBaseContext());
 
 
@@ -73,7 +75,16 @@ public class PortionStatSettingsActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-
-
     }
+
+    @Override
+    protected int getFragmentContainer(){
+        return R.id.containerForSomePortionsSettings;
+    }
+
+    @Override
+    protected PreferenceFragment getFragment() {
+        return new PortionsRatingSettingsFragment();
+    }
+
 }

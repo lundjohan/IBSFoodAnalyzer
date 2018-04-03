@@ -2,13 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:sample="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
-        android:title="Settings for Rating Avg Statistics">
+        android:title="Settings for Portions Statistics">
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="0"
             android:enabled="true"
-            android:key="@string/avg_rating_pref_wait_key"
-            android:title="Hours to wait"
-            android:summary="A wait hour of zero (0) means that a tag type is calculated on as if it is affecting the rating immediately after the tag occurred."
+            android:key="@string/portions_rating_pref_wait_hours_key"
+            android:title="Wait Hour"
+            android:summary="A wait hour of zero (0) means that a meal's portion size is calculated on as if it is affecting the rating immediately afterwards."
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
             sample:msbp_maxValue="48"
@@ -18,9 +18,9 @@
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="24"
             android:enabled="true"
-            android:key="@string/avg_rating_pref_stop_key"
-            android:title="Hours before stop"
-            android:summary="A stop hour of 24h means that a tag type is calculated on as if it stops affecting the rating 24 hours after the tag occurred."
+            android:key="@string/portions_rating_pref_valid_hours_key"
+            android:title="Valid Hours"
+            android:summary="A valid hour of 24h means that a meal's portion size is seen as not having any effect on the rating 24 hours after the meal occurred."
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
             sample:msbp_maxValue="72"
@@ -30,13 +30,13 @@
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="0"
             android:enabled="true"
-            android:key="@string/avg_rating_pref_quant_key"
-            android:title="Minimum quantity limit"
-            android:summary="The tag should occur at minimum this amount to be shown in statistics."
+            android:key="@string/portions_pref_min_hours_between_meals"
+            android:title="Min Hours between Meals"
+            android:summary="If the time between meals are less than this, they will be counted as one meal by algorithm. Set to zero (0) to turn this function off. (NB. Breaks has precedence so a higher hour here than the setting 'Hours after event before a break' makes no sense)"
             sample:msbp_dialogEnabled="false"
-            sample:msbp_interval="1"
-            sample:msbp_maxValue="20"
-            sample:msbp_measurementUnit="min quantity"
+            sample:msbp_interval="0"
+            sample:msbp_maxValue="12"
+            sample:msbp_measurementUnit="h"
             sample:msbp_minValue="0"
             />
     </PreferenceCategory>

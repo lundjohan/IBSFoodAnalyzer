@@ -13,7 +13,7 @@ public abstract class SettingsBaseActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, getFragment())
+                .replace(getFragmentContainer(), getFragment())
                 .commit();
     }
 
@@ -26,4 +26,12 @@ public abstract class SettingsBaseActivity extends AppCompatPreferenceActivity {
         return true;
     }
     protected abstract PreferenceFragment getFragment();
+
+    /**
+     * Method can be overrided in case a smaller fraction (than the full) of screen should be
+     * preference fragment. (Specifically this is used by PortionsSettings)
+     */
+    protected int getFragmentContainer(){
+        return android.R.id.content;
+    }
 }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.external_classes.TinyDB;
-import com.johanlund.statistics_portions.PortionStatRange;
+import com.johanlund.statistics_settings_portions.PortionStatRange;
 
 import java.util.ArrayList;
 
@@ -18,6 +18,9 @@ import java.util.ArrayList;
  * Created by Johan on 2018-01-23.
  */
 
+/**
+ * NB. Uses shared preferences!
+ */
 class PortionStatRangeAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private final String RANGES_KEY= "portionRanges";
     private ArrayList<PortionStatRange> ranges;

@@ -1,4 +1,4 @@
-package com.johanlund.statistics_portions;
+package com.johanlund.statistics_settings_portions;
 
 import android.app.Activity;
 import android.content.Intent;
