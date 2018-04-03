@@ -92,15 +92,15 @@
         <activity android:name="com.johanlund.statistics_time.BristolTimeStatActivity">
         </activity>
         <activity
-            android:name="com.johanlund.statistics_settings.PortionStatSettingsActivity"
+            android:name="com.johanlund.statistics_settings_portions.PortionStatSettingsActivity"
             android:label="Portion Stat Settings">
         </activity>
         <activity
             android:name="com.johanlund.statistics_settings_portions.NewPortionRangeActivity"
-            android:parentActivityName="com.johanlund.statistics_settings.PortionStatSettingsActivity">
+            android:parentActivityName="com.johanlund.statistics_settings_portions.PortionStatSettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.johanlund.statistics_settings.PortionStatSettingsActivity"/>
+                android:value="com.johanlund.statistics_settings_portions.PortionStatSettingsActivity"/>
         </activity>
         <activity
             android:name="com.johanlund.main.DrawerActivity"
@@ -134,6 +134,8 @@
         <activity android:name="com.johanlund.info.ActivityInfoContent">
         </activity>
         <activity android:name="com.johanlund.statistics_general.StatBaseActivity">
+        </activity>
+        <activity android:name="com.johanlund.statistics_settings_portions.PortionStatSettingsMoreActivity">
         </activity>
     </application>
 

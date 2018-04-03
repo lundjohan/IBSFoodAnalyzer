@@ -29,7 +29,9 @@ public abstract class SettingsBaseActivity extends AppCompatPreferenceActivity {
 
     /**
      * Method can be overrided in case a smaller fraction (than the full) of screen should be
-     * preference fragment. (Specifically this is used by PortionsSettings)
+     * preference fragment.
+     * (This is currently not used. It is frankly hell to mix like that with preferencefragment,
+     * its not very flexible.)
      */
     protected int getFragmentContainer(){
         return android.R.id.content;

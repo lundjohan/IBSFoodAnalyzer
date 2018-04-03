@@ -1,28 +1,31 @@
-package com.johanlund.statistics_settings;
+package com.johanlund.statistics_settings_portions;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics_settings_portions.NewPortionRangeActivity;
-import com.johanlund.statistics_settings_portions.PortionStatRange;
-import com.johanlund.statistics_settings_portions.PortionsRatingSettingsFragment;
+import com.johanlund.info.ActivityInfoContent;
+import com.johanlund.statistics_settings.SettingsBaseActivity;
 import com.johanlund.util.Util;
 
 import static com.johanlund.constants.Constants.CHOSEN_FROM_RANGE;
 import static com.johanlund.constants.Constants.CHOSEN_TO_RANGE;
+import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.NEW_PORTION_RANGES;
+import static com.johanlund.constants.Constants.TITLE_STRING;
 
 /**
  * This class, and this class alone, takes care of relevant Shared Preferences (the adapter is agnostic about it)
  */
-public class PortionStatSettingsActivity extends SettingsBaseActivity {
+public class PortionStatSettingsActivity extends AppCompatActivity{
     PortionStatRangeAdapter adapter;
 
     @Override
@@ -30,16 +33,25 @@ public class PortionStatSettingsActivity extends SettingsBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portion_stat_settings);
         setTitle("Portion Stat Settings");
-
         adapter = new PortionStatRangeAdapter(getBaseContext());
-
-
         RecyclerView portionsView = (RecyclerView) findViewById(R.id.portionsIntervals);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         portionsView.setLayoutManager(linearLayoutManager);
         portionsView.setAdapter(adapter);
         Util.addLineSeparator(portionsView, linearLayoutManager);
+
+        findViewById(R.id.linkToMorePortionSettings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMorePortionsSettings();
+            }
+        });
+    }
+
+    private void goToMorePortionsSettings(){
+        Intent intent = new Intent(this, PortionStatSettingsMoreActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -76,15 +88,4 @@ public class PortionStatSettingsActivity extends SettingsBaseActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    @Override
-    protected int getFragmentContainer(){
-        return R.id.containerForSomePortionsSettings;
-    }
-
-    @Override
-    protected PreferenceFragment getFragment() {
-        return new PortionsRatingSettingsFragment();
-    }
-
 }

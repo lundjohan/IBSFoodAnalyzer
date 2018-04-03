@@ -17,7 +17,7 @@ import com.johanlund.statistics_avg.CompleteAvgStatActivity;
 import com.johanlund.statistics_avg.RatingAvgStatActivity;
 import com.johanlund.statistics_settings.AvgBmSettingsActivity;
 import com.johanlund.statistics_settings.AvgRatingSettingsActivity;
-import com.johanlund.statistics_settings.PortionStatSettingsActivity;
+import com.johanlund.statistics_settings_portions.PortionStatSettingsActivity;
 import com.johanlund.statistics_settings.TimeBristolSettingsActivity;
 import com.johanlund.statistics_settings.TimeCompleteSettingsActivity;
 import com.johanlund.statistics_settings.TimeRatingSettingsActivity;

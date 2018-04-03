@@ -1,4 +1,4 @@
-package com.johanlund.statistics_settings;
+package com.johanlund.statistics_settings_portions;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
