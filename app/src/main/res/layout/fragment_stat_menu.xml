@@ -140,7 +140,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/secondHeadLine"
             custom:idOfSettingsTextView="@+id/avgRatingItemTextView"
-            custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
+            custom:idOfSettingsBtn="@+id/freqRatingSettings"
             custom:textStatMenu="Rating"/>
 
         <com.johanlund.custom_views.StatMenuItemLayout
@@ -155,7 +155,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/freqRatingItem"
             custom:idOfSettingsTextView="@+id/avgRatingItemTextView"
-            custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
+            custom:idOfSettingsBtn="@+id/freqCompelteSettings"
             custom:textStatMenu="Completeness"/>
 
         <com.johanlund.custom_views.StatMenuItemLayout
@@ -170,7 +170,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/freqCompleteItem"
             custom:idOfSettingsTextView="@+id/avgRatingItemTextView"
-            custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
+            custom:idOfSettingsBtn="@+id/freqBristolSettings"
             custom:textStatMenu="Bristol"/>
 
         <com.johanlund.custom_views.HeadLineLayout
@@ -181,7 +181,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/freqBristolItem"
             custom:textString="Portions Stat"
-            custom:notReady="true"
             custom:idOfInfoBtn="@+id/portionsInfoItem"/>
 
         <com.johanlund.custom_views.StatMenuItemLayout
@@ -191,7 +190,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="13dp"
-            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fourthHeadLine"
@@ -206,32 +204,15 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="13dp"
-            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/portionsRatingItem"
             custom:idOfSettingsTextView="@+id/avgRatingItemTextView"
-            custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
+            custom:idOfSettingsBtn="@+id/portionsSettingsCompleteItem"
             custom:textStatMenu="Completeness"/>
 
-        <com.johanlund.custom_views.StatMenuItemLayout
-            android:id="@+id/portionsBristolItem"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="13dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="13dp"
-            android:visibility="gone"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/portionsCompleteItem"
-            custom:idOfSettingsTextView="@+id/avgRatingItemTextView"
-            custom:idOfSettingsBtn="@+id/portionsSettingsRatingItem"
-            custom:textStatMenu="Bristol"/>
-
         <Space
-            app:layout_constraintTop_toBottomOf="@+id/portionsBristolItem"
+            app:layout_constraintTop_toBottomOf="@+id/portionsCompleteItem"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="wrap_content"

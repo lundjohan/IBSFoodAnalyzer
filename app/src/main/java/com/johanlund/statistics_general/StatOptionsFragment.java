@@ -63,7 +63,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         view.findViewById(timeCompleteItemTextView).setOnClickListener(this);
         view.findViewById(timeBristolItemTextView).setOnClickListener(this);
 
-        /*since some ids are set dynamically through custom views, the builder seem to need some
+        /*since some ids are set dynamically through custom views, the builder seems to need some
         help to find them*/
 
         //info buttons
@@ -91,8 +91,9 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         view.findViewById(getResources().getIdentifier("timeSettingsBristolItem", "id", getContext
                 ().getPackageName())).setOnClickListener(this);
 
-        view.findViewById(getResources().getIdentifier("portionsSettingsRatingItem", "id",
-                getContext().getPackageName())).setOnClickListener(this);
+        View portionSettingsView = view.findViewById(getResources().getIdentifier("portionsSettingsRatingItem", "id",
+                getContext().getPackageName()));
+        portionSettingsView.setOnClickListener(this);
         return view;
     }
 
