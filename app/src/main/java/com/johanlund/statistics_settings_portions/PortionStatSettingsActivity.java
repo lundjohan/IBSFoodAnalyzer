@@ -33,7 +33,7 @@ public class PortionStatSettingsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portion_stat_settings);
         setTitle("Portion Stat Settings");
-        adapter = new PortionStatRangeAdapter(getBaseContext());
+        adapter = new PortionStatRangeAdapter(this);
         RecyclerView portionsView = (RecyclerView) findViewById(R.id.portionsIntervals);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
