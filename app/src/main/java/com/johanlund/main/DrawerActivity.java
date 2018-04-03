@@ -26,7 +26,7 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.johanlund.about.AboutActivity;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
-import com.johanlund.diary.DiaryContainerFragment;
+import com.johanlund.events_container_classes.DiaryContainerFragment;
 import com.johanlund.external_storage.ExternalStorageHandler;
 import com.johanlund.external_storage.SaveDBIntentService;
 import com.johanlund.external_storage.SaveToCSVForGraphIntentService;

@@ -1,4 +1,4 @@
-package com.johanlund.diary;
+package com.johanlund.events_container_classes;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;

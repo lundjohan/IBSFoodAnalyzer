@@ -1,4 +1,4 @@
-package com.johanlund.adapters;
+package com.johanlund.events_container_classes;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

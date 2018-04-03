@@ -1,4 +1,4 @@
-package com.johanlund.diary;
+package com.johanlund.events_container_classes;
 
 import android.content.Intent;
 import android.view.View;

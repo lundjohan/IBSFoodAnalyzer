@@ -1,4 +1,4 @@
-package com.johanlund.diary;
+package com.johanlund.events_container_classes;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.johanlund.adapters.EventAdapter;
 import com.johanlund.base_classes.Bm;
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Exercise;
@@ -26,11 +25,11 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static com.johanlund.constants.Constants.CHANGED_EVENT;
 import static com.johanlund.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
-import static com.johanlund.diary.DiaryFragment.CHANGED_BM;
-import static com.johanlund.diary.DiaryFragment.CHANGED_EXERCISE;
-import static com.johanlund.diary.DiaryFragment.CHANGED_MEAL;
-import static com.johanlund.diary.DiaryFragment.CHANGED_OTHER;
-import static com.johanlund.diary.DiaryFragment.CHANGED_RATING;
+import static com.johanlund.events_container_classes.DiaryFragment.CHANGED_BM;
+import static com.johanlund.events_container_classes.DiaryFragment.CHANGED_EXERCISE;
+import static com.johanlund.events_container_classes.DiaryFragment.CHANGED_MEAL;
+import static com.johanlund.events_container_classes.DiaryFragment.CHANGED_OTHER;
+import static com.johanlund.events_container_classes.DiaryFragment.CHANGED_RATING;
 
 /**
  * Created by Johan on 2017-08-30.

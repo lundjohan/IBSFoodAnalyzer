@@ -26,15 +26,15 @@
         </activity>
         <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
         <activity
-            android:name="com.johanlund.diary.SaveEventsTemplateActivity"
+            android:name="com.johanlund.events_container_classes.SaveEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name="com.johanlund.diary.EditEventsTemplateActivity"
+            android:name="com.johanlund.events_container_classes.EditEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name="com.johanlund.diary.LoadEventsTemplateActivity"
+            android:name="com.johanlund.events_container_classes.LoadEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
 

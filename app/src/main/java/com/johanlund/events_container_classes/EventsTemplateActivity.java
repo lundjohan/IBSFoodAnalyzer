@@ -1,4 +1,4 @@
-package com.johanlund.diary;
+package com.johanlund.events_container_classes;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,11 +33,11 @@ import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.diary.EventsContainer.NEW_BM;
-import static com.johanlund.diary.EventsContainer.NEW_EXERCISE;
-import static com.johanlund.diary.EventsContainer.NEW_MEAL;
-import static com.johanlund.diary.EventsContainer.NEW_OTHER;
-import static com.johanlund.diary.EventsContainer.NEW_RATING;
+import static com.johanlund.events_container_classes.EventsContainer.NEW_BM;
+import static com.johanlund.events_container_classes.EventsContainer.NEW_EXERCISE;
+import static com.johanlund.events_container_classes.EventsContainer.NEW_MEAL;
+import static com.johanlund.events_container_classes.EventsContainer.NEW_OTHER;
+import static com.johanlund.events_container_classes.EventsContainer.NEW_RATING;
 
 /**
  * Reuses a lot of code from DiaryFragment.
