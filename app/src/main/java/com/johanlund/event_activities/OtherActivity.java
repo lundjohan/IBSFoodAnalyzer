@@ -32,6 +32,11 @@ public class OtherActivity extends TagEventActivity {
     }
 
     @Override
+    protected String getTextForAddTagsBtn() {
+        return "Add Other Components";
+    }
+
+    @Override
     protected int getEventType() {
         return OTHER;
     }

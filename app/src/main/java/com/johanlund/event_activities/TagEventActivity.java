@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
 import com.johanlund.adapters.TagAdapter;
 import com.johanlund.base_classes.InputEvent;
@@ -36,6 +37,7 @@ public abstract class TagEventActivity extends EventActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private TagAdapter adapter;
+    private Button addTagsBtn;
     private boolean tagTemplateSeemsToHaveBeenBeenEditedOrDeleted;
     private long [] editedTagTemplatesIds;
 
@@ -43,6 +45,8 @@ public abstract class TagEventActivity extends EventActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         recyclerView = (RecyclerView) findViewById(R.id.addedTagsView);
+        addTagsBtn = (Button) findViewById(R.id.addTagsBtn);
+        addTagsBtn.setText(getTextForAddTagsBtn());
         layoutManager = new LinearLayoutManager(this);
         tagsList = new ArrayList<>();
         recyclerView.setLayoutManager(layoutManager);
@@ -176,4 +180,9 @@ public abstract class TagEventActivity extends EventActivity {
         super.onBackPressed();
     }
 
+    /**
+     * Get the text for the button that adds tags. ("Tags" is not intuitive for a new user).
+     * @return
+     */
+    protected abstract String getTextForAddTagsBtn();
 }

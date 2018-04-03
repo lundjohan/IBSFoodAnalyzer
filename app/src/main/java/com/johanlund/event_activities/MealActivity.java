@@ -46,6 +46,11 @@ public class MealActivity extends TagEventActivity {
     }
 
     @Override
+    protected String getTextForAddTagsBtn() {
+        return "Add Meal Components";
+    }
+
+    @Override
     protected int getEventType() {
         return MEAL;
     }
