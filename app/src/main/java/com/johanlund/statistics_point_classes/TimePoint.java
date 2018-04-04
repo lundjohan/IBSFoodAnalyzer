@@ -12,7 +12,7 @@ import org.threeten.bp.ZoneId;
  * end up easier.
  */
 
-public class TimePoint {
+public class TimePoint implements PointBase{
     LocalDateTime startTime;
     LocalDateTime stopTime;
 

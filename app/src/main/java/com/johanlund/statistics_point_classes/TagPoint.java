@@ -1,6 +1,6 @@
 package com.johanlund.statistics_point_classes;
 
-public class TagPoint{
+public class TagPoint implements PointBase{
     private String name;
     private double quantity;
 

@@ -1,6 +1,9 @@
 package com.johanlund.statistics_time_scorewrapper;
 
+import android.graphics.Point;
+
 import com.johanlund.base_classes.Chunk;
+import com.johanlund.statistics_general.ScoreWrapperBase;
 import com.johanlund.statistics_point_classes.TagPoint;
 import com.johanlund.statistics_point_classes.TimePoint;
 
@@ -16,7 +19,7 @@ import java.util.List;
  * Created by Johan on 2018-03-20.
  */
 
-public abstract class TimeScoreWrapper {
+public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint>{
     //incl
     int scoreStart;
     //incl
@@ -29,6 +32,7 @@ public abstract class TimeScoreWrapper {
         this.durationLimitInHours = durationLimitInHours;
     }
 
+    @Override
     public List<TimePoint> toSortedList(List<TimePoint> timePoints){
         Collections.sort(timePoints, new Comparator<TimePoint>()
                 {
@@ -41,29 +45,11 @@ public abstract class TimeScoreWrapper {
         );
         return timePoints;
     }
-    /**
-     * Given: breaks have already been accounted for.
-     * @param chunks
-     * @return
-     */
 
-   public List<TimePoint> calcTimePeriods(List<Chunk> chunks) {
-        List<TimePoint>timePeriods = new ArrayList<>();
-        for (Chunk c: chunks){
-            timePeriods.addAll(calcTimePeriods(c));
-        }
-        return timePeriods;
-    }
 
-    public List<TimePoint> removeTimePointsWithTooLowQuant(List<TimePoint> sortedList){
-        List<TimePoint>trimmedTimePointList = new ArrayList<>();
-        for (TimePoint tp:sortedList){
-            if(tp.getDurationInHours()>=durationLimitInHours){
-                trimmedTimePointList.add(tp);
-            }
-        }
-        return trimmedTimePointList;
+    @Override
+    protected boolean quantIsUnderLimit(TimePoint tp){
+        return tp.getDurationInHours()>=durationLimitInHours;
     }
-    protected abstract List<TimePoint> calcTimePeriods(Chunk c);
 }
 

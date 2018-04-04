@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.statistics_general.ScoreWrapperBase;
+import com.johanlund.statistics_general.StatAdapter;
 import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 
@@ -22,7 +24,7 @@ import java.util.List;
  * This class is very close to AvgStatAdapter. Using generics? (setList(List<E>) etc...)
  */
 
-public class TimeStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TimeStatAdapter extends StatAdapter<TimePoint>{
     public interface TimeStatAdapterUser{
         void restartDiaryAtDate(LocalDate ld);
     }
@@ -30,9 +32,9 @@ public class TimeStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private TimeStatAdapterUser callBack;
 
 
-    protected List<TimePoint> timePointsList = new ArrayList<>();
-    protected TimeScoreWrapper timeScoreWrapper;
-    public TimeStatAdapter(TimeScoreWrapper timeScoreWrapper, TimeStatAdapterUser callBack) {
+
+    protected ScoreWrapperBase<TimePoint> timeScoreWrapper;
+    public TimeStatAdapter(ScoreWrapperBase<TimePoint> timeScoreWrapper, TimeStatAdapterUser callBack) {
         this.timeScoreWrapper = timeScoreWrapper;
         this.callBack = callBack;
     }
@@ -48,19 +50,21 @@ public class TimeStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        TimePoint tp = timePointsList.get(position);
+        TimePoint tp = pointList.get(position);
         viewHolder.startTime.setText(DateTimeFormat.toSpreadSheetDateTimeFormat(tp.getStartTime()));
         viewHolder.duration.setText(Long.toString(tp.getDurationInHours()));
     }
 
     @Override
     public int getItemCount() {
-        return timePointsList.size();
+        return pointList.size();
     }
 
-    public void setTimePointsList(List<TimePoint>timePointsList){
-        this.timePointsList = timePointsList;
-    }
+    /*@Override
+    public void setPointsList(List<TimePoint>pointList){
+        this.pointList = pointList;
+    }*/
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView startTime;

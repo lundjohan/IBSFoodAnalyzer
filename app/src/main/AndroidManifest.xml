@@ -137,6 +137,10 @@
         </activity>
         <activity android:name="com.johanlund.statistics_settings_portions.PortionStatSettingsMoreActivity">
         </activity>
+        <activity android:name="com.johanlund.statistics_portions.PortionStatActivity">
+        </activity>
+        <activity android:name="com.johanlund.statistics_portions.RatingPortionStatActivity">
+        </activity>
     </application>
 
 </manifest>

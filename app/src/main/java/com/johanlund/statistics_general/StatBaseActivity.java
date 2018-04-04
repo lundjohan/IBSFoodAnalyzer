@@ -17,14 +17,17 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.InfoActivity;
+import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
+import com.johanlund.statistics_point_classes.PointBase;
+import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 
 import java.util.List;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
 
-public abstract class StatBaseActivity extends AppCompatActivity {
+public abstract class StatBaseActivity <E extends PointBase> extends AppCompatActivity {
     protected RecyclerView recyclerView;
-    protected RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
+    protected StatAdapter<E> adapter;
     protected LinearLayoutManager layoutManager;
 
     /**
@@ -104,9 +107,12 @@ public abstract class StatBaseActivity extends AppCompatActivity {
         return true;
     }
 
-    public abstract RecyclerView.Adapter<RecyclerView.ViewHolder> getStatAdapter();
+    public abstract StatAdapter<E> getStatAdapter();
 
     public abstract String getStringForTitle();
-
-    protected abstract void startAsyncTask(List<Chunk> chunks);
+    public abstract ScoreWrapperBase<E> getScoreWrapper();
+    protected void startAsyncTask(List<Chunk> chunks) {
+        StatAsyncTask asyncThread = new StatAsyncTask(adapter, recyclerView);
+        asyncThread.execute(getScoreWrapper(), chunks);
+    }
 }

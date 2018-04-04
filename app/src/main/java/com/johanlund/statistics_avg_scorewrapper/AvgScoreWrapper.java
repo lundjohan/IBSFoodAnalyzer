@@ -32,11 +32,6 @@ public abstract class AvgScoreWrapper {
         this.quantLimit = quantLimit;
     }
 
-    public AvgScoreWrapper(int stopHoursAfterEvent) {
-        startHoursAfterEvent = 0;
-        this.stopHoursAfterEvent = stopHoursAfterEvent;
-    }
-
     public abstract double getScore(TagPoint tp);
 
     public abstract Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint>
