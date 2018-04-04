@@ -105,13 +105,16 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion <= 37) {
-            //since this version Rating scale has been reduced to 6 from 7. 'Abysmal' has disappeared and will be joined with 'Awful'.
+            //since this version Rating scale has been reduced to 6 from 7. 'Abysmal' has
+            // disappeared and will be joined with 'Awful'.
             db.execSQL(CHANGE_RATING_SCALE);
         }
     }
+
     private String CHANGE_RATING_SCALE =
-            "UPDATE "+ TABLE_RATINGS + " SET " +
-                    COLUMN_AFTER + " = " +COLUMN_AFTER + " -1 " + " WHERE "+ COLUMN_AFTER + " != '1' ";
+            "UPDATE " + TABLE_RATINGS + " SET " +
+                    COLUMN_AFTER + " = " + COLUMN_AFTER + " -1 " + " WHERE " + COLUMN_AFTER + " " +
+                    "!= '1' ";
 
     //-----------------------------------------------------------------------------------
     //get cursor methods
@@ -310,8 +313,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 break;
         }
     }
-    public void addEvents(List<Event>events){
-        for (Event e: events){
+
+    public void addEvents(List<Event> events) {
+        for (Event e : events) {
             addEvent(e);
         }
     }
@@ -413,6 +417,7 @@ public class DBHandler extends SQLiteOpenHelper {
     /**
      * This method uses datetime of event and type of event to retrieve id.
      * An eventsTemplate can have same type and datetime as a "real" event
+     *
      * @param event
      * @return
      */
@@ -515,6 +520,38 @@ public class DBHandler extends SQLiteOpenHelper {
         deleteEvent(eventId);
         addRating(toRating);
     }
+    /*
+         2018-04-04
+         Introducing new method for retrieveing events.
+
+         WindowLeaked problem made me come to this solution.
+         The original problem was that the Query became to large after a couple of months use of the diary.
+
+         A cursor can only hold 1 mb of data.
+
+         After a couples of months use I am up to 2 mb.
+
+         It is still a major issue, since the statistics results are shortened with repeated use.
+
+         There is a solution! You don't use comments!
+         */
+    public List<Event> getEventsForStatistics() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String ONLY_RELEVANT_COLUMNS = COLUMN_ID + ", " + COLUMN_DATETIME + ", " + COLUMN_TYPE_OF_EVENT + ", " + COLUMN_HAS_BREAK;
+        final String QUERY = "SELECT "+ ONLY_RELEVANT_COLUMNS +" FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENTSTEMPLATE +
+                " IS NULL " + " ORDER BY " + COLUMN_DATETIME + "" + " ASC";
+        Cursor c = null;
+        List<Event> events;
+        try {
+            c = db.rawQuery(QUERY, null);
+            events = getStatisticsEventsRetrieverHelper(c);
+        } finally {
+            // this gets called even if there is an exception somewhere above
+            if (c != null || !c.isClosed())
+                c.close();
+        }
+        return events;
+    }
 
     //notice how this method use null in select statement to avoid retrieving events from
     // eventstemplates
@@ -523,21 +560,21 @@ public class DBHandler extends SQLiteOpenHelper {
         final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENTSTEMPLATE +
                 " IS NULL " + " ORDER BY " + COLUMN_DATETIME + "" + " ASC";
         Cursor c = null;
-        List<Event>events;
-        //WindowLeaked problem made me come to this solution.
+        List<Event> events;
+
+
         try {
             c = db.rawQuery(QUERY, null);
             events = getEventsRetrieverHelper(c);
         } finally {
             // this gets called even if there is an exception somewhere above
-            if(c != null || !c.isClosed())
+            if (c != null || !c.isClosed())
                 c.close();
         }
         return events;
     }
 
     /**
-     *
      * @param currentDate
      * @return an empty List<Event> in case the there exists no events that day
      */
@@ -555,6 +592,22 @@ public class DBHandler extends SQLiteOpenHelper {
         String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
         int type = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
         String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
+        boolean hasBreak = getHasBreak(c);
+        return getEvent(eventId, DateTimeFormat.fromSqLiteFormat(datetime), comment, hasBreak,
+                type);
+    }
+
+    /**
+     * For statistics, comments only create a big Heap of no use
+     * @param eventId
+     * @param c
+     * @return
+     * @throws CorruptedEventException
+     */
+    private Event getStatisticsEventWithNoComment(long eventId, Cursor c) throws CorruptedEventException {
+        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+        int type = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
+        String comment = "";
         boolean hasBreak = getHasBreak(c);
         return getEvent(eventId, DateTimeFormat.fromSqLiteFormat(datetime), comment, hasBreak,
                 type);
@@ -907,6 +960,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * Note that this method also adds TagType in case it is missing
+     *
      * @param t
      * @param eventId
      */
@@ -917,7 +971,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_SIZE, t.getSize());
 
         long tagTemplateId = getTagTemplateId(t.getName());
-        if (tagTemplateId == -1){
+        if (tagTemplateId == -1) {
             TagType tt = new TagType(t.getName(), null);
             tagTemplateId = addTagTemplate(tt);
         }
@@ -1121,7 +1175,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //almost copy-pasted from getEventsRetrieverHelper
-    private List<Rating> getRatingsRetrieverHelper(Cursor c){
+    private List<Rating> getRatingsRetrieverHelper(Cursor c) {
         List<Rating> ratingList = new ArrayList<>();
         if (c != null) {
             if (c.moveToFirst()) {
@@ -1131,7 +1185,7 @@ public class DBHandler extends SQLiteOpenHelper {
                         long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
                         Event event = getEvent(eventId, c);
 
-                        ratingList.add((Rating)event);
+                        ratingList.add((Rating) event);
                         c.moveToNext();
                     } catch (Exception e) {
 /*                        Log.e(TAG, "Something went wrong reading an event, jumping to next");
@@ -1145,6 +1199,7 @@ public class DBHandler extends SQLiteOpenHelper {
         //this.close();
         return ratingList;
     }
+
     private List<Event> getEventsRetrieverHelper(Cursor c) {
         List<Event> eventList = new ArrayList<>();
         if (c != null) {
@@ -1170,6 +1225,31 @@ public class DBHandler extends SQLiteOpenHelper {
         return eventList;
     }
 
+    //mostly copied from above
+    private List<Event> getStatisticsEventsRetrieverHelper(Cursor c) {
+        List<Event> eventList = new ArrayList<>();
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    try {
+
+                        long eventId = c.getLong(c.getColumnIndex(COLUMN_ID));
+                        Event event = getStatisticsEventWithNoComment(eventId, c);
+
+                        eventList.add(event);
+                        c.moveToNext();
+                    } catch (Exception e) {
+/*                        Log.e(TAG, "Something went wrong reading an event, jumping to next");
+                        Log.e(TAG, "exception", e);*/
+                        c.moveToNext();
+                    }
+                }
+            }
+        }
+        c.close();
+        this.close();
+        return eventList;
+    }
     public LocalDate getDateOfLastEvent() {
         SQLiteDatabase db = this.getReadableDatabase();
         //must use datetime and not date since datetime can be used with MAX in sqlite
@@ -1201,7 +1281,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return tableIsEmpty(TABLE_TAGTYPES);
     }
 
-    private boolean tableIsEmpty(String tablename){
+    private boolean tableIsEmpty(String tablename) {
         SQLiteDatabase db = this.getReadableDatabase();
         String count = "SELECT count(*) FROM " + tablename;
         Cursor c = db.rawQuery(count, null);

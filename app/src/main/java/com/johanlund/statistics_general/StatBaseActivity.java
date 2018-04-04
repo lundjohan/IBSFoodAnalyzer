@@ -75,7 +75,7 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
     private void calculateStats() {
         //get events from database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        List<Event> events = dbHandler.getAllEventsMinusEventsTemplatesSorted();
+        List<Event> events = dbHandler.getEventsForStatistics();
         //insert or remove automatic breaks on events.
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext()
