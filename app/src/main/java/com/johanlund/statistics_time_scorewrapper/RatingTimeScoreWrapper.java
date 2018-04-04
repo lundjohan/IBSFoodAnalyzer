@@ -18,7 +18,15 @@ public class RatingTimeScoreWrapper extends TimeScoreWrapper {
         super(scoreStart, ratingEnd, durationLimit);
     }
 
+
     @Override
+    public List<TimePoint> calcPoints(List<Chunk> chunks) {
+        List<TimePoint> points = new ArrayList<>();
+        for (Chunk c : chunks) {
+            points.addAll(calcPoints(c));
+        }
+        return points;
+    }
     protected List<TimePoint> calcPoints(Chunk c) {
         List<Rating> ratings = c.getRatings();
         return calcPoints(ratings, c.getLastTime());
@@ -75,4 +83,5 @@ public class RatingTimeScoreWrapper extends TimeScoreWrapper {
     private boolean isBetweenScores(Rating r) {
         return r.getAfter() >= scoreStart && r.getAfter() <= scoreEnd;
     }
+
 }

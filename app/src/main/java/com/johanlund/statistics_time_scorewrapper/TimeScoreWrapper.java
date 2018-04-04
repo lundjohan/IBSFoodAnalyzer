@@ -48,7 +48,7 @@ public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint>{
 
 
     @Override
-    protected boolean quantIsUnderLimit(TimePoint tp){
+    protected boolean quantIsOverLimit(TimePoint tp){
         return tp.getDurationInHours()>=durationLimitInHours;
     }
 }

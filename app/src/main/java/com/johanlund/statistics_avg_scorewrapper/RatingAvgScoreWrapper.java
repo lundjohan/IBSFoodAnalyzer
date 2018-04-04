@@ -42,4 +42,5 @@ public class RatingAvgScoreWrapper extends AvgScoreWrapper {
         return quantLimit;
     }
 
+
 }

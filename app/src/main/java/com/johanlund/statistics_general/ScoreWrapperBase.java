@@ -2,9 +2,9 @@ package com.johanlund.statistics_general;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PointBase;
-import com.johanlund.statistics_point_classes.TimePoint;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -19,25 +19,32 @@ public abstract class ScoreWrapperBase <E extends PointBase>{
      * @param chunks
      * @return
      */
-    public List<E> calcPoints(List<Chunk> chunks) {
+    public abstract List<E> calcPoints(List<Chunk> chunks);
+    /*public List<E> calcPoints(List<Chunk> chunks) {
         List<E> points = new ArrayList<>();
         for (Chunk c: chunks){
             points.addAll(calcPoints(c));
         }
         return points;
     }
-    protected abstract List<E> calcPoints(Chunk c);
+    protected abstract List<E> calcPoints(Chunk c);*/
+
+    /**
+     * Using Collection instead of List to make it more effeciant in for map.values inside avgscorewrapper
+     * @param points
+     * @return
+     */
     public abstract List<E> toSortedList(List<E> points);
 
     public List<E> removePointsWithTooLowQuant(List<E> sortedList){
         List<E>trimmedTimePointList = new ArrayList<>();
         for (E p:sortedList){
-            if(quantIsUnderLimit(p)){
+            if(quantIsOverLimit(p)){
                 trimmedTimePointList.add(p);
             }
         }
         return trimmedTimePointList;
     }
-    protected abstract boolean quantIsUnderLimit(E point);
+    protected abstract boolean quantIsOverLimit(E point);
 
 }

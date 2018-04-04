@@ -1,11 +1,15 @@
 package com.johanlund.statistics_avg_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
+import com.johanlund.statistics_general.ScoreWrapperBase;
 import com.johanlund.statistics_point_classes.TagPoint;
+import com.johanlund.statistics_point_classes.TimePoint;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +18,12 @@ import java.util.Map;
  * This class is the Strategy in Strategy Pattern
  */
 
-public abstract class AvgScoreWrapper {
+public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
     int quantLimit;
     int startHoursAfterEvent;
     int stopHoursAfterEvent;
 
+    Map<String, TagPoint> tagPoints = new HashMap<>();
 
     /**
      *
@@ -38,15 +43,24 @@ public abstract class AvgScoreWrapper {
             tagPoint);
 
     /**
-     * Notice that getScore is coming from inherited methods of this class.
-     * @param tagPoints
+     * Given: breaks have already been accounted for.
+     * @param chunks
      * @return
      */
-    public List<TagPoint> toSortedList(Map<String, TagPoint> tagPoints) {
-        List<TagPoint> toBeSorted = new ArrayList<>( tagPoints.values());
+    @Override
+    public List<TagPoint> calcPoints(List<Chunk> chunks) {
 
-        //without this later sort can crasch
+        /*TODO TYPE CONVERSION TO ARRAYLIST => PROBABLY SLOW AND INEFFECTIVE, TRY INSTEAD to use Collection instead of List lower in hierarchy.
+
+         */
+        return new ArrayList<>(calcScore(chunks, tagPoints).values());
+    }
+    @Override
+    public List<TagPoint> toSortedList(List<TagPoint> toBeSorted) {
+        //without this filter, later sort can crasch
         List<TagPoint> validTPList = removeNaNFromList(toBeSorted);
+
+        //Sort actually requires List as parameter!
         Collections.sort(validTPList, new Comparator<TagPoint>()
                 {
                     @Override
@@ -64,7 +78,7 @@ public abstract class AvgScoreWrapper {
      * @param tagPoints
      * @return
      */
-    private List<TagPoint> removeNaNFromList(List<TagPoint> tagPoints) {
+    private List<TagPoint> removeNaNFromList(Collection<TagPoint> tagPoints) {
         List<TagPoint>tagPointsToReturn = new ArrayList<>();
         for (TagPoint tp: tagPoints){
             if (!Double.isNaN(getScore(tp))){
@@ -80,7 +94,7 @@ public abstract class AvgScoreWrapper {
      * @param limit inclusive
      * @return
      */
-    public List<TagPoint> removeTagPointsWithTooLowQuant(List<TagPoint> tpList, int limit){
+    public List<TagPoint> removePointsWithTooLowQuant(List<TagPoint> tpList, int limit){
         List<TagPoint>trimmedTpList = new ArrayList<>();
         for (TagPoint tp:tpList){
             if(getQuantityOfTagPoint(tp)>=limit){
@@ -98,5 +112,10 @@ public abstract class AvgScoreWrapper {
 
     //special case here, since quantity for bm and rating doesnt really mean the same thing.
     public abstract int getQuantityLimit();
+
+    @Override
+    protected boolean quantIsOverLimit(TagPoint point) {
+        return getQuantityOfTagPoint(point)>=getQuantityLimit();
+    }
 }
 

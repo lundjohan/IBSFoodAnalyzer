@@ -8,8 +8,6 @@ import com.johanlund.statistics_point_classes.PointBase;
 
 import java.util.List;
 
-import static com.johanlund.ibsfoodanalyzer.R.id.recyclerView;
-
 /**
  * Created by Johan on 2018-04-04.
  */
@@ -31,7 +29,8 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
         List<E> sortedList = wrapper.toSortedList(points);
 
         //remove points with too low amount of quantity
-        return wrapper.removePointsWithTooLowQuant(sortedList);
+        List<E> removethis = wrapper.removePointsWithTooLowQuant(sortedList);
+        return removethis;
     }
 
 

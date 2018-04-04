@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.statistics_general.StatAdapter;
 import com.johanlund.statistics_point_classes.TagPoint;
 
 import java.util.ArrayList;
@@ -21,9 +22,8 @@ import java.util.List;
  * this equivalent of a get, or is a list created every time?
  */
 
-public class AvgStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AvgStatAdapter extends StatAdapter<TagPoint> {
     //list needs to be initiated, otherwise getItemCount crashes.
-    protected List<TagPoint>tagPointsList = new ArrayList<>();
     protected AvgScoreWrapper avgScoreWrapper;
 
     public AvgStatAdapter(AvgScoreWrapper avgScoreWrapper) {
@@ -41,7 +41,7 @@ public class AvgStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        TagPoint tp = tagPointsList.get(position);
+        TagPoint tp = pointList.get(position);
         viewHolder.tagName.setText(tp.getName());
         viewHolder.scoreField.setText(String.format("%.1f", avgScoreWrapper.getScore(tp)));
         viewHolder.quantity.setText(String.format("%.1f", tp.getQuantity()));
@@ -50,11 +50,7 @@ public class AvgStatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return tagPointsList.size();
-    }
-
-    public void setTagPointsList(List<TagPoint>tagPointsList){
-        this.tagPointsList = tagPointsList;
+        return pointList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -11,8 +11,9 @@ import java.util.List;
  */
 
 public class PortionScoreWrapper extends ScoreWrapperBase<PortionPoint>{
+
     @Override
-    protected List<PortionPoint> calcPoints(Chunk c) {
+    public List<PortionPoint> calcPoints(List<Chunk> chunks) {
         return null;
     }
 
@@ -22,7 +23,7 @@ public class PortionScoreWrapper extends ScoreWrapperBase<PortionPoint>{
     }
 
     @Override
-    protected boolean quantIsUnderLimit(PortionPoint point) {
+    protected boolean quantIsOverLimit(PortionPoint point) {
         return false;
     }
 }
