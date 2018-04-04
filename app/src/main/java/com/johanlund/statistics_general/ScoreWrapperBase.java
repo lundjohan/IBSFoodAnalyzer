@@ -20,20 +20,7 @@ public abstract class ScoreWrapperBase <E extends PointBase>{
      * @return
      */
     public abstract List<E> calcPoints(List<Chunk> chunks);
-    /*public List<E> calcPoints(List<Chunk> chunks) {
-        List<E> points = new ArrayList<>();
-        for (Chunk c: chunks){
-            points.addAll(calcPoints(c));
-        }
-        return points;
-    }
-    protected abstract List<E> calcPoints(Chunk c);*/
 
-    /**
-     * Using Collection instead of List to make it more effeciant in for map.values inside avgscorewrapper
-     * @param points
-     * @return
-     */
     public abstract List<E> toSortedList(List<E> points);
 
     public List<E> removePointsWithTooLowQuant(List<E> sortedList){
@@ -45,6 +32,12 @@ public abstract class ScoreWrapperBase <E extends PointBase>{
         }
         return trimmedTimePointList;
     }
+
+    /**
+     * Return false, in case it is not implemented.
+     * @param point
+     * @return
+     */
     protected abstract boolean quantIsOverLimit(E point);
 
 }

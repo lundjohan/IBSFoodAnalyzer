@@ -25,8 +25,7 @@ import java.util.ArrayList;
 /**
  * NB. Uses shared preferences!
  */
-class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final String RANGES_KEY = "portionRanges";
+public class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<PortionStatRange> ranges;
     private final TinyDB tinydb;
     Context context;
@@ -34,13 +33,13 @@ class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public PortionStatRangeAdapter(Context context) {
         this.context = context;
-        //get intervals from Shared Preferences, via help library TinyDB
+        //get intervals from Shared Preferences, via help library TinyDB (TinyDB
+        // takes care of conversion to and from String)
         tinydb = new TinyDB(context);
-        ranges = tinydb.getListPortionRange(RANGES_KEY);
+        ranges = tinydb.getListPortionRange(context.getResources().getString(R.string.portions_ranges_key));
         if (ranges == null) {
             ranges = new ArrayList<>();
         }
-
     }
 
     public class RangeHolder extends RecyclerView.ViewHolder {
@@ -108,7 +107,7 @@ class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ranges.add(portionStatRange);
 
         //put in shared preferences to be able to retrieve the same settings at upstart
-        tinydb.putListPortionRange(RANGES_KEY, ranges);
+        tinydb.putListPortionRange(context.getResources().getString(R.string.portions_ranges_key), ranges);
 
     }
 
@@ -117,7 +116,7 @@ class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.notifyItemRemoved(pos);
         this.notifyItemChanged(pos);
         //put in shared preferences to be able to retrieve the same settings at upstart
-        tinydb.putListPortionRange(RANGES_KEY, ranges);
+        tinydb.putListPortionRange(context.getResources().getString(R.string.portions_ranges_key), ranges);
 
     }
 }

@@ -4,12 +4,8 @@ import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
-import com.johanlund.statistics_avg_scorewrapper.RatingAvgScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.RatingTimeScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
-
-import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_AVG;
 
 /**
  * Created by Johan on 2018-03-13.

@@ -56,6 +56,7 @@
     <string name="avg_rating_pref_stop_key">avg_rating_stat_stop_hours_after_event</string>
     <string name="avg_rating_pref_quant_key">avg_rating_quantity_min_limit</string>
 
+    <string name="portions_ranges_key">portionRanges</string>
     <string name="portions_rating_pref_wait_hours_key">portions_rating_stat_wait_hours_after_meal</string>
     <string name="portions_rating_pref_valid_hours_key">portions_rating_stat_stop_hours_after_meal</string>
     <string name="portions_pref_min_hours_between_meals">portions_min_distance_between_meals</string>

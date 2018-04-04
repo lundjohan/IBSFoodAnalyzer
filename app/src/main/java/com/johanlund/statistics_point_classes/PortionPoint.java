@@ -31,4 +31,8 @@ public class PortionPoint implements PointBase{
         this.score = score;
         this.duration = duration;
     }
+
+    public int getDuration() {
+        return duration;
+    }
 }
