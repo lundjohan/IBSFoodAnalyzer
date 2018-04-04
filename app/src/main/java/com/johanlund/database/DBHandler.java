@@ -522,8 +522,18 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENTSTEMPLATE +
                 " IS NULL " + " ORDER BY " + COLUMN_DATETIME + "" + " ASC";
-        Cursor c = db.rawQuery(QUERY, null);
-        return getEventsRetrieverHelper(c);
+        Cursor c = null;
+        List<Event>events;
+        //WindowLeaked problem made me come to this solution.
+        try {
+            c = db.rawQuery(QUERY, null);
+            events = getEventsRetrieverHelper(c);
+        } finally {
+            // this gets called even if there is an exception somewhere above
+            if(c != null || !c.isClosed())
+                c.close();
+        }
+        return events;
     }
 
     /**

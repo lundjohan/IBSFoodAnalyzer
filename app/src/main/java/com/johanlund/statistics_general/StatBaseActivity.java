@@ -10,16 +10,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.base_classes.Break;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.InfoActivity;
-import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.statistics_point_classes.PointBase;
-import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 
 import java.util.List;
 
