@@ -27,7 +27,7 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
         <PortionSize, TimeForMeal>, Ratings, Breaks (Breaks can be replaced by a list that
         contains the others).
 
-        (main reason is that database cursor dont have to carry the weight
+        (main reason is that database cursor don't have to carry the weight
         of all the events)
      */
     @Override
@@ -50,23 +50,26 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
     private List<PortionPoint> toReplaceCalcPoints(List<PortionTimesAndRatings> ptr) {
         List<PortionTimesAndRatings> afterJoin = joinToNearPortions(ptr,
                 minHoursBetweenMeals);
-
         List<PortionPoint> toReturn = new ArrayList<>();
         for (PortionStatRange range : ranges) {
-            double rangeTotalScore = .0;
-            double rangeTotalDuration = .0;
-            for (PortionTimesAndRatings ptAndR : afterJoin) {
-                List<TimePeriod> timePeriods = extractTimePeriods(range, ptAndR.getPortionTimes());
-                double[] scoreAndDuration = extractScoreAndDuration(timePeriods, ptAndR
-                        .getRatings());
-                rangeTotalScore += scoreAndDuration[0];
-                rangeTotalDuration += scoreAndDuration[1];
-            }
-            PortionPoint pp = new PortionPoint(range, rangeTotalScore / rangeTotalDuration,
-                    rangeTotalDuration);
+            PortionPoint pp = getPPForRange(range, afterJoin);
             toReturn.add(pp);
         }
         return toReturn;
+    }
+
+    private PortionPoint getPPForRange(PortionStatRange range, List<PortionTimesAndRatings> afterJoin) {
+        double rangeTotalScore = .0;
+        double rangeTotalDuration = .0;
+        for (PortionTimesAndRatings ptAndR : afterJoin) {
+            List<TimePeriod> timePeriods = extractTimePeriods(range, ptAndR.getPortionTimes());
+            double[] scoreAndDuration = extractScoreAndDuration(timePeriods, ptAndR
+                    .getRatings());
+            rangeTotalScore += scoreAndDuration[0];
+            rangeTotalDuration += scoreAndDuration[1];
+        }
+        return new PortionPoint(range, rangeTotalScore / rangeTotalDuration,
+                rangeTotalDuration);
     }
 
     /**
