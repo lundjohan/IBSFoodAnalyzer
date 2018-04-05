@@ -1,11 +1,7 @@
 package com.johanlund.statistics_portion_scorewrapper;
 
-import android.graphics.Point;
-
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_general.ScoreWrapperBase;
 import com.johanlund.statistics_point_classes.PortionPoint;
-import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
 
 import java.util.Collections;

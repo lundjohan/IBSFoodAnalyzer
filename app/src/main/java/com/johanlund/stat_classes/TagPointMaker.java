@@ -27,7 +27,7 @@ public class TagPointMaker {
             //if tag needs more rating score after it than Chunk allows, the algorithm takes the
             // time that exist after and drags out the score for that time. But the weigh of this
             // tag (its quantity) will be reduced with the same factor it is prolonged.)
-            if (chunk.tagTimePlusStopHoursOverridesChunkEnd(tag.getTime().plusHours(stopHoursAfterEvent))) {
+            if (chunk.timeOverridesChunkEnd(tag.getTime().plusHours(stopHoursAfterEvent))) {
 
 
                 double[] scoreAndQuantForOverridingTag = chunk.calcAvgScoreForOverridingTag(tag.getTime(),

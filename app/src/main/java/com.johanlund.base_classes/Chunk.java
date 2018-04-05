@@ -268,8 +268,11 @@ public class Chunk {
 
     public List<Meal> getMeals() {
         List<Meal> meals = new ArrayList<>();
-        //uncomment below, when stream is ok
-        //	days.forEach(d -> meals.addAll(d.getMeals()));
+        for (Event e : events) {
+            if (e instanceof Meal) {
+                meals.add((Meal) e);
+            }
+        }
         return meals;
     }
 
@@ -297,7 +300,7 @@ public class Chunk {
         return Util.getTags(trimmedEvents);
     }
 
-    public boolean tagTimePlusStopHoursOverridesChunkEnd(LocalDateTime preferredStopTime) {
+    public boolean timeOverridesChunkEnd(LocalDateTime preferredStopTime) {
         return preferredStopTime.isAfter(getLastTime());
     }
 

@@ -2,9 +2,6 @@ package com.johanlund.statistics_point_classes;
 
 import com.johanlund.statistics_settings_portions.PortionStatRange;
 
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneId;
-
 /**
  * Created by Johan on 2018-04-03.
  *
@@ -24,15 +21,23 @@ public class PortionPoint implements PointBase{
     Double score;
 
     //in hours
-    int duration;
+    double duration;
 
-    public PortionPoint(PortionStatRange range, Double score, int duration) {
+    public PortionPoint(PortionStatRange range, Double score, double duration) {
         this.range = range;
         this.score = score;
         this.duration = duration;
     }
 
-    public int getDuration() {
+    public double getDuration() {
         return duration;
+    }
+
+    public PortionStatRange getRange() {
+        return range;
+    }
+
+    public Double getScore() {
+        return score;
     }
 }
