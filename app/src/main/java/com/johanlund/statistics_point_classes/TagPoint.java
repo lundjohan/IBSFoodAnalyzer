@@ -166,7 +166,7 @@ public class TagPoint implements PointBase{
      * <p>
      * Calculations is made by storing hours of time after HOURS_COHERENT_TIME_FOR_PORTIONS
      * (all this time portions must have been under ONE_PORTION)
-     * The following time is the one where hours (quantity) are accumaluted as well as score
+     * The following time is the one where hours (duration) are accumaluted as well as score
      * (tot_points).
      * Stops when end of chunk or portionsize >  ONE_PORTION
      */

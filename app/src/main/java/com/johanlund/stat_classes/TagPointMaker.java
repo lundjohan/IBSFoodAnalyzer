@@ -10,7 +10,7 @@ import java.util.Map;
 public class TagPointMaker {
     /**
      * Returns a map of String, TagPoints.
-     * Each TagPoint consist of name, quantity, orig_tot_points (the latter based on avg score
+     * Each TagPoint consist of name, duration, orig_tot_points (the latter based on avg score
      * hours ahead).
      *
      * Given: stopHoursAfterEvent is larger than startHoursAfterEvent
@@ -26,7 +26,7 @@ public class TagPointMaker {
 
             //if tag needs more rating score after it than Chunk allows, the algorithm takes the
             // time that exist after and drags out the score for that time. But the weigh of this
-            // tag (its quantity) will be reduced with the same factor it is prolonged.)
+            // tag (its duration) will be reduced with the same factor it is prolonged.)
             if (chunk.timeOverridesChunkEnd(tag.getTime().plusHours(stopHoursAfterEvent))) {
 
 

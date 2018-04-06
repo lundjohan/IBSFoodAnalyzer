@@ -105,12 +105,12 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
     }
 
     /**
-     * Statistics counting on Average and BM uses different quanitity parameters (quantity and nrOfBms)
+     * Statistics counting on Average and BM uses different quanitity parameters (duration and nrOfBms)
      * @return
      */
     protected abstract double getQuantityOfTagPoint(TagPoint tp);
 
-    //special case here, since quantity for bm and rating doesnt really mean the same thing.
+    //special case here, since duration for bm and rating doesnt really mean the same thing.
     public abstract int getQuantityLimit();
 
     @Override

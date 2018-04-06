@@ -44,4 +44,11 @@ public class PortionStatRange {
     public void setTurnedOn(boolean turnedOn) {
         this.turnedOn = turnedOn;
     }
+
+    @Override
+    public String toString(){
+        return String.format("%.1f", rangeStart) + "-" + String.format("%.1f", rangeStop);
+
+
+    }
 }

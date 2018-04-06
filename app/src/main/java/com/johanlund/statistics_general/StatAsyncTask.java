@@ -28,7 +28,7 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
         //sort points here
         List<E> sortedList = wrapper.toSortedList(points);
 
-        //remove points with too low amount of quantity
+        //remove points with too low amount of duration
         List<E> removethis = wrapper.removePointsWithTooLowQuant(sortedList);
         return removethis;
     }
