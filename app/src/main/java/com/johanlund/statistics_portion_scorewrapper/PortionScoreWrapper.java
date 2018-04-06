@@ -43,6 +43,6 @@ public abstract class PortionScoreWrapper extends ScoreWrapperBase<PortionPoint>
     // It just doesn't seem needed, when ranges are hardly being that many.
     @Override
     protected boolean quantIsOverLimit(PortionPoint point) {
-        return false;
+        return true;
     }
 }

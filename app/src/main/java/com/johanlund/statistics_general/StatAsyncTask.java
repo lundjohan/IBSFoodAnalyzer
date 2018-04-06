@@ -23,14 +23,15 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
     protected List<E> doInBackground(Object... params) {
         ScoreWrapperBase<E> wrapper = (ScoreWrapperBase) params[0];
         List<Chunk> chunks = (List<Chunk>) params[1];
+
+        //får helt fucked up resultat här  i points: duration som blir -17525 tex, men score på 4.474
         List<E> points= wrapper.calcPoints(chunks);
 
         //sort points here
         List<E> sortedList = wrapper.toSortedList(points);
 
         //remove points with too low amount of duration
-        List<E> removethis = wrapper.removePointsWithTooLowQuant(sortedList);
-        return removethis;
+        return wrapper.removePointsWithTooLowQuant(sortedList);
     }
 
 

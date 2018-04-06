@@ -23,7 +23,7 @@ public class PortionStatAdapter extends StatAdapter<PortionPoint> {   //list nee
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_portion_stat, parent,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_stat, parent,
                 false);
         RecyclerView.ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;

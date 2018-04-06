@@ -1,5 +1,7 @@
 package com.johanlund.statistics_portion_scorewrapper;
 
+import android.util.Log;
+
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
@@ -79,6 +81,10 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
                     .getRatings());
             rangeTotalScore += scoreAndDuration[0];
             rangeTotalDuration += scoreAndDuration[1];
+        }
+        //cannot divide by zero
+        if (rangeTotalDuration == 0){
+            return new PortionPoint(range, 0.0,0.0);
         }
         return new PortionPoint(range, rangeTotalScore / rangeTotalDuration,
                 rangeTotalDuration);
@@ -166,8 +172,7 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
      * <p>
      * End result can be that some TimePeriods are left with same start as end value. This must
      * be accounted for later in program.
-     *
-     * @param lefts
+     *  @param lefts
      * @param rights
      */
     private void leftsExceptRights(List<TimePeriod> lefts, List<TimePeriod> rights) {
@@ -177,7 +182,10 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
     }
 
     /**
-     * Given:
+     * About drawings in function.
+     * After one or more loops left timepoint can be shorter in length than right.
+     * Left is however never longer than right.
+     *
      *
      * @param left
      * @param rightList must be in ASC order, all of same time length as left.
@@ -188,47 +196,70 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
         LocalDateTime newEnd = left.getEnd();
         for (TimePeriod right : rightList) {
             /*Case A.
-                            |----------| left
+                            |-----| left
             |----------| right
              */
-            if (right.getEnd().isBefore(left.getStart())) {
+            if (right.getEnd().isBefore(newStart)) {
                 continue;
             }
              /*Case B.
-            |----------| left
+            |-------| left
                            |----------| right
              */
 
-            else if (right.getStart().isAfter(left.getEnd())) {
+            else if (right.getStart().isAfter(newEnd)) {
                 break;
             }
-            /*Case C.
-            |----------| left
+             /* This more or less happens everytime, and early so good to have high up.
+                      |-----| left
                    |----------| right
+
              */
-            else if (right.getStart().isBefore(left.getEnd())) {
+            else if (right.getStart().isBefore(newStart) && right.getEnd().isAfter(newEnd)){
+                newStart = newEnd;
+                break;
+
+            }
+            /*Equals. This should never happen since Meals are not allowed to be at same
+            time. However, there might have been some thing I have foreseen higher in code, or user
+            might have mixed with imports and I
+            therefor let this stand.
+                   |-----| left
+                   |----------| right
+                   or
+                        |-----| left
+                   |----------| right
+
+             */
+            else if (right.getStart().equals(newEnd) || right.getEnd().equals(newEnd)){
+                newStart = newEnd;
+                break;
+
+            }
+            /*Case C.
+            |--------| left
+                   |----------| right
+            */
+            else if (right.getStart().isBefore(newEnd) && right.getStart().isAfter(newEnd)) {
                 newEnd = right.getStart();
                 break;
             }
 
             /*Case D.
-                   |----------| left
+                   |------| left
             |----------| right
              */
-            else if (right.getEnd().isAfter(left.getStart())) {
-                newStart = right.getEnd();
+            else if (right.getEnd().isAfter(newStart) && right.getStart().isBefore(newStart)) {
+                newStart = right.getEnd(); //FEL! right.end kan ju vara till höger om left.end
                 continue;
             }
-            /*Case E. Equals. This should never happen since Meals are not allowed to be at same
-            time. However, there might have been some thing I have foreseen higher in code and I
-            therefor let this stand.
-            |----------| left
-            |----------| right
-             */
-            else if (right.getStart().isEqual(left.getStart())) {
-                newEnd = newStart; //=> zero length.
-                break;
-            }
+        }
+        Log.d("debug", "---------------------------------------------------------------------------");
+        Log.d("debug", "AFTER LOOP");
+        Log.d("debug", "newStart: "+newStart);
+        Log.d("debug", "newEnd: "+newEnd);
+        if (newEnd.isBefore(newStart)){
+            throw new RuntimeException("newStart should never be after newEnd!");
         }
         return new TimePeriod(newStart, newEnd);
     }

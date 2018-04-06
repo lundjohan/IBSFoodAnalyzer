@@ -4,7 +4,6 @@ import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PointBase;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
