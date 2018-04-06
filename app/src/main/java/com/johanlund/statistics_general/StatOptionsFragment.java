@@ -127,7 +127,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
                 newTimeStatActivity(new BristolTimeStatActivity());
                 break;
             case portionsRatingItem:
-                newTimeStatActivity(new RatingPortionStatActivity());
+                newStatActivity(new RatingPortionStatActivity());
                 break;
 
             //info buttons

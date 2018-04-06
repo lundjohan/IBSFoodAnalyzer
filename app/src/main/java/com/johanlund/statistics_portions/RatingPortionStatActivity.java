@@ -5,10 +5,7 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.external_classes.TinyDB;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics_adapters.AvgStatAdapter;
-import com.johanlund.statistics_adapters.BmAvgStatAdapter;
 import com.johanlund.statistics_adapters.PortionStatAdapter;
-import com.johanlund.statistics_general.StatAdapter;
 import com.johanlund.statistics_portion_scorewrapper.PortionScoreWrapper;
 import com.johanlund.statistics_portion_scorewrapper.RatingPortionScoreWrapper;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
