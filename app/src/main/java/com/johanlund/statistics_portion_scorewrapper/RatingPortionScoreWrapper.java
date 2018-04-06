@@ -77,17 +77,18 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
         for (PortionTimesAndRatings ptAndR : afterJoin) {
             List<TimePeriod> timePeriods = extractTimePeriods(range, ptAndR.getPortionTimes(),
                     ptAndR.getLastTimeInChunk());
-            double[] scoreAndDuration = TPUtil.extractScoreAndDuration(timePeriods, ptAndR
+            double[] scoreAndDurationInMinutes = TPUtil.extractScoreAndDuration(timePeriods, ptAndR
                     .getRatings());
-            rangeTotalScore += scoreAndDuration[0];
-            rangeTotalDuration += scoreAndDuration[1];
+            rangeTotalScore += scoreAndDurationInMinutes[0];
+            rangeTotalDuration += scoreAndDurationInMinutes[1];
         }
         //cannot divide by zero
         if (rangeTotalDuration == 0){
             return new PortionPoint(range, 0.0,0.0);
         }
+        //PortionPoint duration should be in hours
         return new PortionPoint(range, rangeTotalScore / rangeTotalDuration,
-                rangeTotalDuration);
+                rangeTotalDuration/60);
     }
 
     /**

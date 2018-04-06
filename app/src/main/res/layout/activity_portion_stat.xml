@@ -38,7 +38,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="DURATION"
+        android:text="DURATION (H)"
         app:layout_constraintLeft_toRightOf="@+id/score"
         app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
