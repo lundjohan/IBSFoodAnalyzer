@@ -191,7 +191,7 @@ public class Chunk {
         double lastTimeDif = toLong - startLongSec;
         scoreMultWithTime += ratings.get(ratings.size() - 1).getAfter() * lastTimeDif;
         long durationPeriodSec = endTime.atZone(ZoneId.systemDefault()).toEpochSecond() - startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
-        double avgScore = scoreMultWithTime / ((durationPeriodSec) * 3600);
+        double avgScore = scoreMultWithTime / ((durationPeriodSec));
         return avgScore;
     }
     public static double calcAvgScoreFromToTime(TimePeriod tp, List<Rating>divs){
