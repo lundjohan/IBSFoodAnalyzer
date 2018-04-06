@@ -15,15 +15,15 @@ import java.util.List;
 public abstract class PortionScoreWrapper extends ScoreWrapperBase<PortionPoint>{
     List<PortionStatRange> ranges;
     int waitHoursAfterMeal;
-    int validHours;
+    int stopHoursAfterMeal;
     int minHoursBetweenMeals;
 
     public PortionScoreWrapper(List<PortionStatRange> ranges, int waitHoursAfterMeal, int
-            validHours, int minHoursBetweenMeals) {
+            stopHoursAfterMeal, int minHoursBetweenMeals) {
         super();
         this.ranges = ranges;
         this.waitHoursAfterMeal = waitHoursAfterMeal;
-        this.validHours = validHours;
+        this.stopHoursAfterMeal = stopHoursAfterMeal;
         this.minHoursBetweenMeals = minHoursBetweenMeals;
     }
 

@@ -15,6 +15,7 @@ import com.johanlund.info.InfoActivity;
 import com.johanlund.statistics_avg.BristolAvgStatActivity;
 import com.johanlund.statistics_avg.CompleteAvgStatActivity;
 import com.johanlund.statistics_avg.RatingAvgStatActivity;
+import com.johanlund.statistics_portions.RatingPortionStatActivity;
 import com.johanlund.statistics_settings.AvgBmSettingsActivity;
 import com.johanlund.statistics_settings.AvgRatingSettingsActivity;
 import com.johanlund.statistics_settings_portions.PortionStatSettingsActivity;
@@ -34,6 +35,7 @@ import static com.johanlund.ibsfoodanalyzer.R.id.avgInfoItem;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgRatingItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.freqInfoItem;
 import static com.johanlund.ibsfoodanalyzer.R.id.portionsInfoItem;
+import static com.johanlund.ibsfoodanalyzer.R.id.portionsRatingItem;
 import static com.johanlund.ibsfoodanalyzer.R.id.timeBristolItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.timeCompleteItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.timeInfoItem;
@@ -62,6 +64,8 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         view.findViewById(timeRatingItemTextView).setOnClickListener(this);
         view.findViewById(timeCompleteItemTextView).setOnClickListener(this);
         view.findViewById(timeBristolItemTextView).setOnClickListener(this);
+
+        view.findViewById(portionsRatingItem).setOnClickListener(this);
 
         /*since some ids are set dynamically through custom views, the builder seems to need some
         help to find them*/
@@ -121,6 +125,9 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
                 break;
             case timeBristolItemTextView:
                 newTimeStatActivity(new BristolTimeStatActivity());
+                break;
+            case portionsRatingItem:
+                newTimeStatActivity(new RatingPortionStatActivity());
                 break;
 
             //info buttons

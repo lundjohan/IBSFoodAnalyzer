@@ -1,5 +1,6 @@
 package com.johanlund.base_classes;
 
+import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.util.IBSUtil;
 import com.johanlund.util.TimePeriod;
 import com.johanlund.util.Util;
@@ -161,29 +162,41 @@ public class Chunk {
         if (divs.isEmpty()){
             return -1.0;
         }
+        return calcAvgScoreFromToTime(startTime, endTime, divs);
+    }
 
-        if (divs.size() == 1) {
-            return divs.get(0).getAfter();
+    /**
+     *
+     * @param startTime
+     * @param endTime
+     * @param ratings cannot be of size 0. First rating must be before startTime. sorted in ASC order.
+     * @return
+     */
+    public static double calcAvgScoreFromToTime(LocalDateTime startTime, LocalDateTime endTime, List<Rating>ratings){
+        if (ratings.size() == 1) {
+            return ratings.get(0).getAfter();
         }
         //time of div before <startTime> (the first div to take into account) is not interesting (it
         // can have happened many days before), only its score.
-        long startLong = startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+        long startLongSec = startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
         double scoreMultWithTime = 0;
-        for (int i = 1; i < divs.size(); i++) {
-            LocalDateTime t = divs.get(i).getTime();
-            double timeDifInSec = t.atZone(ZoneId.systemDefault()).toEpochSecond() - startLong;
-            scoreMultWithTime += divs.get(i - 1).getAfter() * timeDifInSec;
-            startLong = divs.get(i).getTime().atZone(ZoneId.systemDefault()).toEpochSecond();
+        for (int i = 1; i < ratings.size(); i++) {
+            LocalDateTime t = ratings.get(i).getTime();
+            double timeDifInSec = t.atZone(ZoneId.systemDefault()).toEpochSecond() - startLongSec;
+            scoreMultWithTime += ratings.get(i - 1).getAfter() * timeDifInSec;
+            startLongSec = ratings.get(i).getTime().atZone(ZoneId.systemDefault()).toEpochSecond();
         }
         //the last one
         long toLong = endTime.atZone(ZoneId.systemDefault()).toEpochSecond();
-        double lastTimeDif = toLong - startLong;
-        scoreMultWithTime += divs.get(divs.size() - 1).getAfter() * lastTimeDif;
-
-        double avgScore = scoreMultWithTime / ((minutesAheadStop - minutesAheadStart) * 60);
+        double lastTimeDif = toLong - startLongSec;
+        scoreMultWithTime += ratings.get(ratings.size() - 1).getAfter() * lastTimeDif;
+        long durationPeriodSec = endTime.atZone(ZoneId.systemDefault()).toEpochSecond() - startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+        double avgScore = scoreMultWithTime / ((durationPeriodSec) * 3600);
         return avgScore;
     }
-
+    public static double calcAvgScoreFromToTime(TimePeriod tp, List<Rating>divs){
+        return calcAvgScoreFromToTime(tp.getStart(), tp.getEnd(), divs);
+    }
     /**
      *
      * @param
@@ -216,13 +229,18 @@ public class Chunk {
     public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, long minutesAhead) {
         return getDivsBetweenAndSometimesOneBefore(from, from.plusMinutes(minutesAhead));
     }
+
+    public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to) {
+        List<Rating> allRatings = getRatings();
+        return getDivsBetweenAndSometimesOneBefore(from, to, allRatings);
+
+    }
     /**current problem if only one div from getRatings, it should still return one div but it returns zero.
      * If there are no divs in chunk, an empty List is returned.
      */
-    public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to) {
+    public static List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to, List<Rating>divs){
         //get firstInd
         int firstInd = 0;
-        List<Rating> divs = getRatings();
         if (divs.isEmpty()){
             return divs;
         }
@@ -276,6 +294,18 @@ public class Chunk {
         return meals;
     }
 
+    public List<PortionTime> getPortionTimes() {
+        List<PortionTime> pts = new ArrayList<>();
+        for (Event e : events) {
+            if (e instanceof Meal) {
+                Meal m = (Meal) e;
+                PortionTime pt = new PortionTime(m.getPortions(), m.getTime());
+                pts.add(pt);
+            }
+        }
+        return pts;
+    }
+
     /**
      * Prerequisite events>0
      *
@@ -303,6 +333,4 @@ public class Chunk {
     public boolean timeOverridesChunkEnd(LocalDateTime preferredStopTime) {
         return preferredStopTime.isAfter(getLastTime());
     }
-
-
 }

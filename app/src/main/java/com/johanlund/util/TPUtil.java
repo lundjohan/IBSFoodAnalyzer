@@ -11,8 +11,64 @@ import org.threeten.bp.ZoneId;
 import java.util.List;
 
 public class TPUtil {
+
+    /**
+     * 2018-04-06
+     * [This method is still dependent on Chunk methods, whatever it says below. Should have a
+     * thourougly check of this method. What happens in case there are no Ratings to user fault?
+     * Or Ratings that start after or in the middle of some TimePeriods. These problems are not
+     * addressed yet]
+     *
+     * [Written before]
+     * <p>
+     * Are we really in need for a new method that counts rating-score between TimePeriods?
+     * There are already existing ones like calcAccumulatedScoreFromToTime. However,
+     * none of them accounts for the fact that user might have used program wrong and haven't put
+     * Ratings always were they should be.
+     * <p>
+     * I also found the old methods very difficult to read. This is simply a try for a better
+     * written and explained method (with "drawings" - which makes it so much more clear to me).
+     * <p>
+     * All of this take place in one Chunk (breaks are already accounted for).
+     * => first Rating might start after first timePeriods (due to user error), after first
+     * Rating it will continue forwards continuously (by nature of how ratings inside a Chunk
+     * works).
+     *
+     * @param timePeriods  in ASC order
+     * @param allRatings in ASC order. Empty list os ok (user maybe haven't understood).
+     *                     ratings that
+     *                     start after start of a TimePeriod, or after end of a TimePeriod also ok.
+     * @return <- totalScore (in rating * minutes), totalDuration (in minutes)
+     * <p>
+     * (If you rather want avgScore instead of totalScore, simply divide totalScore with
+     * totalDuration)
+     * <p>
+     * PS method was written for use for a Portion Size in RatingPortionStat.
+     * It could just as well be used for a Tag Type.
+     */
+    public static double[] extractScoreAndDuration(List<TimePeriod> timePeriods, List<Rating>
+            allRatings) {
+        //rating * min
+        double totalScore = 0.0;
+
+        //min
+        double totalDuration = 0.0;
+        for (TimePeriod tp : timePeriods) {
+            double durationInMin = (tp.getEnd().atZone(ZoneId.systemDefault()).toEpochSecond() -
+                    tp.getStart().atZone(ZoneId.systemDefault()).toEpochSecond()) / 60;
+
+            //is this
+            List<Rating> ratingsBeforeAndBetween = Chunk.getDivsBetweenAndSometimesOneBefore(tp
+                    .getStart(), tp.getEnd(), allRatings);
+            totalScore += Chunk.calcAvgScoreFromToTime(tp, ratingsBeforeAndBetween) * durationInMin;
+            totalDuration += durationInMin;
+        }
+        return new double[]{totalScore, totalDuration};
+    }
+
+
     /*
-	 * public static void addTP(Map<String, TagPoint>tagPoints, Tag t){ TagPoint
+     * public static void addTP(Map<String, TagPoint>tagPoints, Tag t){ TagPoint
 	 * tp = tagPoints.get(t.getName()); if (tp != null) { tp.addJump(foundJump);
 	 * } else{ TagPoint newTp = new TagPoint(t.getName(), t.getSize());
 	 * newTp.addJump(foundJump); tagPoints.put(t.getName(), newTp); } }
@@ -144,4 +200,5 @@ public class TPUtil {
         }
         return chunk.getEvents().get(events.size() - 1).getTime();
     }
+
 }

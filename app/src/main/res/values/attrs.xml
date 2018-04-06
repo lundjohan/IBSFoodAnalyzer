@@ -4,7 +4,7 @@
         <!-- the starting time of the event-->
         <attr name="timeLine" format="string" />
 
-        <!-- the line that is portions in meal, and type in exercise-->
+        <!-- the line that is portionSize in meal, and type in exercise-->
         <attr name="secondLine" format="string" />
 
         <!-- all non-TagEvents has some string property to the right-->

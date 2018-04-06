@@ -10,16 +10,16 @@ import org.threeten.bp.LocalDateTime;
  */
 
 public class PortionTime {
-    private double portions;
+    private double portionSize;
     private LocalDateTime dateTime;
 
-    public PortionTime(double portions, LocalDateTime dateTime) {
-        this.portions = portions;
+    public PortionTime(double portionSize, LocalDateTime dateTime) {
+        this.portionSize = portionSize;
         this.dateTime = dateTime;
     }
 
-    public double getPortions() {
-        return portions;
+    public double getPortionSize() {
+        return portionSize;
     }
 
     public LocalDateTime getDateTime() {

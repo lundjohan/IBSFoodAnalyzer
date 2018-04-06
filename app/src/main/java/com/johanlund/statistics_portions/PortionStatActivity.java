@@ -25,7 +25,7 @@ public abstract class PortionStatActivity extends StatBaseActivity {
 
     @Override
     protected String getInfoStr() {
-        return null;
+        return "";
     }
 
     @Override

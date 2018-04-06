@@ -3,10 +3,8 @@ package com.johanlund.statistics_portions;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.external_classes.TinyDB;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portion_scorewrapper.PortionScoreWrapper;
 import com.johanlund.statistics_portion_scorewrapper.RatingPortionScoreWrapper;
 import com.johanlund.statistics_settings_portions.PortionStatRange;

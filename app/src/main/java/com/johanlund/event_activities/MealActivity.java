@@ -30,7 +30,7 @@ public class MealActivity extends TagEventActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        portionView = (TextView) findViewById(R.id.portions);
+        portionView = (TextView) findViewById(R.id.portionSize);
         final Activity thisActivity = this;
         portionView.setOnClickListener(new View.OnClickListener() {
             @Override
