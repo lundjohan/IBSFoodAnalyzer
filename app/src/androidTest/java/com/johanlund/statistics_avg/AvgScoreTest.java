@@ -169,6 +169,8 @@ public class AvgScoreTest {
      * Jag tycker det verkar rimligt. For example: if a chunk ends 5 times after butter, but
      * algorithm is told that stopHours is 10, it would be reasonable to add to Butter TagPoint
      * this Butters Rating with half its weight.
+     *
+     *
      */
     @Test
     public void ratingsAvgStatStillGivesScoreEvenIfHoursIsntEnoughTest() {
@@ -206,6 +208,11 @@ public class AvgScoreTest {
 
         /**this is the interesting one. Since only half of the hours has been fullfilled after
          *  tag, only half of the quantity is put.
+         *
+         *
+         *   ...--------------| Time for Chunk
+         *                 |-----| Time for calculation of score
+         *
          *
          *  I think this is a good solution. Before this no TagPoint would have been returned at
          *  all, and we would have lost valuable information.
@@ -267,6 +274,120 @@ public class AvgScoreTest {
         assertEquals(1, tagPoints.size());
         assertEquals(2.0, tagPoints.get("Butter").getQuantity());
         assertEquals(5.5, tagPoints.get("Butter").getOrigAvgScore());
+
+    }
+    /**
+     * |----------------| Time for Chunk
+     *                      |---| Time for calculation of score
+     */
+
+    @Test
+    public void testThatNoCalculationIsDoneWhenStartHoursAreAfterChunk(){
+        int startHoursAfterEvent = 40;
+        int stopHoursAfterEvent = 41;
+
+        //create some tags...
+        List<Tag> tags1 = new ArrayList<>();
+        LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
+        tags1.add(t1);
+        //...and add them to an event
+        Other other1 = new Other(ldt1, tags1);
+
+
+        //create a Rating that appears slightly before ...
+        Rating r1 = new Rating(ldt1.minusHours(1), 3);
+
+        //and a Rating that appears slightly after ...
+        Rating r2 = new Rating(ldt1.plusHours(1), 4);
+
+        List<Event> events = new ArrayList<>();
+        events.add(other1);
+        events.add(r1);
+        events.add(r2);
+
+        List<Chunk> chunks = Chunk.makeChunksFromEvents(events, new ArrayList<Break>());
+        Map<String, TagPoint> tagPoints = new HashMap<>();
+
+
+        tagPoints = TagPointMaker.doAvgScore(chunks, startHoursAfterEvent, stopHoursAfterEvent,
+                tagPoints);
+
+        //startHoursAfterEvent is WAAAY after last event in chunk => butter should not even appear
+        // in list. Therefore =>
+        assertEquals(0, tagPoints.size());
+
+    }
+
+    /**
+     * x == NO Rating score there(due to omission by user)
+     *
+     * |xxx------| Time for Chunk (the tag occurs in the beginning)
+     * |------| Time for calculation of score, there is only in 2nd half that score should be assigned
+     */
+
+    @Test
+    public void testThatScoresAreCalculatedOnlyForPartsOfChunkWhereThereIsRating(){
+        //Main story: tag will have 3 hours without score and three hours with score.
+        // => quantity should be half, and avg score the same (4.0).
+
+        //create other event...
+        List<Tag> tags1 = new ArrayList<>();
+        LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 0, 0);
+        Tag t1 = new Tag(ldt1, "Butter", 2.0);
+        tags1.add(t1);
+        //...and add them to an event
+        Other otherBeforeRating = new Other(ldt1, tags1);
+
+        //create first rating event 3 hours AFTER otherBeforeRating...
+        Rating firstRating= new Rating(ldt1.plusHours(3), 4);
+
+        //create later event just to expand chunk after stop hours
+        Other expandingTimeEvent = new Other(ldt1.plusHours(10), tags1);
+
+        int startHoursAfterEvent = 0;
+        int stopHoursAfterEvent = 6;
+
+        List<Event> events = new ArrayList<>();
+        events.add(otherBeforeRating);
+        events.add(firstRating);
+        events.add(expandingTimeEvent);
+
+        List<Chunk> chunks = Chunk.makeChunksFromEvents(events, new ArrayList<Break>());
+        Map<String, TagPoint> tagPoints = new HashMap<>();
+        tagPoints = TagPointMaker.doAvgScore(chunks, startHoursAfterEvent, stopHoursAfterEvent,
+                tagPoints);
+
+        assertEquals(1, tagPoints.size());
+        //half the time => half the quantity
+        assertEquals(1, tagPoints.get("Butter").getQuantity());
+        //avg score is not affected
+        assertEquals(4.0, tagPoints.get("Butter").getOrigAvgScore());
+
+
+    }
+
+    /**
+     * x == NO Rating score there(due to omission by user)
+     *
+     * |xxx| Time for Chunk
+     *      |----| Time for calculation of score )
+     */
+
+    @Test
+    public void two(){
+
+    }
+
+    /**
+     * x == NO Rating score there(due to omission by user)
+     *
+     *     |xxx| Time for Chunk
+     *      |----| Time for calculation of score )
+     */
+
+    @Test
+    public void three(){
 
     }
 }

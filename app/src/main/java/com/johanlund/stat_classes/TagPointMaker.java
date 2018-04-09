@@ -1,5 +1,7 @@
 package com.johanlund.stat_classes;
 
+import android.util.Log;
+
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.statistics_point_classes.TagPoint;
@@ -14,12 +16,21 @@ public class TagPointMaker {
      * hours ahead).
      *
      * Given: stopHoursAfterEvent is larger than startHoursAfterEvent
+     *
+     * Notice that tags will NOT even be added (if they are added since before, their map value will
+     * not change) to tagPoints in case startHoursAfterEvent >= chunk.lastTime
      */
     private static void makeTagPoints(Chunk chunk, int startHoursAfterEvent, int
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
 
         List<Tag> tagsMaterial = chunk.getTags();
         for (Tag tag : tagsMaterial) {
+
+            //don't add tags to map in case the start hour for score occurs after last time of chunk
+            if (!tag.getTime().plusHours(startHoursAfterEvent).isBefore(chunk.getLastTime())){
+                break;
+            }
+
             String name = tag.getName();
             double quantity = tag.getSize();
             double pointsForTag = 0.0;
@@ -38,12 +49,14 @@ public class TagPointMaker {
                 double factor = scoreAndQuantForOverridingTag[0];
                 quantity = tag.getSize()*factor;
                 pointsForTag = scoreAndQuantForOverridingTag[1];
+                Log.d("TagPointMaker", String.valueOf(pointsForTag));
             }
 
             //normal case, no overriding of chunks last time.
             else {
                 pointsForTag = chunk.calcAvgScoreFromToTime(tag.getTime(),
                         startHoursAfterEvent*60, stopHoursAfterEvent*60);
+                Log.d("TagPointMaker", String.valueOf(pointsForTag));
             }
             //if no ratings exist in chunk, nothing should be added to Tagpoint map
             if (pointsForTag == -1.0) {
