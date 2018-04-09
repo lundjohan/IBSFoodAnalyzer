@@ -71,24 +71,6 @@ public abstract class Event implements Comparable<Event>, Serializable {
        time =  LocalDateTime.of(ld, time.toLocalTime());
     }
 
-    /**
-     * If difference in time between consecutive events are larger (equal not enough) than hoursAheadBreak => add a Break
-     * @param events
-     * @param hoursAheadBreak
-     * @return
-     */
-
-    public static List<Break> makeBreaks(List<Event> events, int hoursAheadBreak) {
-        List<Break>breaks = new ArrayList<>();
-        for (int i = 0; i<events.size()-1; i++){
-            if (events.get(i).getTime().plusHours(hoursAheadBreak).isBefore(events.get(i+1).getTime())){
-                breaks.add(new Break(events.get(i).getTime()));
-            }
-        }
-        return breaks;
-
-    }
-
     public String getComment() {
         return comment;
     }

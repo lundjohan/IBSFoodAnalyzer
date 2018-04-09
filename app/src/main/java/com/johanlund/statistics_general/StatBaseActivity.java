@@ -82,7 +82,7 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
                 );
         int hoursInFrontOfAutoBreak = preferences.getInt("hours_break",
                 HOURS_AHEAD_FOR_BREAK_BACKUP);
-        List<Break> breaks = Event.makeBreaks(events, hoursInFrontOfAutoBreak);
+        List<Break> breaks = Break.makeAllBreaks(events, hoursInFrontOfAutoBreak);
         List<Chunk> chunks = Chunk.makeChunksFromEvents(events, breaks);
         startAsyncTask(chunks);
     }
@@ -108,6 +108,8 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
 
     public abstract String getStringForTitle();
     public abstract ScoreWrapperBase<E> getScoreWrapper();
+
+    //given: breaks should already have been taking care of for chunks
     protected void startAsyncTask(List<Chunk> chunks) {
         StatAsyncTask asyncThread = new StatAsyncTask(adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), chunks);
