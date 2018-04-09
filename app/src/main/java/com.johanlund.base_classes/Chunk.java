@@ -27,7 +27,7 @@ public class Chunk {
      *
      * @param events should be in chronological order
      * @param breaks should be in chronological order
-     * @return
+     * @return chunks in chronological order
      */
     public static List<Chunk> makeChunksFromEvents(List<Event> events, List<Break> breaks) {
         List<Chunk> chunks = new ArrayList<>();

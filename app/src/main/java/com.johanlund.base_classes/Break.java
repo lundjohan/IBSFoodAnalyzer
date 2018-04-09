@@ -1,15 +1,18 @@
 package com.johanlund.base_classes;
 
+import android.support.annotation.NonNull;
+
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Johan on 2017-10-05.
  */
 
-public class Break {
+public class Break implements Comparable<Break>{
     LocalDateTime time;
 
     public Break(LocalDateTime t){
@@ -24,11 +27,13 @@ public class Break {
      * Do both manual and automatic breaks
      * @param events
      * @param hoursInFrontOfAutoBreak
-     * @return
+     * @return sorted list in asc datetime order
      */
     public static List<Break> makeAllBreaks(List<Event> events, int hoursInFrontOfAutoBreak) {
         List<Break> toReturn = makeAutoBreaks(events, hoursInFrontOfAutoBreak);
         toReturn.addAll(getManualBreaks(events));
+        Collections.sort(toReturn);
+
         return toReturn;
     }
     /**
@@ -56,5 +61,10 @@ public class Break {
             }
         }
         return toReturn;
+    }
+
+    @Override
+    public int compareTo(@NonNull Break break2) {
+        return this.time.compareTo(break2.time);
     }
 }
