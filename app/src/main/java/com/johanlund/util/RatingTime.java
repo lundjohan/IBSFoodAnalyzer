@@ -112,7 +112,7 @@ public class RatingTime {
                 ){
             return null;
         }
-        List<Rating> inScope = getDivsBetweenAndSometimesOneBefore(tp, manyRatings);
+        List<Rating> inScope = getRatingsBetweenAndSometimesOneBefore(tp, manyRatings);
         if (inScope.isEmpty()){
             return null;
         }
@@ -305,8 +305,8 @@ public class RatingTime {
     }
 
 
-    private static List<Rating> getDivsBetweenAndSometimesOneBefore(TimePeriod tp, List<Rating>divs){
-        return getDivsBetweenAndSometimesOneBefore(tp.getStart(), tp.getEnd(), divs);
+    static List<Rating> getRatingsBetweenAndSometimesOneBefore(TimePeriod tp, List<Rating>divs){
+        return getRatingsBetweenAndSometimesOneBefore(tp.getStart(), tp.getEnd(), divs);
     }
     /**
      * Legacy code. TEST AND PERHAPS IMPROVE. (Main reason for code is to be used in this class (I believe)! )
@@ -314,8 +314,8 @@ public class RatingTime {
      * current problem if only one div from getRatings, it should still return one div but it returns zero.
      * If there are no divs in chunk, an empty List is returned.
      */
-    static List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to,
-                                                            List<Rating> divs){
+    static List<Rating> getRatingsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to,
+                                                               List<Rating> divs){
         //get firstInd
         int firstInd = 0;
         if (divs.isEmpty()){

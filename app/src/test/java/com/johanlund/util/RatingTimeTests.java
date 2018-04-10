@@ -1,22 +1,15 @@
-package com.johanlund.statistics_avg;
+package com.johanlund.util;
 
-import com.johanlund.base_classes.Break;
-import com.johanlund.base_classes.Chunk;
-import com.johanlund.base_classes.Event;
-import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Rating;
-import com.johanlund.base_classes.Tag;
-import com.johanlund.util.RatingTime;
-import com.johanlund.util.TimePeriod;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.johanlund.util.RatingTime.getRatingsBetweenAndSometimesOneBefore;
 import static junit.framework.Assert.assertEquals;
 
 public class RatingTimeTests {
@@ -171,5 +164,20 @@ public class RatingTimeTests {
          */
 
         assertEquals(0.5, avgscoreAndWeight[1]);
+    }
+
+    //testing if getRatingsBetweenAndSometimesOneBefore is returning the a rating if it occurs at same time as start of tp. This is important because if it does it means that a rating and a tag/portion can be at same time with no worries that the tag/ portion will not get the score from that rating.
+    @Test
+    public void ratingAtSameTimeAsStartIsReturned() {
+        LocalDateTime firstTime = LocalDateTime.of(2017, Month.JANUARY, 1, 0,0);
+
+        TimePeriod tp = new TimePeriod(firstTime, firstTime.plusHours(4));
+        Rating r1 = new Rating (firstTime, 3);
+        Rating r2 = new Rating (firstTime.plusHours(3),3);
+
+        List<Rating> returnedList = getRatingsBetweenAndSometimesOneBefore(tp, Arrays.asList(r1,r2));
+        assertEquals(2, returnedList.size());
+        assertEquals(r1.getTime(), returnedList.get(0).getTime());
+        assertEquals(r2.getTime(), returnedList.get(1).getTime());
     }
 }

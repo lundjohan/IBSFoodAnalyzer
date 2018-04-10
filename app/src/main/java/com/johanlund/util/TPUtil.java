@@ -59,7 +59,7 @@ public class TPUtil {
                     tp.getStart().toEpochSecond(ZoneOffset.UTC)) / 60;
 
             //is this
-            List<Rating> ratingsBeforeAndBetween = RatingTime.getDivsBetweenAndSometimesOneBefore(tp
+            List<Rating> ratingsBeforeAndBetween = RatingTime.getRatingsBetweenAndSometimesOneBefore(tp
                     .getStart(), tp.getEnd(), allRatings);
             totalScore += RatingTime.calcAvgScoreFromToTime(tp.getStart(),tp.getEnd(), ratingsBeforeAndBetween) * durationInMin;
             totalDuration += durationInMin;
