@@ -1,10 +1,10 @@
 package com.johanlund.stat_classes;
 
-import android.util.Log;
-
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.statistics_point_classes.TagPoint;
+import com.johanlund.util.RatingTime;
+import com.johanlund.util.TimePeriod;
 
 import java.util.List;
 import java.util.Map;
@@ -24,54 +24,31 @@ public class TagPointMaker {
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
 
         List<Tag> tagsMaterial = chunk.getTags();
-        for (Tag tag : tagsMaterial) {
+        for (Tag t : tagsMaterial) {
+            TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));
 
-            //don't add tags to map in case the start hour for score occurs after last time of chunk
-            if (!tag.getTime().plusHours(startHoursAfterEvent).isBefore(chunk.getLastTime())){
-                break;
+            /*very waste of resources giving all Ratings everytime (since tagsMaterial and Ratings
+            are sorted, perhaps a lastUsedIndex or such could be used)*/
+            double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getRatings(), chunk.getLastTime());
+            if (scoreQuant == null) {
+                continue;
             }
+            String name = t.getName();
 
-            String name = tag.getName();
-            double quantity = tag.getSize();
-            double pointsForTag = 0.0;
-
-            //if tag needs more rating score after it than Chunk allows, the algorithm takes the
-            // time that exist after and drags out the score for that time. But the weigh of this
-            // tag (its duration) will be reduced with the same factor it is prolonged.)
-            if (chunk.timeOverridesChunkEnd(tag.getTime().plusHours(stopHoursAfterEvent))) {
-
-
-                double[] scoreAndQuantForOverridingTag = chunk.calcAvgScoreForOverridingTag(tag.getTime(),
-                        startHoursAfterEvent*60, stopHoursAfterEvent*60);
-                if (scoreAndQuantForOverridingTag == null){
-                    return;
-                }
-                double factor = scoreAndQuantForOverridingTag[0];
-                quantity = tag.getSize()*factor;
-                pointsForTag = scoreAndQuantForOverridingTag[1];
-                Log.d("TagPointMaker", String.valueOf(pointsForTag));
-            }
-
-            //normal case, no overriding of chunks last time.
-            else {
-                pointsForTag = chunk.calcAvgScoreFromToTime(tag.getTime(),
-                        startHoursAfterEvent*60, stopHoursAfterEvent*60);
-                Log.d("TagPointMaker", String.valueOf(pointsForTag));
-            }
-            //if no ratings exist in chunk, nothing should be added to Tagpoint map
-            if (pointsForTag == -1.0) {
-                return;
-            }
             TagPoint tpInMap = tagPoints.get(name);
             TagPoint tpToInsert = null;
 
+            double pointsForTag = scoreQuant[0];
+            //multiply tag size with factor
+            double quant = t.getSize()*scoreQuant[1];
+
             if (tpInMap == null) {
-                tpToInsert = new TagPoint(name, quantity, pointsForTag * quantity);
+                tpToInsert = new TagPoint(name, quant, pointsForTag * quant);
             } else {
-                tpToInsert = new TagPoint(name, tpInMap.getQuantity() + quantity, tpInMap
-                        .getOrig_tot_points() + pointsForTag * quantity);
+                tpToInsert = new TagPoint(name, tpInMap.getQuantity() + quant, tpInMap
+                        .getOrig_tot_points() + pointsForTag * quant);
             }
-            tagPoints.put(tag.getName(), tpToInsert);
+            tagPoints.put(t.getName(), tpToInsert);
         }
     }
 

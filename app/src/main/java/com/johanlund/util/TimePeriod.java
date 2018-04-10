@@ -5,10 +5,14 @@ import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Tag;
 
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    start <= end
+ */
 public class TimePeriod {
     LocalDateTime start;
     LocalDateTime end;
@@ -60,6 +64,10 @@ public class TimePeriod {
         return toReturn;
     }
 
+    public long getLengthSec(){
+        return end.toEpochSecond(ZoneOffset.UTC) - start.toEpochSecond(ZoneOffset.UTC);
+    }
+
     private TimePeriod sliceFromRight(long hoursToRemove) {
         if (isOkToTrim(hoursToRemove)) {
 
@@ -75,7 +83,21 @@ public class TimePeriod {
         LocalDateTime ldt = end.minusHours(hours);
         return ldt.isAfter(start) || ldt.isEqual(start);
     }
-
+    /**
+     * Given: under should not be zero
+     *
+     * returns the quote of the division of absolute length
+     */
+    public static double getQuote(TimePeriod above, TimePeriod below){
+        long aboveSec = above.getLengthSec();
+        long belowSec = below.getLengthSec();
+        if (belowSec == 0){
+            return Double.NaN;
+        }
+        //must convert to double first, otherwise qoute will round down
+        //btw => (double)aboveSec == ((double)aboveSec), but we want to avoid confusion
+        return ((double)aboveSec)/((double)belowSec);
+    }
     // =================================================================================================================
 
     public LocalDateTime getStart() {

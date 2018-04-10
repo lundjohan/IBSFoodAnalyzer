@@ -36,10 +36,6 @@ public class AvgScoreTest {
      * this test checks that avg rating stat is working properly.
      * The method that in effect is tested is TagPointMaker.doAvgScore(...);
      */
-    @Before
-    public void init() {
-
-    }
 
     /*
     Simple test case with only one tag and one rating (before the tag)
@@ -298,13 +294,13 @@ public class AvgScoreTest {
         //create a Rating that appears slightly before ...
         Rating r1 = new Rating(ldt1.minusHours(1), 3);
 
-        //and a Rating that appears slightly after ...
-        Rating r2 = new Rating(ldt1.plusHours(1), 4);
+        //and a Other event that appears slightly after ...
+        Other o2 = new Other(ldt1.plusHours(1), new ArrayList<Tag>());
 
         List<Event> events = new ArrayList<>();
         events.add(other1);
         events.add(r1);
-        events.add(r2);
+        events.add(o2);
 
         List<Chunk> chunks = Chunk.makeChunksFromEvents(events, new ArrayList<Break>());
         Map<String, TagPoint> tagPoints = new HashMap<>();
@@ -343,7 +339,7 @@ public class AvgScoreTest {
         Rating firstRating= new Rating(ldt1.plusHours(3), 4);
 
         //create later event just to expand chunk after stop hours
-        Other expandingTimeEvent = new Other(ldt1.plusHours(10), tags1);
+        Other expandingTimeEvent = new Other(ldt1.plusHours(10), new ArrayList<Tag>());
 
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 6;
@@ -360,7 +356,7 @@ public class AvgScoreTest {
 
         assertEquals(1, tagPoints.size());
         //half the time => half the quantity
-        assertEquals(1, tagPoints.get("Butter").getQuantity());
+        assertEquals(1., tagPoints.get("Butter").getQuantity());
         //avg score is not affected
         assertEquals(4.0, tagPoints.get("Butter").getOrigAvgScore());
 

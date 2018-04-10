@@ -33,18 +33,6 @@ public class PortionStatRange {
         return turnedOn;
     }
 
-    public void setRangeStart(float rangeStart) {
-        this.rangeStart = rangeStart;
-    }
-
-    public void setRangeStop(float rangeStop) {
-        this.rangeStop = rangeStop;
-    }
-
-    public void setTurnedOn(boolean turnedOn) {
-        this.turnedOn = turnedOn;
-    }
-
     @Override
     public String toString(){
         return String.format("%.1f", rangeStart) + "-" + String.format("%.1f", rangeStop);

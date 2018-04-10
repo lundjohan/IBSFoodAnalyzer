@@ -58,9 +58,9 @@ public class TPUtil {
                     tp.getStart().atZone(ZoneId.systemDefault()).toEpochSecond()) / 60;
 
             //is this
-            List<Rating> ratingsBeforeAndBetween = Chunk.getDivsBetweenAndSometimesOneBefore(tp
+            List<Rating> ratingsBeforeAndBetween = RatingTime.getDivsBetweenAndSometimesOneBefore(tp
                     .getStart(), tp.getEnd(), allRatings);
-            totalScore += Chunk.calcAvgScoreFromToTime(tp, ratingsBeforeAndBetween) * durationInMin;
+            totalScore += RatingTime.calcAvgScoreFromToTime(tp.getStart(),tp.getEnd(), ratingsBeforeAndBetween) * durationInMin;
             totalDuration += durationInMin;
         }
         return new double[]{totalScore, totalDuration};

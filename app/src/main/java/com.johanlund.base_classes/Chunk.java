@@ -6,7 +6,6 @@ import com.johanlund.util.TimePeriod;
 import com.johanlund.util.Util;
 
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,152 +119,7 @@ public class Chunk {
         return Util.getTags(events);
     }
 
-    /**
-     * @return tags from start time of chunk to (endtime of chunk - hours)
-     * Preequisite: events are sorted by time (latest last)
-     *
-     * Obsolete
-     */
-    public List<Tag> getTags(int hours) {
-        List<Tag> tags = new ArrayList<>();
-        if (events.isEmpty()) {
-            return tags;
-        }
-        LocalDateTime lastTime = events.get(events.size() - 1).getTime();
-        LocalDateTime lastValidTime = lastTime.minusHours(hours);
 
-        //loop backwards
-        List<Event> remainingEvents = new ArrayList<>();
-        for (int i = events.size() - 1; i >= 0; i--) {
-            //if event is before or equal to time limit
-            if (!events.get(i).getTime().isAfter(lastValidTime)) {
-                remainingEvents = events.subList(0, i + 1); //+1 since 2nd parameter in subList
-                // is excl
-                break;
-            }
-        }
-        return Util.getTags(remainingEvents);
-    }
-
-    /**
-     * Get average score from . Based on time
-     * passed after each div in time frame.
-     * <p>
-     * Given: these times should be within time of this chunk.
-     *
-     * Returns -1.0 if no appropriate rating events are found in chunk
-     */
-    public double calcAvgScoreFromToTime(LocalDateTime tagTime, long minutesAheadStart, long minutesAheadStop) {
-        LocalDateTime startTime = tagTime.plusMinutes(minutesAheadStart);
-        LocalDateTime endTime = tagTime.plusMinutes(minutesAheadStop);
-        List<Rating> divs = getDivsBetweenAndSometimesOneBefore(startTime, minutesAheadStop); //ok!
-        if (divs.isEmpty()){
-            return -1.0;
-        }
-        return calcAvgScoreFromToTime(startTime, endTime, divs);
-    }
-
-    /**
-     *
-     * @param startTime
-     * @param endTime
-     * @param ratings cannot be of size 0. First rating must be before startTime. sorted in ASC order.
-     * @return
-     */
-    public static double calcAvgScoreFromToTime(LocalDateTime startTime, LocalDateTime endTime, List<Rating>ratings){
-        if (ratings.size() == 1) {
-            return ratings.get(0).getAfter();
-        }
-        //time of div before <startTime> (the first div to take into account) is not interesting (it
-        // can have happened many days before), only its score.
-        long startLongSec = startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
-        double scoreMultWithTime = 0;
-        for (int i = 1; i < ratings.size(); i++) {
-            LocalDateTime t = ratings.get(i).getTime();
-            double timeDifInSec = t.atZone(ZoneId.systemDefault()).toEpochSecond() - startLongSec;
-            scoreMultWithTime += ratings.get(i - 1).getAfter() * timeDifInSec;
-            startLongSec = ratings.get(i).getTime().atZone(ZoneId.systemDefault()).toEpochSecond();
-        }
-        //the last one
-        long toLong = endTime.atZone(ZoneId.systemDefault()).toEpochSecond();
-        double lastTimeDif = toLong - startLongSec;
-        scoreMultWithTime += ratings.get(ratings.size() - 1).getAfter() * lastTimeDif;
-        long durationPeriodSec = endTime.atZone(ZoneId.systemDefault()).toEpochSecond() - startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
-        double avgScore = scoreMultWithTime / ((durationPeriodSec));
-        return avgScore;
-    }
-    public static double calcAvgScoreFromToTime(TimePeriod tp, List<Rating>divs){
-        return calcAvgScoreFromToTime(tp.getStart(), tp.getEnd(), divs);
-    }
-    /**
-     *
-     * @param
-     * @param minutesAheadStop
-     * @return [factor, Score]. Explanation of factor: if 10 hours is needed ahead to see tag score,
-     * and only 5 h exists, then the factor is 0.5  (the score is dragged out to the double
-     * (double as in "twice") it's time.)
-     */
-    public double [] calcAvgScoreForOverridingTag(LocalDateTime tagTime, long minutesAheadStart, long minutesAheadStop){
-        LocalDateTime preferredLastTimeOfChunk = tagTime.plusMinutes(minutesAheadStop);
-        LocalDateTime deFactoLastTimeOfChunk = getLastTime();
-        long secondsDiff = preferredLastTimeOfChunk.atZone(ZoneId.systemDefault()).toEpochSecond()-deFactoLastTimeOfChunk.atZone(ZoneId.systemDefault()).toEpochSecond();
-        double factor = ((double)secondsDiff) /(minutesAheadStop*60);
-
-        //calculate score
-        long minutesToEndOfChunk = secondsDiff/60;
-        double score = calcAvgScoreFromToTime(tagTime, minutesAheadStart, minutesToEndOfChunk);
-        if (score == -1.0){
-            return null;
-        }
-        return new double[]{factor, score};
-    }
-
-
-    /**
-     * @return If there is no div on same time as from, then an earlier div is returned as well.
-     *
-     * Given Chunk must at least have one div, and that one should be at start
-     */
-    public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, long minutesAhead) {
-        return getDivsBetweenAndSometimesOneBefore(from, from.plusMinutes(minutesAhead));
-    }
-
-    public List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to) {
-        List<Rating> allRatings = getRatings();
-        return getDivsBetweenAndSometimesOneBefore(from, to, allRatings);
-
-    }
-    /**current problem if only one div from getRatings, it should still return one div but it returns zero.
-     * If there are no divs in chunk, an empty List is returned.
-     */
-    public static List<Rating> getDivsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to, List<Rating>divs){
-        //get firstInd
-        int firstInd = 0;
-        if (divs.isEmpty()){
-            return divs;
-        }
-        for (int i = 0; i < divs.size(); i++) {
-            LocalDateTime divTime = divs.get(i).getTime();
-            if (divTime.isBefore(from) || divTime.isEqual(from)) {
-                firstInd = i;
-            } else {
-                break;
-            }
-        }
-
-        //get LastInd
-        int lastInd = firstInd;
-        for (int i = firstInd+1; i < divs.size(); i++) {
-            LocalDateTime divTime = divs.get(i).getTime();
-            if (divTime.isAfter(to)) {
-                break;
-            } else {
-                lastInd = i;
-            }
-        }
-        //sublist(incl, excl (therefore +1))
-        return divs.subList(firstInd, lastInd+1);
-    }
     //incl, incl
     public List<Bm> getBMsBetweenTimes(LocalDateTime searchForBMStartTime, LocalDateTime
             searchForBMStopTime) {
@@ -328,9 +182,5 @@ public class Chunk {
     public List<Tag> getTagsForPeriod(TimePeriod tp) {
         List<Event> trimmedEvents = IBSUtil.trimEventsToPeriod(getEvents(), tp);
         return Util.getTags(trimmedEvents);
-    }
-
-    public boolean timeOverridesChunkEnd(LocalDateTime preferredStopTime) {
-        return preferredStopTime.isAfter(getLastTime());
     }
 }
