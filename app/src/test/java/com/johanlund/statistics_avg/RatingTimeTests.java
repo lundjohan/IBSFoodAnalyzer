@@ -14,6 +14,7 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -37,7 +38,7 @@ public class RatingTimeTests {
      * then that Rating should still give score to the other event.
      */
     @Test
-    public void correctAvgScoreAndWeightWhenTPExtendsChunkTest() {
+    public void tpExtendsChunkTest() {
         LocalDateTime firstTime = LocalDateTime.of(2017, Month.JANUARY, 1, 0, 0);
         //create a Rating at the beginning
         Rating rStart = new Rating(firstTime, 4);
@@ -82,5 +83,50 @@ public class RatingTimeTests {
         double weight = calcWeight[1];
 
         assertEquals(0.5, weight);
+    }
+
+    /* This test is very well written.
+     *
+     * ratings     |-o----||            OK!
+     * tp:         |---------|
+     *
+     * Above is made up of the 2 scenarios below:
+     *
+     * ratings     |-o---------||       OK! (at beginning of tp, chunk has no score. The tag is in
+     * tp:         |-----------|           in start of chunk)
+     *
+     * &&
+     *
+     * ratings     |o------||           OK! endChunk < tp.end
+     * tp:         |---------|
+     */
+    @Test
+    public void firstRatingAfterTpStartANDChunkEndBeforeTpEndTest() {
+        LocalDateTime firstTime = LocalDateTime.of(2017, Month.JANUARY, 1, 0, 0);
+
+        //start with creating tp (proportional)
+        // |-----|
+        TimePeriod tp = new TimePeriod(firstTime, firstTime.plusHours(6));
+
+        /**match tp with ratings so we have (proportional scale)
+         * ratings     |-o--||
+         * tp:         |-----|
+         *
+         */
+        Rating rStart = new Rating(firstTime.plusHours(2),4);
+        LocalDateTime chunkEnd = firstTime.plusHours(5); //=> 2 hours before tp.end
+
+        //this is the method we are testing
+        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart), chunkEnd);
+        assertEquals(4.0, avgscoreAndWeight[0]);
+
+        /*  weight should equal durationOfRatingsInScopeOfTp/tp.duration
+            ratingsInScopeOfTp = 3 hours
+            tp.duration = 6 hours.
+            weight should be 3/6 = 1/2 = 0.5...
+         */
+
+        assertEquals(0.5, avgscoreAndWeight[1]);
+
     }
 }

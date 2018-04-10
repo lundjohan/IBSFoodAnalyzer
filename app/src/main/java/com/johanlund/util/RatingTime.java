@@ -26,6 +26,8 @@ public class RatingTime {
      * rating:          o
      * lastTimeOfChunk: ||
      *
+     * NB! The tag or portion that uses this class will be at tp.start.
+     *
      * Ratings must be in ASC order.
      * tp.start >= tp.end (this is the condition of TimePeriod)
      *
@@ -35,8 +37,8 @@ public class RatingTime {
      * tp:          |-----------|
      *
      * B.
-     * ratings      |---o----o--||      OK! (beginning of tp have no score)
-     * tp:          |-----------|
+     * ratings      |---o----o--||      OK! (at beginning of tp, chunk has no score. The tag is in
+     * tp:          |-----------|           in start of chunk)
      *
      * C.
      * ratings       |--o-------||      OK! (this does in theory never happen =>
