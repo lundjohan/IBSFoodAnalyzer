@@ -114,7 +114,7 @@ public class RatingTimeTests {
          *
          */
         Rating rStart = new Rating(firstTime.plusHours(2),4);
-        LocalDateTime chunkEnd = firstTime.plusHours(5); //=> 2 hours before tp.end
+        LocalDateTime chunkEnd = firstTime.plusHours(5); //=> 1 hour before tp.end
 
         //this is the method we are testing
         double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart), chunkEnd);
