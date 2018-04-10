@@ -7,6 +7,7 @@ import com.johanlund.base_classes.Rating;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.List;
 
@@ -54,8 +55,8 @@ public class TPUtil {
         //min
         double totalDuration = 0.0;
         for (TimePeriod tp : timePeriods) {
-            double durationInMin = (tp.getEnd().atZone(ZoneId.systemDefault()).toEpochSecond() -
-                    tp.getStart().atZone(ZoneId.systemDefault()).toEpochSecond()) / 60;
+            double durationInMin = (tp.getEnd().toEpochSecond(ZoneOffset.UTC) -
+                    tp.getStart().toEpochSecond(ZoneOffset.UTC)) / 60;
 
             //is this
             List<Rating> ratingsBeforeAndBetween = RatingTime.getDivsBetweenAndSometimesOneBefore(tp

@@ -2,6 +2,7 @@ package com.johanlund.statistics_point_classes;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
 
 /**
  * Created by Johan on 2018-03-18.
@@ -30,7 +31,7 @@ public class TimePoint implements PointBase{
     }
 
     public long getDurationInHours() {
-        long secDiff = stopTime.atZone(ZoneId.systemDefault()).toEpochSecond() - startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+        long secDiff = stopTime.toEpochSecond(ZoneOffset.UTC) - startTime.toEpochSecond(ZoneOffset.UTC);
         //some truncation is allowed
         return secDiff/(60*60);
     }

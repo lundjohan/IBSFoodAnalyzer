@@ -4,6 +4,7 @@ import com.johanlund.base_classes.Rating;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.List;
 
@@ -210,19 +211,19 @@ public class RatingTime {
         }
         //time of div before <startTime> (the first div to take into account) is not interesting (it
         // can have happened many days before), only its score.
-        long startLongSec = startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+        long startLongSec = startTime.toEpochSecond(ZoneOffset.UTC);
         double scoreMultWithTime = 0;
         for (int i = 1; i < ratings.size(); i++) {
             LocalDateTime t = ratings.get(i).getTime();
-            double timeDifInSec = t.atZone(ZoneId.systemDefault()).toEpochSecond() - startLongSec;
+            double timeDifInSec = t.toEpochSecond(ZoneOffset.UTC) - startLongSec;
             scoreMultWithTime += ratings.get(i - 1).getAfter() * timeDifInSec;
-            startLongSec = ratings.get(i).getTime().atZone(ZoneId.systemDefault()).toEpochSecond();
+            startLongSec = ratings.get(i).getTime().toEpochSecond(ZoneOffset.UTC);
         }
         //the last one
-        long toLong = endTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+        long toLong = endTime.toEpochSecond(ZoneOffset.UTC);
         double lastTimeDif = toLong - startLongSec;
         scoreMultWithTime += ratings.get(ratings.size() - 1).getAfter() * lastTimeDif;
-        long durationPeriodSec = endTime.atZone(ZoneId.systemDefault()).toEpochSecond() - startTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+        long durationPeriodSec = endTime.toEpochSecond(ZoneOffset.UTC) - startTime.toEpochSecond(ZoneOffset.UTC);
         double avgScore = scoreMultWithTime / ((durationPeriodSec));
         return avgScore;
     }
