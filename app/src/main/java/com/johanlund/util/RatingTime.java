@@ -222,8 +222,8 @@ public class RatingTime {
         double avgScore = calcAvgScoreFromToTime(timeFirstRating, tp.getEnd(), ratings);
 
         //do factor/ weight
-        TimePeriod leftPartWithoutScore = new TimePeriod(tp.getStart(), timeFirstRating);
-        double factor = TimePeriod.getQuote(leftPartWithoutScore, tp);
+        TimePeriod ratingsInsideTpScope = new TimePeriod(timeFirstRating, tp.getEnd());
+        double factor = TimePeriod.getQuote(ratingsInsideTpScope, tp);
         return new double[] {avgScore, factor};
     }
     /* D.
@@ -236,8 +236,8 @@ public class RatingTime {
     private double[] calcNormalRatingsButEndOfChunkBeforeTpEnd() {
         double avgScore = calcAvgScoreFromToTime(tp.getStart(), chunkEnd, ratings);
         //do factor/ weight
-        TimePeriod rightPartWithoutScore = new TimePeriod(chunkEnd, tp.getEnd());
-        double factor = TimePeriod.getQuote(rightPartWithoutScore, tp);
+        TimePeriod ratingsInsideTpScope = new TimePeriod(tp.getStart(), chunkEnd);
+        double factor = TimePeriod.getQuote(ratingsInsideTpScope, tp);
         return new double[] {avgScore, factor};
     }
     /* Both left (first rating) and right side abnormal.
