@@ -3,7 +3,6 @@ package com.johanlund.util;
 import com.johanlund.base_classes.Rating;
 
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZoneOffset;
 
 import java.util.List;
@@ -33,8 +32,8 @@ public class RatingTime {
      *
      *
      * A.
-     * ratings   o--|---o----o---||     OK! (normal case -> timeOfFirstRating <= tpStart)
-     * tp:          |-----------|
+     * ratings   o--|---o----o---||     OK! (normal case -> timeOfFirstRating <= tpStart
+     * tp:          |-----------|         && chunkEnd >= tp.end)
      *
      * B.
      * ratings      |---o----o--||      OK! (at beginning of tp, chunk has no score. The tag is in
@@ -129,17 +128,59 @@ public class RatingTime {
      */
     private double[] calcAvgPoints() {
         double[] toReturn;
-        if (ratings.get(0).getTime().isAfter(tp.getStart())) {
-           toReturn =  calcWithLateFirstRating();
+
+        /*
+         *
+         * ratings   ...--||
+         * tp:       ...--|
+         */
+        if (!chunkEnd.isBefore(tp.getEnd())) {
+
+            /*
+             *
+             * Normal case
+             * ratings   o--|---o----o---||     OK! ( timeOfFirstRating <= tpStart
+             * tp:          |-----------|         && chunkEnd >= tp.end)
+             */
+            if (!ratings.get(0).getTime().isAfter(tp.getStart())) {
+                toReturn = calcAvgPointsNormal();
+            }
+            /*
+             * Late first rating
+             * ratings      |---o----o---||      OK! (timeOfFirstRating > tpStart &&
+             * tp:          |-----------|           chunkEnd >= tp.end)
+             */
+            else {
+                toReturn = calcLateFirstRatingButNormalChuckEnd();
+            }
         }
-        else if (chunkEnd.isBefore(tp.getEnd())){
-            toReturn = calcWithEndOfChunkBeforeTpEnd();
-        }
-        else {
-           toReturn =  calcAvgPointsNormal();
+        /*
+         *
+         * ratings   ...-||
+         * tp:       ...---|
+         */
+        else{
+            /*
+             *
+             *
+             * ratings   o--|---o----o-||
+             * tp:          |------------|
+             */
+            if (!ratings.get(0).getTime().isAfter(tp.getStart())) {
+                toReturn = calcNormalRatingsButEndOfChunkBeforeTpEnd();
+            }
+            /*
+             * ratings      |---o----o-||
+             * tp:          |------------|
+             */
+            else {
+                toReturn = calcLateFirstRatingAndEndOfChunkBeforeTpEnd();
+            }
         }
         return toReturn;
     }
+
+
 
     /**
      * empty ratings not allowed (already checked for)
@@ -175,7 +216,7 @@ public class RatingTime {
      */
 
 
-    private double[] calcWithLateFirstRating() {
+    private double[] calcLateFirstRatingButNormalChuckEnd() {
 
         LocalDateTime timeFirstRating = ratings.get(0).getTime();
         double avgScore = calcAvgScoreFromToTime(timeFirstRating, tp.getEnd(), ratings);
@@ -192,12 +233,26 @@ public class RatingTime {
      *                                    that is missing. It is not a perfect solution, but a
      *                                    compromise.
      */
-    private double[] calcWithEndOfChunkBeforeTpEnd() {
+    private double[] calcNormalRatingsButEndOfChunkBeforeTpEnd() {
         double avgScore = calcAvgScoreFromToTime(tp.getStart(), chunkEnd, ratings);
         //do factor/ weight
         TimePeriod rightPartWithoutScore = new TimePeriod(chunkEnd, tp.getEnd());
         double factor = TimePeriod.getQuote(rightPartWithoutScore, tp);
         return new double[] {avgScore, factor};
+    }
+    /* Both left (first rating) and right side abnormal.
+     *
+     * ratings      |---o----o-||
+     * tp:          |------------|
+     */
+    private double[] calcLateFirstRatingAndEndOfChunkBeforeTpEnd() {
+        LocalDateTime timeFirstRating = ratings.get(0).getTime();
+        double avgScore = calcAvgScoreFromToTime(timeFirstRating, chunkEnd, ratings);
+
+        //do factor/ weight
+        TimePeriod partWithScore = new TimePeriod(timeFirstRating, chunkEnd);
+        double weight = TimePeriod.getQuote(partWithScore, tp);
+        return new double[] {avgScore, weight};
     }
 
     /**
