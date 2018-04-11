@@ -20,14 +20,28 @@ public class Chunk {
     }
 
     /**
-     * NB: first and last breaks are never before or after first/last event
-     *
-     * sorry for the mess, this is way too complicated. But it is tested.
-     *
      * @param events should be in chronological order
      * @param breaks should be in chronological order
      * @return chunks in chronological order
      */
+    public static List<Chunk> makeChunksFromEvents(List<Event> events, List<Break> breaks) {
+        List<Chunk>toReturn = new ArrayList<>();
+        int indBreaks = 0;
+        int indStartNewChunk = 0; //incl
+        for (int i =0; i<events.size(); i++){
+            if (breaks.size()<=indBreaks || i == events.size()-1) {
+                toReturn.add(new Chunk(events.subList(indStartNewChunk, events.size())));
+                break;
+            }
+            //same as: break <= event
+            else if(!breaks.get(indBreaks).getTime().isAfter(events.get(i).getTime())){
+                toReturn.add(new Chunk(events.subList(indStartNewChunk, i)));
+                indBreaks++;
+                indStartNewChunk = i;
+            }
+        }
+        return toReturn;
+    }/*
     public static List<Chunk> makeChunksFromEvents(List<Event> events, List<Break> breaks) {
         List<Chunk> chunks = new ArrayList<>();
         if (breaks.isEmpty() && !events.isEmpty()) {
@@ -52,7 +66,7 @@ public class Chunk {
             leftBreak = breaks.get(i).getTime();
         }
         return chunks;
-    }
+    }*/
 
     /**
      * Helper method for chopping a list of events with breaks
