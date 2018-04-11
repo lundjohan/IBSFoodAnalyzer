@@ -10,16 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TagPointMaker {
-    /**
-     * Returns a map of String, TagPoints.
-     * Each TagPoint consist of name, duration, orig_tot_points (the latter based on avg score
-     * hours ahead).
-     *
-     * Given: stopHoursAfterEvent is larger than startHoursAfterEvent
-     *
-     * Notice that tags will NOT even be added (if they are added since before, their map value will
-     * not change) to tagPoints in case startHoursAfterEvent >= chunk.lastTime
-     */
+
     private static void makeTagPoints(Chunk chunk, int startHoursAfterEvent, int
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
 
@@ -28,7 +19,8 @@ public class TagPointMaker {
             TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));
 
             /*very waste of resources giving all Ratings everytime (since tagsMaterial and Ratings
-            are sorted, perhaps a lastUsedIndex or such could be used)*/
+            are sorted, perhaps a cache can be used. A wrapper class called RatingCache perhaps?)*/
+
             double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getRatings(), chunk.getLastTime());
             if (scoreQuant == null) {
                 continue;
