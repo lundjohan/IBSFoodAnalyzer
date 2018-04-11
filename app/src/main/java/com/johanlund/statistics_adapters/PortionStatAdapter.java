@@ -36,7 +36,7 @@ public class PortionStatAdapter extends StatAdapter<PortionPoint> {   //list nee
         PortionPoint tp = pointList.get(position);
         viewHolder.interval.setText(tp.getRange().toString());
         viewHolder.scoreField.setText(String.format("%.1f", tp.getScore()));
-        viewHolder.duration.setText(String.format("%.1f", tp.getDuration()));
+        viewHolder.quant.setText(String.format("%.1f", tp.getQuant()));
 
     }
 
@@ -48,13 +48,13 @@ public class PortionStatAdapter extends StatAdapter<PortionPoint> {   //list nee
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView interval;
         public TextView scoreField;
-        public TextView duration;
+        public TextView quant;
 
         public ViewHolder(View itemView) {
             super(itemView);
             interval = (TextView) itemView.findViewById(R.id.tagname_stat);
             scoreField = (TextView) itemView.findViewById(R.id.score_view);
-            duration = (TextView) itemView.findViewById(R.id.quantity_stat);
+            quant = (TextView) itemView.findViewById(R.id.quantity_stat);
         }
     }
 }

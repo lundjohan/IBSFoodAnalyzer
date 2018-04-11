@@ -99,7 +99,7 @@ public class PortionPointMaker {
         if (rangeTotalDuration == 0){
             return new PortionPoint(range, 0.0,0.0);
         }
-        //PortionPoint duration should be in hours
+        //PortionPoint quant should be in hours
         return new PortionPoint(range, rangeTotalScore / rangeTotalDuration,
                 rangeTotalDuration/60);
     }

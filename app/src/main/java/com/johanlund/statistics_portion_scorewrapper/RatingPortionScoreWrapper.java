@@ -33,8 +33,8 @@ import java.util.List;
  * Important to know is that if a bigger portion than the range max is occurring before or during
  * the timeperiod for the portions within the range, the timeperiod ==time scope) of the range will
  * be Excepted with the timeperiod of the larger portion (see method leftExceptRights).
- * This might lead to significant less duration coming out of a portion stat for a range than
- * otherwise would be expected (and that ranges with higher max seem to have longer duration).
+ * This might lead to significant less quant coming out of a portion stat for a range than
+ * otherwise would be expected (and that ranges with higher max seem to have longer quant).
  * But there is no way to get around it, larger portion might otherwise interfere and destroy the
  * meaning with this stat.
  *   Smaller portions in the same timeperiod as portions within the range are not,

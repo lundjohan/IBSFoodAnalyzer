@@ -8,7 +8,7 @@ import com.johanlund.statistics_settings_portions.PortionStatRange;
  *
  * Look in stat view:
  *
- * Ranges           Avg Rating/Completeness     Duration Hours
+ * Ranges           Avg Rating/Completeness     Quantity (nr of meals in calculation)
  * 1.0 - 2.0        5.6                         34
  * ...              ...                         ...
  */
@@ -20,17 +20,16 @@ public class PortionPoint implements PointBase{
     //one decimal
     Double score;
 
-    //in hours
-    double duration;
+    double quant;
 
-    public PortionPoint(PortionStatRange range, Double score, double duration) {
+    public PortionPoint(PortionStatRange range, Double score, double quant) {
         this.range = range;
         this.score = score;
-        this.duration = duration;
+        this.quant = quant;
     }
 
-    public double getDuration() {
-        return duration;
+    public double getQuant() {
+        return quant;
     }
 
     public PortionStatRange getRange() {

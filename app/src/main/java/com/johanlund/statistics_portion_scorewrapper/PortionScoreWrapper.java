@@ -32,7 +32,7 @@ public abstract class PortionScoreWrapper extends ScoreWrapperBase<PortionPoint>
         Collections.sort(points, new Comparator<PortionPoint>() {
                     @Override
                     public int compare(PortionPoint p1, PortionPoint p2) {
-                        return (int) ((p1.getDuration() - p2.getDuration()));
+                        return (int) ((p1.getQuant() - p2.getQuant()));
                     }
                 }
         );

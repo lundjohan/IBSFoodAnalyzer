@@ -41,7 +41,7 @@ public class TagPointPortionsHandler {
         }
         LocalDateTime startOfLookBehind = TPUtil.getStartTime(chunk);
         LocalDateTime startOfScorePeriod = startOfLookBehind.plusHours(hours);
-        //duration is for "portionTagPoints" hours of scoreTime
+        //quant is for "portionTagPoints" hours of scoreTime
         double quantity = 0;
         //here: score = sum of deltaScore*deltaHours (deltaHours == time that deltaScore last)
         double score = 0;
