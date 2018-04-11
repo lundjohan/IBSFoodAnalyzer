@@ -82,7 +82,7 @@ public class PortionPointMaker {
 
 
 
-    private static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
+    static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
             afterJoin, long waitHoursAfterMeal, long stopHoursAfterMeal) {
         //format: avg_rating*min
         double rangeTotalScore = .0;
@@ -179,7 +179,7 @@ public class PortionPointMaker {
     }
 
     /**
-     * Except == EXCEPT in databaseterms 
+     * Except == EXCEPT in databaseterms
      * <p>
      * End result can be that some TimePeriods are left with same start as end value. This must
      * be accounted for later in program.
