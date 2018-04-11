@@ -98,7 +98,7 @@ public class PortionPointMaker {
             }
         }
         //PortionPoint quant should be in hours
-        double avgScore = rangeTotalQuant == 0 ? Double.NaN : rangeTotalScore / rangeTotalQuant;
+        double avgScore = rangeTotalQuant == 0. ? Double.NaN : rangeTotalScore / rangeTotalQuant;
         return new PortionPoint(range, avgScore, rangeTotalQuant);
     }
     /**
