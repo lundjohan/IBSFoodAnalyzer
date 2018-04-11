@@ -50,10 +50,12 @@ public class PortionPointMakerTests {
         PortionPoint pp = PortionPointMaker.getPPForRange(range, Arrays.asList(ptRatings), startHoursAfterMeal, stopHoursAfterMeal);
 
 
-        //pt1 lasts for 2 + 6 hours, pt2 => 8 hours
-        //avg score => (2*3. +6*5. + 8*5.) / (8+6) = (76)/ 14 = 38 /7 = 5.43
-        assertEquals(5.43, pp.getScore(), 0.01);
+        //pt1 lasts for 2 + 6 hours, pt2 => 8 hours =>
+        /*avg score => (avgScore1 + avgScore2 / totalQuant) => ((2*3. + 6*5.)/8 + 8*5./8) /2. =
+            (36/8 + 5) / 2 = (9/2 + 5)/2 = 19/4 = 4.75
+         */
+        assertEquals(4.75, pp.getScore(), 0.01);
         assertEquals(2.0, pp.getQuant());
     }
-
+    
 }

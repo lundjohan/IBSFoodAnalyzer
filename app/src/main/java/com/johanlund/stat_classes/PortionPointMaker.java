@@ -93,7 +93,7 @@ public class PortionPointMaker {
             List<TimePeriod> tps = extractTimePeriods(range, ptAndR.getPortionTimes(), waitHoursAfterMeal, stopHoursAfterMeal, ptAndR.getLastTimeInChunk());
             for (TimePeriod tp: tps){
                 double[] scoreAndWeight = RatingTime.calcAvgAndWeight(tp, ptAndR.getRatings(), ptAndR.getLastTimeInChunk());
-                rangeTotalScore += scoreAndWeight[0];
+                rangeTotalScore += scoreAndWeight[0] * scoreAndWeight[1];
                 rangeTotalQuant += scoreAndWeight[1]; //for every portion max quant is 1.0
             }
         }
