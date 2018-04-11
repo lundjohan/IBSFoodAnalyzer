@@ -1,14 +1,11 @@
 package com.johanlund.stat_classes;
 
-import android.util.Log;
-
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.statistics_portions.PtRatings;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
 import com.johanlund.util.RatingTime;
-import com.johanlund.util.TPUtil;
 import com.johanlund.util.TimePeriod;
 
 import org.threeten.bp.LocalDateTime;
@@ -31,11 +28,15 @@ public class PortionPointMaker {
  */
     public static List<PortionPoint> doPortionsPoints(List<Chunk> chunks, List<PortionStatRange>
             ranges, long startHoursAfterMeal, long
-            stopHoursAfterMeal, int minHoursBetweenMeals) {
+                                                              stopHoursAfterMeal, int
+            minHoursBetweenMeals) {
         List<PtRatings> ptRatings = toPtRatings(chunks);
-        return toReplaceCalcPoints(ptRatings, ranges, startHoursAfterMeal, stopHoursAfterMeal, minHoursBetweenMeals);
+        return toReplaceCalcPoints(ptRatings, ranges, startHoursAfterMeal, stopHoursAfterMeal,
+                minHoursBetweenMeals);
     }
-    private static List<PortionPoint> toReplaceCalcPoints(List<PtRatings> ptr, List<PortionStatRange>
+
+    private static List<PortionPoint> toReplaceCalcPoints(List<PtRatings> ptr,
+                                                          List<PortionStatRange>
             ranges, long startHoursAfterMeal, long stopHoursAfterMeal, int minHoursBetweenMeals) {
         joinTooClosePortions(ptr, minHoursBetweenMeals);
         List<PortionPoint> toReturn = new ArrayList<>();
@@ -45,42 +46,43 @@ public class PortionPointMaker {
         }
         return toReturn;
     }
+
     //not finished
-    private static void joinTooClosePortions(List<PtRatings> PtRatingsList, int minHoursBetweenMeals) {
+    private static void joinTooClosePortions(List<PtRatings> PtRatingsList, int
+            minHoursBetweenMeals) {
         for (PtRatings ptAndR : PtRatingsList) {
             joinToNearPortions2(ptAndR.getPortionTimes(), minHoursBetweenMeals);
         }
     }
+
     /**
      * This function could work in different ways. I have decided to use it in way as below:
-     *
+     * <p>
      * minHoursBetweenMeals == --
      * A1 (before join)
      * --p1---p2-p3---p4-p5-p6-----p7-p8p9
-     *
+     * <p>
      * A2 (after join)
      * --p1---p2p3----p4p5--p6-----p7p8p9-
-     *
+     * <p>
      * p6 will not have joined with p4p5.
      *
-     *
-     *
-     * @param portionTimes in ASC order of time
+     * @param portionTimes         in ASC order of time
      * @param minHoursBetweenMeals
      * @return
      */
     private static void joinToNearPortions2(List<PortionTime> portionTimes, int
             minHoursBetweenMeals) {
-        for (int i = 0;i<portionTimes.size()-1; i++){
+        for (int i = 0; i < portionTimes.size() - 1; i++) {
             LocalDateTime thisP = portionTimes.get(i).getDateTime();
-            LocalDateTime nextP = portionTimes.get(i+1).getDateTime();
-            if (thisP.plusHours(minHoursBetweenMeals).isAfter(nextP)){
-                PortionTime changedP = new PortionTime(portionTimes.get(i+1).getPortionSize(),thisP);
-                portionTimes.set(i+1, changedP);
+            LocalDateTime nextP = portionTimes.get(i + 1).getDateTime();
+            if (thisP.plusHours(minHoursBetweenMeals).isAfter(nextP)) {
+                PortionTime changedP = new PortionTime(portionTimes.get(i + 1).getPortionSize(),
+                        thisP);
+                portionTimes.set(i + 1, changedP);
             }
         }
     }
-
 
 
     static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
@@ -90,9 +92,11 @@ public class PortionPointMaker {
         //format: min
         double rangeTotalQuant = .0;
         for (PtRatings ptAndR : afterJoin) {
-            List<TimePeriod> tps = extractTimePeriods(range, ptAndR.getPortionTimes(), waitHoursAfterMeal, stopHoursAfterMeal, ptAndR.getLastTimeInChunk());
-            for (TimePeriod tp: tps){
-                double[] scoreAndWeight = RatingTime.calcAvgAndWeight(tp, ptAndR.getRatings(), ptAndR.getLastTimeInChunk());
+            List<TimePeriod> tps = extractTimePeriods(range, ptAndR.getPortionTimes(),
+                    waitHoursAfterMeal, stopHoursAfterMeal, ptAndR.getLastTimeInChunk());
+            for (TimePeriod tp : tps) {
+                double[] scoreAndWeight = RatingTime.calcAvgAndWeight(tp, ptAndR.getRatings(),
+                        ptAndR.getLastTimeInChunk());
                 rangeTotalScore += scoreAndWeight[0] * scoreAndWeight[1];
                 rangeTotalQuant += scoreAndWeight[1]; //for every portion max quant is 1.0
             }
@@ -101,6 +105,7 @@ public class PortionPointMaker {
         double avgScore = rangeTotalQuant == 0. ? Double.NaN : rangeTotalScore / rangeTotalQuant;
         return new PortionPoint(range, avgScore, rangeTotalQuant);
     }
+
     /**
      * This is the hard one
      *
@@ -110,20 +115,24 @@ public class PortionPointMaker {
      * @return
      */
     private static List<TimePeriod> extractTimePeriods(PortionStatRange range, List<PortionTime>
-            portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal, LocalDateTime chunkStopTime) {
+            portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal, LocalDateTime
+            chunkStopTime) {
 
         //1. variables: range, portionTimes, waitHoursAfterMeal, stopHoursAfterMeal, chunkStopTime
         List<PortionTime> withinRange = getWithinRange(range, portionTimes);
         List<PortionTime> aboveRange = getAboveRange(range, portionTimes);
 
         //2. withinRange, aboveRange, waitHoursAfterMeal, stopHoursAfterMeal, chunkStopTime
-        List<TimePeriod> tpsWithinRange = getTpsForPortions(withinRange, chunkStopTime, waitHoursAfterMeal, stopHoursAfterMeal);
-        List<TimePeriod> tpsAboveRange = getTpsForPortions(aboveRange, chunkStopTime, waitHoursAfterMeal, stopHoursAfterMeal);
+        List<TimePeriod> tpsWithinRange = getTpsForPortions(withinRange, chunkStopTime,
+                waitHoursAfterMeal, stopHoursAfterMeal);
+        List<TimePeriod> tpsAboveRange = getTpsForPortions(aboveRange, chunkStopTime,
+                waitHoursAfterMeal, stopHoursAfterMeal);
 
         //3. tpsWithinRange, tpsAboveRange
         leftsExceptRights(tpsWithinRange, tpsAboveRange);
         return tpsWithinRange;
     }
+
     private static List<PortionTime> getWithinRange(PortionStatRange range, List<PortionTime>
             portionTimes) {
         List<PortionTime> toReturn = new ArrayList<>();
@@ -181,7 +190,8 @@ public class PortionPointMaker {
      * <p>
      * End result can be that some TimePeriods are left with same start as end value. This must
      * be accounted for later in program.
-     *  @param lefts
+     *
+     * @param lefts
      * @param rights
      */
     private static void leftsExceptRights(List<TimePeriod> lefts, List<TimePeriod> rights) {
@@ -194,7 +204,6 @@ public class PortionPointMaker {
      * About drawings in function.
      * After one or more loops left timepoint can be shorter in length than right.
      * Left is however never longer than right.
-     *
      *
      * @param left
      * @param rightList must be in ASC order, all of same time length as left.
@@ -224,7 +233,7 @@ public class PortionPointMaker {
                    |----------| right
 
              */
-            else if (right.getStart().isBefore(newStart) && right.getEnd().isAfter(newEnd)){
+            else if (right.getStart().isBefore(newStart) && right.getEnd().isAfter(newEnd)) {
                 newStart = newEnd;
                 break;
 
@@ -240,7 +249,7 @@ public class PortionPointMaker {
                    |----------| right
 
              */
-            else if (right.getStart().equals(newEnd) || right.getEnd().equals(newEnd)){
+            else if (right.getStart().equals(newEnd) || right.getEnd().equals(newEnd)) {
                 newStart = newEnd;
                 break;
 
