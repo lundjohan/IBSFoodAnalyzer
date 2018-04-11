@@ -29,12 +29,12 @@ public class Chunk {
         int indBreaks = 0;
         int indStartNewChunk = 0; //incl
         for (int i = 0; i < events.size(); i++) {
-            //since break < event not allowed => fastforward breaks, see ChunkTests when this happens
+            //remove break < event, see ChunkTests when this can occur.
             for (int j = indBreaks; j<breaks.size();j++) {
                 if (breaks.get(indBreaks).getTime().isBefore(events.get(i).getTime())) {
                     indBreaks++;
                 }
-                break; //ok, since breaks are sorted
+                break;
             }
 
             //same as:  last break || last event
