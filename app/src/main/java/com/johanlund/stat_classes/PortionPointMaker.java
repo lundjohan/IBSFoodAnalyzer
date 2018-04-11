@@ -179,7 +179,7 @@ public class PortionPointMaker {
     }
 
     /**
-     * Except == EXCEPT in databaseterms (compare Join, Intersect)
+     * Except == EXCEPT in databaseterms 
      * <p>
      * End result can be that some TimePeriods are left with same start as end value. This must
      * be accounted for later in program.
