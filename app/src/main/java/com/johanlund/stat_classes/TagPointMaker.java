@@ -22,7 +22,7 @@ public class TagPointMaker {
             are sorted, perhaps a cache can be used. A wrapper class called RatingCache perhaps?)*/
 
             double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getRatings(), chunk.getLastTime());
-            if (scoreQuant == null) {
+            if (scoreQuant[1] == 0.0) {
                 continue;
             }
             String name = t.getName();

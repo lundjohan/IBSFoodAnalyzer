@@ -22,7 +22,7 @@ public class PortionPoint implements PointBase{
 
     double quant;
 
-    public PortionPoint(PortionStatRange range, Double score, double quant) {
+    public PortionPoint(PortionStatRange range, double score, double quant) {
         this.range = range;
         this.score = score;
         this.quant = quant;

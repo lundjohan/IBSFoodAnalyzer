@@ -99,7 +99,7 @@ public class RatingTime {
      *
      * @param tp
      * @param manyRatings must be in ASC order (it is not checked for in method).
-     * @return null if ratings are empty, or if there is no Rating before end of tp.
+     * @return [0, 0] if ratings are empty, or if there is no Rating before end of tp.
      * @return [Avg score for tp, factor] where factor/ weight is >0 && <= 1.0. factor
      * later adjusts quantity
      *
@@ -110,7 +110,7 @@ public class RatingTime {
                 !manyRatings.get(0).getTime().isBefore(tp.getEnd())||
                 !tp.getStart().isBefore(endOfChunk)
                 ){
-            return null;
+            return new double []{0.,0.};
         }
         List<Rating> inScope = getRatingsBetweenAndSometimesOneBefore(tp, manyRatings);
         if (inScope.isEmpty()){

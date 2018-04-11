@@ -19,7 +19,7 @@ public class PortionPointMakerTests {
     public void testCorrectPortionPointIsRetrieved(){
         LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1,0,0);
         PortionStatRange range =  new PortionStatRange(0.0f, 1.1f, true);
-        PortionTime pt = new PortionTime(3.0 ,newYear);
+        PortionTime pt = new PortionTime(0.9 ,newYear);
         Rating rStart = new Rating(newYear, 3);
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;

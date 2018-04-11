@@ -7,6 +7,7 @@ import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.statistics_portions.PtRatings;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
+import com.johanlund.util.RatingTime;
 import com.johanlund.util.TPUtil;
 import com.johanlund.util.TimePeriod;
 
@@ -87,21 +88,18 @@ public class PortionPointMaker {
         //format: avg_rating*min
         double rangeTotalScore = .0;
         //format: min
-        double rangeTotalDuration = .0;
+        double rangeTotalQuant = .0;
         for (PtRatings ptAndR : afterJoin) {
-            List<TimePeriod> timePeriods = extractTimePeriods(range, ptAndR.getPortionTimes(), waitHoursAfterMeal, stopHoursAfterMeal, ptAndR.getLastTimeInChunk());
-            double[] scoreAndDurationInMinutes = TPUtil.extractScoreAndDuration(timePeriods, ptAndR
-                    .getRatings());
-            rangeTotalScore += scoreAndDurationInMinutes[0];
-            rangeTotalDuration += scoreAndDurationInMinutes[1];
-        }
-        //cannot divide by zero
-        if (rangeTotalDuration == 0){
-            return new PortionPoint(range, 0.0,0.0);
+            List<TimePeriod> tps = extractTimePeriods(range, ptAndR.getPortionTimes(), waitHoursAfterMeal, stopHoursAfterMeal, ptAndR.getLastTimeInChunk());
+            for (TimePeriod tp: tps){
+                double[] scoreAndWeight = RatingTime.calcAvgAndWeight(tp, ptAndR.getRatings(), ptAndR.getLastTimeInChunk());
+                rangeTotalScore += scoreAndWeight[0];
+                rangeTotalQuant += scoreAndWeight[1]; //for every portion max quant is 1.0
+            }
         }
         //PortionPoint quant should be in hours
-        return new PortionPoint(range, rangeTotalScore / rangeTotalDuration,
-                rangeTotalDuration/60);
+        double avgScore = rangeTotalQuant == 0 ? Double.NaN : rangeTotalScore / rangeTotalQuant;
+        return new PortionPoint(range, avgScore, rangeTotalQuant);
     }
     /**
      * This is the hard one
@@ -264,13 +262,6 @@ public class PortionPointMaker {
                 newStart = right.getEnd(); //FEL! right.end kan ju vara till höger om left.end
                 continue;
             }
-        }
-        Log.d("debug", "---------------------------------------------------------------------------");
-        Log.d("debug", "AFTER LOOP");
-        Log.d("debug", "newStart: "+newStart);
-        Log.d("debug", "newEnd: "+newEnd);
-        if (newEnd.isBefore(newStart)){
-            throw new RuntimeException("newStart should never be after newEnd!");
         }
         return new TimePeriod(newStart, newEnd);
     }
