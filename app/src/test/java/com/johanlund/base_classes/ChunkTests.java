@@ -33,4 +33,35 @@ public class ChunkTests {
 
         assertEquals(2, chunks.size());
     }
+    @Test
+    public void testEventsBecomeOneChunk() {
+        Rating beforeSplit1 = new Rating(newYear, 3);
+        Rating beforeSplit2 = new Rating(newYear.plusHours(1), 3);
+        Break splitter = new Break(newYear.plusHours(2));
+
+        List<Event>events = new ArrayList<>();
+        events.add(beforeSplit1);
+        events.add(beforeSplit2);
+        List<Break>breaks = Arrays.asList(splitter);
+        List<Chunk>chunks = Chunk.makeChunksFromEvents(events, breaks);
+
+        assertEquals(1, chunks.size());
+        assertEquals(2, chunks.get(0).getEvents().size());
+    }
+
+    @Test
+    public void breakAtSameTimeAsEventActsAsIfAfterEvent() {
+        Rating rStart = new Rating(newYear, 3);
+        Break bSameTime = new Break(newYear);
+        Rating rAfterB = new Rating(newYear.plusHours(1), 3);
+
+
+        List<Event>events = new ArrayList<>();
+        events.add(rStart);
+        events.add(rAfterB);
+        List<Break>breaks = Arrays.asList(bSameTime);
+        List<Chunk>chunks = Chunk.makeChunksFromEvents(events, breaks);
+
+        assertEquals(2, chunks.size());
+    }
 }

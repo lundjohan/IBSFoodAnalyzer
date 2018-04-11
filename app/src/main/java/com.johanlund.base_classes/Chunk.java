@@ -5,6 +5,7 @@ import com.johanlund.util.IBSUtil;
 import com.johanlund.util.TimePeriod;
 import com.johanlund.util.Util;
 
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
@@ -33,8 +34,12 @@ public class Chunk {
                 toReturn.add(new Chunk(events.subList(indStartNewChunk, events.size())));
                 break;
             }
-            //same as: break <= event
-            else if (!breaks.get(indBreaks).getTime().isAfter(events.get(i).getTime())) {
+
+            LocalDateTime bTime = breaks.get(indBreaks).getTime();
+            LocalDateTime eTime = events.get(i).getTime();
+            LocalDateTime nextETime = events.get(i+1).getTime(); //this is ok due to former if
+            //same as: b <= e && b<nextE
+            if (!bTime.isBefore(eTime) && bTime.isBefore(nextETime)) {
                 toReturn.add(new Chunk(events.subList(indStartNewChunk, i)));
                 indBreaks++;
                 indStartNewChunk = i;
