@@ -5,7 +5,6 @@ import com.johanlund.util.IBSUtil;
 import com.johanlund.util.TimePeriod;
 import com.johanlund.util.Util;
 
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
 //class solely in use for legacy reasons with TagPoints.
 
 public class Chunk {
-    List<Event> events = new ArrayList<>();
+    List<Event> events;
 
     private Chunk(List<Event> events) {
         this.events = events;
@@ -39,12 +38,12 @@ public class Chunk {
 
             LocalDateTime bTime = breaks.get(indBreaks).getTime();
             LocalDateTime eTime = events.get(i).getTime();
-            LocalDateTime nextETime = events.get(i+1).getTime(); //this is ok due to former if
+            LocalDateTime nextETime = events.get(i + 1).getTime(); //this is ok due to former if
             //same as: e <= b < nextE
             if (!bTime.isBefore(eTime) && bTime.isBefore(nextETime)) {
-                toReturn.add(new Chunk(events.subList(indStartNewChunk, i+1)));
+                toReturn.add(new Chunk(events.subList(indStartNewChunk, i + 1)));
                 indBreaks++;
-                indStartNewChunk = i+1;
+                indStartNewChunk = i + 1;
             }
         }
         return toReturn;
