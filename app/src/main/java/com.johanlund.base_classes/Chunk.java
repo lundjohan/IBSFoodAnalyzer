@@ -30,6 +30,8 @@ public class Chunk {
         int indBreaks = 0;
         int indStartNewChunk = 0; //incl
         for (int i = 0; i < events.size(); i++) {
+
+            //same as:  last break || last event
             if (breaks.size() <= indBreaks || i == events.size() - 1) {
                 toReturn.add(new Chunk(events.subList(indStartNewChunk, events.size())));
                 break;
@@ -38,11 +40,11 @@ public class Chunk {
             LocalDateTime bTime = breaks.get(indBreaks).getTime();
             LocalDateTime eTime = events.get(i).getTime();
             LocalDateTime nextETime = events.get(i+1).getTime(); //this is ok due to former if
-            //same as: b <= e && b<nextE
+            //same as: e <= b < nextE
             if (!bTime.isBefore(eTime) && bTime.isBefore(nextETime)) {
-                toReturn.add(new Chunk(events.subList(indStartNewChunk, i)));
+                toReturn.add(new Chunk(events.subList(indStartNewChunk, i+1)));
                 indBreaks++;
-                indStartNewChunk = i;
+                indStartNewChunk = i+1;
             }
         }
         return toReturn;
