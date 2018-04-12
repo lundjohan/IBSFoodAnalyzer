@@ -18,13 +18,6 @@ public class PortionTime {
         this.dateTime = dateTime;
     }
 
-    //copy constructor
-    public PortionTime (PortionTime ptOrig){
-        this.portionSize = ptOrig.portionSize;
-
-        //localdatetime is inmutable
-        this.dateTime = ptOrig.getTime();
-    }
     public double getPSize() {
         return portionSize;
     }

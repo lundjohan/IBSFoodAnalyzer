@@ -76,10 +76,10 @@ public class PortionPointMaker {
      */
     static List<PortionTime> joinTooClosePortions2(final List<PortionTime> ptsOrig, int
             minDist) {
-        //deep copy
+        //deep copy (PortionTime is immutable)
         List<PortionTime> pts = new ArrayList<>();
         for(PortionTime pt : ptsOrig) {
-            pts.add(new PortionTime(pt));
+            pts.add(pt);
         }
         List<PortionTime>toReturn = new ArrayList<>();
         for (int i = 0; i < pts.size(); i++) {
