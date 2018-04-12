@@ -10,9 +10,12 @@ import com.johanlund.util.RatingTime;
 import com.johanlund.util.TimePeriod;
 
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.johanlund.statistics_portions.PtRatings.toPtRatings;
@@ -80,36 +83,53 @@ public class PortionPointMaker {
      */
     static List<PortionTime> joinTooClosePortions2(final List<PortionTime> ptsOrig, int
             minDist) {
-        //deep copy (PortionTime is immutable)
-        List<PortionTime> pts = new ArrayList<>();
-        for(PortionTime pt : ptsOrig) {
-            pts.add(pt);
-        }
-        List<PortionTime>toReturn = new ArrayList<>();
-        for (int i = pts.size()-1; i >= 0; i--) {
 
-            // last element to be looped
-            if (i == 0){
-                toReturn.add(pts.get(i));
-            }
-
-            // p1 + minDist > p2
-            else  if (pts.get(i-1).getTime().plusHours(minDist).isAfter(pts.get(i).getTime())){
-                PortionTime enlargedP = new PortionTime(pts.get(i-1).getPSize()+pts.get(i).getPSize(), pts.get(i).getTime() );
-                pts.set(i-1, enlargedP);
-            }
-            // p1 + minDist <= p2
-            else{
-                toReturn.add(pts.get(i));
-            }
-
-        }
-        List<PortionTime>reversed = new ArrayList<>();
-        for (int j= toReturn.size()-1; j>= 0;j--){
-            reversed.add(toReturn.get(j));
-        }
-        return reversed;
+        return joinPt(ptsOrig.get(0), minDist, ptsOrig.subList(1, ptsOrig.size()), new ArrayList<PortionTime>(),minDist);
     }
+
+    //recursive function
+    /*
+    - > minDist
+    ----p1-p2-p3-----
+    =>
+    -------p2-p3    end result
+           p1
+     it will not end up as this:
+     ----------p3    then it could join forever
+               p2
+               p1
+     nor like this:
+     -----p1---p3     also plausible (equally good)solution, but the furthest above was simpler
+               p2
+     */
+
+    /**
+     *
+     * @param p1
+     * @param distRema, if larger distances between portions => join
+     * @param ptsOrig
+     * @param toList
+     * @return
+     */
+    private static List<PortionTime> joinPt(PortionTime p1, int distRema, List<PortionTime> ptsOrig,
+                               List<PortionTime>toList, int originalMinDist) {
+        if (ptsOrig.isEmpty()){
+            toList.add(p1);
+            return toList;
+        }
+        PortionTime p2 = ptsOrig.get(0);
+        if (p1.getTime().plusHours(distRema).isAfter(p2.getTime())){
+            PortionTime joinedPt = new PortionTime(p1.getPSize() + p2.getPSize(), p2.getTime());
+            joinPt(joinedPt, distRema - (int)(p2.getTime().toEpochSecond(ZoneOffset.UTC)-p1.getTime().toEpochSecond(ZoneOffset.UTC))/(60*60), ptsOrig.subList(1, ptsOrig.size()), toList, originalMinDist);
+        }
+        else{
+            joinPt(p2, originalMinDist, ptsOrig.subList(1, ptsOrig.size()), toList, originalMinDist);
+            toList.add(p1);
+        }
+        return toList;
+    }
+
+
     static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
             afterJoin, long waitHoursAfterMeal, long stopHoursAfterMeal) {
         //format: avg_rating*quant

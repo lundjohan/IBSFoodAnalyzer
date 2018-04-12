@@ -161,12 +161,12 @@ public class PortionPointMakerTests {
      * ---p1-p2-p3--
      *
      * A2 (after join)
-     * ---p1----p3--
-     *          p2
-     * p1 will not have joined with p2p3.
+     * ------p2-p3--
+     *       p1
+     *
      */
     @Test
-    public void join_p2p3_butNot_p1(){
+    public void join_p1p2_butNot_p3(){
         int minMealDist = 2;
         PortionTime p1 = new PortionTime(1.0, newYear);
         PortionTime p2 = new PortionTime(2.0, newYear.plusHours(1));
@@ -174,10 +174,10 @@ public class PortionPointMakerTests {
         List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2, p3),minMealDist);
         assertEquals(2, pts.size());
 
-        assertEquals(1.,pts.get(0).getPSize());
-        assertEquals(8.,pts.get(1).getPSize());
+        assertEquals(3.,pts.get(0).getPSize());
+        assertEquals(6.,pts.get(1).getPSize());
 
-        assertEquals(newYear,pts.get(0).getTime());
+        assertEquals(newYear.plusHours(1),pts.get(0).getTime());
         assertEquals(newYear.plusHours(2),pts.get(1).getTime());
     }
     //adjusted for join right
