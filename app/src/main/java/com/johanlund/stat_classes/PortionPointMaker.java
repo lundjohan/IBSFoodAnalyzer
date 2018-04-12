@@ -104,7 +104,11 @@ public class PortionPointMaker {
             }
 
         }
-        return toReturn;
+        List<PortionTime>reversed = new ArrayList<>();
+        for (int j= toReturn.size()-1; j>= 0;j--){
+            reversed.add(toReturn.get(j));
+        }
+        return reversed;
     }
     static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
             afterJoin, long waitHoursAfterMeal, long stopHoursAfterMeal) {
