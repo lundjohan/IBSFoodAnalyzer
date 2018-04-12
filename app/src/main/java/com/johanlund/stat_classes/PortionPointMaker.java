@@ -78,16 +78,21 @@ public class PortionPointMaker {
         for (int i = 0; i < pts.size(); i++) {
 
             // last element || p1 + minDist <= p2
-            if (i == pts.size() - 1 || !pts.get(i).getTime().plusHours(minDist).isAfter(pts.get(i + 1).getTime())){
+            if (i == pts.size() - 1){
                 toReturn.add(pts.get(i));
             }
 
-            // p1 + minDist > p2
-            else  {
-                PortionTime enlargedP = new PortionTime(pts.get(i).getPSize()+pts.get(i+1).getPSize(), pts.get(i).getTime() );
+            // p1 + minDist > p2, is recursive to solve fact that more than 2 portions can join at same time.
+            else  if (pts.get(i).getTime().plusHours(minDist).isAfter(pts.get(i + 1).getTime())){
+                List<PortionTime>allPJoinedAtP1 = joinTooClosePortions2(pts.subList(i, i+1), minDist);
+                PortionTime enlargedP = new PortionTime(allPJoinedAtP1.get(i).getPSize()+allPJoinedAtP1.get(i+1).getPSize(), allPJoinedAtP1.get(i).getTime() );
                 toReturn.add(enlargedP);
-                ++i;
             }
+            // p1 + minDist <= p2
+            else{
+                toReturn.add(pts.get(i));
+            }
+
         }
         return toReturn;
     }
