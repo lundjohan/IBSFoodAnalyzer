@@ -11,6 +11,7 @@ import com.johanlund.util.TimePeriod;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.johanlund.statistics_portions.PtRatings.toPtRatings;
@@ -82,11 +83,10 @@ public class PortionPointMaker {
                 toReturn.add(pts.get(i));
             }
 
-            // p1 + minDist > p2, is recursive to solve fact that more than 2 portions can join at same time.
+            // p1 + minDist > p2, is recursive to solve: p1-p2-p3 => p1p2-3 => p1p2p3
             else  if (pts.get(i).getTime().plusHours(minDist).isAfter(pts.get(i + 1).getTime())){
-                List<PortionTime>allPJoinedAtP1 = joinTooClosePortions2(pts.subList(i, i+1), minDist);
-                PortionTime enlargedP = new PortionTime(allPJoinedAtP1.get(i).getPSize()+allPJoinedAtP1.get(i+1).getPSize(), allPJoinedAtP1.get(i).getTime() );
-                toReturn.add(enlargedP);
+                PortionTime enlargedP = new PortionTime(pts.get(i).getPSize()+pts.get(i+1).getPSize(), pts.get(i).getTime() );
+                pts.set(i+1, enlargedP);
             }
             // p1 + minDist <= p2
             else{
