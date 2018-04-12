@@ -87,9 +87,9 @@ public class PortionPointMaker {
 
     static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
             afterJoin, long waitHoursAfterMeal, long stopHoursAfterMeal) {
-        //format: avg_rating*min
+        //format: avg_rating*quant
         double rangeTotalScore = .0;
-        //format: min
+        //format: quant
         double rangeTotalQuant = .0;
         for (PtRatings ptAndR : afterJoin) {
             List<TimePeriod> tps = extractTimePeriods(range, ptAndR.getPortionTimes(),
@@ -114,9 +114,9 @@ public class PortionPointMaker {
      * @param chunkStopTime
      * @return
      */
-    private static List<TimePeriod> extractTimePeriods(PortionStatRange range, List<PortionTime>
+    static List<TimePeriod> extractTimePeriods(PortionStatRange range, List<PortionTime>
             portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal, LocalDateTime
-            chunkStopTime) {
+                                                       chunkStopTime) {
 
         //1. variables: range, portionTimes, waitHoursAfterMeal, stopHoursAfterMeal, chunkStopTime
         List<PortionTime> withinRange = getWithinRange(range, portionTimes);
