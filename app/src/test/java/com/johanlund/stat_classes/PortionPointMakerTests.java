@@ -5,6 +5,7 @@ import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.statistics_portions.PtRatings;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
+import com.johanlund.util.TimePeriod;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
@@ -14,11 +15,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.johanlund.stat_classes.PortionPointMaker.joinTooClosePortions2;
+import static com.johanlund.stat_classes.PortionPointMaker.simpleExtractTimePeriods;
+import static com.johanlund.stat_classes.PortionPointMaker.toReplaceCalcPoints;
 import static junit.framework.Assert.assertEquals;
 
 public class PortionPointMakerTests {
     final static LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0);
     final static PortionStatRange range = new PortionStatRange(0.0f, 1.1f, true);
+
 
     //==============================================================================================
     // normal use cases tests
@@ -190,5 +194,41 @@ public class PortionPointMakerTests {
         assertEquals(1, pts.size());
         assertEquals(9.,pts.get(0).getPSize());
         assertEquals(newYear,pts.get(0).getTime());
+    }
+    //=> p1p2p3
+    @Test
+    public void testHigherUpWithJoinThirdP() {
+        //from test closest above
+        // p1 + minMealDist < p3
+        int minMealDist = 3;
+        //total portion size will be 3*0,3 = 0.9 == within range
+        PortionTime p1 = new PortionTime(0.3, newYear);
+        PortionTime p2 = new PortionTime(0.3, newYear.plusHours(1));
+        PortionTime p3 = new PortionTime(0.3, newYear.plusHours(2));
+
+        Rating rStart = new Rating(newYear.minusHours(1), 3);
+        Rating r2 = new Rating(newYear.plusHours(4), 5);
+        long startHoursAfterMeal = 0;
+        long stopHoursAfterMeal = 8;
+
+        PtRatings ptRatings = new PtRatings(Arrays.asList(p1, p2, p3), Arrays.asList(rStart, r2), newYear.plusHours(20));
+        List<PortionPoint> pps = toReplaceCalcPoints(Arrays.asList(ptRatings), Arrays.asList(range),startHoursAfterMeal, stopHoursAfterMeal, 20 );
+
+
+         //2 meals has moved to place of first (i realize now this is pretty fucked up, it would be better if they instead moved to the right one, the score thereafter will more be affected by a big meal than the first one)
+        assertEquals(1,pps.size());
+         assertEquals(4., pps.get(0).getScore(), 0.01);
+        assertEquals(1.0, pps.get(0).getQuant());
+    }
+    //==============================================================================================
+    // simple extract time periods
+    //==============================================================================================
+    @Test
+    public void testSimpleCase_simpleExtractTimePeriods(){
+        PortionTime p1 =  new PortionTime(0.9, newYear);
+        List<TimePeriod> tps = simpleExtractTimePeriods(range, Arrays.asList(p1),0,8);
+        assertEquals(1, tps.size());
+        assertEquals(newYear,tps.get(0).getStart());
+        assertEquals(newYear.plusHours(8),tps.get(0).getEnd());
     }
 }

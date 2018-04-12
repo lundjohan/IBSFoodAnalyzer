@@ -37,23 +37,27 @@ public class PortionPointMaker {
                 minHoursBetweenMeals);
     }
 
-    private static List<PortionPoint> toReplaceCalcPoints(List<PtRatings> ptr,
+    static List<PortionPoint> toReplaceCalcPoints(List<PtRatings> ptr,
                                                           List<PortionStatRange>
             ranges, long startHoursAfterMeal, long stopHoursAfterMeal, int minHoursBetweenMeals) {
-        joinTooClosePortions(ptr, minHoursBetweenMeals);
+        List<PtRatings> ptrJoined = joinTooClosePortions(ptr, minHoursBetweenMeals);
         List<PortionPoint> toReturn = new ArrayList<>();
         for (PortionStatRange range : ranges) {
-            PortionPoint pp = getPPForRange(range, ptr, startHoursAfterMeal, stopHoursAfterMeal);
+            PortionPoint pp = getPPForRange(range, ptrJoined, startHoursAfterMeal, stopHoursAfterMeal);
             toReturn.add(pp);
         }
         return toReturn;
     }
 
-    private static void joinTooClosePortions(List<PtRatings> PtRatingsList, int
+    private static List<PtRatings> joinTooClosePortions(List<PtRatings> PtRatingsList, int
             minHoursBetweenMeals) {
+        List<PtRatings>toReturn = new ArrayList<>();
         for (PtRatings ptAndR : PtRatingsList) {
-            joinTooClosePortions2(ptAndR.getPortionTimes(), minHoursBetweenMeals);
+            List<PortionTime> pts = joinTooClosePortions2(ptAndR.getPortionTimes(), minHoursBetweenMeals);
+            PtRatings ptr = new PtRatings(pts, ptAndR.getRatings(), ptAndR.getLastTimeInChunk());
+            toReturn.add(ptr);
         }
+        return toReturn;
     }
 
     /**
@@ -123,7 +127,7 @@ public class PortionPointMaker {
         return new PortionPoint(range, avgScore, rangeTotalQuant);
     }
 
-    private static List<TimePeriod> simpleExtractTimePeriods(PortionStatRange range, List<PortionTime>
+    static List<TimePeriod> simpleExtractTimePeriods(PortionStatRange range, List<PortionTime>
             portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal) {
 
         //1. variables: range, portionTimes, waitHoursAfterMeal, stopHoursAfterMeal
@@ -163,6 +167,7 @@ public class PortionPointMaker {
         List<PortionTime> toReturn = new ArrayList<>();
         for (PortionTime pt : portionTimes) {
             //startPortions (incl), endPortions (excl)
+            // range.start <= pt.size < range.stop
             if (pt.getPSize() >= range.getRangeStart() && pt.getPSize() < range
                     .getRangeStop()) {
                 toReturn.add(pt);
