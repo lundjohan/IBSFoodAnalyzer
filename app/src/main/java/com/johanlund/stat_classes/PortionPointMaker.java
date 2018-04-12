@@ -86,17 +86,17 @@ public class PortionPointMaker {
             pts.add(pt);
         }
         List<PortionTime>toReturn = new ArrayList<>();
-        for (int i = 0; i < pts.size(); i++) {
+        for (int i = pts.size()-1; i >= 0; i--) {
 
-            // last element || p1 + minDist <= p2
-            if (i == pts.size() - 1){
+            // last element to be looped
+            if (i == 0){
                 toReturn.add(pts.get(i));
             }
 
-            // p1 + minDist > p2, is recursive to solve: p1-p2-p3 => p1p2-3 => p1p2p3
-            else  if (pts.get(i).getTime().plusHours(minDist).isAfter(pts.get(i + 1).getTime())){
-                PortionTime enlargedP = new PortionTime(pts.get(i).getPSize()+pts.get(i+1).getPSize(), pts.get(i).getTime() );
-                pts.set(i+1, enlargedP);
+            // p1 + minDist > p2
+            else  if (pts.get(i-1).getTime().plusHours(minDist).isAfter(pts.get(i).getTime())){
+                PortionTime enlargedP = new PortionTime(pts.get(i-1).getPSize()+pts.get(i).getPSize(), pts.get(i).getTime() );
+                pts.set(i-1, enlargedP);
             }
             // p1 + minDist <= p2
             else{

@@ -118,18 +118,18 @@ public class PortionPointMakerTests {
     }
 
     //==============================================================================================
-    // tests close portions
+    // tests join p1->p2 (join goes in right direction)
     //==============================================================================================
     /*
 
      p = portion
         ----p1-p2---- +
         minHoursBetweenMeals > one line (-)  =>
-        ----p1p2----- (portions bundled togehter at time for p1)
-
+        -------p2---- (portions bundled togehter at time for p1)
+               p1
      */
     @Test
-    public void twoClosePortionsJoinToAtPlaceOfFirst(){
+    public void p1_And_p2_JoinToAtPlaceOf_p2(){
         //minMealDist > p2 - p1
         int minMealDist = 4;
         PortionTime p1 = new PortionTime(1.0, newYear);
@@ -137,7 +137,7 @@ public class PortionPointMakerTests {
         List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2),minMealDist);
         assertEquals(1, pts.size());
         assertEquals(3.,pts.get(0).getPSize());
-        assertEquals(newYear,pts.get(0).getTime());
+        assertEquals(newYear.plusHours(2),pts.get(0).getTime());
     }
     @Test
     public void dontJoin(){
@@ -155,19 +155,18 @@ public class PortionPointMakerTests {
         assertEquals(newYear.plusHours(2),pts.get(1).getTime());
     }
 
-    /*
+    /*//adjusted for join right
      * minDist == --
      * A1 (before join)
      * ---p1-p2-p3--
      *
      * A2 (after join)
-     * ---p1p2--p3--
-     *
-     * p3 will not have joined with p1p2.
+     * ---p1----p3--
+     *          p2
+     * p1 will not have joined with p2p3.
      */
     @Test
-    public void dontJoinThirdP(){
-        // p2 - p1 > minMealDist > p3 - p1p2
+    public void join_p2p3_butNot_p1(){
         int minMealDist = 2;
         PortionTime p1 = new PortionTime(1.0, newYear);
         PortionTime p2 = new PortionTime(2.0, newYear.plusHours(1));
@@ -175,12 +174,13 @@ public class PortionPointMakerTests {
         List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2, p3),minMealDist);
         assertEquals(2, pts.size());
 
-        assertEquals(3.,pts.get(0).getPSize());
-        assertEquals(6.,pts.get(1).getPSize());
+        assertEquals(1.,pts.get(0).getPSize());
+        assertEquals(8.,pts.get(1).getPSize());
 
         assertEquals(newYear,pts.get(0).getTime());
         assertEquals(newYear.plusHours(2),pts.get(1).getTime());
     }
+    //adjusted for join right
     //=> p1p2p3
     @Test
     public void doJoinThirdP(){
@@ -193,7 +193,7 @@ public class PortionPointMakerTests {
 
         assertEquals(1, pts.size());
         assertEquals(9.,pts.get(0).getPSize());
-        assertEquals(newYear,pts.get(0).getTime());
+        assertEquals(newYear.plusHours(2),pts.get(0).getTime());
     }
     //=> p1p2p3
     @Test
@@ -207,7 +207,7 @@ public class PortionPointMakerTests {
         PortionTime p3 = new PortionTime(0.3, newYear.plusHours(2));
 
         Rating rStart = new Rating(newYear.minusHours(1), 3);
-        Rating r2 = new Rating(newYear.plusHours(4), 5);
+        Rating r2 = new Rating(newYear.plusHours(6), 5);
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
 
@@ -215,7 +215,7 @@ public class PortionPointMakerTests {
         List<PortionPoint> pps = toReplaceCalcPoints(Arrays.asList(ptRatings), Arrays.asList(range),startHoursAfterMeal, stopHoursAfterMeal, 20 );
 
 
-         //2 meals has moved to place of first (i realize now this is pretty fucked up, it would be better if they instead moved to the right one, the score thereafter will more be affected by a big meal than the first one)
+         //2 meals has moved to place of third
         assertEquals(1,pps.size());
          assertEquals(4., pps.get(0).getScore(), 0.01);
         assertEquals(1.0, pps.get(0).getQuant());
