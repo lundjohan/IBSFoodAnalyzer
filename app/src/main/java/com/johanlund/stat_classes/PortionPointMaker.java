@@ -1,5 +1,7 @@
 package com.johanlund.stat_classes;
 
+import android.util.Log;
+
 import com.google.android.gms.plus.model.people.Person;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PortionPoint;
@@ -123,8 +125,9 @@ public class PortionPointMaker {
             joinPt(joinedPt, distRema - (int)(p2.getTime().toEpochSecond(ZoneOffset.UTC)-p1.getTime().toEpochSecond(ZoneOffset.UTC))/(60*60), ptsOrig.subList(1, ptsOrig.size()), toList, originalMinDist);
         }
         else{
-            joinPt(p2, originalMinDist, ptsOrig.subList(1, ptsOrig.size()), toList, originalMinDist);
             toList.add(p1);
+            joinPt(p2, originalMinDist, ptsOrig.subList(1, ptsOrig.size()), toList, originalMinDist);
+
         }
         return toList;
     }
