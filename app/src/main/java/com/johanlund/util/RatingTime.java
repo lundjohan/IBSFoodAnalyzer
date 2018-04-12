@@ -95,28 +95,30 @@ public class RatingTime {
     }
 
     /**
-     * method is adjusting ratings to tp to fit with RatingTime conditions (see diagrams above constructor)
+     * This method is vastly tested! See tests (wich includes diagrams) for full understanding.
      *
-     * @param tp
+     * method is adjusting ratings to rawTp to fit with RatingTime conditions (see diagrams above constructor)
+     *
+     * @param rawTp, should not have been prior adjusted to short chunkEnd, or late start of Rating.
      * @param manyRatings must be in ASC order (it is not checked for in method).
-     * @return [0, 0] if ratings are empty, or if there is no Rating before end of tp.
-     * @return [Avg score for tp, factor] where factor/ weight is >0 && <= 1.0. factor
-     * later adjusts quantity
+     * @return [0, 0] if ratings are empty, or if there is no Rating before end of rawTp.
+     * @return [Avg score for rawTp, factor] where 0 > weight <= 1.0. Weight
+     * can higher up in hierarchy be multiplied with raw quantitity, or duration.
      *
      */
-    public static double[] calcAvgAndWeight(TimePeriod tp, List<Rating> manyRatings, LocalDateTime endOfChunk){
+    public static double[] calcAvgAndWeight(TimePeriod rawTp, List<Rating> manyRatings, LocalDateTime endOfChunk){
         //see drawings above constructor.
         if (manyRatings.isEmpty() ||
-                !manyRatings.get(0).getTime().isBefore(tp.getEnd())||
-                !tp.getStart().isBefore(endOfChunk)
+                !manyRatings.get(0).getTime().isBefore(rawTp.getEnd())||
+                !rawTp.getStart().isBefore(endOfChunk)
                 ){
             return new double []{0.,0.};
         }
-        List<Rating> inScope = getRatingsBetweenAndSometimesOneBefore(tp, manyRatings);
+        List<Rating> inScope = getRatingsBetweenAndSometimesOneBefore(rawTp, manyRatings);
         if (inScope.isEmpty()){
             return null;
         }
-        RatingTime rt = new RatingTime(tp, inScope, endOfChunk);
+        RatingTime rt = new RatingTime(rawTp, inScope, endOfChunk);
         return rt.calcAvgPoints();
     }
 

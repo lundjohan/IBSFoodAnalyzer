@@ -5,14 +5,12 @@ import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.statistics_portions.PtRatings;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
-import com.johanlund.util.TimePeriod;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -61,7 +59,27 @@ public class PortionPointMakerTests {
         assertEquals(2.0, pp.getQuant());
     }
     @Test
-    public void testCutOffTimePeriod() {
+    public void testChunkEndIsEarly() {
+        PortionTime pt1 = new PortionTime(0.8, newYear);
+        Rating rStart = new Rating(newYear, 3);
+
+        //chunk end < stopHoursAfterMeal
+        PtRatings ptRatings = new PtRatings(Arrays.asList(pt1), Arrays.asList(rStart), newYear.plusHours(6));
+
+        long startHoursAfterMeal = 0;
+        long stopHoursAfterMeal = 8;
+
+        PortionPoint pp = PortionPointMaker.getPPForRange(range, Arrays.asList(ptRatings),
+                startHoursAfterMeal, stopHoursAfterMeal);
+
+        assertEquals(3., pp.getScore(), 0.01);
+
+        //6H 8/H = 3/4 = 0.75
+        assertEquals(0.75, pp.getQuant());
+    }
+    //late start of Rating and early end of chunk end
+    @Test
+    public void testCutOffTimePeriodFromBothSides() {
         //one only, within range
         PortionTime pt1 = new PortionTime(0.8, newYear);
 
@@ -84,21 +102,5 @@ public class PortionPointMakerTests {
         assertEquals(3.6666, pp.getScore(), 0.01);
         assertEquals(0.5, pp.getQuant());
 
-    }
-    //same as above more or less, but testing other method. Test above failed first time, and the problem should lie here
-    @Test
-    public void testCutOffTimePeriod_ExtractTimePeriods() {
-        //one only, within range
-        PortionTime pt1 = new PortionTime(0.8, newYear);
-
-        Rating rStart = new Rating(newYear.plusHours(2), 3);
-        long startHoursAfterMeal = 0;
-        long stopHoursAfterMeal = 6;
-
-        List<TimePeriod> tps = PortionPointMaker.extractTimePeriods(range, Arrays.asList(pt1), startHoursAfterMeal, stopHoursAfterMeal, newYear.plusHours(5));
-        assertEquals(1, tps.size());
-        TimePeriod tp = tps.get(0);
-        assertEquals(newYear.plusHours(2), tp.getStart());
-        assertEquals(newYear.plusHours(5), tp.getEnd());
     }
 }

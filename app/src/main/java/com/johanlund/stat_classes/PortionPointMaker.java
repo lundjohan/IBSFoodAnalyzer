@@ -92,10 +92,10 @@ public class PortionPointMaker {
         //format: quant
         double rangeTotalQuant = .0;
         for (PtRatings ptAndR : afterJoin) {
-            List<TimePeriod> tps = extractTimePeriods(range, ptAndR.getPortionTimes(),
-                    waitHoursAfterMeal, stopHoursAfterMeal, ptAndR.getLastTimeInChunk());
-            for (TimePeriod tp : tps) {
-                double[] scoreAndWeight = RatingTime.calcAvgAndWeight(tp, ptAndR.getRatings(),
+            List<TimePeriod> rawTps = simpleExtractTimePeriods(range, ptAndR.getPortionTimes(),
+                    waitHoursAfterMeal, stopHoursAfterMeal);
+            for (TimePeriod rawTp : rawTps) {
+                double[] scoreAndWeight = RatingTime.calcAvgAndWeight(rawTp, ptAndR.getRatings(),
                         ptAndR.getLastTimeInChunk());
                 rangeTotalScore += scoreAndWeight[0] * scoreAndWeight[1];
                 rangeTotalQuant += scoreAndWeight[1]; //for every portion max quant is 1.0
@@ -104,6 +104,41 @@ public class PortionPointMaker {
         //PortionPoint quant should be in hours
         double avgScore = rangeTotalQuant == 0. ? Double.NaN : rangeTotalScore / rangeTotalQuant;
         return new PortionPoint(range, avgScore, rangeTotalQuant);
+    }
+
+    private static List<TimePeriod> simpleExtractTimePeriods(PortionStatRange range, List<PortionTime>
+            portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal) {
+
+        //1. variables: range, portionTimes, waitHoursAfterMeal, stopHoursAfterMeal
+        List<PortionTime> withinRange = getWithinRange(range, portionTimes);
+        List<PortionTime> aboveRange = getAboveRange(range, portionTimes);
+
+        //2. withinRange, aboveRange, waitHoursAfterMeal, stopHoursAfterMeal
+        List<TimePeriod> tpsWithinRange = getRawTps(withinRange,
+                waitHoursAfterMeal, stopHoursAfterMeal);
+        List<TimePeriod> tpsAboveRange = getRawTps(aboveRange,
+                waitHoursAfterMeal, stopHoursAfterMeal);
+
+        //3. tpsWithinRange, tpsAboveRange
+        leftsExceptRights(tpsWithinRange, tpsAboveRange);
+        return tpsWithinRange;
+    }
+
+    /**
+     * @param pts
+     * @param startHour
+     * @param stopHour
+     * @return TimePeriods that has not been subjected (yet) to early chunkEnd or late start of ratings
+     */
+    private static List<TimePeriod> getRawTps(List<PortionTime> pts, long startHour,
+                                              long stopHour) {
+        List<TimePeriod>toReturn = new ArrayList<>();
+        for (PortionTime pt:pts){
+            LocalDateTime start = pt.getDateTime().plusHours(startHour);
+            LocalDateTime end = pt.getDateTime().plusHours(stopHour);
+            toReturn.add(new TimePeriod(start,end));
+        }
+        return toReturn;
     }
 
     /**
@@ -123,9 +158,9 @@ public class PortionPointMaker {
         List<PortionTime> aboveRange = getAboveRange(range, portionTimes);
 
         //2. withinRange, aboveRange, waitHoursAfterMeal, stopHoursAfterMeal, chunkStopTime
-        List<TimePeriod> tpsWithinRange = getTpsForPortions(withinRange, chunkStopTime,
+        List<TimePeriod> tpsWithinRange = getRawTps(withinRange, chunkStopTime,
                 waitHoursAfterMeal, stopHoursAfterMeal);
-        List<TimePeriod> tpsAboveRange = getTpsForPortions(aboveRange, chunkStopTime,
+        List<TimePeriod> tpsAboveRange = getRawTps(aboveRange, chunkStopTime,
                 waitHoursAfterMeal, stopHoursAfterMeal);
 
         //3. tpsWithinRange, tpsAboveRange
@@ -164,7 +199,7 @@ public class PortionPointMaker {
      * @param chunkStopTime
      * @return
      */
-    private static List<TimePeriod> getTpsForPortions(List<PortionTime> withinRange, LocalDateTime
+    private static List<TimePeriod> getRawTps(List<PortionTime> withinRange, LocalDateTime
             chunkStopTime, long waitHoursAfterMeal, long stopHoursAfterMeal) {
         List<TimePeriod> toReturn = new ArrayList<>();
         for (PortionTime pt : withinRange) {
