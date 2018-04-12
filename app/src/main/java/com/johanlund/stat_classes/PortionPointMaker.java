@@ -1,5 +1,6 @@
 package com.johanlund.stat_classes;
 
+import com.google.android.gms.plus.model.people.Person;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
@@ -69,12 +70,17 @@ public class PortionPointMaker {
      * <p>
      * p6 will not have joined with p4p5.
      *
-     * @param pts         in ASC order of time
+     * @param ptsOrig         in ASC order of time, will not be changed in method.
      * @param minDist == minHourDistanceBetweenMeals
      * @return
      */
-    static List<PortionTime> joinTooClosePortions2(List<PortionTime> pts, int
+    static List<PortionTime> joinTooClosePortions2(final List<PortionTime> ptsOrig, int
             minDist) {
+        //deep copy
+        List<PortionTime> pts = new ArrayList<>();
+        for(PortionTime pt : ptsOrig) {
+            pts.add(new PortionTime(pt));
+        }
         List<PortionTime>toReturn = new ArrayList<>();
         for (int i = 0; i < pts.size(); i++) {
 
