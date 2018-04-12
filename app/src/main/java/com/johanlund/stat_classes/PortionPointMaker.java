@@ -77,22 +77,14 @@ public class PortionPointMaker {
         List<PortionTime>toReturn = new ArrayList<>();
         for (int i = 0; i < pts.size(); i++) {
 
-            // last element
-            if (i == pts.size() - 1){
-                toReturn.add(pts.get(i));
-                break;
-            }
-            LocalDateTime p1 = pts.get(i).getTime();
-            LocalDateTime p2 = pts.get(i + 1).getTime();
-
-            // p1 + minDist <= p2
-            if (i == pts.size() - 1 || !p1.plusHours(minDist).isAfter(p2)){
+            // last element || p1 + minDist <= p2
+            if (i == pts.size() - 1 || !pts.get(i).getTime().plusHours(minDist).isAfter(pts.get(i + 1).getTime())){
                 toReturn.add(pts.get(i));
             }
 
             // p1 + minDist > p2
             else  {
-                PortionTime enlargedP = new PortionTime(pts.get(i).getPSize()+pts.get(i+1).getPSize(),p1);
+                PortionTime enlargedP = new PortionTime(pts.get(i).getPSize()+pts.get(i+1).getPSize(), pts.get(i).getTime() );
                 toReturn.add(enlargedP);
                 ++i;
             }
