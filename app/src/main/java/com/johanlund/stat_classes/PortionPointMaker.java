@@ -83,8 +83,6 @@ public class PortionPointMaker {
             }
         }
     }
-
-
     static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
             afterJoin, long waitHoursAfterMeal, long stopHoursAfterMeal) {
         //format: avg_rating*quant
@@ -141,33 +139,6 @@ public class PortionPointMaker {
         return toReturn;
     }
 
-    /**
-     * This is the hard one
-     *
-     * @param range
-     * @param portionTimes
-     * @param chunkStopTime
-     * @return
-     */
-    static List<TimePeriod> extractTimePeriods(PortionStatRange range, List<PortionTime>
-            portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal, LocalDateTime
-                                                       chunkStopTime) {
-
-        //1. variables: range, portionTimes, waitHoursAfterMeal, stopHoursAfterMeal, chunkStopTime
-        List<PortionTime> withinRange = getWithinRange(range, portionTimes);
-        List<PortionTime> aboveRange = getAboveRange(range, portionTimes);
-
-        //2. withinRange, aboveRange, waitHoursAfterMeal, stopHoursAfterMeal, chunkStopTime
-        List<TimePeriod> tpsWithinRange = getRawTps(withinRange, chunkStopTime,
-                waitHoursAfterMeal, stopHoursAfterMeal);
-        List<TimePeriod> tpsAboveRange = getRawTps(aboveRange, chunkStopTime,
-                waitHoursAfterMeal, stopHoursAfterMeal);
-
-        //3. tpsWithinRange, tpsAboveRange
-        leftsExceptRights(tpsWithinRange, tpsAboveRange);
-        return tpsWithinRange;
-    }
-
     private static List<PortionTime> getWithinRange(PortionStatRange range, List<PortionTime>
             portionTimes) {
         List<PortionTime> toReturn = new ArrayList<>();
@@ -190,32 +161,6 @@ public class PortionPointMaker {
             if (pt.getPortionSize() >= range.getRangeStop()) {
                 toReturn.add(pt);
             }
-        }
-        return toReturn;
-    }
-
-    /**
-     * @param withinRange   must be in ASC order.
-     * @param chunkStopTime
-     * @return
-     */
-    private static List<TimePeriod> getRawTps(List<PortionTime> withinRange, LocalDateTime
-            chunkStopTime, long waitHoursAfterMeal, long stopHoursAfterMeal) {
-        List<TimePeriod> toReturn = new ArrayList<>();
-        for (PortionTime pt : withinRange) {
-            LocalDateTime start = pt.getDateTime().plusHours(waitHoursAfterMeal);
-            LocalDateTime stop = pt.getDateTime().plusHours(stopHoursAfterMeal);
-
-            //we have to deal with the fact that the TimePeriod we are building might overflow
-            // chunkStopTime
-            if (stop.isAfter(chunkStopTime)) {
-                if (!start.isBefore(chunkStopTime)) {
-                    //no point in continuing
-                    break;
-                }
-                stop = chunkStopTime;
-            }
-            toReturn.add(new TimePeriod(start, stop));
         }
         return toReturn;
     }
