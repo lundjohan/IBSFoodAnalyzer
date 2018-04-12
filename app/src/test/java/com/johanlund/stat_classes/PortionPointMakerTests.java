@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -219,6 +220,13 @@ public class PortionPointMakerTests {
         assertEquals(1,pps.size());
          assertEquals(4., pps.get(0).getScore(), 0.01);
         assertEquals(1.0, pps.get(0).getQuant());
+    }
+    @Test
+    public void joinTooClosePortionsDoesntCrashWithSmallListAsParameter(){
+        //this can happen in app
+        List<PortionTime>emptyList = new ArrayList<>();
+        List<PortionTime> returned = joinTooClosePortions2(emptyList, 3);
+        assertEquals(0, returned.size());
     }
     //==============================================================================================
     // simple extract time periods

@@ -85,7 +85,9 @@ public class PortionPointMaker {
      */
     static List<PortionTime> joinTooClosePortions2(final List<PortionTime> ptsOrig, int
             minDist) {
-
+        if (ptsOrig.size()<2){
+            return ptsOrig;
+        }
         return joinPt(ptsOrig.get(0), minDist, ptsOrig.subList(1, ptsOrig.size()), new ArrayList<PortionTime>(),minDist);
     }
 
