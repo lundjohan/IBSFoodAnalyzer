@@ -11,12 +11,18 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
 import java.util.Arrays;
+import java.util.List;
 
+import static com.johanlund.stat_classes.PortionPointMaker.joinTooClosePortions2;
 import static junit.framework.Assert.assertEquals;
 
 public class PortionPointMakerTests {
     final static LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0);
     final static PortionStatRange range = new PortionStatRange(0.0f, 1.1f, true);
+
+    //==============================================================================================
+    // normal use cases tests
+    //==============================================================================================
     @Test
     public void testGetPortionPointWithOnePortion() {
         //one only, within range
@@ -58,6 +64,9 @@ public class PortionPointMakerTests {
         assertEquals(4.75, pp.getScore(), 0.01);
         assertEquals(2.0, pp.getQuant());
     }
+    //==============================================================================================
+    // shorten timeperiods from left and right
+    //==============================================================================================
     @Test
     public void testChunkEndIsEarly() {
         PortionTime pt1 = new PortionTime(0.8, newYear);
@@ -103,4 +112,43 @@ public class PortionPointMakerTests {
         assertEquals(0.5, pp.getQuant());
 
     }
+
+    //==============================================================================================
+    // tests close portions
+    //==============================================================================================
+    /*
+
+     p = portion
+        ----p1-p2---- +
+        minHoursBetweenMeals > one line (-)  =>
+        ----p1p2----- (portions bundled togehter at time for p1)
+
+     */
+    @Test
+    public void twoClosePortionsJoinToAtPlaceOfFirst(){
+        //minMealDist > p2 - p1
+        int minMealDist = 4;
+        PortionTime p1 = new PortionTime(1.0, newYear);
+        PortionTime p2 = new PortionTime(2.0, newYear.plusHours(2));
+        List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2),minMealDist);
+        assertEquals(1, pts.size());
+        assertEquals(3.,pts.get(0).getPSize());
+        assertEquals(newYear,pts.get(0).getTime());
+    }
+    @Test
+    public void dontJoin(){
+        //minMealDist < p2 - p1
+        int minMealDist = 1;
+        PortionTime p1 = new PortionTime(1.0, newYear);
+        PortionTime p2 = new PortionTime(2.0, newYear.plusHours(2));
+        List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2),minMealDist);
+        assertEquals(2, pts.size());
+
+        assertEquals(1.,pts.get(0).getPSize());
+        assertEquals(2.,pts.get(1).getPSize());
+
+        assertEquals(newYear,pts.get(0).getTime());
+        assertEquals(newYear.plusHours(2),pts.get(1).getTime());
+    }
+
 }

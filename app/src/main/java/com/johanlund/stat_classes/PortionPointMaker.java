@@ -47,18 +47,19 @@ public class PortionPointMaker {
         return toReturn;
     }
 
-    //not finished
     private static void joinTooClosePortions(List<PtRatings> PtRatingsList, int
             minHoursBetweenMeals) {
         for (PtRatings ptAndR : PtRatingsList) {
-            joinToNearPortions2(ptAndR.getPortionTimes(), minHoursBetweenMeals);
+            joinTooClosePortions2(ptAndR.getPortionTimes(), minHoursBetweenMeals);
         }
     }
 
     /**
+     * If two portions are too close to each other, they should be gathered together into one.
+     *
      * This function could work in different ways. I have decided to use it in way as below:
      * <p>
-     * minHoursBetweenMeals == --
+     * minDist == --
      * A1 (before join)
      * --p1---p2-p3---p4-p5-p6-----p7-p8p9
      * <p>
@@ -67,21 +68,36 @@ public class PortionPointMaker {
      * <p>
      * p6 will not have joined with p4p5.
      *
-     * @param portionTimes         in ASC order of time
-     * @param minHoursBetweenMeals
+     * @param pts         in ASC order of time
+     * @param minDist == minHourDistanceBetweenMeals
      * @return
      */
-    private static void joinToNearPortions2(List<PortionTime> portionTimes, int
-            minHoursBetweenMeals) {
-        for (int i = 0; i < portionTimes.size() - 1; i++) {
-            LocalDateTime thisP = portionTimes.get(i).getDateTime();
-            LocalDateTime nextP = portionTimes.get(i + 1).getDateTime();
-            if (thisP.plusHours(minHoursBetweenMeals).isAfter(nextP)) {
-                PortionTime changedP = new PortionTime(portionTimes.get(i + 1).getPortionSize(),
-                        thisP);
-                portionTimes.set(i + 1, changedP);
+    static List<PortionTime> joinTooClosePortions2(List<PortionTime> pts, int
+            minDist) {
+        List<PortionTime>toReturn = new ArrayList<>();
+        for (int i = 0; i < pts.size(); i++) {
+
+            // last element
+            if (i == pts.size() - 1){
+                toReturn.add(pts.get(i));
+                break;
+            }
+            LocalDateTime p1 = pts.get(i).getTime();
+            LocalDateTime p2 = pts.get(i + 1).getTime();
+
+            // p1 + minDist <= p2
+            if (i == pts.size() - 1 || !p1.plusHours(minDist).isAfter(p2)){
+                toReturn.add(pts.get(i));
+            }
+
+            // p1 + minDist > p2
+            else  {
+                PortionTime enlargedP = new PortionTime(pts.get(i).getPSize()+pts.get(i+1).getPSize(),p1);
+                toReturn.add(enlargedP);
+                ++i;
             }
         }
+        return toReturn;
     }
     static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
             afterJoin, long waitHoursAfterMeal, long stopHoursAfterMeal) {
@@ -132,8 +148,8 @@ public class PortionPointMaker {
                                               long stopHour) {
         List<TimePeriod>toReturn = new ArrayList<>();
         for (PortionTime pt:pts){
-            LocalDateTime start = pt.getDateTime().plusHours(startHour);
-            LocalDateTime end = pt.getDateTime().plusHours(stopHour);
+            LocalDateTime start = pt.getTime().plusHours(startHour);
+            LocalDateTime end = pt.getTime().plusHours(stopHour);
             toReturn.add(new TimePeriod(start,end));
         }
         return toReturn;
@@ -144,7 +160,7 @@ public class PortionPointMaker {
         List<PortionTime> toReturn = new ArrayList<>();
         for (PortionTime pt : portionTimes) {
             //startPortions (incl), endPortions (excl)
-            if (pt.getPortionSize() >= range.getRangeStart() && pt.getPortionSize() < range
+            if (pt.getPSize() >= range.getRangeStart() && pt.getPSize() < range
                     .getRangeStop()) {
                 toReturn.add(pt);
             }
@@ -158,7 +174,7 @@ public class PortionPointMaker {
         for (PortionTime pt : portionTimes) {
             //since endPortions is excl, we want larger or same to get portions that doesn't fit
             // range => the ones we are interested in here
-            if (pt.getPortionSize() >= range.getRangeStop()) {
+            if (pt.getPSize() >= range.getRangeStop()) {
                 toReturn.add(pt);
             }
         }

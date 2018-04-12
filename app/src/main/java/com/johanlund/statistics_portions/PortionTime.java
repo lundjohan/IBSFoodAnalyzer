@@ -18,11 +18,11 @@ public class PortionTime {
         this.dateTime = dateTime;
     }
 
-    public double getPortionSize() {
+    public double getPSize() {
         return portionSize;
     }
 
-    public LocalDateTime getDateTime() {
+    public LocalDateTime getTime() {
         return dateTime;
     }
 }
