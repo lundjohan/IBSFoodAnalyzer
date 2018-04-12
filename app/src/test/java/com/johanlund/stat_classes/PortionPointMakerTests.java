@@ -151,4 +151,44 @@ public class PortionPointMakerTests {
         assertEquals(newYear.plusHours(2),pts.get(1).getTime());
     }
 
+    /*
+     * minDist == --
+     * A1 (before join)
+     * ---p1-p2-p3--
+     *
+     * A2 (after join)
+     * ---p1p2--p3--
+     *
+     * p3 will not have joined with p1p2.
+     */
+    @Test
+    public void dontJoinThirdP(){
+        // p2 - p1 > minMealDist > p3 - p1p2
+        int minMealDist = 2;
+        PortionTime p1 = new PortionTime(1.0, newYear);
+        PortionTime p2 = new PortionTime(2.0, newYear.plusHours(1));
+        PortionTime p3 = new PortionTime(6.0, newYear.plusHours(2));
+        List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2, p3),minMealDist);
+        assertEquals(2, pts.size());
+
+        assertEquals(3.,pts.get(0).getPSize());
+        assertEquals(6.,pts.get(1).getPSize());
+
+        assertEquals(newYear,pts.get(0).getTime());
+        assertEquals(newYear.plusHours(2),pts.get(1).getTime());
+    }
+    //=> p1p2p3
+    @Test
+    public void doJoinThirdP(){
+        // p1 + minMealDist < p3
+        int minMealDist = 3;
+        PortionTime p1 = new PortionTime(1.0, newYear);
+        PortionTime p2 = new PortionTime(2.0, newYear.plusHours(1));
+        PortionTime p3 = new PortionTime(6.0, newYear.plusHours(2));
+        List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2, p3),minMealDist);
+
+        assertEquals(1, pts.size());
+        assertEquals(9.,pts.get(0).getPSize());
+        assertEquals(newYear,pts.get(0).getTime());
+    }
 }
