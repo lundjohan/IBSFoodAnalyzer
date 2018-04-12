@@ -26,5 +26,10 @@ public class PortionTime {
         return dateTime;
     }
 
+    @Override
+    public String toString(){
+        return dateTime +", pSize: " +portionSize;
+    }
+
 }
 
