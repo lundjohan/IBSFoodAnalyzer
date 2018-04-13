@@ -103,7 +103,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
         ec = new EventsContainer(this, getContext());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
-        ec.initiateRecyclerView(recyclerView, this.getContext());
+        ec.initiateRecyclerView(recyclerView, true, this.getContext());
 
         //b is not allowed to be null
         Bundle b = this.getArguments();

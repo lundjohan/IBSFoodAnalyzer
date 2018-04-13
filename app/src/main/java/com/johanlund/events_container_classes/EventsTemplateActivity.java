@@ -108,7 +108,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec.eventsOfDay = getStartingEvents();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         View buttons = findViewById(R.id.buttons);
-        ec.initiateRecyclerView(recyclerView, this);
+        ec.initiateRecyclerView(recyclerView, false,this);
         ec.adapter.notifyDataSetChanged();
 
         //Set up EventButtonsContainer

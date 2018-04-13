@@ -86,12 +86,12 @@ public class EventsContainer {
     }
 
 
-    public void initiateRecyclerView(RecyclerView recyclerView, Context layoutInitiator) {
+    public void initiateRecyclerView(RecyclerView recyclerView, boolean colorRating, Context layoutInitiator) {
         this.recyclerView = recyclerView;
         layoutManager = new LinearLayoutManager(layoutInitiator, LinearLayoutManager
                 .VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new EventAdapter(eventsOfDay, user, context);
+        adapter = new EventAdapter(eventsOfDay, user, colorRating, context);
         recyclerView.setAdapter(adapter);
         Util.addLineSeparator(recyclerView, layoutManager);
     }
@@ -129,6 +129,4 @@ public class EventsContainer {
     public View getItemView(int pos) {
         return layoutManager.findViewByPosition(pos);
     }
-
-
 }

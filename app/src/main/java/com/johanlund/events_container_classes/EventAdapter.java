@@ -43,12 +43,14 @@ import static com.johanlund.ibsfoodanalyzer.R.id.tagQuantities;
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> daysEvents = new ArrayList<>();
     private EventAdapterUser usingEntity;
+    private boolean shouldHaveColorRating = true;
     //this is used solely to retrieve resources
     private Context context;
 
-    public EventAdapter(List<Event> daysEvents, EventAdapterUser usingEntity, Context context) {
+    public EventAdapter(List<Event> daysEvents, EventAdapterUser usingEntity, boolean shouldHaveColorRating, Context context) {
         this.daysEvents = daysEvents;
         this.usingEntity = usingEntity;
+        this.shouldHaveColorRating = shouldHaveColorRating;
         this.context = context;
     }
 
@@ -160,8 +162,10 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             eventHolder.comment.setText(event.getComment());
         }
 
-        //add color to show rating score graphically
-        eventHolder.colorFromRating.setBackgroundColor(retrieveRatingColor(position));
+        if (shouldHaveColorRating) {
+            //add color to show rating score graphically
+            eventHolder.colorFromRating.setBackgroundColor(retrieveRatingColor(position));
+        }
 
 
         switch (holder.getItemViewType()) {

@@ -29,7 +29,7 @@
         android:layout_marginEnd="0dp"
         android:layout_marginTop="0.1dp"
         android:layout_marginBottom="0.1dp"
-        android:background="#00b2ff"
+        android:background="?android:colorBackground"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/break_line"
         app:layout_constraintVertical_bias="0.0"/>
