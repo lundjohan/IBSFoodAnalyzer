@@ -9,15 +9,16 @@ import com.johanlund.statistics_settings.SettingsBaseActivity;
 
 public class PortionStatSettingsMoreActivity extends SettingsBaseActivity {
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     protected PreferenceFragment getFragment() {
         return new PortionsRatingSettingsFragment();
     }
 
     public static class PortionsRatingSettingsFragment extends PreferenceFragment {
-        public PortionsRatingSettingsFragment() {
-
-        }
-
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
