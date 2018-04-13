@@ -293,6 +293,9 @@ public class PortionPointMakerTests {
     //@Test
     // /public void cutFromEastTwice() {}
 
+
+    //chunk end is far away.
+    //the only thing that happens is that p1's tp is shortened by a portion larger than allowed range
     @Test
     public void EXCEPTInHighHierarchyTest(){
         //within range
@@ -306,8 +309,8 @@ public class PortionPointMakerTests {
 
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);
 
-        assertEquals(3.,pp.getScore());
+        assertEquals(3.,pp.getScore(), 0.001);
         //quant == weight ==  4H / 10H = 2/5 = 0.4
-        assertEquals(0.4,pp.getQuant());
+        assertEquals(0.4,pp.getQuant(), 0.0001);
     }
 }

@@ -134,21 +134,24 @@ public class PortionPointMaker {
         return toList;
     }
 
-
+    /**
+     * @param startHour != stopHour
+     */
     static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
-            afterJoin, long waitHoursAfterMeal, long stopHoursAfterMeal) {
+            afterJoin, long startHour, long stopHour) {
         //format: avg_rating*quant
         double rangeTotalScore = .0;
         //format: quant
         double rangeTotalQuant = .0;
         for (PtRatings ptAndR : afterJoin) {
             List<TimePeriod> rawTps = simpleExtractTimePeriods(range, ptAndR.getPortionTimes(),
-                    waitHoursAfterMeal, stopHoursAfterMeal);
+                    startHour, stopHour);
             for (TimePeriod rawTp : rawTps) {
                 double[] scoreAndWeight = RatingTime.calcAvgAndWeight(rawTp, ptAndR.getRatings(),
                         ptAndR.getLastTimeInChunk());
-                rangeTotalScore += scoreAndWeight[0] * scoreAndWeight[1];
-                rangeTotalQuant += scoreAndWeight[1]; //for every portion max quant is 1.0
+                double weightAdjForEXCEPT = scoreAndWeight[1] * rawTp.getLengthSec()/ (stopHour-startHour)/60/60;
+                rangeTotalScore += scoreAndWeight[0] * weightAdjForEXCEPT;
+                rangeTotalQuant += weightAdjForEXCEPT; //for every portion max quant is 1.0
             }
         }
         //PortionPoint quant should be in hours
