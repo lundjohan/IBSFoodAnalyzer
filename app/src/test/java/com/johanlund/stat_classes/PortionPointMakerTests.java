@@ -242,6 +242,10 @@ public class PortionPointMakerTests {
     }
     //==============================================================================================
     // test in-range portions EXCEPT too-big portions
+    // (remember that right can never be smaller && in the middle of left scope,
+    // so we don't have to test that left is cut in two parts)
+    //
+    // rights are occurring in asc order
     //==============================================================================================
     @Test
     public void cutFromWest(){
@@ -273,5 +277,10 @@ public class PortionPointMakerTests {
         TimePeriod leftRemains = leftExceptRights(left, Arrays.asList(r1));
         assertEquals(0,leftRemains.getLengthSec());
     }
+    //this never happens (rights are occurring in asc order)!
+    //public void cutFromWestTwice(){}
+
+    //this never happens (rights are occurring in asc order)!
+    //public void cutFromEastTwice() {}
 
 }

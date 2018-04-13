@@ -261,6 +261,8 @@ public class PortionPointMaker {
             else if (right.getStart().isAfter(newEnd)) {
                 break;
             }
+
+
              /* This more or less happens everytime, and early so good to have high up.
 
                       |-----| left
@@ -287,8 +289,11 @@ public class PortionPointMaker {
             /*Case C.
             |--------| left
                    |----------| right
+            or (this shouldn't be necessary since right >= left, but better be safe than sorry)
+                   |-------------| left
+                   |-----| right
             */
-            else if (right.getStart().isBefore(newEnd) && right.getStart().isAfter(newStart)) {
+            else if (right.getStart().isBefore(newEnd) && !right.getStart().isBefore(newStart)) {
                 newEnd = right.getStart();
                 break;
             }
@@ -296,9 +301,14 @@ public class PortionPointMaker {
             /*Case D.
                    |------| left
             |----------| right
+
+            or (this shouldn't be necessary since right >= left, but better be safe than sorry)
+            |-------------| left
+            |-----| right
+
              */
-            else if (right.getEnd().isAfter(newStart) && right.getStart().isBefore(newStart)) {
-                newStart = right.getEnd(); //FEL! right.end kan ju vara till höger om left.end
+            else if (right.getEnd().isAfter(newStart) && !right.getStart().isAfter(newStart)) {
+                newStart = right.getEnd();
                 continue;
             }
         }
