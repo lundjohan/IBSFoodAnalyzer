@@ -114,8 +114,7 @@ public class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void deleteRange(int pos) {
         ranges.remove(pos);
-        this.notifyItemRemoved(pos);
-        this.notifyItemChanged(pos);
+        notifyDataSetChanged();
         //put in shared preferences to be able to retrieve the same settings at upstart
         tinydb.putListPortionRange(context.getResources().getString(R.string.portions_ranges_key), ranges);
 
