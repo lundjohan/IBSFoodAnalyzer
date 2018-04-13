@@ -266,5 +266,12 @@ public class PortionPointMakerTests {
         assertEquals(newYear.plusHours(6),leftRemains.getStart());
         assertEquals(newYear.plusHours(8),leftRemains.getEnd());
     }
+    @Test
+    public void rightCoversAndErasesAllOfLeft(){
+        TimePeriod left = new TimePeriod(newYear, newYear.plusHours(4));
+        TimePeriod r1 = new TimePeriod(newYear, newYear.plusHours(6));
+        TimePeriod leftRemains = leftExceptRights(left, Arrays.asList(r1));
+        assertEquals(0,leftRemains.getLengthSec());
+    }
 
 }

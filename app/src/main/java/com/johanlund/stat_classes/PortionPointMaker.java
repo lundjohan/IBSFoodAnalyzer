@@ -262,30 +262,28 @@ public class PortionPointMaker {
                 break;
             }
              /* This more or less happens everytime, and early so good to have high up.
+
                       |-----| left
                    |----------| right
-
-             */
-            else if (right.getStart().isBefore(newStart) && right.getEnd().isAfter(newEnd)) {
-                newStart = newEnd;
-                break;
-
-            }
-            /*Equals. This should never happen since Meals are not allowed to be at same
-            time. However, after some loops here we might be at this state.
-
+                   or
+                   Equals. This should never happen in beginning since Meals are not allowed to be at same
+                    time. However, after some loops here we might be at this state.
                    |-----| left
                    |----------| right
                    or
                         |-----| left
                    |----------| right
+                   or
+                   |----------| left
+                   |----------| right
 
              */
-            else if (right.getStart().equals(newEnd) || right.getEnd().equals(newEnd)) {
+            else if (!right.getStart().isAfter(newStart) && !right.getEnd().isBefore(newEnd)) {
                 newStart = newEnd;
                 break;
 
             }
+
             /*Case C.
             |--------| left
                    |----------| right
