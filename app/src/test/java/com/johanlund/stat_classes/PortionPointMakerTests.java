@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.johanlund.stat_classes.PortionPointMaker.joinTooClosePortions2;
+import static com.johanlund.stat_classes.PortionPointMaker.leftExceptRights;
 import static com.johanlund.stat_classes.PortionPointMaker.simpleExtractTimePeriods;
 import static com.johanlund.stat_classes.PortionPointMaker.toReplaceCalcPoints;
 import static junit.framework.Assert.assertEquals;
@@ -243,8 +244,27 @@ public class PortionPointMakerTests {
     // test in-range portions EXCEPT too-big portions
     //==============================================================================================
     @Test
-    public void t(){
+    public void cutFromWest(){
+        //same length (here: 10) all tps in the beginning
+        TimePeriod left = new TimePeriod(newYear, newYear.plusHours(10));
+        TimePeriod r1 = new TimePeriod(newYear.minusHours(4), newYear.minusHours(4).plusHours(10));
 
+        //pardon the pun, variable name should be leftRemains
+        TimePeriod leftover = leftExceptRights(left, Arrays.asList(r1));
+        assertEquals(newYear.plusHours(6),leftover.getStart());
+        assertEquals(newYear.plusHours(10),leftover.getEnd());
+    }
+    @Test
+    public void cutFromWestAndRight(){
+        TimePeriod left = new TimePeriod(newYear, newYear.plusHours(10));
+        //end == 6 hours into the new year
+        TimePeriod r1 = new TimePeriod(newYear.minusHours(4), newYear.minusHours(4).plusHours(10));
+        //start == 8 hours into the new year
+        TimePeriod r2 = new TimePeriod(newYear.plusHours(8), newYear.plusHours(8).plusHours(10));
+
+        TimePeriod leftRemains = leftExceptRights(left, Arrays.asList(r1, r2));
+        assertEquals(newYear.plusHours(6),leftRemains.getStart());
+        assertEquals(newYear.plusHours(8),leftRemains.getEnd());
     }
 
 }

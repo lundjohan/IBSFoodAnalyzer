@@ -242,7 +242,7 @@ public class PortionPointMaker {
      * @param rightList must be in ASC order, all of same time length as left.
      * @return
      */
-    private static TimePeriod leftExceptRights(TimePeriod left, List<TimePeriod> rightList) {
+    static TimePeriod leftExceptRights(TimePeriod left, final List<TimePeriod> rightList) {
         LocalDateTime newStart = left.getStart();
         LocalDateTime newEnd = left.getEnd();
         for (TimePeriod right : rightList) {
@@ -272,9 +272,8 @@ public class PortionPointMaker {
 
             }
             /*Equals. This should never happen since Meals are not allowed to be at same
-            time. However, there might have been some thing I have foreseen higher in code, or user
-            might have mixed with imports and I
-            therefor let this stand.
+            time. However, after some loops here we might be at this state.
+
                    |-----| left
                    |----------| right
                    or
@@ -291,7 +290,7 @@ public class PortionPointMaker {
             |--------| left
                    |----------| right
             */
-            else if (right.getStart().isBefore(newEnd) && right.getStart().isAfter(newEnd)) {
+            else if (right.getStart().isBefore(newEnd) && right.getStart().isAfter(newStart)) {
                 newEnd = right.getStart();
                 break;
             }
