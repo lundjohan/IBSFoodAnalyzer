@@ -315,7 +315,7 @@ public class PortionPointMakerTests {
     }
     //lets complicate things a little bit
     @Test
-    public void EXCEPT_And_ChunkEnd_InHighHierarchyTest(){
+    public void EXCEPT_And_LateRating_InHighHierarchyTest(){
         //within range
         PortionTime p1 = new PortionTime(0.9, newYear);
         //too large
