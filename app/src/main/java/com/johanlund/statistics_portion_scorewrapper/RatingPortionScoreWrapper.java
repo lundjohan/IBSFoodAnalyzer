@@ -14,6 +14,8 @@ import com.johanlund.util.TimePeriod;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -65,5 +67,16 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
     @Override
     public List<PortionPoint> calcPoints(List<Chunk> chunks) {
         return PortionPointMaker.doPortionsPoints(chunks, ranges, waitHoursAfterMeal, stopHoursAfterMeal, minHoursBetweenMeals);
+    }
+    @Override
+    public List<PortionPoint> toSortedList(List<PortionPoint> points) {
+        Collections.sort(points, new Comparator<PortionPoint>() {
+                    @Override
+                    public int compare(PortionPoint p1, PortionPoint p2) {
+                        return (int) ((p1.getScore() - p2.getScore())*100);
+                    }
+                }
+        );
+        return points;
     }
 }
