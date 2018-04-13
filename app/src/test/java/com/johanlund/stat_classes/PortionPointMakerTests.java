@@ -304,7 +304,7 @@ public class PortionPointMakerTests {
         PortionTime p2 = new PortionTime(1.5, newYear.plusHours(4));
         Rating r1 = new Rating(newYear, 3);
         Rating r2 = new Rating(newYear.plusHours(4), 3);
-        PtRatings ptr = new PtRatings(Arrays.asList(p1,p2), Arrays.asList(r1), newYear.plusHours(20));
+        PtRatings ptr = new PtRatings(Arrays.asList(p1,p2), Arrays.asList(r1, r2), newYear.plusHours(20));
 
 
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);
