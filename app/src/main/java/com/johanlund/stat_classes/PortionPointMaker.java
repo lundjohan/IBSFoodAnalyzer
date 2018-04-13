@@ -91,7 +91,7 @@ public class PortionPointMaker {
         return joinPt(ptsOrig.get(0), minDist, ptsOrig.subList(1, ptsOrig.size()), new ArrayList<PortionTime>(),minDist);
     }
 
-    //recursive function
+    //recursive function, WELL TESTED
     /*
     - > minDist
     ----p1-p2-p3-----
@@ -110,13 +110,13 @@ public class PortionPointMaker {
     /**
      *
      * @param p1
-     * @param distRema, if larger distances between portions => join
+     * @param distRema, 0 <= disRem <= distMin
      * @param ptsOrig
      * @param toList
      * @return
      */
     private static List<PortionTime> joinPt(PortionTime p1, int distRema, List<PortionTime> ptsOrig,
-                               List<PortionTime>toList, int originalMinDist) {
+                               List<PortionTime>toList, final int minDist) {
         if (ptsOrig.isEmpty()){
             toList.add(p1);
             return toList;
@@ -124,11 +124,11 @@ public class PortionPointMaker {
         PortionTime p2 = ptsOrig.get(0);
         if (p1.getTime().plusHours(distRema).isAfter(p2.getTime())){
             PortionTime joinedPt = new PortionTime(p1.getPSize() + p2.getPSize(), p2.getTime());
-            joinPt(joinedPt, distRema - (int)(p2.getTime().toEpochSecond(ZoneOffset.UTC)-p1.getTime().toEpochSecond(ZoneOffset.UTC))/(60*60), ptsOrig.subList(1, ptsOrig.size()), toList, originalMinDist);
+            joinPt(joinedPt, distRema - (int)(p2.getTime().toEpochSecond(ZoneOffset.UTC)-p1.getTime().toEpochSecond(ZoneOffset.UTC))/(60*60), ptsOrig.subList(1, ptsOrig.size()), toList, minDist);
         }
         else{
             toList.add(p1);
-            joinPt(p2, originalMinDist, ptsOrig.subList(1, ptsOrig.size()), toList, originalMinDist);
+            joinPt(p2, minDist, ptsOrig.subList(1, ptsOrig.size()), toList, minDist);
 
         }
         return toList;

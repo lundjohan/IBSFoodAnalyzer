@@ -239,4 +239,12 @@ public class PortionPointMakerTests {
         assertEquals(newYear,tps.get(0).getStart());
         assertEquals(newYear.plusHours(8),tps.get(0).getEnd());
     }
+    //==============================================================================================
+    // test in-range portions EXCEPT too-big portions
+    //==============================================================================================
+    @Test
+    public void t(){
+
+    }
+
 }
