@@ -313,4 +313,19 @@ public class PortionPointMakerTests {
         //quant == weight ==  4H / 10H = 2/5 = 0.4
         assertEquals(0.4,pp.getQuant(), 0.0001);
     }
+    //lets complicate things a little bit
+    @Test
+    public void EXCEPT_And_ChunkEnd_InHighHierarchyTest(){
+        //within range
+        PortionTime p1 = new PortionTime(0.9, newYear);
+        //too large
+        PortionTime p2 = new PortionTime(1.5, newYear.plusHours(4));
+        Rating rLate = new Rating(newYear.plusHours(1), 3);
+        PtRatings ptr = new PtRatings(Arrays.asList(p1,p2), Arrays.asList(rLate), newYear.plusHours(20));
+
+        PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);
+
+        //quant == weight ==  3H / 10H = 0.333..
+        assertEquals(0.3333,pp.getQuant(), 0.01);
+    }
 }
