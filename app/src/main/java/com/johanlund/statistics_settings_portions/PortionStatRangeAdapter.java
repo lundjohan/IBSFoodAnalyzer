@@ -17,6 +17,7 @@ import com.johanlund.external_classes.TinyDB;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Johan on 2018-01-23.
@@ -105,7 +106,7 @@ public class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public void addRange(PortionStatRange portionStatRange) {
         ranges.add(portionStatRange);
-
+        Collections.sort(ranges);
         //put in shared preferences to be able to retrieve the same settings at upstart
         tinydb.putListPortionRange(context.getResources().getString(R.string.portions_ranges_key), ranges);
 

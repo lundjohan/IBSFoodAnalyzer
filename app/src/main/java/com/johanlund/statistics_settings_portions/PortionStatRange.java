@@ -1,10 +1,12 @@
 package com.johanlund.statistics_settings_portions;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by Johan on 2018-01-23.
  */
 
-public class PortionStatRange {
+public class PortionStatRange implements Comparable<PortionStatRange>{
     //inclusive
     private float rangeStart;
 
@@ -38,5 +40,14 @@ public class PortionStatRange {
         return String.format("%.1f", rangeStart) + "-" + String.format("%.1f", rangeStop);
 
 
+    }
+
+    @Override
+    public int compareTo(@NonNull PortionStatRange p2) {
+        int startDiff = (int)((rangeStart - p2.getRangeStart())*100);
+        if (startDiff == 0){
+            return (int)((rangeStop - p2.getRangeStop())*100);
+        }
+        return startDiff;
     }
 }
