@@ -277,9 +277,18 @@ public class PortionPointMakerTests {
         TimePeriod leftRemains = leftExceptRights(left, Arrays.asList(r1));
         assertEquals(0,leftRemains.getLengthSec());
     }
-    //this never happens (rights are occurring in asc order)!
-    //public void cutFromWestTwice(){}
+    //this can happen (rights are occurring in asc order)!
+    @Test
+    public void cutFromWestTwice(){
+        TimePeriod left = new TimePeriod(newYear, newYear.plusHours(10));
+        TimePeriod rEast1 = new TimePeriod(newYear, newYear.plusHours(3));
+        TimePeriod rEast2 = new TimePeriod(newYear.plusHours(2), newYear.plusHours(8));
 
+        //pardon the pun, variable name should be leftRemains
+        TimePeriod leftRemains = leftExceptRights(left, Arrays.asList(rEast1, rEast2));
+        assertEquals(newYear.plusHours(8),leftRemains.getStart());
+        assertEquals(newYear.plusHours(10),leftRemains.getEnd());
+    }
     //this never happens (rights are occurring in asc order)!
     //public void cutFromEastTwice() {}
 
