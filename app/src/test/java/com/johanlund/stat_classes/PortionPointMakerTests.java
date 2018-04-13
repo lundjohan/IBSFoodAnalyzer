@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.johanlund.stat_classes.PortionPointMaker.getPPForRange;
 import static com.johanlund.stat_classes.PortionPointMaker.joinTooClosePortions2;
 import static com.johanlund.stat_classes.PortionPointMaker.leftExceptRights;
 import static com.johanlund.stat_classes.PortionPointMaker.simpleExtractTimePeriods;
@@ -39,7 +40,7 @@ public class PortionPointMakerTests {
 
         PtRatings ptRatings = new PtRatings(Arrays.asList(ptWithinRange), Arrays.asList(rStart),
                 newYear.plusHours(10));
-        PortionPoint pp = PortionPointMaker.getPPForRange(range, Arrays.asList(ptRatings),
+        PortionPoint pp = getPPForRange(range, Arrays.asList(ptRatings),
                 startHoursAfterMeal, stopHoursAfterMeal);
 
         assertEquals(3.0, pp.getScore());
@@ -59,7 +60,7 @@ public class PortionPointMakerTests {
 
         PtRatings ptRatings = new PtRatings(Arrays.asList(pt1, pt2), Arrays.asList(rStart,
                 rLater), newYear.plusHours(20));
-        PortionPoint pp = PortionPointMaker.getPPForRange(range, Arrays.asList(ptRatings),
+        PortionPoint pp = getPPForRange(range, Arrays.asList(ptRatings),
                 startHoursAfterMeal, stopHoursAfterMeal);
 
 
@@ -84,7 +85,7 @@ public class PortionPointMakerTests {
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
 
-        PortionPoint pp = PortionPointMaker.getPPForRange(range, Arrays.asList(ptRatings),
+        PortionPoint pp = getPPForRange(range, Arrays.asList(ptRatings),
                 startHoursAfterMeal, stopHoursAfterMeal);
 
         assertEquals(3., pp.getScore(), 0.01);
@@ -104,7 +105,7 @@ public class PortionPointMakerTests {
         long stopHoursAfterMeal = 6;
 
         PtRatings ptRatings = new PtRatings(Arrays.asList(pt1), Arrays.asList(rStart, rSecond), newYear.plusHours(5));
-        PortionPoint pp = PortionPointMaker.getPPForRange(range, Arrays.asList(ptRatings),
+        PortionPoint pp = getPPForRange(range, Arrays.asList(ptRatings),
                 startHoursAfterMeal, stopHoursAfterMeal);
 
 
@@ -242,9 +243,9 @@ public class PortionPointMakerTests {
     }
     //==============================================================================================
     // test in-range portions EXCEPT too-big portions
-    // Given: right ALWAYS >= left (don't test for anything else)
-    //
-    // rights are occurring in asc order
+    // Given for app logic and for tests:
+    // 1. right ALWAYS >= left (don't test for anything else)
+    // 2. rights are occurring in asc order
     //==============================================================================================
     @Test
     public void cutFromWest(){
@@ -288,7 +289,25 @@ public class PortionPointMakerTests {
         assertEquals(newYear.plusHours(8),leftRemains.getStart());
         assertEquals(newYear.plusHours(10),leftRemains.getEnd());
     }
-    //this never happens (rights are occurring in asc order)!
-    //public void cutFromEastTwice() {}
+    //cutFromEastTwice never happens (rights are occurring in asc order)!
+    //@Test
+    // /public void cutFromEastTwice() {}
 
+    @Test
+    public void EXCEPTInHighHierarchyTest(){
+        //within range
+        PortionTime p1 = new PortionTime(0.9, newYear);
+        //too large
+        PortionTime p2 = new PortionTime(1.5, newYear.plusHours(4));
+        Rating r1 = new Rating(newYear, 3);
+        Rating r2 = new Rating(newYear.plusHours(4), 3);
+        PtRatings ptr = new PtRatings(Arrays.asList(p1,p2), Arrays.asList(r1), newYear.plusHours(20));
+
+
+        PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);
+
+        assertEquals(3.,pp.getScore());
+        //quant == weight ==  4H / 10H = 2/5 = 0.4
+        assertEquals(0.4,pp.getQuant());
+    }
 }
