@@ -326,6 +326,6 @@ public class PortionPointMakerTests {
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);
 
         //quant == weight ==  3H / 10H = 0.333..
-        assertEquals(0.3333,pp.getQuant(), 0.01);
+        assertEquals(0.3,pp.getQuant(), 0.01);
     }
 }
