@@ -34,7 +34,7 @@
             android:title="Min Hours between Meals"
             android:summary="If the time between meals are less than this, they will be counted as one meal by algorithm. Set to zero (0) to turn this function off. (NB. Breaks has precedence so a higher hour here than the setting 'Hours after event before a break' makes no sense)"
             sample:msbp_dialogEnabled="false"
-            sample:msbp_interval="0"
+            sample:msbp_interval="1"
             sample:msbp_maxValue="12"
             sample:msbp_measurementUnit="h"
             sample:msbp_minValue="0"
