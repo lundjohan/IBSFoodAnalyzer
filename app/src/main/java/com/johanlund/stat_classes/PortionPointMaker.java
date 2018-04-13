@@ -1,8 +1,5 @@
 package com.johanlund.stat_classes;
 
-import android.util.Log;
-
-import com.google.android.gms.plus.model.people.Person;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
@@ -15,9 +12,6 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 import static com.johanlund.statistics_portions.PtRatings.toPtRatings;
@@ -144,14 +138,18 @@ public class PortionPointMaker {
         //format: quant
         double rangeTotalQuant = .0;
         for (PtRatings ptAndR : afterJoin) {
-            List<TimePeriod> rawTps = simpleExtractTimePeriods(range, ptAndR.getPortionTimes(),
+            List<TimePeriod> tpsAfterExcept = makeExceptTps(range, ptAndR.getPortionTimes(),
                     startHour, stopHour);
-            for (TimePeriod rawTp : rawTps) {
-                double[] scoreAndWeight = RatingTime.calcAvgAndWeight(rawTp, ptAndR.getRatings(),
+            for (TimePeriod tpExc : tpsAfterExcept) {
+                double[] scoreAndWeight = RatingTime.calcAvgAndWeight(tpExc, ptAndR.getRatings(),
                         ptAndR.getLastTimeInChunk());
-                double weightAdjForEXCEPT = scoreAndWeight[1] * rawTp.getLengthSec()/ (stopHour-startHour)/60/60;
-                rangeTotalScore += scoreAndWeight[0] * weightAdjForEXCEPT;
-                rangeTotalQuant += weightAdjForEXCEPT; //for every portion max quant is 1.0
+                //calcAvgAndWeight do not know that tp might have been shortened due to except operation.
+                //=> weightAfter_exc takes care of that.
+                //looks complicated but is tested comp and algebraically
+                double weightAfter_exc = (double)tpExc.getLengthSec()/ (stopHour-startHour)/60/60;
+                double weightAfter_exc_lateRatings_earlyChunk = scoreAndWeight[1] * weightAfter_exc;
+                rangeTotalScore += scoreAndWeight[0] * weightAfter_exc_lateRatings_earlyChunk;
+                rangeTotalQuant += weightAfter_exc_lateRatings_earlyChunk; //for every portion max quant is 1.0
             }
         }
         //PortionPoint quant should be in hours
@@ -159,7 +157,7 @@ public class PortionPointMaker {
         return new PortionPoint(range, avgScore, rangeTotalQuant);
     }
 
-    static List<TimePeriod> simpleExtractTimePeriods(PortionStatRange range, List<PortionTime>
+    static List<TimePeriod> makeExceptTps(PortionStatRange range, List<PortionTime>
             portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal) {
 
         //1. variables: range, portionTimes, waitHoursAfterMeal, stopHoursAfterMeal

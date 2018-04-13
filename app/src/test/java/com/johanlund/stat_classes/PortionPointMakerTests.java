@@ -18,7 +18,7 @@ import java.util.List;
 import static com.johanlund.stat_classes.PortionPointMaker.getPPForRange;
 import static com.johanlund.stat_classes.PortionPointMaker.joinTooClosePortions2;
 import static com.johanlund.stat_classes.PortionPointMaker.leftExceptRights;
-import static com.johanlund.stat_classes.PortionPointMaker.simpleExtractTimePeriods;
+import static com.johanlund.stat_classes.PortionPointMaker.makeExceptTps;
 import static com.johanlund.stat_classes.PortionPointMaker.toReplaceCalcPoints;
 import static junit.framework.Assert.assertEquals;
 
@@ -236,7 +236,7 @@ public class PortionPointMakerTests {
     @Test
     public void testSimpleCase_simpleExtractTimePeriods(){
         PortionTime p1 =  new PortionTime(0.9, newYear);
-        List<TimePeriod> tps = simpleExtractTimePeriods(range, Arrays.asList(p1),0,8);
+        List<TimePeriod> tps = makeExceptTps(range, Arrays.asList(p1),0,8);
         assertEquals(1, tps.size());
         assertEquals(newYear,tps.get(0).getStart());
         assertEquals(newYear.plusHours(8),tps.get(0).getEnd());
