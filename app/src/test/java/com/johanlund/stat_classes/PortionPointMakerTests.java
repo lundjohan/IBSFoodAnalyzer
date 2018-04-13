@@ -242,8 +242,7 @@ public class PortionPointMakerTests {
     }
     //==============================================================================================
     // test in-range portions EXCEPT too-big portions
-    // (remember that right can never be smaller && in the middle of left scope,
-    // so we don't have to test that left is cut in two parts)
+    // Given: right ALWAYS >= left (don't test for anything else)
     //
     // rights are occurring in asc order
     //==============================================================================================
@@ -281,8 +280,8 @@ public class PortionPointMakerTests {
     @Test
     public void cutFromWestTwice(){
         TimePeriod left = new TimePeriod(newYear, newYear.plusHours(10));
-        TimePeriod rEast1 = new TimePeriod(newYear, newYear.plusHours(3));
-        TimePeriod rEast2 = new TimePeriod(newYear.plusHours(2), newYear.plusHours(8));
+        TimePeriod rEast1 = new TimePeriod(newYear.minusHours(7), newYear.plusHours(3));
+        TimePeriod rEast2 = new TimePeriod(newYear.minusHours(2), newYear.plusHours(8));
 
         //pardon the pun, variable name should be leftRemains
         TimePeriod leftRemains = leftExceptRights(left, Arrays.asList(rEast1, rEast2));
