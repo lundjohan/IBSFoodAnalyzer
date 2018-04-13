@@ -6,9 +6,9 @@
 /local.properties
 .idea/**
 =======
-.idea/workspace.xml
-.idea/misc.xml
-.idea/runConfigurations.xml
+/.idea/workspace.xml
+/.idea/misc.xml
+./idea/runConfigurations.xml
 /.idea/libraries
 .DS_Store
 build/
