@@ -2,6 +2,7 @@ package com.johanlund.statistics_time_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Rating;
+import com.johanlund.stat_classes.TimePointMaker;
 import com.johanlund.statistics_point_classes.TimePoint;
 
 import org.threeten.bp.LocalDateTime;
@@ -18,7 +19,6 @@ public class RatingTimeScoreWrapper extends TimeScoreWrapper {
         super(scoreStart, ratingEnd, durationLimit);
     }
 
-
     @Override
     public List<TimePoint> calcPoints(List<Chunk> chunks) {
         List<TimePoint> points = new ArrayList<>();
@@ -27,61 +27,13 @@ public class RatingTimeScoreWrapper extends TimeScoreWrapper {
         }
         return points;
     }
+
     protected List<TimePoint> calcPoints(Chunk c) {
         List<Rating> ratings = c.getRatings();
         return calcPoints(ratings, c.getLastTime());
     }
 
     private List<TimePoint> calcPoints(List<Rating> ratings, LocalDateTime lastTimeInChunk) {
-        List<TimePoint> timePoints = new ArrayList<>();
-        boolean periodHasStarted = false;
-        LocalDateTime startTime = null;
-        for (Rating r : ratings) {
-            if (isBetweenScores(r)) {
-                if (periodHasStarted) {
-                    if (isLastRating(r, ratings)) {
-                        timePoints.add(new TimePoint(startTime, lastTimeInChunk));
-                        //loop will quit here
-                    }
-                    //!isLastRating.
-                    else {
-                        continue;
-                    }
-                }
-                //!periodHasStarted
-                else {
-                    periodHasStarted = true;
-                    startTime = r.getTime();
-                }
-            }
-            //!isBetweenScores
-            else {
-                if (periodHasStarted) {
-                    if (isLastRating(r, ratings)) {
-                        timePoints.add(new TimePoint(startTime, lastTimeInChunk));
-                        //loop will quit here
-                    }
-                    //!isLastRating.
-                    else {
-                        timePoints.add(new TimePoint(startTime, r.getTime()));
-                    }
-                    periodHasStarted = false;
-                }
-                //!periodHasStarted
-                else {
-                    continue;
-                }
-            }
-        }
-        return timePoints;
+        return TimePointMaker.doTimePoint(ratings, lastTimeInChunk, scoreStart, scoreEnd);
     }
-    private boolean isLastRating(Rating r, List<Rating>ratings){
-        return r.getTime().equals(ratings.get(ratings.size()-1).getTime());
-    }
-
-
-    private boolean isBetweenScores(Rating r) {
-        return r.getAfter() >= scoreStart && r.getAfter() <= scoreEnd;
-    }
-
 }
