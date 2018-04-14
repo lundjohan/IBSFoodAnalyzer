@@ -21,13 +21,9 @@ public class TimePointMakerTests {
         List<TimePoint> tps =  TimePointMaker.doTimePoint(new ArrayList<Rating>(), newYear, 1, 6);
         assertEquals(0, tps.size());
     }
-    @Test
-    public void shouldReturnEmptyList2(){
-        //chunkEnd < first rating
-        Rating r1 = new Rating(newYear.plusHours(1), 3);
-        List<TimePoint> tps =  TimePointMaker.doTimePoint(Arrays.asList(r1), newYear, 1, 6);
-        assertEquals(0, tps.size());
-    }
+    //this should never happen and will not be tested
+    //public void testChunkEnd < firstRating(){
+
     @Test
     public void shouldReturnFirstAndThirdPartOnly(){
         Rating r1 = new Rating(newYear, 6);

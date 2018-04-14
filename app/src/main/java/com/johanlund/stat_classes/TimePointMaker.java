@@ -35,8 +35,12 @@ public class TimePointMaker {
                 }
                 //!periodHasStarted
                 else {
-                        periodHasStarted = true;
-                        startTime = r.getTime();
+                    periodHasStarted = true;
+                    startTime = r.getTime();
+                    if (isLastRating(r, ratings)) {
+                        timePoints.add(new TimePoint(startTime, chunkEnd));
+                        //loop will quit here
+                    }
                 }
             }
             //!isBetweenScores
