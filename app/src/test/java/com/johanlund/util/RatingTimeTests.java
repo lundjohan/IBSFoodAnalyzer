@@ -12,6 +12,10 @@ import java.util.List;
 import static com.johanlund.util.RatingTime.getRatingsBetweenAndSometimesOneBefore;
 import static junit.framework.Assert.assertEquals;
 
+/**
+ * Tests for RatingTime class
+ */
+
 public class RatingTimeTests {
     /* Normal case
      *
