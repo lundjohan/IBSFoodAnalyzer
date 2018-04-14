@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimePointMaker {
+    /**
+     * Given:
+     * 1. lastRating <= chunkEnd
+     * 2. ratings in ASC order
+     * 3. scoreStart <= scoreEnd
+     *
+     */
     public static List<TimePoint> doTimePoint(List<Rating> ratings, LocalDateTime chunkEnd, int
             scoreStart, int scoreEnd) {
         List<TimePoint> timePoints = new ArrayList<>();
@@ -28,8 +35,8 @@ public class TimePointMaker {
                 }
                 //!periodHasStarted
                 else {
-                    periodHasStarted = true;
-                    startTime = r.getTime();
+                        periodHasStarted = true;
+                        startTime = r.getTime();
                 }
             }
             //!isBetweenScores
