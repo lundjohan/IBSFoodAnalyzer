@@ -15,6 +15,10 @@ import static junit.framework.Assert.assertEquals;
 
 public class TimePointMakerTests {
     final static LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0);
+
+    /*
+    ---------
+     */
     @Test
     public void shouldReturnEmptyList(){
         //empty ratings list
@@ -23,7 +27,9 @@ public class TimePointMakerTests {
     }
     //this should never happen and will not be tested
     //public void testChunkEnd < firstRating(){
-
+    /*
+    >>>>>------>>>>>
+     */
     @Test
     public void shouldReturnFirstAndThirdPartOnly(){
         Rating r1 = new Rating(newYear, 6);
@@ -39,6 +45,9 @@ public class TimePointMakerTests {
         assertEquals(newYear.plusHours(10), tps.get(1).getStartTime());
         assertEquals(newYear.plusHours(20), tps.get(1).getStopTime());
     }
+    /*
+    ------>>>>>>------
+     */
     @Test
     public void shouldReturnMiddlePartOnly(){
         Rating r1 = new Rating(newYear, 6);
@@ -50,6 +59,9 @@ public class TimePointMakerTests {
         assertEquals(newYear.plusHours(3), tps.get(0).getStartTime());
         assertEquals(newYear.plusHours(10), tps.get(0).getStopTime());
     }
+    /*
+    >>>>>>>>>>>>>------
+     */
     @Test
     public void shouldReturnFirstAndSecondPartAsOne(){
         Rating r1 = new Rating(newYear, 6);
@@ -62,6 +74,9 @@ public class TimePointMakerTests {
         assertEquals(newYear, tps.get(0).getStartTime());
         assertEquals(newYear.plusHours(10), tps.get(0).getStopTime());
     }
+    /*
+    ------>>>>>>>>>>>>>
+     */
     @Test
     public void shouldReturnSecondAndThirdPartAsOne(){
         Rating r1 = new Rating(newYear, 6);
@@ -74,6 +89,9 @@ public class TimePointMakerTests {
         assertEquals(newYear.plusHours(3), tps.get(0).getStartTime());
         assertEquals(newYear.plusHours(20), tps.get(0).getStopTime());
     }
+    /*
+    >>>>>>>>>>>>>>>>>>>>
+     */
     @Test
     public void shouldReturnEverythingAsOne(){
         Rating r1 = new Rating(newYear, 6);
