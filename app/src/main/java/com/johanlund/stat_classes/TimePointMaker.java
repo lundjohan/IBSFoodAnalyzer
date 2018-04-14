@@ -46,15 +46,8 @@ public class TimePointMaker {
             //!isBetweenScores
             else {
                 if (periodHasStarted) {
-                    if (isLastRating(r, ratings)) {
-                        timePoints.add(new TimePoint(startTime, chunkEnd));
-                        //loop will quit here
-                    }
-                    //!isLastRating.
-                    else {
-                        timePoints.add(new TimePoint(startTime, r.getTime()));
-                    }
                     periodHasStarted = false;
+                    timePoints.add(new TimePoint(startTime, r.getTime()));
                 }
                 //!periodHasStarted
                 else {
