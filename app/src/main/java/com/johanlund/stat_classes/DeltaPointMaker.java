@@ -25,7 +25,7 @@ public class DeltaPointMaker {
         for (Tag t : tagsMaterial) {
 
             //1. Calculate normal avg
-            TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent).minusMinutes(1), t.getTime().plusHours(stopHoursAfterEvent));
+            TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));
 
             double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getRatings(), chunk.getLastTime());
             //better being on the safe side
@@ -53,7 +53,7 @@ public class DeltaPointMaker {
 
             //we have only allowed weight with 1.0
             double quant = 1.0;
-
+            
             if (tpInMap == null) {
                 tpToInsert = new TagPoint(name, quant, pointsForTag * quant);
             } else {
