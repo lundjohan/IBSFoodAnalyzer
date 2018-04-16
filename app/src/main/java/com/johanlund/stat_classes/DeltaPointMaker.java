@@ -33,7 +33,8 @@ public class DeltaPointMaker {
             }
 
 //2. Calculate the score 1 min before===============================================================
-            TimePeriod tpMinBefore = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent).minusMinutes(1), t.getTime().plusHours(startHoursAfterEvent));
+            TimePeriod tpMinBefore = new TimePeriod(t.getTime().minusMinutes(1), t.getTime());
+            //TimePeriod tpMinBefore = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent).minusMinutes(1), t.getTime().plusHours(startHoursAfterEvent));
             double[] scoreQuantMinBefore = RatingTime.calcAvgAndWeight(tpMinBefore, chunk.getRatings(), chunk.getLastTime());
 
             //better being on the safe side
