@@ -23,8 +23,7 @@ public class DeltaPointMaker {
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
         List<Tag> tagsMaterial = chunk.getTags();
         for (Tag t : tagsMaterial) {
-
-            //1. Calculate normal avg
+//1. Calculate normal avg===========================================================================
             TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));
 
             double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getRatings(), chunk.getLastTime());
@@ -33,8 +32,7 @@ public class DeltaPointMaker {
                 continue;
             }
 
-
-            // 2. Calculate the score 1 min before
+//2. Calculate the score 1 min before===============================================================
             TimePeriod tpMinBefore = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent).minusMinutes(1), t.getTime().plusHours(startHoursAfterEvent));
             double[] scoreQuantMinBefore = RatingTime.calcAvgAndWeight(tpMinBefore, chunk.getRatings(), chunk.getLastTime());
 
@@ -42,7 +40,7 @@ public class DeltaPointMaker {
             if (scoreQuantMinBefore[1] != 1.0) {
                 continue;
             }
-//==================================================================================================
+//3. Bring it together==============================================================================
             String name = t.getName();
 
             TagPoint tpInMap = tagPoints.get(name);
