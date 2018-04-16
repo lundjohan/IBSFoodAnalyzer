@@ -14,6 +14,7 @@ import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.InfoActivity;
 import com.johanlund.statistics_avg.BristolAvgStatActivity;
 import com.johanlund.statistics_avg.CompleteAvgStatActivity;
+import com.johanlund.statistics_avg.DeltaAvgStatActivity;
 import com.johanlund.statistics_avg.RatingAvgStatActivity;
 import com.johanlund.statistics_portions.RatingPortionStatActivity;
 import com.johanlund.statistics_settings.AvgBmSettingsActivity;
@@ -31,6 +32,7 @@ import org.threeten.bp.LocalDate;
 import static com.johanlund.constants.Constants.RESTART_DATE_REQUEST;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgBristolItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgCompleteItemTextView;
+import static com.johanlund.ibsfoodanalyzer.R.id.avgDeltaItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgInfoItem;
 import static com.johanlund.ibsfoodanalyzer.R.id.avgRatingItemTextView;
 import static com.johanlund.ibsfoodanalyzer.R.id.freqInfoItem;
@@ -58,6 +60,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
         //make them clickable => this should change to textView instead!
         view.findViewById(avgRatingItemTextView).setOnClickListener(this);
+        view.findViewById(avgDeltaItemTextView).setOnClickListener(this);
         view.findViewById(avgCompleteItemTextView).setOnClickListener(this);
         view.findViewById(avgBristolItemTextView).setOnClickListener(this);
 
@@ -82,6 +85,8 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
         //settings buttons
         view.findViewById(getResources().getIdentifier("avgSettingsRatingItem", "id", getContext
+                ().getPackageName())).setOnClickListener(this);
+        view.findViewById(getResources().getIdentifier("avgSettingsDeltaItem", "id", getContext
                 ().getPackageName())).setOnClickListener(this);
         view.findViewById(getResources().getIdentifier("avgSettingsCompleteItem", "id", getContext
                 ().getPackageName())).setOnClickListener(this);
@@ -109,6 +114,9 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
             //to stat
             case avgRatingItemTextView:
                 newStatActivity(new RatingAvgStatActivity());
+                break;
+            case avgDeltaItemTextView:
+                newStatActivity(new DeltaAvgStatActivity());
                 break;
             case R.id.avgCompleteItemTextView:
                 newStatActivity(new CompleteAvgStatActivity());
@@ -147,6 +155,12 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
             //settings buttons
             //avg
             case R.id.avgSettingsRatingItem: {
+                Intent intent = new Intent(getActivity(), AvgRatingSettingsActivity.class);
+                startActivity(intent);
+                break;
+            }
+            //uses same settings as Rating
+            case R.id.avgSettingsDeltaItem: {
                 Intent intent = new Intent(getActivity(), AvgRatingSettingsActivity.class);
                 startActivity(intent);
                 break;

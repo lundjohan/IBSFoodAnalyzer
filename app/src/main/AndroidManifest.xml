@@ -141,6 +141,8 @@
         </activity>
         <activity android:name="com.johanlund.statistics_portions.RatingPortionStatActivity">
         </activity>
+        <activity android:name="com.johanlund.statistics_avg.DeltaAvgStatActivity">
+        </activity>
     </application>
 
 </manifest>
