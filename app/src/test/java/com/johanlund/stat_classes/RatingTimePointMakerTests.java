@@ -13,7 +13,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-public class TimePointMakerTests {
+public class RatingTimePointMakerTests {
     final static LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0);
 
     /*
