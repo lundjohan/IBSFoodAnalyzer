@@ -86,20 +86,18 @@ public class TimePointMaker {
             //last bm
             if (isBetweenScores(b, scoreStart, scoreEnd)){
                 if (periodHasStarted){
-                    if (isLastBm(b, bms)){
-                        TimePoint tp = new TimePoint(periodStart, b.getTime());
-                        timePoints.add(tp);
-                    }
-                    //!lastBm
-                    else{
-                        lastBmForPeriod = b.getTime();
-                    }
+                    lastBmForPeriod = b.getTime();
+
                 }
                 //!periodHasStarted
                 else{
                     periodHasStarted = true;
                     periodStart = b.getTime();
                     lastBmForPeriod = periodStart;
+                }
+                if (isLastBm(b, bms)){
+                    TimePoint tp = new TimePoint(periodStart, b.getTime());
+                    timePoints.add(tp);
                 }
             }
             //!isBetweenScores
