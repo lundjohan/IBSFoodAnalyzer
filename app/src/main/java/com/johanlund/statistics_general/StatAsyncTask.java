@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PointBase;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,35 +15,44 @@ import java.util.List;
  */
 
 public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void, List<E>> {
-    private StatAdapter adapter;
-    private RecyclerView recyclerView;
+    private WeakReference<StatAdapter> adapter;
+    private WeakReference<RecyclerView> recyclerView;
     public StatAsyncTask(StatAdapter adapter, RecyclerView recyclerView) {
-        this.adapter = adapter;
-        this.recyclerView = recyclerView;
+        this.adapter = new WeakReference(adapter);
+        this.recyclerView = new WeakReference(recyclerView);
     }
     @Override
     protected List<E> doInBackground(Object... params) {
-        ScoreWrapperBase<E> wrapper = (ScoreWrapperBase) params[0];
-        List<Chunk> chunks = (List<Chunk>) params[1];
+        List<E>toReturn = new ArrayList<>();
+        if (!isCancelled()) {
+            ScoreWrapperBase<E> wrapper = (ScoreWrapperBase) params[0];
+            List<Chunk> chunks = (List<Chunk>) params[1];
 
-        //får helt fucked up resultat här  i points: duration som blir -17525 tex, men score på 4.474
-        List<E> points= wrapper.calcPoints(chunks);
+            List<E> points = wrapper.calcPoints(chunks);
 
-        //sort points here
-        List<E> sortedList = wrapper.toSortedList(points);
+            //sort points here
+            List<E> sortedList = wrapper.toSortedList(points);
 
-        //remove points with too low amount of duration
-        return wrapper.removePointsWithTooLowQuant(sortedList);
+            //remove points with too low amount of duration
+            toReturn = wrapper.removePointsWithTooLowQuant(sortedList);
+        }
+        return toReturn;
     }
 
 
 
     @Override
     protected void onPostExecute(List<E> sortedList) {
-        adapter.setPointsList(sortedList);
-        adapter.notifyDataSetChanged();
+        StatAdapter<E> sa = adapter.get();
+        if (sa != null){
+            sa.setPointsList(sortedList);
+            sa.notifyDataSetChanged();
+        }
         //scrolling to top is needed, otherwise it starts at the bottom.
-        recyclerView.scrollToPosition(sortedList.size()-1);
+        RecyclerView rw = recyclerView.get();
+        if (rw != null){
+            rw.scrollToPosition(sortedList.size()-1);
+        }
     }
 }
 
