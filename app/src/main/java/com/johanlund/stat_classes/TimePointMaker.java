@@ -1,5 +1,6 @@
 package com.johanlund.stat_classes;
 
+import com.johanlund.base_classes.Bm;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.statistics_point_classes.TimePoint;
 
@@ -16,7 +17,7 @@ public class TimePointMaker {
      * 3. scoreStart <= scoreEnd
      *
      */
-    public static List<TimePoint> doTimePoint(List<Rating> ratings, LocalDateTime chunkEnd, int
+    public static List<TimePoint> doRatingTimePoints(List<Rating> ratings, LocalDateTime chunkEnd, int
             scoreStart, int scoreEnd) {
         List<TimePoint> timePoints = new ArrayList<>();
         boolean periodHasStarted = false;
@@ -64,5 +65,64 @@ public class TimePointMaker {
 
     private static boolean isBetweenScores(Rating r, int scoreStart, int scoreEnd) {
         return r.getAfter() >= scoreStart && r.getAfter() <= scoreEnd;
+    }
+    /**
+     * This is even simpler than above,
+     * the algorithm simply keeps on going for a TimePoint if the next bm is scorestart<=bm <=scoreend.
+     * The time period will be between the first bm in interval and the last bm in interval (which means that timeperiod length 0 will be common...)
+     *
+     * Given:
+     * bms in ASC order
+     *
+     *
+     */
+    public static List<TimePoint> doBMTimePoints(List<Bm> bms, int scoreStart, int scoreEnd) {
+        List<TimePoint> timePoints = new ArrayList<>();
+        boolean periodHasStarted = false;
+        LocalDateTime periodStart = null;
+        LocalDateTime lastBmForPeriod = null;
+
+        for (Bm b: bms){
+            //last bm
+            if (isBetweenScores(b, scoreStart, scoreEnd)){
+                if (periodHasStarted){
+                    if (isLastBm(b, bms)){
+                        TimePoint tp = new TimePoint(periodStart, b.getTime());
+                        timePoints.add(tp);
+                    }
+                    //!lastBm
+                    else{
+                        lastBmForPeriod = b.getTime();
+                    }
+                }
+                //!periodHasStarted
+                else{
+                    periodHasStarted = true;
+                    periodStart = b.getTime();
+                    lastBmForPeriod = periodStart;
+                }
+            }
+            //!isBetweenScores
+            else{
+                if (periodHasStarted){
+                    TimePoint tp = new TimePoint(periodStart, lastBmForPeriod);
+                    timePoints.add(tp);
+                    periodHasStarted = false;
+                }
+                //!periodHasStarted
+                else{
+                    continue;
+                }
+            }
+        }
+        return timePoints;
+    }
+
+    private static boolean isBetweenScores(Bm b, int scoreStart, int scoreEnd) {
+        return b.getComplete() >= scoreStart && b.getComplete() <= scoreEnd;
+    }
+
+    private static boolean isLastBm(Bm b, List<Bm>bms){
+        return b.getTime().equals(bms.get(bms.size()-1).getTime());
     }
 }

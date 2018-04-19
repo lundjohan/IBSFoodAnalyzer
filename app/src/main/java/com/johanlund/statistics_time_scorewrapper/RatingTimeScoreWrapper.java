@@ -34,6 +34,6 @@ public class RatingTimeScoreWrapper extends TimeScoreWrapper {
     }
 
     private List<TimePoint> calcPoints(List<Rating> ratings, LocalDateTime lastTimeInChunk) {
-        return TimePointMaker.doTimePoint(ratings, lastTimeInChunk, scoreStart, scoreEnd);
+        return TimePointMaker.doRatingTimePoints(ratings, lastTimeInChunk, scoreStart, scoreEnd);
     }
 }
