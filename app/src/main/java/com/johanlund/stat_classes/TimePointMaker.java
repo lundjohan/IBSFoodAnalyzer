@@ -72,7 +72,8 @@ public class TimePointMaker {
      * The time period will be between the first bm in interval and the last bm in interval (which means that timeperiod length 0 will be common...)
      *
      * Given:
-     * bms in ASC order
+     * 1. bms in ASC order
+     * 2. two bm cannot have same time
      *
      *
      */
