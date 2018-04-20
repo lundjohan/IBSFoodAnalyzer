@@ -2,6 +2,7 @@ package com.johanlund.statistics_time_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.stat_classes.TimePointMaker;
+import com.johanlund.statistics_point_classes.PointBase;
 import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.util.CompleteTime;
 
@@ -10,22 +11,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CompleteTimeScoreWrapper  extends TimeScoreWrapper{
-    //incl
-    int scoreStart;
-    //incl
-    int scoreEnd;
-
+public class CompleteTimeScoreWrapper  <E extends TimePoint> extends TimeScoreWrapper{
     public CompleteTimeScoreWrapper(int scoreStart, int scoreEnd) {
-        this.scoreStart = scoreStart;
-        this.scoreEnd = scoreEnd;
+        super(scoreStart, scoreEnd,0);
     }
 
     //copied from RatingTimeScoreWrapper
-    public List<TimePoint> calcPoints(List<List<CompleteTime>> ctsList) {
-        List<TimePoint> points = new ArrayList<>();
+    public List<E> calcTimePoints(List<List<CompleteTime>> ctsList) {
+        List<E> points = new ArrayList<>();
         for (List<CompleteTime> cts : ctsList) {
-            points.addAll(calcBmPoints(cts));
+            List<TimePoint> tps = calcBmPoints(cts);
+            for (TimePoint tp: tps) {
+                points.add((E)tp);
+            }
         }
         return points;
     }
@@ -35,16 +33,8 @@ public class CompleteTimeScoreWrapper  extends TimeScoreWrapper{
     }
 
 
-    public List<TimePoint> toSortedList(List<TimePoint> timePoints){
-        Collections.sort(timePoints, new Comparator<TimePoint>()
-                {
-                    @Override
-                    public int compare(TimePoint t1, TimePoint t2)
-                    {
-                        return (int)((t1.getDurationInHours()- t2.getDurationInHours()));
-                    }
-                }
-        );
-        return timePoints;
+    @Override
+    public List<TimePoint> calcPoints(List<Chunk> chunks) {
+        return null;
     }
 }

@@ -31,7 +31,10 @@ public class TimeStatAdapter extends StatAdapter<TimePoint>{
 
     private TimeStatAdapterUser callBack;
 
-
+    //temp
+    public void setTimePointsList(List<TimePoint> pointList){
+        this.pointList = pointList;
+    }
 
     protected ScoreWrapperBase<TimePoint> timeScoreWrapper;
     public TimeStatAdapter(ScoreWrapperBase<TimePoint> timeScoreWrapper, TimeStatAdapterUser callBack) {

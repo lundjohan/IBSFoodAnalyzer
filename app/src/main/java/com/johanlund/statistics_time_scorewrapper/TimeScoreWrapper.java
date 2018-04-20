@@ -1,16 +1,8 @@
 package com.johanlund.statistics_time_scorewrapper;
 
-import android.graphics.Point;
-
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_general.ScoreWrapperBase;
-import com.johanlund.statistics_point_classes.TagPoint;
 import com.johanlund.statistics_point_classes.TimePoint;
 
-import org.threeten.bp.ZoneId;
-import org.threeten.bp.ZoneOffset;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

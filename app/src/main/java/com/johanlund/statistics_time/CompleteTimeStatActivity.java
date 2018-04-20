@@ -6,15 +6,10 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.base_classes.Break;
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_adapters.TimeStatAdapter;
-import com.johanlund.statistics_general.ScoreWrapperBase;
 import com.johanlund.statistics_general.StatAdapter;
-import com.johanlund.statistics_general.StatAsyncTask;
-import com.johanlund.statistics_point_classes.PointBase;
-import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.statistics_time_scorewrapper.CompleteTimeScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 import com.johanlund.util.CompleteTime;
@@ -51,7 +46,6 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
         int ratingEnd = preferences.getInt(getResources().getString(R.string.time_complete_end), 5);
         return new CompleteTimeScoreWrapper(ratingStart,ratingEnd);
     }
-
     @Override
     protected void calculateStats() {
         //get events from database
@@ -70,29 +64,33 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
         List<LocalDateTime> allBreaks = Break.makeAllBreaks(cts, breaks, hoursInFrontOfAutoBreak);
         List<List<CompleteTime>> dividedCts = Break.divideTimes(cts, allBreaks);
         CompleteStatAsyncTask asyncThread = new CompleteStatAsyncTask(adapter, recyclerView);
-        asyncThread.execute(getScoreWrapper2(), dividedCts);
+        asyncThread.execute(getScoreWrapper(), dividedCts);
     }
-
-    private static class CompleteStatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void, List<E>> {
-        private WeakReference<StatAdapter> adapter;
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+    private static class CompleteStatAsyncTask <TimePoint> extends AsyncTask<Object, Void, List<TimePoint>> {
+        private WeakReference<TimeStatAdapter> adapter;
         private WeakReference<RecyclerView> recyclerView;
     public CompleteStatAsyncTask(StatAdapter adapter, RecyclerView recyclerView) {
             this.adapter = new WeakReference(adapter);
             this.recyclerView = new WeakReference(recyclerView);
         }
         @Override
-        protected List<E> doInBackground(Object... params) {
-            List<E>toReturn = new ArrayList<>();
+        protected List<TimePoint> doInBackground(Object... params) {
+            List<TimePoint>toReturn = new ArrayList<>();
             if (!isCancelled()) {
                 CompleteTimeScoreWrapper wrapper = (CompleteTimeScoreWrapper) params[0];
                 List<List<CompleteTime>> dividedCts = (List<List<CompleteTime>> ) params[1];
 
-                List<TimePoint> points = wrapper.calcPoints(dividedCts);
+                List<TimePoint> points = wrapper.calcTimePoints(dividedCts);
 
                 //sort points here
-                List<TimePoint> sortedList = wrapper.toSortedList(points);
+                List<TimePoint> sortedList = wrapper.toSortedList((List) points);
 
                 //remove points with too low amount of duration
+                toReturn = sortedList;
                // toReturn = wrapper.removePointsWithTooLowQuant(sortedList);
             }
             return toReturn;
@@ -101,10 +99,10 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
 
 
         @Override
-        protected void onPostExecute(List<E> sortedList) {
-            StatAdapter<E> sa = adapter.get();
+        protected void onPostExecute(List<TimePoint> sortedList) {
+            TimeStatAdapter sa = adapter.get();
             if (sa != null){
-                sa.setPointsList(sortedList);
+                sa.setTimePointsList((List<com.johanlund.statistics_point_classes.TimePoint>) sortedList);
                 sa.notifyDataSetChanged();
             }
             //scrolling to top is needed, otherwise it starts at the bottom.
