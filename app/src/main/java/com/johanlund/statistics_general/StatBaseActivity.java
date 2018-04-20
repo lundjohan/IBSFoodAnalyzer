@@ -26,6 +26,7 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
     protected RecyclerView recyclerView;
     protected StatAdapter<E> adapter;
     protected LinearLayoutManager layoutManager;
+    protected StatAsyncTask asyncThread;
 
     /**
      * This method is used in onCreate lower in hierarchy
@@ -47,7 +48,13 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
         getSupportActionBar().setTitle(getStringForTitle());
         calculateStats();
     }
-
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if (asyncThread!= null && !asyncThread.isCancelled()){
+            asyncThread.cancel(true);
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -71,8 +78,8 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
     protected abstract String getInfoStr();
 
 
-
-    private void calculateStats() {
+    //Override this in case chunks should not be used...
+    protected void calculateStats() {
         //get events from database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         List<Event> events = dbHandler.getEventsForStatistics();
@@ -89,6 +96,9 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
 
     @Override
     public void onBackPressed() {
+        if (!asyncThread.isCancelled()){
+            asyncThread.cancel(true);
+        }
         finish();
     }
 
@@ -111,7 +121,7 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
 
     //given: breaks should already have been taking care of for chunks
     protected void startAsyncTask(List<Chunk> chunks) {
-        StatAsyncTask asyncThread = new StatAsyncTask(adapter, recyclerView);
+        asyncThread = new StatAsyncTask(adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), chunks);
     }
 }

@@ -1,12 +1,31 @@
 package com.johanlund.statistics_time;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.RecyclerView;
 
+import com.johanlund.base_classes.Break;
+import com.johanlund.base_classes.Chunk;
+import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.statistics_adapters.TimeStatAdapter;
+import com.johanlund.statistics_general.ScoreWrapperBase;
+import com.johanlund.statistics_general.StatAdapter;
+import com.johanlund.statistics_general.StatAsyncTask;
+import com.johanlund.statistics_point_classes.PointBase;
+import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.statistics_time_scorewrapper.CompleteTimeScoreWrapper;
-import com.johanlund.statistics_time_scorewrapper.RatingTimeScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
+import com.johanlund.util.CompleteTime;
+
+import org.threeten.bp.LocalDateTime;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
 
 /**
  * Created by Johan on 2018-03-13.
@@ -23,6 +42,7 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
         return "Completeness Time Stat";
     }
 
+
     @Override
     public TimeScoreWrapper getScoreWrapper() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
@@ -31,4 +51,68 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
         int ratingEnd = preferences.getInt(getResources().getString(R.string.time_complete_end), 5);
         return new CompleteTimeScoreWrapper(ratingStart,ratingEnd);
     }
+
+    @Override
+    protected void calculateStats() {
+        //get events from database
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+        List<LocalDateTime> breaks = dbHandler.getBreaks();
+        List<CompleteTime> cts = dbHandler.getCompleteTimes();
+
+        //insert or remove automatic breaks on events.
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
+                (getApplicationContext()
+                );
+        int hoursInFrontOfAutoBreak = preferences.getInt("hours_break",
+                HOURS_AHEAD_FOR_BREAK_BACKUP);
+
+        //List<Break> breaks = Break.makeAllBreaks(events, hoursInFrontOfAutoBreak);
+        List<LocalDateTime> allBreaks = Break.makeAllBreaks(cts, breaks, hoursInFrontOfAutoBreak);
+        List<List<CompleteTime>> dividedCts = Break.divideTimes(cts, allBreaks);
+        CompleteStatAsyncTask asyncThread = new CompleteStatAsyncTask(adapter, recyclerView);
+        asyncThread.execute(getScoreWrapper2(), dividedCts);
+    }
+
+    private static class CompleteStatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void, List<E>> {
+        private WeakReference<StatAdapter> adapter;
+        private WeakReference<RecyclerView> recyclerView;
+    public CompleteStatAsyncTask(StatAdapter adapter, RecyclerView recyclerView) {
+            this.adapter = new WeakReference(adapter);
+            this.recyclerView = new WeakReference(recyclerView);
+        }
+        @Override
+        protected List<E> doInBackground(Object... params) {
+            List<E>toReturn = new ArrayList<>();
+            if (!isCancelled()) {
+                CompleteTimeScoreWrapper wrapper = (CompleteTimeScoreWrapper) params[0];
+                List<List<CompleteTime>> dividedCts = (List<List<CompleteTime>> ) params[1];
+
+                List<TimePoint> points = wrapper.calcPoints(dividedCts);
+
+                //sort points here
+                List<TimePoint> sortedList = wrapper.toSortedList(points);
+
+                //remove points with too low amount of duration
+               // toReturn = wrapper.removePointsWithTooLowQuant(sortedList);
+            }
+            return toReturn;
+        }
+
+
+
+        @Override
+        protected void onPostExecute(List<E> sortedList) {
+            StatAdapter<E> sa = adapter.get();
+            if (sa != null){
+                sa.setPointsList(sortedList);
+                sa.notifyDataSetChanged();
+            }
+            //scrolling to top is needed, otherwise it starts at the bottom.
+            RecyclerView rw = recyclerView.get();
+            if (rw != null){
+                rw.scrollToPosition(sortedList.size()-1);
+            }
+        }
+    }
+
 }

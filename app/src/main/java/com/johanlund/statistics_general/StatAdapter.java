@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class StatAdapter  <E extends PointBase> extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     protected List<E> pointList = new ArrayList<>();
-    void setPointsList(List<E> pointList){
+    public void setPointsList(List<E> pointList){
         this.pointList = pointList;
     }
 }

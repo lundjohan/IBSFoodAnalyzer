@@ -15,6 +15,7 @@ import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.exceptions.CorruptedEventException;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.model.TagType;
+import com.johanlund.util.CompleteTime;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -1135,6 +1136,7 @@ public class DBHandler extends SQLiteOpenHelper {
             //cursor.moveToFirst();
             tagname = cursor.getString(cursor.getColumnIndex(COLUMN_TAGNAME));
         }
+        cursor.close();
         db.close();
         return tagname;
     }
@@ -1289,7 +1291,73 @@ public class DBHandler extends SQLiteOpenHelper {
         if (c.getInt(0) > 0) {
             return false;
         }
+        c.close();
+        db.close();
         return true;
+    }
+
+    /**
+     * Cursor safe
+     * @return
+     */
+    public List<LocalDateTime> getBreaks(){
+        List<LocalDateTime> toReturn = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_HAS_BREAK + " = 1 " + " ORDER BY " + COLUMN_DATETIME + " ASC ";
+        Cursor c = db.rawQuery(QUERY, null);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    try {
+                        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
+                        toReturn.add(ldt);
+                    } finally {
+                        c.moveToNext();
+                    }
+                }
+            }
+        }
+        if (c!= null && !c.isClosed()) {
+            c.close();
+        }
+        if (db.isOpen()) {
+            db.close();
+        }
+        return toReturn;
+    }
+    /**
+     * Cursor safe
+     * @return
+     */
+    public List<CompleteTime> getCompleteTimes() {
+        List<CompleteTime> toReturn = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", b." + COLUMN_COMPLETENESS +
+                " FROM " + TABLE_EVENTS + " e " + " JOIN " + TABLE_BMS + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_ID;
+
+        Cursor c = db.rawQuery(QUERY, null);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    try {
+                        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
+                        int complete = c.getInt(c.getColumnIndex(COLUMN_COMPLETENESS));
+                        toReturn.add(new CompleteTime(ldt, complete));
+                    } finally {
+                        c.moveToNext();
+                    }
+                }
+            }
+        }
+        if (c!= null && !c.isClosed()) {
+            c.close();
+        }
+        if (db.isOpen()) {
+            db.close();
+        }
+        return toReturn;
     }
 }
 
