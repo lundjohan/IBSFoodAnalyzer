@@ -1334,7 +1334,7 @@ public class DBHandler extends SQLiteOpenHelper {
         List<CompleteTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", b." + COLUMN_COMPLETENESS +
-                " FROM " + TABLE_EVENTS + " e " + " JOIN " + TABLE_BMS + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_ID;
+                " FROM " + TABLE_EVENTS + " e " + " JOIN " + TABLE_BMS + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT;
 
         Cursor c = db.rawQuery(QUERY, null);
         if (c != null) {
