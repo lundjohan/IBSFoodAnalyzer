@@ -2,6 +2,7 @@ package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Bm;
 import com.johanlund.statistics_point_classes.TimePoint;
+import com.johanlund.util.CompleteTime;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
@@ -17,8 +18,8 @@ public class CompleteTimePointMakerTests {
     LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1 , 0, 0);
     @Test
     public void testOnlyOneBm(){
-        Bm bm = new Bm(newYear, 4, 4);
-        List <Bm> bms = new ArrayList<>();
+        CompleteTime bm = new CompleteTime(newYear, 4);
+        List <CompleteTime> bms = new ArrayList<>();
         bms.add(bm);
         List<TimePoint> tps = TimePointMaker.doBMTimePoints(bms, 4, 4);
 
@@ -29,9 +30,9 @@ public class CompleteTimePointMakerTests {
     }
     @Test
     public void middleBmShouldBeAdded(){
-        Bm bmFirst = new Bm(newYear, 4, 4);
-        Bm bmMiddle = new Bm(newYear.plusHours(2), 2, 4);
-        Bm bmLast = new Bm(newYear.plusHours(5), 1, 4);
+        CompleteTime bmFirst = new CompleteTime(newYear, 4);
+        CompleteTime bmMiddle = new CompleteTime(newYear.plusHours(2), 2);
+        CompleteTime bmLast = new CompleteTime(newYear.plusHours(5), 1);
         List<TimePoint> tps = TimePointMaker.doBMTimePoints(Arrays.asList(bmFirst, bmMiddle, bmLast), 2, 3);
 
         assertEquals(1, tps.size());
@@ -40,10 +41,10 @@ public class CompleteTimePointMakerTests {
     }
     @Test
     public void twoInMiddleShouldBeAdded(){
-        Bm bmFirst = new Bm(newYear, 4, 4);
-        Bm bmMiddle = new Bm(newYear.plusHours(2), 2, 4);
-        Bm bmMiddle2 = new Bm(newYear.plusHours(4), 3, 4);
-        Bm bmLast = new Bm(newYear.plusHours(5), 1, 4);
+        CompleteTime bmFirst = new CompleteTime(newYear, 4);
+        CompleteTime bmMiddle = new CompleteTime(newYear.plusHours(2), 2);
+        CompleteTime bmMiddle2 = new CompleteTime(newYear.plusHours(4), 3);
+        CompleteTime bmLast = new CompleteTime(newYear.plusHours(5), 1);
         List<TimePoint> tps = TimePointMaker.doBMTimePoints(Arrays.asList(bmFirst, bmMiddle,bmMiddle2, bmLast), 2, 3);
 
         assertEquals(1, tps.size());
@@ -53,10 +54,10 @@ public class CompleteTimePointMakerTests {
     }
     @Test
     public void firstAndtwoLastsShouldBeAdded(){
-        Bm bmFirst = new Bm(newYear, 5, 4);
-        Bm bmMiddle = new Bm(newYear.plusHours(2), 2, 4);
-        Bm bmMiddle2 = new Bm(newYear.plusHours(4), 5, 4);
-        Bm bmLast = new Bm(newYear.plusHours(5), 5, 4);
+        CompleteTime bmFirst = new CompleteTime(newYear, 5);
+        CompleteTime bmMiddle = new CompleteTime(newYear.plusHours(2), 2);
+        CompleteTime bmMiddle2 = new CompleteTime(newYear.plusHours(4), 5);
+        CompleteTime bmLast = new CompleteTime(newYear.plusHours(5), 5);
         List<TimePoint> tps = TimePointMaker.doBMTimePoints(Arrays.asList(bmFirst, bmMiddle,bmMiddle2, bmLast), 5, 5);
 
         assertEquals(2, tps.size());
