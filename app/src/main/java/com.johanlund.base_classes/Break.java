@@ -86,14 +86,14 @@ public class Break implements Comparable<Break>{
         }
         return toReturn;
     }
+    /**
+     * @param events should be in chronological order
+     * @param breaks should be in chronological order
+     * @return chunks in chronological order
+     */
     //make generic
     //sorry for the names, copied from Chunk.makeChunksFromEvents
     public static List<List<CompleteTime>> divideTimes(List<CompleteTime> events, List<LocalDateTime> breaks) {
-        /**
-         * @param events should be in chronological order
-         * @param breaks should be in chronological order
-         * @return chunks in chronological order
-         */
         List<List<CompleteTime>> toReturn = new ArrayList<>();
             int indBreaks = 0;
             int indStartNewChunk = 0; //incl
