@@ -1,9 +1,13 @@
 package com.johanlund.base_classes;
 
+import com.johanlund.util.CompleteTime;
+
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.Month;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -13,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class BreaksTest {
-
+    LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1 , 0, 0);
     /**
      * this test checks that autoBreaks method in Event class works properly.
      * breaks should be added or removed depending on hours between events.
@@ -190,9 +194,20 @@ public class BreaksTest {
         List<Break>allBreaksStillInAscOrder = Break.makeAllBreaks(events, 5);
         assertEquals(2, allBreaksStillInAscOrder.size());
         assertEquals(true, allBreaksStillInAscOrder.get(0).getTime().isBefore(allBreaksStillInAscOrder.get(1).getTime()));
+    }
+    @Test
+    public void divideToTwoListsTest(){
+        CompleteTime ctStart = new CompleteTime(newYear, 3);
+        //at same time should also break it
+        LocalDateTime breakInMiddle = newYear;
+        CompleteTime ctEnd = new CompleteTime(newYear.plusHours(1), 3);
+        List<List<CompleteTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart, ctEnd), Arrays.asList(breakInMiddle));
 
+        assertEquals(2, ctsDivided.size());
+        assertEquals(1, ctsDivided.get(0).size());
+        assertEquals(1, ctsDivided.get(1).size());
 
-
-
+        assertEquals(newYear, ctsDivided.get(0).get(0).getTime());
+        assertEquals(newYear.plusHours(1), ctsDivided.get(1).get(0).getTime());
     }
 }
