@@ -1337,25 +1337,29 @@ public class DBHandler extends SQLiteOpenHelper {
                 " FROM " + TABLE_EVENTS + " e " + " JOIN " + TABLE_BMS + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT;
 
         Cursor c = db.rawQuery(QUERY, null);
-        if (c != null) {
-            if (c.moveToFirst()) {
-                while (!c.isAfterLast()) {
-                    try {
-                        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
-                        int complete = c.getInt(c.getColumnIndex(COLUMN_COMPLETENESS));
-                        toReturn.add(new CompleteTime(ldt, complete));
-                    } finally {
-                        c.moveToNext();
+        try {
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                            LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
+                            int complete = c.getInt(c.getColumnIndex(COLUMN_COMPLETENESS));
+                            toReturn.add(new CompleteTime(ldt, complete));
+                        } finally {
+                            c.moveToNext();
+                        }
                     }
                 }
             }
         }
-        if (c!= null && !c.isClosed()) {
-            c.close();
-        }
-        if (db.isOpen()) {
-            db.close();
+        finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
         }
         return toReturn;
     }
