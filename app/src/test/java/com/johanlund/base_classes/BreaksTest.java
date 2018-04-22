@@ -195,6 +195,10 @@ public class BreaksTest {
         assertEquals(2, allBreaksStillInAscOrder.size());
         assertEquals(true, allBreaksStillInAscOrder.get(0).getTime().isBefore(allBreaksStillInAscOrder.get(1).getTime()));
     }
+
+    //==============================================================================================
+    //divideTimes tests
+    //==============================================================================================
     @Test
     public void divideToTwoListsTest(){
         CompleteTime ctStart = new CompleteTime(newYear, 3);
@@ -209,5 +213,58 @@ public class BreaksTest {
 
         assertEquals(newYear, ctsDivided.get(0).get(0).getTime());
         assertEquals(newYear.plusHours(1), ctsDivided.get(1).get(0).getTime());
+    }
+    @Test
+    public void divideToTwoListsEvenThoughTwoBreaksInMiddleTest(){
+        CompleteTime ctStart = new CompleteTime(newYear, 3);
+        //at same time should also break it
+        LocalDateTime breakInMiddle = newYear;
+        LocalDateTime breakInMiddle2 = newYear.plusMinutes(10);
+        CompleteTime ctEnd = new CompleteTime(newYear.plusHours(1), 3);
+        List<List<CompleteTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart, ctEnd), Arrays.asList(breakInMiddle));
+
+        assertEquals(2, ctsDivided.size());
+        assertEquals(1, ctsDivided.get(0).size());
+        assertEquals(1, ctsDivided.get(1).size());
+
+        assertEquals(newYear, ctsDivided.get(0).get(0).getTime());
+        assertEquals(newYear.plusHours(1), ctsDivided.get(1).get(0).getTime());
+    }
+    @Test
+    public void breakAtEndShouldntDivideTest(){
+        CompleteTime ctStart = new CompleteTime(newYear, 3);
+        LocalDateTime breakAtEnd = newYear;
+        List<List<CompleteTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart), Arrays.asList(breakAtEnd));
+        assertEquals(1, ctsDivided.size());
+        assertEquals(1, ctsDivided.get(0).size());
+
+        assertEquals(newYear, ctsDivided.get(0).get(0).getTime());
+    }
+
+    // 'Larger' == 2 items in list
+    @Test
+    public void divideToLargerListsTests(){
+        CompleteTime ctStart1 = new CompleteTime(newYear, 3);
+        CompleteTime ctStart2 = new CompleteTime(newYear.plusHours(1), 3);
+        LocalDateTime breakMiddle = newYear.plusHours(2);
+        CompleteTime ctEnd = new CompleteTime(newYear.plusHours(3), 3);
+        List<List<CompleteTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart1, ctStart2, ctEnd), Arrays.asList(breakMiddle));
+        assertEquals(2, ctsDivided.size());
+        assertEquals(2, ctsDivided.get(0).size());
+
+        assertEquals(newYear.plusHours(1), ctsDivided.get(0).get(1).getTime());
+    }
+    @Test
+    public void divideToThreeListsTests(){
+        CompleteTime ct1 = new CompleteTime(newYear, 3);
+        LocalDateTime break1 = newYear.plusHours(1);
+        CompleteTime ct2 = new CompleteTime(newYear.plusHours(2), 3);
+        LocalDateTime break2 = newYear.plusHours(3);
+        CompleteTime ct3 = new CompleteTime(newYear.plusHours(4), 3);
+        List<List<CompleteTime>> ctsDivided = Break.divideTimes(Arrays.asList(ct1, ct2, ct3), Arrays.asList(break1, break2));
+        assertEquals(3, ctsDivided.size());
+        assertEquals(1, ctsDivided.get(0).size());
+
+        assertEquals(newYear.plusHours(4), ctsDivided.get(2).get(0).getTime());
     }
 }
