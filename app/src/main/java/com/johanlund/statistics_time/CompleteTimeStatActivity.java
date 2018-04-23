@@ -18,6 +18,7 @@ import org.threeten.bp.LocalDateTime;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
@@ -50,19 +51,21 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
     protected void calculateStats() {
         //get events from database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        List<LocalDateTime> breaks = dbHandler.getManualBreaks();
-        List<CompleteTime> cts = dbHandler.getCompleteTimes();
+        List<LocalDateTime> mBreaks = dbHandler.getManualBreaks();
 
-        //insert or remove automatic breaks on events.
+        //auto breaks
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext()
                 );
         int hoursInFrontOfAutoBreak = preferences.getInt("hours_break",
                 HOURS_AHEAD_FOR_BREAK_BACKUP);
+        List<LocalDateTime> aBreaks = dbHandler.getAutoBreaks(hoursInFrontOfAutoBreak);
+        mBreaks.addAll(aBreaks);
+        Collections.sort(mBreaks);
 
-        //List<Break> breaks = Break.makeAllBreaks(events, hoursInFrontOfAutoBreak);
-        List<LocalDateTime> allBreaks = Break.makeAllBreaks(cts, breaks, hoursInFrontOfAutoBreak);
-        List<List<CompleteTime>> dividedCts = Break.divideTimes(cts, allBreaks);
+        List<CompleteTime> cts = dbHandler.getCompleteTimes();
+
+        List<List<CompleteTime>> dividedCts = Break.divideTimes(cts, mBreaks);
         CompleteStatAsyncTask asyncThread = new CompleteStatAsyncTask(adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), dividedCts);
     }

@@ -1328,6 +1328,46 @@ public class DBHandler extends SQLiteOpenHelper {
     }
     /**
      * Cursor safe
+     * @return autoBreaks sorted in in ascending time order
+     */
+    public List<LocalDateTime> getAutoBreaks(int hoursAheadBreak){
+
+        //1. Get all event times in asc order
+        List<LocalDateTime> eTimes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS  + " ORDER BY " + COLUMN_DATETIME + " ASC ";
+        Cursor c = db.rawQuery(QUERY, null);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    try {
+                        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
+                        eTimes.add(ldt);
+                    } finally {
+                        c.moveToNext();
+                    }
+                }
+            }
+        }
+        if (c!= null && !c.isClosed()) {
+            c.close();
+        }
+        if (db.isOpen()) {
+            db.close();
+        }
+        //non-db operations
+        //2. iterate eTimes and check closest laying elements time diff
+        List<LocalDateTime>aBreaks = new ArrayList<>();
+        for (int i = 0; i<eTimes.size()-1; i++){
+            if (eTimes.get(i).plusHours(hoursAheadBreak).isBefore(eTimes.get(i+1))){
+                aBreaks.add(eTimes.get(i));
+            }
+        }
+        return aBreaks;
+    }
+    /**
+     * Cursor safe
      * @return
      */
     public List<CompleteTime> getCompleteTimes() {
