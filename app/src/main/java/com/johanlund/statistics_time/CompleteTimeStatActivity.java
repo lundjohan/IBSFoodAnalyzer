@@ -42,11 +42,6 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
     }
 
     @Override
-    public void onBackPressed() {
-        finish();
-    }
-
-    @Override
     public List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         List<ScoreTime> sts = dbHandler.getCompleteTimes();

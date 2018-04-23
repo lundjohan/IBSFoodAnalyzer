@@ -54,4 +54,8 @@ public abstract class TimeStatActivity extends StatBaseActivity implements TimeS
         TimeStatAsyncTask asyncThread = new TimeStatAsyncTask(adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), stb);
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
