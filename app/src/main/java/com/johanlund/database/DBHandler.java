@@ -15,7 +15,7 @@ import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.exceptions.CorruptedEventException;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.model.TagType;
-import com.johanlund.util.CompleteTime;
+import com.johanlund.util.ScoreTime;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -1370,8 +1370,8 @@ public class DBHandler extends SQLiteOpenHelper {
      * Cursor safe
      * @return
      */
-    public List<CompleteTime> getCompleteTimes() {
-        List<CompleteTime> toReturn = new ArrayList<>();
+    public List<ScoreTime> getCompleteTimes() {
+        List<ScoreTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", b." + COLUMN_COMPLETENESS +
                 " FROM " + TABLE_EVENTS + " e " + " JOIN " + TABLE_BMS + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT;
@@ -1385,7 +1385,7 @@ public class DBHandler extends SQLiteOpenHelper {
                             String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
                             LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
                             int complete = c.getInt(c.getColumnIndex(COLUMN_COMPLETENESS));
-                            toReturn.add(new CompleteTime(ldt, complete));
+                            toReturn.add(new ScoreTime(ldt, complete));
                         } finally {
                             c.moveToNext();
                         }

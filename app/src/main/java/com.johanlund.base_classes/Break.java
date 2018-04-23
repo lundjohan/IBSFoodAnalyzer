@@ -6,12 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.database.DBHandler;
-import com.johanlund.util.CompleteTime;
+import com.johanlund.util.ScoreTime;
 
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,8 +62,8 @@ public class Break implements Comparable<Break>{
         return toReturn;
     }
 
-    //make generic (CompleteTime and others should implement some interface)
-    public static List<LocalDateTime> makeAllBreaks(List<CompleteTime> cts, List<LocalDateTime> breaks, int
+    //make generic (ScoreTime and others should implement some interface)
+    public static List<LocalDateTime> makeAllBreaks(List<ScoreTime> cts, List<LocalDateTime> breaks, int
             hoursInFrontOfAutoBreak) {
         breaks.addAll(makeCompleteAutoBreaks(cts, hoursInFrontOfAutoBreak));
         Collections.sort(breaks);
@@ -73,7 +72,7 @@ public class Break implements Comparable<Break>{
 
     //should be generic and be same method as the one below (but better to use this as model,
     // because other statwrappers will use similar - lighter - constructs instead of events)
-    private static List<LocalDateTime> makeCompleteAutoBreaks(List<CompleteTime> cts, int hoursAheadBreak) {
+    private static List<LocalDateTime> makeCompleteAutoBreaks(List<ScoreTime> cts, int hoursAheadBreak) {
         List<LocalDateTime>breaks = new ArrayList<>();
         for (int i = 0; i<cts.size()-1; i++){
             if (cts.get(i).getTime().plusHours(hoursAheadBreak).isBefore(cts.get(i+1).getTime())){
@@ -116,8 +115,8 @@ public class Break implements Comparable<Break>{
      */
     //make generic
     //sorry for the names, copied from Chunk.makeChunksFromEvents
-    public static List<List<CompleteTime>> divideTimes(List<CompleteTime> events, List<LocalDateTime> breaks) {
-        List<List<CompleteTime>> toReturn = new ArrayList<>();
+    public static List<List<ScoreTime>> divideTimes(List<ScoreTime> events, List<LocalDateTime> breaks) {
+        List<List<ScoreTime>> toReturn = new ArrayList<>();
             int indBreaks = 0;
             int indStartNewChunk = 0; //incl
             for (int i = 0; i < events.size(); i++) {

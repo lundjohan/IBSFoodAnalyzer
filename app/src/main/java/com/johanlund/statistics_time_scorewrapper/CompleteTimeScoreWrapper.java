@@ -2,13 +2,10 @@ package com.johanlund.statistics_time_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.stat_classes.TimePointMaker;
-import com.johanlund.statistics_point_classes.PointBase;
 import com.johanlund.statistics_point_classes.TimePoint;
-import com.johanlund.util.CompleteTime;
+import com.johanlund.util.ScoreTime;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class CompleteTimeScoreWrapper  <E extends TimePoint> extends TimeScoreWrapper{
@@ -17,9 +14,9 @@ public class CompleteTimeScoreWrapper  <E extends TimePoint> extends TimeScoreWr
     }
 
     //copied from RatingTimeScoreWrapper
-    public List<E> calcTimePoints(List<List<CompleteTime>> ctsList) {
+    public List<E> calcTimePoints(List<List<ScoreTime>> ctsList) {
         List<E> points = new ArrayList<>();
-        for (List<CompleteTime> cts : ctsList) {
+        for (List<ScoreTime> cts : ctsList) {
             List<TimePoint> tps = calcBmPoints(cts);
             for (TimePoint tp: tps) {
                 points.add((E)tp);
@@ -28,7 +25,7 @@ public class CompleteTimeScoreWrapper  <E extends TimePoint> extends TimeScoreWr
         return points;
     }
 
-    private List<TimePoint> calcBmPoints(List<CompleteTime> cts) {
+    private List<TimePoint> calcBmPoints(List<ScoreTime> cts) {
         return TimePointMaker.doBMTimePoints(cts, scoreStart, scoreEnd);
     }
 

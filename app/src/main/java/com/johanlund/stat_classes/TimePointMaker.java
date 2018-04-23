@@ -1,9 +1,8 @@
 package com.johanlund.stat_classes;
 
-import com.johanlund.base_classes.Bm;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.statistics_point_classes.TimePoint;
-import com.johanlund.util.CompleteTime;
+import com.johanlund.util.ScoreTime;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -78,13 +77,13 @@ public class TimePointMaker {
      *
      *
      */
-    public static List<TimePoint> doBMTimePoints(List<CompleteTime> bms, int scoreStart, int scoreEnd) {
+    public static List<TimePoint> doBMTimePoints(List<ScoreTime> bms, int scoreStart, int scoreEnd) {
         List<TimePoint> timePoints = new ArrayList<>();
         boolean periodHasStarted = false;
         LocalDateTime periodStart = null;
         LocalDateTime lastBmForPeriod = null;
 
-        for (CompleteTime b: bms){
+        for (ScoreTime b: bms){
             //last bm
             if (isBetweenScores(b, scoreStart, scoreEnd)){
                 if (periodHasStarted){
@@ -118,11 +117,11 @@ public class TimePointMaker {
         return timePoints;
     }
 
-    private static boolean isBetweenScores(CompleteTime b, int scoreStart, int scoreEnd) {
+    private static boolean isBetweenScores(ScoreTime b, int scoreStart, int scoreEnd) {
         return b.getComplete() >= scoreStart && b.getComplete() <= scoreEnd;
     }
 
-    private static boolean isLastBm(CompleteTime b, List<CompleteTime>bms){
+    private static boolean isLastBm(ScoreTime b, List<ScoreTime>bms){
         return b.getTime().equals(bms.get(bms.size()-1).getTime());
     }
 }

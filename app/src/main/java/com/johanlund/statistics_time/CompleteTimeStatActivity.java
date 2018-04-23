@@ -12,16 +12,13 @@ import com.johanlund.statistics_adapters.TimeStatAdapter;
 import com.johanlund.statistics_general.StatAdapter;
 import com.johanlund.statistics_time_scorewrapper.CompleteTimeScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
-import com.johanlund.util.CompleteTime;
+import com.johanlund.util.ScoreTime;
 
 import org.threeten.bp.LocalDateTime;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
 
 /**
  * Created by Johan on 2018-03-13.
@@ -53,9 +50,9 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
         //get events from database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
 
-        List<CompleteTime> cts = dbHandler.getCompleteTimes();
+        List<ScoreTime> cts = dbHandler.getCompleteTimes();
 
-        List<List<CompleteTime>> dividedCts = Break.divideTimes(cts, allBreaks);
+        List<List<ScoreTime>> dividedCts = Break.divideTimes(cts, allBreaks);
         CompleteStatAsyncTask asyncThread = new CompleteStatAsyncTask(adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), dividedCts);
     }
@@ -75,7 +72,7 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
             List<TimePoint>toReturn = new ArrayList<>();
             if (!isCancelled()) {
                 CompleteTimeScoreWrapper wrapper = (CompleteTimeScoreWrapper) params[0];
-                List<List<CompleteTime>> dividedCts = (List<List<CompleteTime>> ) params[1];
+                List<List<ScoreTime>> dividedCts = (List<List<ScoreTime>> ) params[1];
 
                 List<TimePoint> points = wrapper.calcTimePoints(dividedCts);
 

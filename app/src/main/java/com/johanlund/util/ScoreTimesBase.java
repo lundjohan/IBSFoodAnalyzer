@@ -3,11 +3,11 @@ package com.johanlund.util;
 import java.util.List;
 
 abstract class ScoreTimesBase{
-    private List<CompleteTime>scoreTimes;
-    public ScoreTimesBase(List<CompleteTime> scoreTimes) {
+    private List<ScoreTime>scoreTimes;
+    public ScoreTimesBase(List<ScoreTime> scoreTimes) {
         this.scoreTimes = scoreTimes;
     }
-    public List<CompleteTime> getScoreTimes() {
+    public List<ScoreTime> getScoreTimes() {
         return scoreTimes;
     }
 }
