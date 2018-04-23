@@ -39,11 +39,16 @@ public class RatingTimeStatActivity extends TimeStatActivity {
         int durationLimit = preferences.getInt(getResources().getString(R.string.time_rating_duration_key),0);
         return new RatingTimeScoreWrapper(ratingStart,ratingEnd, durationLimit);
     }
-    
+
     @Override
     public List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
+        //we need the time of the last event (since breaks might not cover the very end)
+        LocalDateTime lastTime = dbHandler.getTimeOfLastEvent();
+        allBreaks.add(lastTime);
+
         List<ScoreTime> sts = dbHandler.getRatingTimes();
+
         return Break.getRatingTimes(sts, allBreaks);
     }
 }

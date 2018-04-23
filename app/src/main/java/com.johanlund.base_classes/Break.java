@@ -35,6 +35,8 @@ public class Break implements Comparable<Break>{
     }
 
     /**
+     * Notice that this method DO NOT return an artificial break at last event (unless it is a manual break there)
+     *
      * @param c
      * @return manual AND auto breaks
      */
@@ -149,10 +151,34 @@ public class Break implements Comparable<Break>{
             }
             return toReturn;
         }
+
+    /**
+     * Given allBreaks contain the very last time of the last event in Chunk (Chunk == collection of all events)
+     *
+     * @param sts
+     * @param allBreaks
+     * @return
+     */
     public static List<ScoreTimesBase> getRatingTimes(List<ScoreTime> sts, List<LocalDateTime> allBreaks) {
-        List<ScoreTimesBase>stbs = new ArrayList<>();
-        //TODO
-        return stbs;
+        List<ScoreTimesBase> toReturn = new ArrayList<>();
+        List<List<ScoreTime>> dividedSts = divideTimes(sts, allBreaks);
+        int indBreaks = 0;
+        for (List<ScoreTime>scoreTimes: dividedSts){
+            //last score time does not mean end of chunk, since all events havent been included in it
+            LocalDateTime lastScoreTimeInList = scoreTimes.get(scoreTimes.size()-1).getTime();
+            //jump over too early breaks
+            for (int j = indBreaks; j<allBreaks.size();j++) {
+                if (allBreaks.get(indBreaks).isBefore(lastScoreTimeInList)) {
+                    indBreaks++;
+                }
+                else{
+                    break;
+                }
+            }
+            LocalDateTime chunkEnd = allBreaks.get(indBreaks);
+            toReturn.add(new RatingTimes(scoreTimes, chunkEnd));
+        }
+        return toReturn;
     }
     public static List<ScoreTimesBase>getCompleteTimes(List<ScoreTime>sts, List<LocalDateTime>allBreaks){
         List<ScoreTimesBase>stbs = new ArrayList<>();

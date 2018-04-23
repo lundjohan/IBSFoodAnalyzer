@@ -1252,29 +1252,37 @@ public class DBHandler extends SQLiteOpenHelper {
         this.close();
         return eventList;
     }
+    //returns null on failure
     public LocalDate getDateOfLastEvent() {
+        LocalDate ld = null;
+        LocalDateTime ldt = getTimeOfLastEvent();
+        if (ldt!= null){
+            ld = null;
+        }
+        return ld;
+    }
+    //returns null on failure
+    public LocalDateTime getTimeOfLastEvent() {
         SQLiteDatabase db = this.getReadableDatabase();
         //must use datetime and not date since datetime can be used with MAX in sqlite
         final String QUERY = "Select MAX (" + COLUMN_DATETIME + ") FROM " + TABLE_EVENTS;
         Cursor c = db.rawQuery(QUERY, null);
-        LocalDate ld = null;
+        LocalDateTime ldt = null;
         if (c != null) {
             c.moveToFirst();
             try {
                 String dateTimeStr = c.getString(0);
-                LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(dateTimeStr);
-                ld = ldt.toLocalDate();
+                ldt = DateTimeFormat.fromSqLiteFormat(dateTimeStr);
             } catch (Exception e) {
-                ld = null;
-                // Log.e(TAG, e.getMessage());
+                ldt = null;
+            }
+            finally {
+                c.close();
+                db.close();
             }
         }
-        c.close();
-        db.close();
-        return ld;
-
+        return ldt;
     }
-
     public boolean diaryIsEmpty() {
         return tableIsEmpty(TABLE_EVENTS);
     }
@@ -1367,8 +1375,37 @@ public class DBHandler extends SQLiteOpenHelper {
         return aBreaks;
     }
     public List<ScoreTime> getRatingTimes(){
-        //TODO
-        return null;
+        List<ScoreTime> toReturn = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", r." + COLUMN_AFTER +
+                " FROM " + TABLE_EVENTS + " e " + " JOIN " + TABLE_RATINGS + " r " + " ON e. " + COLUMN_ID + " = r."+ COLUMN_EVENT;
+
+        Cursor c = db.rawQuery(QUERY, null);
+        try {
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                            LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
+                            int complete = c.getInt(c.getColumnIndex(COLUMN_AFTER));
+                            toReturn.add(new ScoreTime(ldt, complete));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        }
+        finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
     }
 
 
