@@ -13,6 +13,7 @@ import com.johanlund.statistics_general.StatAsyncTask;
 import com.johanlund.statistics_general.StatBaseActivity;
 import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
+import com.johanlund.util.ScoreTime;
 
 import org.threeten.bp.LocalDate;
 
@@ -45,4 +46,5 @@ public abstract class TimeStatActivity extends StatBaseActivity implements TimeS
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
+    public abstract List<ScoreTime> getScoreTimes();
 }
