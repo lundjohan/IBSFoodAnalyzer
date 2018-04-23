@@ -1366,6 +1366,13 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return aBreaks;
     }
+    public List<ScoreTime> getRatingTimes(){
+        //TODO
+        return null;
+    }
+
+
+
     /**
      * Cursor safe
      * @return

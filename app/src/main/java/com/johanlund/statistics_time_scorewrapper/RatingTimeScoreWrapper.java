@@ -1,13 +1,10 @@
 package com.johanlund.statistics_time_scorewrapper;
 
-import com.johanlund.base_classes.Chunk;
-import com.johanlund.base_classes.Rating;
 import com.johanlund.stat_classes.TimePointMaker;
 import com.johanlund.statistics_point_classes.TimePoint;
+import com.johanlund.util.RatingTimes;
+import com.johanlund.util.ScoreTimesBase;
 
-import org.threeten.bp.LocalDateTime;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,20 +17,8 @@ public class RatingTimeScoreWrapper extends TimeScoreWrapper {
     }
 
     @Override
-    public List<TimePoint> calcPoints(List<Chunk> chunks) {
-        List<TimePoint> points = new ArrayList<>();
-        for (Chunk c : chunks) {
-            points.addAll(calcPoints(c));
-        }
-        return points;
-    }
-
-    protected List<TimePoint> calcPoints(Chunk c) {
-        List<Rating> ratings = c.getRatings();
-        return calcPoints(ratings, c.getLastTime());
-    }
-
-    private List<TimePoint> calcPoints(List<Rating> ratings, LocalDateTime lastTimeInChunk) {
-        return TimePointMaker.doRatingTimePoints(ratings, lastTimeInChunk, scoreStart, scoreEnd);
+    protected List<TimePoint> doCalc(ScoreTimesBase stb) {
+        RatingTimes rts = (RatingTimes)stb;
+        return TimePointMaker.doRatingTimePoints(rts.getScoreTimes(), rts.getChunkEnd(), scoreStart, scoreEnd);
     }
 }

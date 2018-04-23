@@ -2,20 +2,19 @@ package com.johanlund.statistics_time;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
-import com.johanlund.base_classes.Chunk;
+import com.johanlund.base_classes.Break;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_adapters.TimeStatAdapter;
-import com.johanlund.statistics_general.StatAsyncTask;
 import com.johanlund.statistics_general.StatBaseActivity;
-import com.johanlund.statistics_point_classes.TimePoint;
-import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
+import com.johanlund.statistics_general.TimeStatAsyncTask;
 import com.johanlund.util.ScoreTime;
+import com.johanlund.util.ScoreTimesBase;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
@@ -46,5 +45,13 @@ public abstract class TimeStatActivity extends StatBaseActivity implements TimeS
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
-    public abstract List<ScoreTime> getScoreTimes();
+    public abstract List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks);
+
+    @Override
+    protected void calculateStats() {
+        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
+        List<ScoreTimesBase> stb = getScoreTimesBases(allBreaks);
+        TimeStatAsyncTask asyncThread = new TimeStatAsyncTask(adapter, recyclerView);
+        asyncThread.execute(getScoreWrapper(), stb);
+    }
 }

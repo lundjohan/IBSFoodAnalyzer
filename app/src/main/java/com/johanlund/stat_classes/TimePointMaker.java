@@ -1,7 +1,7 @@
 package com.johanlund.stat_classes;
 
-import com.johanlund.base_classes.Rating;
 import com.johanlund.statistics_point_classes.TimePoint;
+import com.johanlund.util.RatingTimes;
 import com.johanlund.util.ScoreTime;
 
 import org.threeten.bp.LocalDateTime;
@@ -17,12 +17,16 @@ public class TimePointMaker {
      * 3. scoreStart <= scoreEnd
      *
      */
-    public static List<TimePoint> doRatingTimePoints(List<Rating> ratings, LocalDateTime chunkEnd, int
+    public static List<TimePoint>doRatingTimePoints(RatingTimes rt, int
+            scoreStart, int scoreEnd){
+        return doRatingTimePoints(rt.getScoreTimes(), rt.getChunkEnd(), scoreStart, scoreEnd);
+    }
+    public static List<TimePoint> doRatingTimePoints(List<ScoreTime> ratings, LocalDateTime chunkEnd, int
             scoreStart, int scoreEnd) {
         List<TimePoint> timePoints = new ArrayList<>();
         boolean periodHasStarted = false;
         LocalDateTime startTime = null;
-        for (Rating r : ratings) {
+        for (ScoreTime r : ratings) {
             if (isBetweenScores(r, scoreStart, scoreEnd)) {
                 if (periodHasStarted) {
                     if (isLastRating(r, ratings)) {
@@ -58,13 +62,13 @@ public class TimePointMaker {
         }
         return timePoints;
     }
-    private static boolean isLastRating(Rating r, List<Rating>ratings){
+    private static boolean isLastRating(ScoreTime r, List<ScoreTime> ratings){
         return r.getTime().equals(ratings.get(ratings.size()-1).getTime());
     }
 
 
-    private static boolean isBetweenScores(Rating r, int scoreStart, int scoreEnd) {
-        return r.getAfter() >= scoreStart && r.getAfter() <= scoreEnd;
+    private static boolean isBetweenScores(ScoreTime r, int scoreStart, int scoreEnd) {
+        return r.getScore() >= scoreStart && r.getScore() <= scoreEnd;
     }
     /**
      * This is even simpler than above,
@@ -115,10 +119,6 @@ public class TimePointMaker {
             }
         }
         return timePoints;
-    }
-
-    private static boolean isBetweenScores(ScoreTime b, int scoreStart, int scoreEnd) {
-        return b.getComplete() >= scoreStart && b.getComplete() <= scoreEnd;
     }
 
     private static boolean isLastBm(ScoreTime b, List<ScoreTime>bms){

@@ -6,7 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.database.DBHandler;
+import com.johanlund.util.BmTimes;
+import com.johanlund.util.RatingTimes;
 import com.johanlund.util.ScoreTime;
+import com.johanlund.util.ScoreTimesBase;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -146,6 +149,21 @@ public class Break implements Comparable<Break>{
             }
             return toReturn;
         }
+    public static List<ScoreTimesBase> getRatingTimes(List<ScoreTime> sts, List<LocalDateTime> allBreaks) {
+        List<ScoreTimesBase>stbs = new ArrayList<>();
+        //TODO
+        return stbs;
+    }
+    public static List<ScoreTimesBase>getCompleteTimes(List<ScoreTime>sts, List<LocalDateTime>allBreaks){
+        List<ScoreTimesBase>stbs = new ArrayList<>();
+        List<List<ScoreTime>> dividedSts = divideTimes(sts, allBreaks);
+        for (List<ScoreTime> divS:dividedSts){
+            stbs.add(new BmTimes(divS));
+        }
+        return stbs;
+    }
+
+
 
     @Override
     public int compareTo(@NonNull Break break2) {

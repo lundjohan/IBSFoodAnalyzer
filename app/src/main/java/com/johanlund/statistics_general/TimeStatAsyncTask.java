@@ -4,17 +4,20 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.statistics_adapters.TimeStatAdapter;
+import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.statistics_time_scorewrapper.CompleteTimeScoreWrapper;
+import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 import com.johanlund.util.ScoreTime;
+import com.johanlund.util.ScoreTimesBase;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompleteStatAsyncTask<TimePoint> extends AsyncTask<Object, Void, List<TimePoint>> {
+public class TimeStatAsyncTask<TimePoint> extends AsyncTask<Object, Void, List<TimePoint>> {
     private WeakReference<TimeStatAdapter> adapter;
     private WeakReference<RecyclerView> recyclerView;
-public CompleteStatAsyncTask(StatAdapter adapter, RecyclerView recyclerView) {
+public TimeStatAsyncTask(StatAdapter adapter, RecyclerView recyclerView) {
         this.adapter = new WeakReference(adapter);
         this.recyclerView = new WeakReference(recyclerView);
     }
@@ -22,10 +25,10 @@ public CompleteStatAsyncTask(StatAdapter adapter, RecyclerView recyclerView) {
     protected List<TimePoint> doInBackground(Object... params) {
         List<TimePoint>toReturn = new ArrayList<>();
         if (!isCancelled()) {
-            CompleteTimeScoreWrapper wrapper = (CompleteTimeScoreWrapper) params[0];
-            List<List<ScoreTime>> dividedCts = (List<List<ScoreTime>> ) params[1];
+            TimeScoreWrapper wrapper = (TimeScoreWrapper) params[0];
+            List<ScoreTimesBase> stb = (List<ScoreTimesBase>) params[1];
 
-            List<TimePoint> points = wrapper.calcTimePoints(dividedCts);
+            List<com.johanlund.statistics_point_classes.TimePoint> points = wrapper.calcTimePoints(stb);
 
             //sort points here
             List<TimePoint> sortedList = wrapper.toSortedList((List) points);

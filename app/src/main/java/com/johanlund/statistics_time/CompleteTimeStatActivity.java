@@ -6,10 +6,11 @@ import android.support.v7.preference.PreferenceManager;
 import com.johanlund.base_classes.Break;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics_general.CompleteStatAsyncTask;
+import com.johanlund.statistics_general.TimeStatAsyncTask;
 import com.johanlund.statistics_time_scorewrapper.CompleteTimeScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 import com.johanlund.util.ScoreTime;
+import com.johanlund.util.ScoreTimesBase;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -39,24 +40,16 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
         int ratingEnd = preferences.getInt(getResources().getString(R.string.time_complete_end), 5);
         return new CompleteTimeScoreWrapper(ratingStart,ratingEnd);
     }
-    @Override
-    protected void calculateStats() {
-        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
 
-        List<ScoreTime>cts = getScoreTimes();
-        List<List<ScoreTime>> dividedCts = Break.divideTimes(cts, allBreaks);
-        CompleteStatAsyncTask asyncThread = new CompleteStatAsyncTask(adapter, recyclerView);
-        asyncThread.execute(getScoreWrapper(), dividedCts);
-    }
     @Override
     public void onBackPressed() {
         finish();
     }
 
     @Override
-    public List<ScoreTime> getScoreTimes() {
+    public List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        return dbHandler.getCompleteTimes();
+        List<ScoreTime> sts = dbHandler.getCompleteTimes();
+        return Break.getCompleteTimes(sts, allBreaks);
     }
-
 }

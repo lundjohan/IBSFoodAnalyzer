@@ -15,7 +15,7 @@ public class ScoreTime {
         return datetime;
     }
 
-    public int getComplete() {
+    public int getScore() {
         return complete;
     }
 }

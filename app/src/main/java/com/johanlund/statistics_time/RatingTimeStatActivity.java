@@ -3,11 +3,15 @@ package com.johanlund.statistics_time;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
+import com.johanlund.base_classes.Break;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_time_scorewrapper.RatingTimeScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 import com.johanlund.util.ScoreTime;
+import com.johanlund.util.ScoreTimesBase;
+
+import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
@@ -35,10 +39,11 @@ public class RatingTimeStatActivity extends TimeStatActivity {
         int durationLimit = preferences.getInt(getResources().getString(R.string.time_rating_duration_key),0);
         return new RatingTimeScoreWrapper(ratingStart,ratingEnd, durationLimit);
     }
-
+    
     @Override
-    public List<ScoreTime> getScoreTimes() {
+    public List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        return null;//dbHandler.getRatingTimes();
+        List<ScoreTime> sts = dbHandler.getRatingTimes();
+        return Break.getRatingTimes(sts, allBreaks);
     }
 }
