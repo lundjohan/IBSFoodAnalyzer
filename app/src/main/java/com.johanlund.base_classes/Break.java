@@ -155,28 +155,42 @@ public class Break implements Comparable<Break>{
     /**
      * Given allBreaks contain the very last time of the last event in Chunk (Chunk == collection of all events)
      *
-     * @param sts
-     * @param allBreaks
+     * This is very similar to divideTimes, except for 2 things (1. the above mentioned last break
+     * in breaks, 2. Adding lastChunk)
+     * @param events
+     * @param breaks
      * @return
      */
-    public static List<ScoreTimesBase> getRatingTimes(List<ScoreTime> sts, List<LocalDateTime> allBreaks) {
+    public static List<ScoreTimesBase> getRatingTimes(List<ScoreTime> events, List<LocalDateTime> breaks) {
         List<ScoreTimesBase> toReturn = new ArrayList<>();
-        List<List<ScoreTime>> dividedSts = divideTimes(sts, allBreaks);
         int indBreaks = 0;
-        for (List<ScoreTime>scoreTimes: dividedSts){
-            //last score time does not mean end of chunk, since all events havent been included in it
-            LocalDateTime lastScoreTimeInList = scoreTimes.get(scoreTimes.size()-1).getTime();
-            //jump over too early breaks
-            for (int j = indBreaks; j<allBreaks.size();j++) {
-                if (allBreaks.get(indBreaks).isBefore(lastScoreTimeInList)) {
+        int indStartNewChunk = 0; //incl
+        for (int i = 0; i < events.size(); i++) {
+            //remove break < event, see ChunkTests when this can occur.
+            for (int j = indBreaks; j<breaks.size();j++) {
+                if (breaks.get(indBreaks).isBefore(events.get(i).getTime())) {
                     indBreaks++;
                 }
-                else{
+                else {
                     break;
                 }
             }
-            LocalDateTime chunkEnd = allBreaks.get(indBreaks);
-            toReturn.add(new RatingTimes(scoreTimes, chunkEnd));
+
+            //same as:  last break || last event
+            if (breaks.size() <= indBreaks || i == events.size() - 1) {
+                toReturn.add(new RatingTimes(events.subList(indStartNewChunk, events.size()), breaks.get(breaks.size()-1)));
+                break;
+            }
+
+            LocalDateTime bTime = breaks.get(indBreaks);
+            LocalDateTime eTime = events.get(i).getTime();
+            LocalDateTime nextETime = events.get(i + 1).getTime(); //this is ok due to former if
+            //same as: e <= b < nextE
+            if (!bTime.isBefore(eTime) && bTime.isBefore(nextETime)) {
+                toReturn.add(new RatingTimes(events.subList(indStartNewChunk, i + 1), bTime));
+                indBreaks++;
+                indStartNewChunk = i + 1;
+            }
         }
         return toReturn;
     }
