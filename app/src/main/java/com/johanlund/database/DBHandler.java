@@ -1300,7 +1300,7 @@ public class DBHandler extends SQLiteOpenHelper {
      * Cursor safe
      * @return
      */
-    public List<LocalDateTime> getBreaks(){
+    public List<LocalDateTime> getManualBreaks(){
         List<LocalDateTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_HAS_BREAK + " = 1 " + " ORDER BY " + COLUMN_DATETIME + " ASC ";

@@ -50,7 +50,7 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
     protected void calculateStats() {
         //get events from database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        List<LocalDateTime> breaks = dbHandler.getBreaks();
+        List<LocalDateTime> breaks = dbHandler.getManualBreaks();
         List<CompleteTime> cts = dbHandler.getCompleteTimes();
 
         //insert or remove automatic breaks on events.
