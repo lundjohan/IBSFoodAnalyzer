@@ -4,11 +4,11 @@ import org.threeten.bp.LocalDateTime;
 
 public class ScoreTime {
     private LocalDateTime datetime;
-    private int complete;
+    private int score;
 
-    public ScoreTime(LocalDateTime datetime, int complete) {
+    public ScoreTime(LocalDateTime datetime, int score) {
         this.datetime = datetime;
-        this.complete = complete;
+        this.score = score;
     }
 
     public LocalDateTime getTime() {
@@ -16,6 +16,11 @@ public class ScoreTime {
     }
 
     public int getScore() {
-        return complete;
+        return score;
+    }
+
+    @Override
+    public String toString(){
+        return datetime.toString();
     }
 }
