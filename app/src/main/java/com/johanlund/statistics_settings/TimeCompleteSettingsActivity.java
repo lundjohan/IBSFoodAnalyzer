@@ -12,14 +12,14 @@ import com.johanlund.ibsfoodanalyzer.R;
 public class TimeCompleteSettingsActivity extends SettingsBaseActivity{
     @Override
     protected PreferenceFragment getFragment() {
-        return new BmTimeSettingsFragment();
+        return new CompleteTimeSettingsFragment();
     }
 
-    public static class BmTimeSettingsFragment extends PreferenceFragment {
+    public static class CompleteTimeSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.bm_time_preferences);
+            addPreferencesFromResource(R.xml.complete_time_preferences);
         }
     }
 }

@@ -6,8 +6,8 @@ import com.johanlund.util.ScoreTimesBase;
 
 import java.util.List;
 
-public class CompleteTimeScoreWrapper extends TimeScoreWrapper{
-    public CompleteTimeScoreWrapper(int scoreStart, int scoreEnd) {
+public class BmTimeScoreWrapper extends TimeScoreWrapper{
+    public BmTimeScoreWrapper(int scoreStart, int scoreEnd) {
         super(scoreStart, scoreEnd,0);
     }
 

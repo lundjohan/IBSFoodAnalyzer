@@ -1375,50 +1375,29 @@ public class DBHandler extends SQLiteOpenHelper {
         return aBreaks;
     }
     public List<ScoreTime> getRatingTimes(){
-        List<ScoreTime> toReturn = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", r." + COLUMN_AFTER +
-                " FROM " + TABLE_EVENTS + " e " + " JOIN " + TABLE_RATINGS + " r " + " ON e. " + COLUMN_ID + " = r."+ COLUMN_EVENT;
-
-        Cursor c = db.rawQuery(QUERY, null);
-        try {
-            if (c != null) {
-                if (c.moveToFirst()) {
-                    while (!c.isAfterLast()) {
-                        try {
-                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                            LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
-                            int complete = c.getInt(c.getColumnIndex(COLUMN_AFTER));
-                            toReturn.add(new ScoreTime(ldt, complete));
-                        } finally {
-                            c.moveToNext();
-                        }
-                    }
-                }
-            }
-        }
-        finally {
-            if (c != null && !c.isClosed()) {
-                c.close();
-            }
-            if (db.isOpen()) {
-                db.close();
-            }
-        }
-        return toReturn;
+        return getScoreTimes(TABLE_RATINGS, COLUMN_AFTER);
     }
-
-
 
     /**
      * Cursor safe
      * @return
      */
     public List<ScoreTime> getCompleteTimes() {
+        return getScoreTimes(TABLE_BMS, COLUMN_COMPLETENESS);
+    }
+    /**
+     * Cursor safe
+     * @return
+     */
+    public List<ScoreTime> getBristolTimes() {
+        return getScoreTimes(TABLE_BMS, COLUMN_BRISTOL);
+    }
+
+    private List<ScoreTime>getScoreTimes(String eventTable, String scoreColumn){
         List<ScoreTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", b." + COLUMN_COMPLETENESS +
-                " FROM " + TABLE_EVENTS + " e " + " JOIN " + TABLE_BMS + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT;
+        final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", b." + scoreColumn +
+                " FROM " + TABLE_EVENTS + " e " + " JOIN " + eventTable + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT;
 
         Cursor c = db.rawQuery(QUERY, null);
         try {
@@ -1428,8 +1407,8 @@ public class DBHandler extends SQLiteOpenHelper {
                         try {
                             String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
                             LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
-                            int complete = c.getInt(c.getColumnIndex(COLUMN_COMPLETENESS));
-                            toReturn.add(new ScoreTime(ldt, complete));
+                            int score = c.getInt(c.getColumnIndex(scoreColumn));
+                            toReturn.add(new ScoreTime(ldt, score));
                         } finally {
                             c.moveToNext();
                         }
@@ -1448,4 +1427,3 @@ public class DBHandler extends SQLiteOpenHelper {
         return toReturn;
     }
 }
-

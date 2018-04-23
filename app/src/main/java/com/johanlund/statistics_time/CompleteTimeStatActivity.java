@@ -6,8 +6,7 @@ import android.support.v7.preference.PreferenceManager;
 import com.johanlund.base_classes.Break;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.statistics_general.TimeStatAsyncTask;
-import com.johanlund.statistics_time_scorewrapper.CompleteTimeScoreWrapper;
+import com.johanlund.statistics_time_scorewrapper.BmTimeScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.ScoreTimesBase;
@@ -38,13 +37,13 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
                 (getApplicationContext());
         int ratingStart = preferences.getInt(getResources().getString(R.string.time_complete_start),4);
         int ratingEnd = preferences.getInt(getResources().getString(R.string.time_complete_end), 5);
-        return new CompleteTimeScoreWrapper(ratingStart,ratingEnd);
+        return new BmTimeScoreWrapper(ratingStart,ratingEnd);
     }
 
     @Override
     public List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         List<ScoreTime> sts = dbHandler.getCompleteTimes();
-        return Break.getCompleteTimes(sts, allBreaks);
+        return Break.getBmTimes(sts, allBreaks);
     }
 }

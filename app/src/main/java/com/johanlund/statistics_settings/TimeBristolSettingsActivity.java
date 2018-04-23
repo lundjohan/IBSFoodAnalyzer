@@ -19,7 +19,7 @@ public class TimeBristolSettingsActivity extends SettingsBaseActivity{
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.bm_time_preferences);
+            addPreferencesFromResource(R.xml.bristol_time_preferences);
         }
     }
 }

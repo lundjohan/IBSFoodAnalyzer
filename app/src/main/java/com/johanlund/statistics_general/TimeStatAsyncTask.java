@@ -4,10 +4,7 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.statistics_adapters.TimeStatAdapter;
-import com.johanlund.statistics_point_classes.TimePoint;
-import com.johanlund.statistics_time_scorewrapper.CompleteTimeScoreWrapper;
 import com.johanlund.statistics_time_scorewrapper.TimeScoreWrapper;
-import com.johanlund.util.ScoreTime;
 import com.johanlund.util.ScoreTimesBase;
 
 import java.lang.ref.WeakReference;

@@ -194,7 +194,7 @@ public class Break implements Comparable<Break>{
         }
         return toReturn;
     }
-    public static List<ScoreTimesBase>getCompleteTimes(List<ScoreTime>sts, List<LocalDateTime>allBreaks){
+    public static List<ScoreTimesBase> getBmTimes(List<ScoreTime>sts, List<LocalDateTime>allBreaks){
         List<ScoreTimesBase>stbs = new ArrayList<>();
         List<List<ScoreTime>> dividedSts = divideTimes(sts, allBreaks);
         for (List<ScoreTime> divS:dividedSts){
