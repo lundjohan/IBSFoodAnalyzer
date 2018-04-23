@@ -49,23 +49,13 @@ public class CompleteTimeStatActivity extends TimeStatActivity  {
     }
     @Override
     protected void calculateStats() {
+        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
         //get events from database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        List<LocalDateTime> mBreaks = dbHandler.getManualBreaks();
-
-        //auto breaks
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
-                (getApplicationContext()
-                );
-        int hoursInFrontOfAutoBreak = preferences.getInt("hours_break",
-                HOURS_AHEAD_FOR_BREAK_BACKUP);
-        List<LocalDateTime> aBreaks = dbHandler.getAutoBreaks(hoursInFrontOfAutoBreak);
-        mBreaks.addAll(aBreaks);
-        Collections.sort(mBreaks);
 
         List<CompleteTime> cts = dbHandler.getCompleteTimes();
 
-        List<List<CompleteTime>> dividedCts = Break.divideTimes(cts, mBreaks);
+        List<List<CompleteTime>> dividedCts = Break.divideTimes(cts, allBreaks);
         CompleteStatAsyncTask asyncThread = new CompleteStatAsyncTask(adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), dividedCts);
     }

@@ -1,7 +1,11 @@
 package com.johanlund.base_classes;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v7.preference.PreferenceManager;
 
+import com.johanlund.database.DBHandler;
 import com.johanlund.util.CompleteTime;
 
 import org.threeten.bp.LocalDateTime;
@@ -10,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP;
 
 /**
  * Created by Johan on 2017-10-05.
@@ -26,6 +32,23 @@ public class Break implements Comparable<Break>{
         return time;
     }
 
+    /**
+     * @param c
+     * @return manual AND auto breaks
+     */
+    public static List<LocalDateTime> getAllBreaks(Context c) {
+        DBHandler dbHandler = new DBHandler(c);
+        List<LocalDateTime> mBreaks = dbHandler.getManualBreaks();
+
+        //auto breaks
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(c);
+        int hoursInFrontOfAutoBreak = preferences.getInt("hours_break",
+                HOURS_AHEAD_FOR_BREAK_BACKUP);
+        List<LocalDateTime> aBreaks = dbHandler.getAutoBreaks(hoursInFrontOfAutoBreak);
+        mBreaks.addAll(aBreaks);
+        Collections.sort(mBreaks);
+        return mBreaks;
+    }
     /**
      * Do both manual and automatic breaks
      * @param events
@@ -129,6 +152,4 @@ public class Break implements Comparable<Break>{
     public int compareTo(@NonNull Break break2) {
         return this.time.compareTo(break2.time);
     }
-
-
 }
