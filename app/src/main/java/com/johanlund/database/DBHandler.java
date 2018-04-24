@@ -1331,12 +1331,16 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String count = "SELECT count(*) FROM " + tablename;
         Cursor c = db.rawQuery(count, null);
-        c.moveToFirst();
-        if (c.getInt(0) > 0) {
-            return false;
+        try {
+            c.moveToFirst();
+            if (c.getInt(0) > 0) {
+                return false;
+            }
         }
-        c.close();
-        db.close();
+        finally {
+            c.close();
+            db.close();
+        }
         return true;
     }
 
@@ -1349,24 +1353,28 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_HAS_BREAK + " = 1 " + " ORDER BY " + COLUMN_DATETIME + " ASC ";
         Cursor c = db.rawQuery(QUERY, null);
-        if (c != null) {
-            if (c.moveToFirst()) {
-                while (!c.isAfterLast()) {
-                    try {
-                        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
-                        toReturn.add(ldt);
-                    } finally {
-                        c.moveToNext();
+        try {
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                            LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
+                            toReturn.add(ldt);
+                        } finally {
+                            c.moveToNext();
+                        }
                     }
                 }
             }
         }
-        if (c!= null && !c.isClosed()) {
-            c.close();
-        }
-        if (db.isOpen()) {
-            db.close();
+        finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
         }
         return toReturn;
     }
@@ -1380,25 +1388,30 @@ public class DBHandler extends SQLiteOpenHelper {
         List<LocalDateTime> eTimes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS  + " ORDER BY " + COLUMN_DATETIME + " ASC ";
+
         Cursor c = db.rawQuery(QUERY, null);
-        if (c != null) {
-            if (c.moveToFirst()) {
-                while (!c.isAfterLast()) {
-                    try {
-                        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                        LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
-                        eTimes.add(ldt);
-                    } finally {
-                        c.moveToNext();
+        try {
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                            LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
+                            eTimes.add(ldt);
+                        } finally {
+                            c.moveToNext();
+                        }
                     }
                 }
             }
         }
-        if (c!= null && !c.isClosed()) {
-            c.close();
-        }
-        if (db.isOpen()) {
-            db.close();
+        finally{
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
         }
         //non-db operations
         //2. iterate eTimes and check closest laying elements time diff
