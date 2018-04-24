@@ -1,7 +1,7 @@
 package com.johanlund.stat_classes;
 
-import com.johanlund.base_classes.Rating;
 import com.johanlund.statistics_point_classes.TimePoint;
+import com.johanlund.util.ScoreTime;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
@@ -22,7 +22,7 @@ public class RatingTimePointMakerTests {
     @Test
     public void shouldReturnEmptyList(){
         //empty ratings list
-        List<TimePoint> tps =  TimePointMaker.doRatingTimePoints(new ArrayList<Rating>(), newYear, 1, 6);
+        List<TimePoint> tps =  TimePointMaker.doRatingTimePoints(new ArrayList<ScoreTime>(), newYear, 1, 6);
         assertEquals(0, tps.size());
     }
     //this should never happen and will not be tested
@@ -32,9 +32,9 @@ public class RatingTimePointMakerTests {
      */
     @Test
     public void shouldReturnFirstAndThirdPartOnly(){
-        Rating r1 = new Rating(newYear, 6);
-        Rating r2 = new Rating(newYear.plusHours(3), 3);
-        Rating r3 = new Rating(newYear.plusHours(10), 6);
+        ScoreTime r1 = new ScoreTime(newYear, 6);
+        ScoreTime r2 = new ScoreTime(newYear.plusHours(3), 3);
+        ScoreTime r3 = new ScoreTime(newYear.plusHours(10), 6);
 
         List<TimePoint> tps =  TimePointMaker.doRatingTimePoints(Arrays.asList(r1, r2, r3), newYear.plusHours(20), 6, 6);
         assertEquals(2, tps.size());
@@ -50,9 +50,9 @@ public class RatingTimePointMakerTests {
      */
     @Test
     public void shouldReturnMiddlePartOnly(){
-        Rating r1 = new Rating(newYear, 6);
-        Rating r2 = new Rating(newYear.plusHours(3), 3);
-        Rating r3 = new Rating(newYear.plusHours(10), 6);
+        ScoreTime r1 = new ScoreTime(newYear, 6);
+        ScoreTime r2 = new ScoreTime(newYear.plusHours(3), 3);
+        ScoreTime r3 = new ScoreTime(newYear.plusHours(10), 6);
 
         List<TimePoint> tps =  TimePointMaker.doRatingTimePoints(Arrays.asList(r1, r2, r3), newYear.plusHours(20), 1, 4);
         assertEquals(1, tps.size());
@@ -64,9 +64,9 @@ public class RatingTimePointMakerTests {
      */
     @Test
     public void shouldReturnFirstAndSecondPartAsOne(){
-        Rating r1 = new Rating(newYear, 6);
-        Rating r2 = new Rating(newYear.plusHours(3), 5);
-        Rating r3 = new Rating(newYear.plusHours(10), 3);
+        ScoreTime r1 = new ScoreTime(newYear, 6);
+        ScoreTime r2 = new ScoreTime(newYear.plusHours(3), 5);
+        ScoreTime r3 = new ScoreTime(newYear.plusHours(10), 3);
 
         List<TimePoint> tps =  TimePointMaker.doRatingTimePoints(Arrays.asList(r1, r2, r3), newYear.plusHours(20), 5, 6);
 
@@ -79,9 +79,9 @@ public class RatingTimePointMakerTests {
      */
     @Test
     public void shouldReturnSecondAndThirdPartAsOne(){
-        Rating r1 = new Rating(newYear, 6);
-        Rating r2 = new Rating(newYear.plusHours(3), 5);
-        Rating r3 = new Rating(newYear.plusHours(10), 3);
+        ScoreTime r1 = new ScoreTime(newYear, 6);
+        ScoreTime r2 = new ScoreTime(newYear.plusHours(3), 5);
+        ScoreTime r3 = new ScoreTime(newYear.plusHours(10), 3);
 
         List<TimePoint> tps =  TimePointMaker.doRatingTimePoints(Arrays.asList(r1, r2, r3), newYear.plusHours(20), 3, 5);
 
@@ -94,9 +94,9 @@ public class RatingTimePointMakerTests {
      */
     @Test
     public void shouldReturnEverythingAsOne(){
-        Rating r1 = new Rating(newYear, 6);
-        Rating r2 = new Rating(newYear.plusHours(3), 5);
-        Rating r3 = new Rating(newYear.plusHours(10), 3);
+        ScoreTime r1 = new ScoreTime(newYear, 6);
+        ScoreTime r2 = new ScoreTime(newYear.plusHours(3), 5);
+        ScoreTime r3 = new ScoreTime(newYear.plusHours(10), 3);
 
         List<TimePoint> tps =  TimePointMaker.doRatingTimePoints(Arrays.asList(r1, r2, r3), newYear.plusHours(20), 3, 6);
 
