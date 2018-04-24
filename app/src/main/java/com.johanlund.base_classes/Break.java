@@ -130,7 +130,9 @@ public class Break implements Comparable<Break>{
                     if (breaks.get(indBreaks).isBefore(events.get(i).getTime())) {
                         indBreaks++;
                     }
-                    break;
+                    else {
+                        break;
+                    }
                 }
 
                 //same as:  last break || last event
@@ -194,6 +196,13 @@ public class Break implements Comparable<Break>{
         }
         return toReturn;
     }
+
+    /**
+     *
+     * @param sts in asc order
+     * @param allBreaks in asc order
+     * @return
+     */
     public static List<ScoreTimesBase> getBmTimes(List<ScoreTime>sts, List<LocalDateTime>allBreaks){
         List<ScoreTimesBase>stbs = new ArrayList<>();
         List<List<ScoreTime>> dividedSts = divideTimes(sts, allBreaks);
