@@ -1397,7 +1397,7 @@ public class DBHandler extends SQLiteOpenHelper {
         List<ScoreTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", b." + scoreColumn +
-                " FROM " + TABLE_EVENTS + " e " + " JOIN " + eventTable + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT;
+                " FROM " + TABLE_EVENTS + " e " + " JOIN " + eventTable + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT +  " ORDER BY " + COLUMN_DATETIME + " ASC ";
 
         Cursor c = db.rawQuery(QUERY, null);
         try {
