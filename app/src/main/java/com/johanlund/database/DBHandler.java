@@ -66,6 +66,7 @@ import static com.johanlund.database.TablesAndStrings.TABLE_OTHERS;
 import static com.johanlund.database.TablesAndStrings.TABLE_RATINGS;
 import static com.johanlund.database.TablesAndStrings.TABLE_TAGS;
 import static com.johanlund.database.TablesAndStrings.TABLE_TAGTYPES;
+import static com.johanlund.database.TablesAndStrings.TMP_TABLE_RATINGS;
 import static com.johanlund.database.TablesAndStrings.TYPE_OF;
 
 /**
@@ -105,12 +106,47 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //this must be done before CHANGE_RATING_SCALE
+        if (oldVersion <= 38){
+            db.beginTransaction();
+            try {
+                // Changing name of column
+                // Before the column's name was 'after' which is a keyword in SQLITE syntax
+                db.execSQL(CHANGE_RATING_TABLE_NAME);
+                db.execSQL(CREATE_NEW_RATING_TABLE);
+                db.execSQL(COPY_CONTENTS_TO_NEW_TABLE);
+                db.execSQL(DROP_OLD_TABLE);
+
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+
+        }
+
         if (oldVersion <= 37) {
             //since this version Rating scale has been reduced to 6 from 7. 'Abysmal' has
             // disappeared and will be joined with 'Awful'.
-            db.execSQL(CHANGE_RATING_SCALE);
+            db.beginTransaction();
+            try {
+                db.execSQL(CHANGE_RATING_SCALE);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
         }
     }
+    //Before the column's name was 'after' which is a keyword in SQLITE syntax
+    private String CHANGE_RATING_TABLE_NAME = " ALTER TABLE " + TABLE_RATINGS +" RENAME TO " + TMP_TABLE_RATINGS + "; ";
+    private String CREATE_NEW_RATING_TABLE = "CREATE TABLE " + TABLE_RATINGS + " (  " + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_EVENT + " INTEGER NOT NULL, " +
+            COLUMN_AFTER + " INTEGER NOT NULL, " + " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " + ");";
+  private String COPY_CONTENTS_TO_NEW_TABLE = " INSERT INTO "+ TABLE_RATINGS +" ( " + COLUMN_ID +", "+ COLUMN_EVENT + ", " + COLUMN_AFTER + ") "+
+          " SELECT " + COLUMN_ID +", " + COLUMN_EVENT + ", after FROM "+ TMP_TABLE_RATINGS;
+  private String DROP_OLD_TABLE = "DROP TABLE " + TMP_TABLE_RATINGS;
+
+
 
     private String CHANGE_RATING_SCALE =
             "UPDATE " + TABLE_RATINGS + " SET " +

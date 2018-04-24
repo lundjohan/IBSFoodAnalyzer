@@ -5,7 +5,7 @@ package com.johanlund.database;
  */
 
 public class TablesAndStrings {
-    public static final int DATABASE_VERSION = 38;
+    public static final int DATABASE_VERSION = 39;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -54,7 +54,8 @@ public class TablesAndStrings {
 
     //Ratings
     public static final String TABLE_RATINGS = "ratings";
-    public static final String COLUMN_AFTER = "after";
+    public static final String TMP_TABLE_RATINGS = "tmp_ratings_table";
+    public static final String COLUMN_AFTER = "after_score";
 
     //EventsTemplates
     public static final String TABLE_EVENTSTEMPLATES = "event_templates";
