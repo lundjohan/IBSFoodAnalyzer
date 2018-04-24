@@ -1,15 +1,12 @@
 package com.johanlund.statistics_avg;
 
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
-import com.johanlund.statistics_avg_scorewrapper.DeltaAvgScoreWrapper;
-import com.johanlund.statistics_avg_scorewrapper.RatingAvgScoreWrapper;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_AVG;
 
@@ -33,7 +30,7 @@ public class DeltaAvgStatActivity extends AvgStatActivity {
         int wait_hours_after_event = preferences.getInt(getResources().getString(R.string.avg_rating_pref_wait_key),0);
         int hours_ahead_for_av = preferences.getInt(getResources().getString(R.string.avg_rating_pref_stop_key), HOURS_AHEAD_FOR_AVG);
         int quantLimit = preferences.getInt(getResources().getString(R.string.avg_rating_pref_quant_key),0);
-        return new DeltaAvgScoreWrapper(wait_hours_after_event,hours_ahead_for_av, quantLimit);
+        return null;//new DeltaAvgScoreWrapper(wait_hours_after_event,hours_ahead_for_av, quantLimit);
     }
 
     @Override
