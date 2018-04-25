@@ -1,7 +1,5 @@
 package com.johanlund.util;
 
-import com.johanlund.base_classes.Rating;
-
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;
 
@@ -17,7 +15,7 @@ import java.util.List;
 
 public class RatingTime {
     private TimePeriod tp;
-    private List<Rating> ratings;
+    private List<ScoreTime> ratings;
     private LocalDateTime chunkEnd;
 
     /**
@@ -88,7 +86,7 @@ public class RatingTime {
      */
 
 
-    public RatingTime(TimePeriod tp, List<Rating> ratings, LocalDateTime chunkEnd) {
+    public RatingTime(TimePeriod tp, List<ScoreTime> ratings, LocalDateTime chunkEnd) {
         this.tp = tp;
         this.ratings = ratings;
         this.chunkEnd = chunkEnd;
@@ -106,7 +104,7 @@ public class RatingTime {
      * can higher up in hierarchy be multiplied with raw quantitity, or duration.
      *
      */
-    public static double[] calcAvgAndWeight(TimePeriod rawTp, List<Rating> manyRatings, LocalDateTime endOfChunk){
+    public static double[] calcAvgAndWeight(TimePeriod rawTp, List<ScoreTime> manyRatings, LocalDateTime endOfChunk){
         //see drawings above constructor.
         if (manyRatings.isEmpty() ||
                 !manyRatings.get(0).getTime().isBefore(rawTp.getEnd())||
@@ -114,7 +112,7 @@ public class RatingTime {
                 ){
             return new double []{0.,0.};
         }
-        List<Rating> inScope = getRatingsBetweenAndSometimesOneBefore(rawTp, manyRatings);
+        List<ScoreTime> inScope = getRatingsBetweenAndSometimesOneBefore(rawTp, manyRatings);
         if (inScope.isEmpty()){
             return null;
         }
@@ -264,9 +262,10 @@ public class RatingTime {
      * @param ratings cannot be of size 0. First rating must be before startTime. sorted in ASC order.
      * @return
      */
-    static double calcAvgScoreFromToTime(LocalDateTime startTime, LocalDateTime endTime, List<Rating>ratings){
+    static double calcAvgScoreFromToTime(LocalDateTime startTime, LocalDateTime endTime, List
+            <ScoreTime> ratings){
         if (ratings.size() == 1) {
-            return ratings.get(0).getAfter();
+            return ratings.get(0).getScore();
         }
         //time of div before <startTime> (the first div to take into account) is not interesting (it
         // can have happened many days before), only its score.
@@ -275,13 +274,13 @@ public class RatingTime {
         for (int i = 1; i < ratings.size(); i++) {
             LocalDateTime t = ratings.get(i).getTime();
             double timeDifInSec = t.toEpochSecond(ZoneOffset.UTC) - startLongSec;
-            scoreMultWithTime += ratings.get(i - 1).getAfter() * timeDifInSec;
+            scoreMultWithTime += ratings.get(i - 1).getScore() * timeDifInSec;
             startLongSec = ratings.get(i).getTime().toEpochSecond(ZoneOffset.UTC);
         }
         //the last one
         long toLong = endTime.toEpochSecond(ZoneOffset.UTC);
         double lastTimeDif = toLong - startLongSec;
-        scoreMultWithTime += ratings.get(ratings.size() - 1).getAfter() * lastTimeDif;
+        scoreMultWithTime += ratings.get(ratings.size() - 1).getScore() * lastTimeDif;
         long durationPeriodSec = endTime.toEpochSecond(ZoneOffset.UTC) - startTime.toEpochSecond(ZoneOffset.UTC);
         double avgScore = scoreMultWithTime / ((durationPeriodSec));
         return avgScore;
@@ -307,17 +306,17 @@ public class RatingTime {
     }
 
 
-    static List<Rating> getRatingsBetweenAndSometimesOneBefore(TimePeriod tp, List<Rating>divs){
+    static List<ScoreTime> getRatingsBetweenAndSometimesOneBefore(TimePeriod tp, List<ScoreTime>divs){
         return getRatingsBetweenAndSometimesOneBefore(tp.getStart(), tp.getEnd(), divs);
     }
     /**
      * Legacy code. TEST AND PERHAPS IMPROVE. (Main reason for code is to be used in this class (I believe)! )
      *
-     * current problem if only one div from getRatings, it should still return one div but it returns zero.
+     * current problem if only one div from getScoreTimes, it should still return one div but it returns zero.
      * If there are no divs in chunk, an empty List is returned.
      */
-    static List<Rating> getRatingsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to,
-                                                               List<Rating> divs){
+    static List<ScoreTime> getRatingsBetweenAndSometimesOneBefore(LocalDateTime from, LocalDateTime to,
+                                                               List<ScoreTime> divs){
         //get firstInd
         int firstInd = 0;
         if (divs.isEmpty()){

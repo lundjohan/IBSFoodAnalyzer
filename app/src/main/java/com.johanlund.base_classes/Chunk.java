@@ -2,6 +2,7 @@ package com.johanlund.base_classes;
 
 import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.util.IBSUtil;
+import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TimePeriod;
 import com.johanlund.util.Util;
 
@@ -87,22 +88,17 @@ public class Chunk {
 
 
     //incl, incl
-    public List<Bm> getBMsBetweenTimes(LocalDateTime searchForBMStartTime, LocalDateTime
+    public static List<ScoreTime> getBMsBetweenTimes(List<ScoreTime> bms, LocalDateTime searchForBMStartTime, LocalDateTime
             searchForBMStopTime) {
 
-        List<Bm> filteredBms = new ArrayList<>();
-        List<Bm> bms = getBMs();
-        for (Bm bm : bms) {
+        List<ScoreTime> filteredBms = new ArrayList<>();
+        for (ScoreTime bm : bms) {
             if (!bm.getTime().isBefore(searchForBMStartTime) && !bm.getTime().isAfter
                     (searchForBMStopTime)) {
                 filteredBms.add(bm);
             }
         }
         return filteredBms;
-        /*return getBMs().stream().
-                filter(bm-> bm.getTime().isAfter(time) && bm.getTime().isBefore(time.plusHours
-				(hoursAhead))).
-				collect(Collectors.toList());*/
     }
 
     public List<Meal> getMeals() {
@@ -115,12 +111,12 @@ public class Chunk {
         return meals;
     }
 
-    public List<PortionTime> getPortionTimes() {
-        List<PortionTime> pts = new ArrayList<>();
+    public List<TagBase> getPortionTimes() {
+        List<TagBase> pts = new ArrayList<>();
         for (Event e : events) {
             if (e instanceof Meal) {
                 Meal m = (Meal) e;
-                PortionTime pt = new PortionTime(m.getPortions(), m.getTime());
+                TagBase pt = new PortionTime(m.getPortions(), m.getTime());
                 pts.add(pt);
             }
         }

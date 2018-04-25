@@ -1,5 +1,7 @@
 package com.johanlund.statistics_portions;
 
+import com.johanlund.base_classes.TagBase;
+
 import org.threeten.bp.LocalDateTime;
 
 /**
@@ -9,7 +11,7 @@ import org.threeten.bp.LocalDateTime;
  * smaller load for Cursor to have this in memory than meals).
  */
 
-public class PortionTime {
+public class PortionTime implements TagBase {
     private double portionSize;
     private LocalDateTime dateTime;
 
@@ -18,7 +20,7 @@ public class PortionTime {
         this.dateTime = dateTime;
     }
 
-    public double getPSize() {
+    public double getSize() {
         return portionSize;
     }
 

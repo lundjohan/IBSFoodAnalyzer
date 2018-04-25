@@ -2,9 +2,18 @@ package com.johanlund.statistics_avg;
 
 import android.os.Bundle;
 
+import com.johanlund.base_classes.Break;
+import com.johanlund.base_classes.Tag;
+import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_avg_scorewrapper.BristolAvgScoreWrapper;
 import com.johanlund.statistics_avg_scorewrapper.CompleteAvgScoreWrapper;
+import com.johanlund.util.ScoreTime;
+import com.johanlund.util.TagsWrapperBase;
+
+import org.threeten.bp.LocalDateTime;
+
+import java.util.List;
 
 public class CompleteAvgStatActivity extends BristolAvgStatActivity {
     @Override
@@ -24,5 +33,15 @@ public class CompleteAvgStatActivity extends BristolAvgStatActivity {
     @Override
     protected String getInfoStr() {
         return getResources().getString(R.string.complete_info_score);
+    }
+
+    @Override
+    protected List<TagsWrapperBase> getTagsWrapperBase() {
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+
+        List<Tag>tags = dbHandler.getAllTags();
+        List <ScoreTime> completeBms = dbHandler.getCompleteTimes();
+        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
+        return BmsWrapper.makeBmsWrappers(tags, completeBms, allBreaks);
     }
 }

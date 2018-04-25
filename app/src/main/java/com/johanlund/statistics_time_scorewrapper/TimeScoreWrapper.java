@@ -1,9 +1,11 @@
 package com.johanlund.statistics_time_scorewrapper;
 
 import com.johanlund.base_classes.Chunk;
+import com.johanlund.statistics_avg.TagsWrapper;
 import com.johanlund.statistics_general.ScoreWrapperBase;
 import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.util.TagsWrapperBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +63,7 @@ public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint>{
 
     protected abstract List<TimePoint> doCalc(ScoreTimesBase stb);
     @Override
-    public List<TimePoint> calcPoints(List<Chunk> chunks) {
+    public List<TimePoint> calcPoints(List<TagsWrapperBase> chunks) {
         return null;
     }
 

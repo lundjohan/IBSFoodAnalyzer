@@ -17,6 +17,10 @@ import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.info.InfoActivity;
 import com.johanlund.statistics_point_classes.PointBase;
+import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.util.TagsWrapperBase;
+
+import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
@@ -78,27 +82,11 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
     protected abstract String getInfoStr();
 
 
-    //Override this in case chunks should not be used...
-    protected void calculateStats() {
-        //get events from database
-        DBHandler dbHandler = new DBHandler(getApplicationContext());
-        List<Event> events = dbHandler.getEventsForStatistics();
-        //insert or remove automatic breaks on events.
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
-                (getApplicationContext()
-                );
-        int hoursInFrontOfAutoBreak = preferences.getInt("hours_break",
-                HOURS_AHEAD_FOR_BREAK_BACKUP);
-        List<Break> breaks = Break.makeAllBreaks(events, hoursInFrontOfAutoBreak);
-        List<Chunk> chunks = Chunk.makeChunksFromEvents(events, breaks);
-        startAsyncTask(chunks);
-    }
+    protected abstract void calculateStats();
+
 
     @Override
     public void onBackPressed() {
-        if (!asyncThread.isCancelled()){
-            asyncThread.cancel(true);
-        }
         finish();
     }
 
@@ -118,10 +106,5 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
 
     public abstract String getStringForTitle();
     public abstract ScoreWrapperBase<E> getScoreWrapper();
-
-    //given: breaks should already have been taking care of for chunks
-    protected void startAsyncTask(List<Chunk> chunks) {
-        asyncThread = new StatAsyncTask(adapter, recyclerView);
-        asyncThread.execute(getScoreWrapper(), chunks);
-    }
+    //public abstract List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks);
 }

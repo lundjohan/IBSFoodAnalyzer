@@ -4,10 +4,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
+import com.johanlund.base_classes.Break;
+import com.johanlund.base_classes.Tag;
+import com.johanlund.database.DBHandler;
 import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.statistics_avg_scorewrapper.RatingAvgScoreWrapper;
+import com.johanlund.util.ScoreTime;
+import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.util.TagsWrapperBase;
+
+import org.threeten.bp.LocalDateTime;
+
+import java.util.List;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_AVG;
 
@@ -22,6 +32,18 @@ public class RatingAvgStatActivity extends AvgStatActivity {
         super.onCreate(savedInstanceState);
 
 
+    }
+
+    @Override
+    protected List<TagsWrapperBase> getTagsWrapperBase() {
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+
+        List<Tag>tags = dbHandler.getAllTags();
+        List <ScoreTime> ratings = dbHandler.getRatingTimes();
+        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
+
+        return TagsWrapper.makeTagsWrappers(tags, ratings,
+                allBreaks);
     }
 
     @Override

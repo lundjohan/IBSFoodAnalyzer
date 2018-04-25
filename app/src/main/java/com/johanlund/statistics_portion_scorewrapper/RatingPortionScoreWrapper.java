@@ -1,19 +1,11 @@
 package com.johanlund.statistics_portion_scorewrapper;
 
-import android.util.Log;
-
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.stat_classes.PortionPointMaker;
 import com.johanlund.statistics_point_classes.PortionPoint;
-import com.johanlund.statistics_portions.PortionTime;
-import com.johanlund.statistics_portions.PtRatings;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
-import com.johanlund.util.TPUtil;
-import com.johanlund.util.TimePeriod;
+import com.johanlund.util.TagsWrapperBase;
 
-import org.threeten.bp.LocalDateTime;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -65,7 +57,7 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
         of all the events)
      */
     @Override
-    public List<PortionPoint> calcPoints(List<Chunk> chunks) {
+    public List<PortionPoint> calcPoints(List<TagsWrapperBase> chunks) {
         return PortionPointMaker.doPortionsPoints(chunks, ranges, waitHoursAfterMeal, stopHoursAfterMeal, minHoursBetweenMeals);
     }
     @Override

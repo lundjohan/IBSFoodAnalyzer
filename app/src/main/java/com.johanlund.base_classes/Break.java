@@ -35,7 +35,7 @@ public class Break implements Comparable<Break>{
     }
 
     /**
-     * Notice that this method DO NOT return an artificial break at last event (unless it is a manual break there)
+     * Notice that this method DOES NOT return an artificial break at last event (unless it is a manual break there)
      *
      * @param c
      * @return manual AND auto breaks

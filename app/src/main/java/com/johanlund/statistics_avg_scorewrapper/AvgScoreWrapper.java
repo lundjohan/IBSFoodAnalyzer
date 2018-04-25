@@ -1,9 +1,9 @@
 package com.johanlund.statistics_avg_scorewrapper;
 
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_general.ScoreWrapperBase;
 import com.johanlund.statistics_point_classes.TagPoint;
-import com.johanlund.statistics_point_classes.TimePoint;
+import com.johanlund.statistics_avg.TagsWrapper;
+import com.johanlund.util.TagsWrapperBase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +39,7 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
 
     public abstract double getScore(TagPoint tp);
 
-    public abstract Map<String, TagPoint> calcScore(List<Chunk> chunks, Map<String, TagPoint>
+    public abstract List<TagPoint> calcScore(List<TagsWrapperBase> chunks, Map<String, TagPoint>
             tagPoint);
 
     /**
@@ -48,12 +48,13 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
      * @return
      */
     @Override
-    public List<TagPoint> calcPoints(List<Chunk> chunks) {
+    public List<TagPoint> calcPoints(List<TagsWrapperBase> chunks) {
 
         /*TODO TYPE CONVERSION TO ARRAYLIST => PROBABLY SLOW AND INEFFECTIVE, TRY INSTEAD to use Collection instead of List lower in hierarchy.
 
          */
-        return new ArrayList<>(calcScore(chunks, tagPoints).values());
+        return calcScore(chunks, tagPoints);
+        //return new ArrayList<>(calcScore(chunks, tagPoints).values());
     }
     @Override
     public List<TagPoint> toSortedList(List<TagPoint> toBeSorted) {

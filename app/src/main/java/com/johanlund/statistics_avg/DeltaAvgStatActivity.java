@@ -7,6 +7,10 @@ import android.support.v7.preference.PreferenceManager;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
+import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.util.TagsWrapperBase;
+
+import java.util.List;
 
 import static com.johanlund.constants.Constants.HOURS_AHEAD_FOR_AVG;
 
@@ -21,6 +25,11 @@ public class DeltaAvgStatActivity extends AvgStatActivity {
         super.onCreate(savedInstanceState);
 
 
+    }
+
+    @Override
+    protected List<TagsWrapperBase> getTagsWrapperBase() {
+        return null;
     }
 
     @Override

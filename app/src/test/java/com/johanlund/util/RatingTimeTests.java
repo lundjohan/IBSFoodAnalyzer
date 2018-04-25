@@ -38,7 +38,7 @@ public class RatingTimeTests {
          * tp:          |-------|
          *
          */
-        Rating rStart = new Rating(firstTime, 6);
+        ScoreTime rStart = new ScoreTime(firstTime, 6);
         LocalDateTime chunkEnd = firstTime.plusHours(10); //=> several hours after tp.end
 
         //this is the method we are testing
@@ -74,7 +74,7 @@ public class RatingTimeTests {
          * tp:         |-------|
          *
          */
-        Rating rStart = new Rating(firstTime.plusHours(2), 3);
+        ScoreTime rStart = new ScoreTime(firstTime.plusHours(2), 3);
         LocalDateTime chunkEnd = firstTime.plusHours(7); //=> same as tp.end
 
         //this is the method we are testing
@@ -110,7 +110,7 @@ public class RatingTimeTests {
          * tp:         |------|
          *
          */
-        Rating rStart = new Rating(firstTime, 4);
+        ScoreTime rStart = new ScoreTime(firstTime, 4);
         LocalDateTime chunkEnd = firstTime.plusHours(5); //=> 1 hour before tp.end
 
         //this is the method we are testing
@@ -154,7 +154,7 @@ public class RatingTimeTests {
          * tp:         |-----|
          *
          */
-        Rating rStart = new Rating(firstTime.plusHours(2),4);
+        ScoreTime rStart = new ScoreTime(firstTime.plusHours(2),4);
         LocalDateTime chunkEnd = firstTime.plusHours(5); //=> 1 hour before tp.end
 
         //this is the method we are testing
@@ -176,10 +176,10 @@ public class RatingTimeTests {
         LocalDateTime firstTime = LocalDateTime.of(2017, Month.JANUARY, 1, 0,0);
 
         TimePeriod tp = new TimePeriod(firstTime, firstTime.plusHours(4));
-        Rating r1 = new Rating (firstTime, 3);
-        Rating r2 = new Rating (firstTime.plusHours(3),3);
+        ScoreTime r1 = new ScoreTime (firstTime, 3);
+        ScoreTime r2 = new ScoreTime (firstTime.plusHours(3),3);
 
-        List<Rating> returnedList = getRatingsBetweenAndSometimesOneBefore(tp, Arrays.asList(r1,r2));
+        List<ScoreTime> returnedList = getRatingsBetweenAndSometimesOneBefore(tp, Arrays.asList(r1,r2));
         assertEquals(2, returnedList.size());
         assertEquals(r1.getTime(), returnedList.get(0).getTime());
         assertEquals(r2.getTime(), returnedList.get(1).getTime());

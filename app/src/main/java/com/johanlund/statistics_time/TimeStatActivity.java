@@ -10,6 +10,7 @@ import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_adapters.TimeStatAdapter;
 import com.johanlund.statistics_general.StatBaseActivity;
 import com.johanlund.statistics_general.TimeStatAsyncTask;
+import com.johanlund.statistics_point_classes.TimePoint;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.ScoreTimesBase;
 
@@ -24,7 +25,7 @@ import static com.johanlund.constants.Constants.DATE_TO_START_DIARY;
  * Created by Johan on 2018-03-17.
  */
 
-public abstract class TimeStatActivity extends StatBaseActivity implements TimeStatAdapter.TimeStatAdapterUser{
+public abstract class TimeStatActivity extends StatBaseActivity<TimePoint> implements TimeStatAdapter.TimeStatAdapterUser{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,7 @@ public abstract class TimeStatActivity extends StatBaseActivity implements TimeS
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
-    public abstract List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks);
+
 
     @Override
     protected void calculateStats() {
@@ -54,6 +55,9 @@ public abstract class TimeStatActivity extends StatBaseActivity implements TimeS
         TimeStatAsyncTask asyncThread = new TimeStatAsyncTask(adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), stb);
     }
+
+    protected abstract List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks);
+
     @Override
     public void onBackPressed() {
         finish();

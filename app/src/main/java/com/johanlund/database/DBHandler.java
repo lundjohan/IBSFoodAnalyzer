@@ -1475,4 +1475,39 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return toReturn;
     }
+
+    public List<Tag> getAllTags() {
+        List<Tag> toReturn = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_DATETIME + ", t." + COLUMN_SIZE +
+                " FROM " + TABLE_TAGTYPES + " tt " + " JOIN " + TABLE_TAGS + " t " + " ON tt. " + COLUMN_ID + " = t."+ COLUMN_TAGTYPE +  " ORDER BY " + COLUMN_DATETIME + " ASC ";
+
+        Cursor c = db.rawQuery(QUERY, null);
+        try {
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                            LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
+                            String tagName = c.getString(c.getColumnIndex(COLUMN_TAGNAME));
+                            double size = c.getDouble(c.getColumnIndex(COLUMN_SIZE));
+                            toReturn.add(new Tag(ldt, tagName, size));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        }
+        finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
+    }
 }

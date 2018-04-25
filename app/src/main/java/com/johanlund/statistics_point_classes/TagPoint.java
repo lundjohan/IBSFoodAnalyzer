@@ -148,7 +148,8 @@ public class TagPoint implements PointBase{
 
     }
 
-    public void addToBristol(double sumBristol2) {
+    //both bristol and completeness use this
+    public void addToBMScore(double sumBristol2) {
         sumBristol += sumBristol2;
 
     }

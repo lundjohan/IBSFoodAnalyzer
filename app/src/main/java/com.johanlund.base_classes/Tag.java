@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 //write for example spinach@green_leaves => 2 tags: spinach &
 //green_leaves
-public class Tag implements Serializable {
+public class Tag implements Serializable, TagBase {
     protected LocalDateTime time;
     private String name;
     private double size;

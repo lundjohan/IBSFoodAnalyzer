@@ -1,7 +1,8 @@
 package com.johanlund.statistics_general;
 
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PointBase;
+import com.johanlund.statistics_avg.TagsWrapper;
+import com.johanlund.util.TagsWrapperBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public abstract class ScoreWrapperBase <E extends PointBase>{
      * @param chunks
      * @return
      */
-    public abstract List<E> calcPoints(List<Chunk> chunks);
+    public abstract List<E> calcPoints(List<TagsWrapperBase> chunks);
 
     public abstract List<E> toSortedList(List<E> points);
 

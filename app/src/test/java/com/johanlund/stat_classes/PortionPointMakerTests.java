@@ -1,10 +1,13 @@
 package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Rating;
+import com.johanlund.base_classes.TagBase;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.statistics_portions.PtRatings;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
+import com.johanlund.util.ScoreTime;
+import com.johanlund.util.TagsWrapperBase;
 import com.johanlund.util.TimePeriod;
 
 import org.junit.Test;
@@ -33,8 +36,8 @@ public class PortionPointMakerTests {
     @Test
     public void testGetPortionPointWithOnePortion() {
         //one only, within range
-        PortionTime ptWithinRange = new PortionTime(0.9, newYear);
-        Rating rStart = new Rating(newYear, 3);
+        TagBase ptWithinRange = new PortionTime(0.9, newYear);
+        ScoreTime rStart = new ScoreTime(newYear, 3);
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
 
@@ -50,11 +53,11 @@ public class PortionPointMakerTests {
     @Test
     public void testGetPortionPointWithTwoPortionsAndTwoRatings() {
         //two, both within range
-        PortionTime pt1 = new PortionTime(0.8, newYear);
-        PortionTime pt2 = new PortionTime(0.4, newYear.plusHours(2));
+        TagBase pt1 = new PortionTime(0.8, newYear);
+        TagBase pt2 = new PortionTime(0.4, newYear.plusHours(2));
 
-        Rating rStart = new Rating(newYear, 3);
-        Rating rLater = new Rating(newYear.plusHours(2), 5);
+        ScoreTime rStart = new ScoreTime(newYear, 3);
+        ScoreTime rLater = new ScoreTime(newYear.plusHours(2), 5);
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
 
@@ -76,8 +79,8 @@ public class PortionPointMakerTests {
     //==============================================================================================
     @Test
     public void testChunkEndIsEarly() {
-        PortionTime pt1 = new PortionTime(0.8, newYear);
-        Rating rStart = new Rating(newYear, 3);
+        TagBase pt1 = new PortionTime(0.8, newYear);
+        ScoreTime rStart = new ScoreTime(newYear, 3);
 
         //chunk end < stopHoursAfterMeal
         PtRatings ptRatings = new PtRatings(Arrays.asList(pt1), Arrays.asList(rStart), newYear.plusHours(6));
@@ -97,10 +100,10 @@ public class PortionPointMakerTests {
     @Test
     public void testCutOffTimePeriodFromBothSides() {
         //one only, within range
-        PortionTime pt1 = new PortionTime(0.8, newYear);
+        TagBase pt1 = new PortionTime(0.8, newYear);
 
-        Rating rStart = new Rating(newYear.plusHours(2), 3);
-        Rating rSecond = new Rating(newYear.plusHours(3), 4);
+        ScoreTime rStart = new ScoreTime(newYear.plusHours(2), 3);
+        ScoreTime rSecond = new ScoreTime(newYear.plusHours(3), 4);
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 6;
 
@@ -135,24 +138,24 @@ public class PortionPointMakerTests {
     public void p1_And_p2_JoinToAtPlaceOf_p2(){
         //minMealDist > p2 - p1
         int minMealDist = 4;
-        PortionTime p1 = new PortionTime(1.0, newYear);
+        TagBase p1 = new PortionTime(1.0, newYear);
         PortionTime p2 = new PortionTime(2.0, newYear.plusHours(2));
-        List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2),minMealDist);
+        List<TagBase> pts = joinTooClosePortions2(Arrays.asList(p1, p2),minMealDist);
         assertEquals(1, pts.size());
-        assertEquals(3.,pts.get(0).getPSize());
+        assertEquals(3.,pts.get(0).getSize());
         assertEquals(newYear.plusHours(2),pts.get(0).getTime());
     }
     @Test
     public void dontJoin(){
         //minMealDist < p2 - p1
         int minMealDist = 1;
-        PortionTime p1 = new PortionTime(1.0, newYear);
+        TagBase p1 = new PortionTime(1.0, newYear);
         PortionTime p2 = new PortionTime(2.0, newYear.plusHours(2));
-        List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2),minMealDist);
+        List<TagBase> pts = joinTooClosePortions2(Arrays.asList(p1, p2),minMealDist);
         assertEquals(2, pts.size());
 
-        assertEquals(1.,pts.get(0).getPSize());
-        assertEquals(2.,pts.get(1).getPSize());
+        assertEquals(1.,pts.get(0).getSize());
+        assertEquals(2.,pts.get(1).getSize());
 
         assertEquals(newYear,pts.get(0).getTime());
         assertEquals(newYear.plusHours(2),pts.get(1).getTime());
@@ -171,14 +174,14 @@ public class PortionPointMakerTests {
     @Test
     public void join_p1p2_butNot_p3(){
         int minMealDist = 2;
-        PortionTime p1 = new PortionTime(1.0, newYear);
+        TagBase p1 = new PortionTime(1.0, newYear);
         PortionTime p2 = new PortionTime(2.0, newYear.plusHours(1));
         PortionTime p3 = new PortionTime(6.0, newYear.plusHours(2));
-        List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2, p3),minMealDist);
+        List<TagBase> pts = joinTooClosePortions2(Arrays.asList(p1, p2, p3),minMealDist);
         assertEquals(2, pts.size());
 
-        assertEquals(3.,pts.get(0).getPSize());
-        assertEquals(6.,pts.get(1).getPSize());
+        assertEquals(3.,pts.get(0).getSize());
+        assertEquals(6.,pts.get(1).getSize());
 
         assertEquals(newYear.plusHours(1),pts.get(0).getTime());
         assertEquals(newYear.plusHours(2),pts.get(1).getTime());
@@ -189,13 +192,13 @@ public class PortionPointMakerTests {
     public void doJoinThirdP(){
         // p1 + minMealDist < p3
         int minMealDist = 3;
-        PortionTime p1 = new PortionTime(1.0, newYear);
-        PortionTime p2 = new PortionTime(2.0, newYear.plusHours(1));
-        PortionTime p3 = new PortionTime(6.0, newYear.plusHours(2));
-        List<PortionTime> pts = joinTooClosePortions2(Arrays.asList(p1, p2, p3),minMealDist);
+        TagBase p1 = new PortionTime(1.0, newYear);
+        TagBase p2 = new PortionTime(2.0, newYear.plusHours(1));
+        TagBase p3 = new PortionTime(6.0, newYear.plusHours(2));
+        List<TagBase> pts = joinTooClosePortions2(Arrays.asList(p1, p2, p3),minMealDist);
 
         assertEquals(1, pts.size());
-        assertEquals(9.,pts.get(0).getPSize());
+        assertEquals(9.,pts.get(0).getSize());
         assertEquals(newYear.plusHours(2),pts.get(0).getTime());
     }
     //=> p1p2p3
@@ -203,18 +206,18 @@ public class PortionPointMakerTests {
     public void testHigherUpWithJoinThirdP() {
         //from test closest above
         // p1 + minMealDist < p3
-        int minMealDist = 3;
+        int minMealDist = 20;
         //total portion size will be 3*0,3 = 0.9 == within range
-        PortionTime p1 = new PortionTime(0.3, newYear);
-        PortionTime p2 = new PortionTime(0.3, newYear.plusHours(1));
-        PortionTime p3 = new PortionTime(0.3, newYear.plusHours(2));
+        TagBase p1 = new PortionTime(0.3, newYear);
+        TagBase p2 = new PortionTime(0.3, newYear.plusHours(1));
+        TagBase p3 = new PortionTime(0.3, newYear.plusHours(2));
 
-        Rating rStart = new Rating(newYear.minusHours(1), 3);
-        Rating r2 = new Rating(newYear.plusHours(6), 5);
+        ScoreTime rStart = new ScoreTime(newYear.minusHours(1), 3);
+        ScoreTime r2 = new ScoreTime(newYear.plusHours(6), 5);
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
 
-        PtRatings ptRatings = new PtRatings(Arrays.asList(p1, p2, p3), Arrays.asList(rStart, r2), newYear.plusHours(20));
+        TagsWrapperBase ptRatings = new PtRatings(Arrays.asList(p1, p2, p3), Arrays.asList(rStart, r2), newYear.plusHours(20));
         List<PortionPoint> pps = toReplaceCalcPoints(Arrays.asList(ptRatings), Arrays.asList(range),startHoursAfterMeal, stopHoursAfterMeal, 20 );
 
 
@@ -226,8 +229,8 @@ public class PortionPointMakerTests {
     @Test
     public void joinTooClosePortionsDoesntCrashWithSmallListAsParameter(){
         //this can happen in app
-        List<PortionTime>emptyList = new ArrayList<>();
-        List<PortionTime> returned = joinTooClosePortions2(emptyList, 3);
+        List<TagBase>emptyList = new ArrayList<>();
+        List<TagBase> returned = joinTooClosePortions2(emptyList, 3);
         assertEquals(0, returned.size());
     }
     //==============================================================================================
@@ -235,7 +238,7 @@ public class PortionPointMakerTests {
     //==============================================================================================
     @Test
     public void testSimpleCase_simpleExtractTimePeriods(){
-        PortionTime p1 =  new PortionTime(0.9, newYear);
+        TagBase p1 =  new PortionTime(0.9, newYear);
         List<TimePeriod> tps = makeExceptTps(range, Arrays.asList(p1),0,8);
         assertEquals(1, tps.size());
         assertEquals(newYear,tps.get(0).getStart());
@@ -299,12 +302,12 @@ public class PortionPointMakerTests {
     @Test
     public void EXCEPTInHighHierarchyTest(){
         //within range
-        PortionTime p1 = new PortionTime(0.9, newYear);
+        TagBase p1 = new PortionTime(0.9, newYear);
         //too large
-        PortionTime p2 = new PortionTime(1.5, newYear.plusHours(4));
-        Rating r1 = new Rating(newYear, 3);
-        Rating r2 = new Rating(newYear.plusHours(4), 3);
-        PtRatings ptr = new PtRatings(Arrays.asList(p1,p2), Arrays.asList(r1, r2), newYear.plusHours(20));
+        TagBase p2 = new PortionTime(1.5, newYear.plusHours(4));
+        ScoreTime r1 = new ScoreTime(newYear, 3);
+        ScoreTime r2 = new ScoreTime(newYear.plusHours(4), 3);
+        PtRatings ptr = new PtRatings(Arrays.asList(p1, p2), Arrays.asList(r1, r2), newYear.plusHours(20));
 
 
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);
@@ -317,10 +320,10 @@ public class PortionPointMakerTests {
     @Test
     public void EXCEPT_And_LateRating_InHighHierarchyTest(){
         //within range
-        PortionTime p1 = new PortionTime(0.9, newYear);
+        TagBase p1 = new PortionTime(0.9, newYear);
         //too large
-        PortionTime p2 = new PortionTime(1.5, newYear.plusHours(4));
-        Rating rLate = new Rating(newYear.plusHours(1), 3);
+        TagBase p2 = new PortionTime(1.5, newYear.plusHours(4));
+        ScoreTime rLate = new ScoreTime(newYear.plusHours(1), 3);
         PtRatings ptr = new PtRatings(Arrays.asList(p1,p2), Arrays.asList(rLate), newYear.plusHours(20));
 
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);

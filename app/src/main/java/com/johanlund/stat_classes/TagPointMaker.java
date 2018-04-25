@@ -1,9 +1,11 @@
 package com.johanlund.stat_classes;
 
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagBase;
 import com.johanlund.statistics_point_classes.TagPoint;
 import com.johanlund.util.RatingTime;
+import com.johanlund.statistics_avg.TagsWrapper;
+import com.johanlund.util.TagsWrapperBase;
 import com.johanlund.util.TimePeriod;
 
 import java.util.List;
@@ -11,17 +13,17 @@ import java.util.Map;
 
 public class TagPointMaker {
 
-    private static void makeTagPoints(Chunk chunk, int startHoursAfterEvent, int
+    private static void makeTagPoints(TagsWrapperBase chunk, int startHoursAfterEvent, int
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
-
-        List<Tag> tagsMaterial = chunk.getTags();
-        for (Tag t : tagsMaterial) {
+        List<TagBase> tagsMaterial = chunk.getTags();
+        for (TagBase tTemp : tagsMaterial) {
+            Tag t = (Tag)tTemp;
             TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));
 
             /*very waste of resources giving all Ratings everytime (since tagsMaterial and Ratings
             are sorted, perhaps a cache can be used. A wrapper class called RatingCache perhaps?)*/
 
-            double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getRatings(), chunk.getLastTime());
+            double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getScoreTimes(), chunk.getChunkEnd());
             if (scoreQuant[1] == 0.0) {
                 continue;
             }
@@ -44,16 +46,10 @@ public class TagPointMaker {
         }
     }
 
-    /*public static Map<String, TagPoint> makeTagPoints(Chunk chunk, int hours) {
-        Map<String, TagPoint> tagPoints = new HashMap<>();
-        makeTagPoints(chunk, hours, tagPoints);
-        return tagPoints;
-    }*/
-
-    public static Map<String, TagPoint> doAvgScore(List<Chunk> chunks, int waitHoursAfterEvent,
+    public static Map<String, TagPoint> doAvgScore(List<TagsWrapperBase> chunks, int waitHoursAfterEvent,
                                                    int stopHoursAfterEvent, Map<String,
             TagPoint> tagPoints) {
-        for (Chunk chunk : chunks) {
+        for (TagsWrapperBase chunk : chunks) {
             makeTagPoints(chunk, waitHoursAfterEvent, stopHoursAfterEvent, tagPoints);
         }
         return tagPoints;

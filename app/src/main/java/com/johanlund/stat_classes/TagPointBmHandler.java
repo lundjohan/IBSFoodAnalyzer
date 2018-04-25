@@ -1,9 +1,11 @@
 package com.johanlund.stat_classes;
 
-import com.johanlund.base_classes.Bm;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagBase;
 import com.johanlund.statistics_point_classes.TagPoint;
+import com.johanlund.util.ScoreTime;
+import com.johanlund.util.TagsWrapperBase;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -30,8 +32,8 @@ public class TagPointBmHandler {
      * @param furthest_distance_hours_before_bm_limit => this is the longest distance
      * @param shortest_distance_hours_before_bm_limit => this is the shortest distance
      */
-    public static void addBmScore(Chunk chunk, Map<String, TagPoint> tagPoints,
-                                  long furthest_distance_hours_before_bm_limit, long shortest_distance_hours_before_bm_limit) {
+    public static void doBmScore(TagsWrapperBase chunk, Map<String, TagPoint> tagPoints,
+                                 long furthest_distance_hours_before_bm_limit, long shortest_distance_hours_before_bm_limit) {
 
         /*rename the variables to tags point of view, so that it easier to get a hang of it.
           Draw distance interval on a paper if you cannot get your head around it!
@@ -41,38 +43,35 @@ public class TagPointBmHandler {
         long hoursAfterTagToStopLookingForBM = furthest_distance_hours_before_bm_limit;
 
 
-        List<Tag> allTags = chunk.getTags();
-        for (Tag t : allTags) {
+        List<TagBase> allTags = chunk.getTags();
+        for (TagBase tag : allTags) {
+            Tag t = (Tag)tag;
             LocalDateTime searchForBMStartTime = t.getTime().plusHours(hoursAfterTagToStartLookingForBM);
             LocalDateTime searchForBMStopTime = t.getTime().plusHours(hoursAfterTagToStopLookingForBM);
 
-                    List<Bm> bmsAhead = chunk.getBMsBetweenTimes(searchForBMStartTime, searchForBMStopTime);
-            int completeness = 0;
-            double sumBristol = 0;
+                    List<ScoreTime> bmsAhead = Chunk.getBMsBetweenTimes(chunk.getScoreTimes(), searchForBMStartTime, searchForBMStopTime);
+            //bristol or completeness
+            double sumScore = 0;
 
-            for (Bm bm : bmsAhead) {
-                completeness += bm.getComplete();
-                sumBristol += bm.getBristol();
+            for (ScoreTime bm : bmsAhead) {
+                sumScore += bm.getScore();
             }
             String name = t.getName();
             TagPoint tp = tagPoints.get(name);
             if (tp == null) {
-                //add no quantity. Bm operates by sumBristol
+                //add no quantity. Bm operates by sumScore
                 tp = new TagPoint(name, 0);
                 tagPoints.put(name, tp);
             }
             tp.addBM(bmsAhead.size());
-            tp.addCompleteness(completeness);
-            tp.addToBristol(sumBristol);
-
+            tp.addToBMScore(sumScore);
         }
-
     }
 
-    public static Map<String, TagPoint> addBmScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints,
-                                                   long furthest_distance_hours_before_bm_limit, long shortest_distance_hours_before_bm_limit) {
-        for (Chunk chunk : chunks) {
-            addBmScore(chunk, tagPoints, furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit);
+    public static Map<String, TagPoint> doBmScore(List<TagsWrapperBase> chunks, Map<String, TagPoint> tagPoints,
+                                                  long furthest_distance_hours_before_bm_limit, long shortest_distance_hours_before_bm_limit) {
+        for (TagsWrapperBase chunk : chunks) {
+            doBmScore(chunk, tagPoints, furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit);
         }
         return tagPoints;
     }

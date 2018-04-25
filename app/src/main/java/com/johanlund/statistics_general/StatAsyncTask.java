@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.statistics_point_classes.PointBase;
+import com.johanlund.util.TagsWrapperBase;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
     protected List<E> doInBackground(Object... params) {
         List<E>toReturn = new ArrayList<>();
         if (!isCancelled()) {
-            ScoreWrapperBase<E> wrapper = (ScoreWrapperBase) params[0];
-            List<Chunk> chunks = (List<Chunk>) params[1];
+            ScoreWrapperBase wrapper = (ScoreWrapperBase) params[0];
+            List<TagsWrapperBase> chunks = (List<TagsWrapperBase>) params[1];
 
             List<E> points = wrapper.calcPoints(chunks);
 

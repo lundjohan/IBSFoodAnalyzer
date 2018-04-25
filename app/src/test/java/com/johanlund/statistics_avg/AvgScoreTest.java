@@ -4,25 +4,23 @@ package com.johanlund.statistics_avg;
  * Created by Johan on 2018-02-10.
  */
 
-import com.johanlund.base_classes.Break;
-import com.johanlund.base_classes.Chunk;
-import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Other;
-import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.statistics_point_classes.TagPoint;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.johanlund.stat_classes.TagPointMaker;
+import com.johanlund.util.ScoreTime;
+import com.johanlund.util.TagsWrapperBase;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -47,22 +45,14 @@ public class AvgScoreTest {
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
         Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
-        //...and add them to an event
-        Other other1 = new Other(ldt1, tags1);
-
 
         //create a Rating that appears slightly before
-        Rating r1 = new Rating(ldt1.minusHours(1), 3);
+        ScoreTime r1 = new ScoreTime(ldt1.minusHours(1), 3);
 
-        //create an event further on, just to make rating extend to it
-        Other other2 = new Other(ldt1.plusHours(10), new ArrayList<Tag>());
+        //make a chunkend 10 hours in the future, just to make rating extend to it
+        LocalDateTime breakTime = ldt1.plusHours(10);
 
-        List<Event> events1 = new ArrayList<>();
-        events1.add(r1);
-        events1.add(other1);
-        events1.add(other2);
-
-        List<Chunk> chunks1 = Chunk.makeChunksFromEvents(events1, new ArrayList<Break>());
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(r1), Arrays.asList(breakTime));
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 2;
         Map<String, TagPoint> tagPoints = new HashMap<>();
@@ -70,6 +60,7 @@ public class AvgScoreTest {
         //Above is a simple one, the score of Butter should be 3.
         tagPoints = TagPointMaker.doAvgScore(chunks1, startHoursAfterEvent, stopHoursAfterEvent,
                 tagPoints);
+
         assertEquals(1, tagPoints.size());
         assertEquals(1.0, tagPoints.get("Butter").getQuantity());
         assertEquals(3.0, tagPoints.get("Butter").getOrigAvgScore());
@@ -87,16 +78,11 @@ public class AvgScoreTest {
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
         Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
-        //...and add them to an event
-        Other other1 = new Other(ldt1, tags1);
+        //...and add them to an TagsWrapper
 
-        //create an event further on, just to make rating extend to it
-        Other other2 = new Other(ldt1.plusHours(10), new ArrayList<Tag>());
-
-        List<Event> events1 = new ArrayList<>();
-        events1.add(other1);
-        events1.add(other2);
-        List<Chunk> chunks1 = Chunk.makeChunksFromEvents(events1, new ArrayList<Break>());
+        //make a chunkend 10 hours in the future, just to make rating extend to it
+        LocalDateTime breakTime = ldt1.plusHours(10);
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tags1, new ArrayList<ScoreTime>(), Arrays.asList(breakTime));
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 2;
         Map<String, TagPoint> tagPoints = new HashMap<>();
@@ -116,35 +102,25 @@ public class AvgScoreTest {
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
         Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
-        //...and add them to an event
-        Other other1 = new Other(ldt1, tags1);
-
 
         //create a Rating that appears slightly before
-        Rating r1 = new Rating(ldt1.minusHours(1), 3);
-
+        ScoreTime r1 = new ScoreTime(ldt1.minusHours(1), 3);
 
         //create an extra butter further on, just to make rating extend to it
         LocalDateTime ldt2 = LocalDateTime.of(2017, Month.JANUARY, 1, 20, 0);
         Tag t2 = new Tag(ldt2, "Butter", 1.0);
         List<Tag> tags2 = new ArrayList<>();
         tags2.add(t2);
-        Other other2 = new Other(ldt2, tags2);
+
+        //join (will be in sort order)
+        tags1.addAll(tags2);
 
         //add a rating at same time as the second Other, and with a higher score
-        Rating r2 = new Rating(ldt2, 6);
+        ScoreTime r2 = new ScoreTime(ldt2, 6);
 
-        //add another other later on just to make sure that chunk isn't cutting off
-        Other other3 = new Other(ldt2.plusHours(20), new ArrayList<Tag>());
-
-        List<Event> events1 = new ArrayList<>();
-        events1.add(r1);
-        events1.add(other1);
-        events1.add(other2);
-        events1.add(r2);
-        events1.add(other3);
-
-        List<Chunk> chunks1 = Chunk.makeChunksFromEvents(events1, new ArrayList<Break>());
+        //add a break later on just to make sure that chunk isn't cutting off
+        LocalDateTime breakTime = ldt2.plusHours(20);
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(r1, r2), Arrays.asList(breakTime));
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 20;
         Map<String, TagPoint> tagPoints = new HashMap<>();
@@ -175,22 +151,14 @@ public class AvgScoreTest {
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
         Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
-        //...and add them to an event
-        Other other1 = new Other(ldt1, tags1);
-
 
         //create a Rating that appears slightly before
-        Rating r1 = new Rating(ldt1.minusHours(1), 3);
+        ScoreTime r1 = new ScoreTime(ldt1.minusHours(1), 3);
 
         //create an event further on, just to make rating extend to it
-        Other other2 = new Other(ldt1.plusHours(10), new ArrayList<Tag>());
+        LocalDateTime breakTime = ldt1.plusHours(10);
 
-        List<Event> events1 = new ArrayList<>();
-        events1.add(r1);
-        events1.add(other1);
-        events1.add(other2);
-
-        List<Chunk> chunks1 = Chunk.makeChunksFromEvents(events1, new ArrayList<Break>());
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(r1), Arrays.asList(breakTime));
         int startHoursAfterEvent = 0;
 
         //notice that 20 hours before stop, even though Chunk will be truncated
@@ -222,40 +190,23 @@ public class AvgScoreTest {
     @Test
     public void startHoursAfterEventWorksProperlyTest(){
         //create some tags...
-        List<Tag> tags1 = new ArrayList<>();
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
         Tag t1 = new Tag(ldt1, "Butter", 1.0);
-        tags1.add(t1);
-        //...and add them to an event
-        Other other1 = new Other(ldt1, tags1);
-
 
         //create a Rating that appears slightly before
-        Rating r1 = new Rating(ldt1.minusHours(1), 3);
-
+        ScoreTime r1 = new ScoreTime(ldt1.minusHours(1), 3);
 
         //create an extra butter further on, just to make rating extend to it
         LocalDateTime ldt2 = LocalDateTime.of(2017, Month.JANUARY, 1, 20, 0);
         Tag t2 = new Tag(ldt2, "Butter", 1.0);
-        List<Tag> tags2 = new ArrayList<>();
-        tags2.add(t2);
-        Other other2 = new Other(ldt2, tags2);
 
         //add a rating at same time as the second Other, and with a higher score
-        Rating r2 = new Rating(ldt2, 6);
+        ScoreTime r2 = new ScoreTime(ldt2, 6);
 
         //add another other later on just to make sure that chunk isn't cutting off
-        Other other3 = new Other(ldt2.plusHours(20), new ArrayList<Tag>());
+        LocalDateTime breakTime = ldt2.plusHours(20);
 
-        List<Event> events1 = new ArrayList<>();
-        events1.add(r1);
-        events1.add(other1);
-        events1.add(other2);
-        events1.add(r2);
-        events1.add(other3);
-
-        List<Chunk> chunks1 = Chunk.makeChunksFromEvents(events1, new ArrayList<Break>());
-
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(Arrays.asList(t1, t2), Arrays.asList(r1, r2), Arrays.asList(breakTime));
         //HERE, startHoursAfterEvent is NOT zero this time
         int startHoursAfterEvent = 5;
         int stopHoursAfterEvent = 20;
@@ -287,22 +238,14 @@ public class AvgScoreTest {
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
         Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
-        //...and add them to an event
-        Other other1 = new Other(ldt1, tags1);
-
 
         //create a Rating that appears slightly before ...
-        Rating r1 = new Rating(ldt1.minusHours(1), 3);
+        ScoreTime r1 = new ScoreTime(ldt1.minusHours(1), 3);
 
         //and a Other event that appears slightly after ...
-        Other o2 = new Other(ldt1.plusHours(1), new ArrayList<Tag>());
+        LocalDateTime breakTime = ldt1.plusHours(1);
 
-        List<Event> events = new ArrayList<>();
-        events.add(other1);
-        events.add(r1);
-        events.add(o2);
-
-        List<Chunk> chunks = Chunk.makeChunksFromEvents(events, new ArrayList<Break>());
+        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(r1), Arrays.asList(breakTime));
         Map<String, TagPoint> tagPoints = new HashMap<>();
 
 
@@ -336,23 +279,20 @@ public class AvgScoreTest {
         Other otherBeforeRating = new Other(ldt1, tags1);
 
         //create first rating event 3 hours AFTER otherBeforeRating...
-        Rating firstRating= new Rating(ldt1.plusHours(3), 4);
+        ScoreTime firstRating= new ScoreTime(ldt1.plusHours(3), 4);
 
         //create later event just to expand chunk after stop hours
-        Other expandingTimeEvent = new Other(ldt1.plusHours(10), new ArrayList<Tag>());
+        LocalDateTime breakTime = ldt1.plusHours(10);
 
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 6;
 
-        List<Event> events = new ArrayList<>();
-        events.add(otherBeforeRating);
-        events.add(firstRating);
-        events.add(expandingTimeEvent);
-
-        List<Chunk> chunks = Chunk.makeChunksFromEvents(events, new ArrayList<Break>());
+        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(firstRating), Arrays.asList(breakTime));
         Map<String, TagPoint> tagPoints = new HashMap<>();
         tagPoints = TagPointMaker.doAvgScore(chunks, startHoursAfterEvent, stopHoursAfterEvent,
                 tagPoints);
+
+
 
         assertEquals(1, tagPoints.size());
         //half the time => half the quantity
