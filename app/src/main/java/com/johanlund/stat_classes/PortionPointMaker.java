@@ -46,12 +46,13 @@ public class PortionPointMaker {
         return toReturn;
     }
 
-    private static List<PtRatings> joinTooClosePortions(List<TagsWrapperBase> PtRatingsList, int
+    //TagsWrapper will be dynamically used here.
+    private static List<PtRatings> joinTooClosePortions(List<TagsWrapperBase> tagsWrapperList, int
             minHoursBetweenMeals) {
         List<PtRatings>toReturn = new ArrayList<>();
-        for (TagsWrapperBase ptAndR : PtRatingsList) {
-            List<TagBase> pts = joinTooClosePortions2(ptAndR.getTags(), minHoursBetweenMeals);
-            PtRatings ptr = new PtRatings(pts, ptAndR.getScoreTimes(), ptAndR.getChunkEnd());
+        for (TagsWrapperBase tagsWrapper : tagsWrapperList) {
+            List<TagBase> pts = joinTooClosePortions2(tagsWrapper.getTags(), minHoursBetweenMeals);
+            PtRatings ptr = new PtRatings(pts, tagsWrapper.getScoreTimes(), tagsWrapper.getChunkEnd());
             toReturn.add(ptr);
         }
         return toReturn;
@@ -101,7 +102,7 @@ public class PortionPointMaker {
 
     /**
      *
-     * @param p1
+     * @param p1 is Tag (not PortionTime)
      * @param distRema, 0 <= disRem <= distMin
      * @param ptsOrig
      * @param toList
