@@ -35,7 +35,8 @@ public class Break implements Comparable<Break>{
     }
 
     /**
-     * Notice that this method DOES NOT return an artificial break at last event (unless it is a manual break there)
+     * Notice that this method DOES return an artificial break at last event (it can become a dublette with manual break).
+     * This is done so using methods can use it as a chunkend for the last chunk.
      *
      * @param c
      * @return manual AND auto breaks
@@ -43,6 +44,9 @@ public class Break implements Comparable<Break>{
     public static List<LocalDateTime> getAllBreaks(Context c) {
         DBHandler dbHandler = new DBHandler(c);
         List<LocalDateTime> mBreaks = dbHandler.getManualBreaks();
+        LocalDateTime lastBreak = dbHandler.getTimeOfLastEvent();
+        mBreaks.add(lastBreak);
+
 
         //auto breaks
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(c);
