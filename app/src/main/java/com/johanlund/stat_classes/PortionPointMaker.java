@@ -1,7 +1,6 @@
 package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Tag;
-import com.johanlund.base_classes.TagBase;
 import com.johanlund.statistics_avg.TagsWrapper;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
@@ -51,7 +50,7 @@ public class PortionPointMaker {
             minHoursBetweenMeals) {
         List<TagsWrapperBase>toReturn = new ArrayList<>();
         for (TagsWrapperBase tagsWrapper : tagsWrapperList) {
-            List<TagBase> pts = joinTooClosePortions2(tagsWrapper.getTags(), minHoursBetweenMeals);
+            List<Tag> pts = joinTooClosePortions2(tagsWrapper.getTags(), minHoursBetweenMeals);
             TagsWrapperBase ptr = new TagsWrapper(pts, tagsWrapper.getScoreTimes(), tagsWrapper.getChunkEnd());
             toReturn.add(ptr);
         }
@@ -76,12 +75,12 @@ public class PortionPointMaker {
      * @param minDist == minHourDistanceBetweenMeals
      * @return
      */
-    static List<TagBase> joinTooClosePortions2(final List<TagBase> ptsOrig, int
+    static List<Tag> joinTooClosePortions2(final List<Tag> ptsOrig, int
             minDist) {
         if (ptsOrig.size()<2){
             return ptsOrig;
         }
-        return joinPt(ptsOrig.get(0), minDist, ptsOrig.subList(1, ptsOrig.size()), new ArrayList<TagBase>(),minDist);
+        return joinPt(ptsOrig.get(0), minDist, ptsOrig.subList(1, ptsOrig.size()), new ArrayList<Tag>(),minDist);
     }
 
     //recursive function, WELL TESTED
@@ -108,15 +107,15 @@ public class PortionPointMaker {
      * @param toList
      * @return
      */
-    private static List<TagBase> joinPt(TagBase p1, int distRema, List<TagBase> ptsOrig,
-                                        List<TagBase>toList, final int minDist) {
+    private static List<Tag> joinPt(Tag p1, int distRema, List<Tag> ptsOrig,
+                                        List<Tag>toList, final int minDist) {
         if (ptsOrig.isEmpty()){
             toList.add(p1);
             return toList;
         }
-        TagBase p2 = ptsOrig.get(0);
+        Tag p2 = ptsOrig.get(0);
         if (p1.getTime().plusHours(distRema).isAfter(p2.getTime())){
-            TagBase joinedPt = new Tag(p2.getTime(),  "",p1.getSize() + p2.getSize());
+            Tag joinedPt = new Tag(p2.getTime(),  "",p1.getSize() + p2.getSize());
             joinPt(joinedPt, distRema - (int)(p2.getTime().toEpochSecond(ZoneOffset.UTC)-p1.getTime().toEpochSecond(ZoneOffset.UTC))/(60*60), ptsOrig.subList(1, ptsOrig.size()), toList, minDist);
         }
         else{
@@ -157,12 +156,12 @@ public class PortionPointMaker {
         return new PortionPoint(range, avgScore, rangeTotalQuant);
     }
 
-    static List<TimePeriod> makeExceptTps(PortionStatRange range, List<TagBase>
+    static List<TimePeriod> makeExceptTps(PortionStatRange range, List<Tag>
             portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal) {
 
         //1. variables: range, portionTimes, waitHoursAfterMeal, stopHoursAfterMeal
-        List<TagBase> withinRange = getWithinRange(range, portionTimes);
-        List<TagBase> aboveRange = getAboveRange(range, portionTimes);
+        List<Tag> withinRange = getWithinRange(range, portionTimes);
+        List<Tag> aboveRange = getAboveRange(range, portionTimes);
 
         //2. withinRange, aboveRange, waitHoursAfterMeal, stopHoursAfterMeal
         List<TimePeriod> tpsWithinRange = getRawTps(withinRange,
@@ -181,10 +180,10 @@ public class PortionPointMaker {
      * @param stopHour
      * @return TimePeriods that has not been subjected (yet) to early chunkEnd or late start of ratings
      */
-    private static List<TimePeriod> getRawTps(List<TagBase> pts, long startHour,
+    private static List<TimePeriod> getRawTps(List<Tag> pts, long startHour,
                                               long stopHour) {
         List<TimePeriod>toReturn = new ArrayList<>();
-        for (TagBase pt:pts){
+        for (Tag pt:pts){
             LocalDateTime start = pt.getTime().plusHours(startHour);
             LocalDateTime end = pt.getTime().plusHours(stopHour);
             toReturn.add(new TimePeriod(start,end));
@@ -192,10 +191,10 @@ public class PortionPointMaker {
         return toReturn;
     }
 
-    private static List<TagBase> getWithinRange(PortionStatRange range, List<TagBase>
+    private static List<Tag> getWithinRange(PortionStatRange range, List<Tag>
             portionTimes) {
-        List<TagBase> toReturn = new ArrayList<>();
-        for (TagBase pt : portionTimes) {
+        List<Tag> toReturn = new ArrayList<>();
+        for (Tag pt : portionTimes) {
             //startPortions (incl), endPortions (excl)
             // range.start <= pt.size < range.stop
             if (pt.getSize() >= range.getRangeStart() && pt.getSize() < range
@@ -206,10 +205,10 @@ public class PortionPointMaker {
         return toReturn;
     }
 
-    private static List<TagBase> getAboveRange(PortionStatRange range, List<TagBase>
+    private static List<Tag> getAboveRange(PortionStatRange range, List<Tag>
             portionTimes) {
-        List<TagBase> toReturn = new ArrayList<>();
-        for (TagBase pt : portionTimes) {
+        List<Tag> toReturn = new ArrayList<>();
+        for (Tag pt : portionTimes) {
             //since endPortions is excl, we want larger or same to get portions that doesn't fit
             // range => the ones we are interested in here
             if (pt.getSize() >= range.getRangeStop()) {

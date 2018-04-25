@@ -1,30 +1,27 @@
 package com.johanlund.statistics_avg;
 
 import com.johanlund.base_classes.Tag;
-import com.johanlund.base_classes.TagBase;
-import com.johanlund.util.RatingTimes;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TagsWrapperBase;
 
 import org.threeten.bp.LocalDateTime;
 
-import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BmsWrapper implements TagsWrapperBase{
-    private List<TagBase> tags;
+    private List<Tag> tags;
     //bms score either reflects complete or bristol (not both at same time though)
     List<ScoreTime>bms;
 
 
-    private BmsWrapper(List<TagBase> tags, List<ScoreTime> bms) {
+    private BmsWrapper(List<Tag> tags, List<ScoreTime> bms) {
         this.tags = tags;
         this.bms = bms;
     }
 
     @Override
-    public List<TagBase> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
@@ -53,7 +50,7 @@ public class BmsWrapper implements TagsWrapperBase{
         int indTags = 0;
         int indRatings = 0;
         for (LocalDateTime b: breaks){
-            List<TagBase>tags = new ArrayList<>();
+            List<Tag>tags = new ArrayList<>();
             List<ScoreTime>bms = new ArrayList<>();
             for (int i = indTags;i<tags1.size();i++){
                 if (b.isBefore(tags1.get(i).getTime())){

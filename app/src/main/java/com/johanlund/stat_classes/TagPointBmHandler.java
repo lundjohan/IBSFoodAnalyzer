@@ -2,7 +2,6 @@ package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Tag;
-import com.johanlund.base_classes.TagBase;
 import com.johanlund.statistics_point_classes.TagPoint;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TagsWrapperBase;
@@ -43,8 +42,8 @@ public class TagPointBmHandler {
         long hoursAfterTagToStopLookingForBM = furthest_distance_hours_before_bm_limit;
 
 
-        List<TagBase> allTags = chunk.getTags();
-        for (TagBase tag : allTags) {
+        List<Tag> allTags = chunk.getTags();
+        for (Tag tag : allTags) {
             Tag t = (Tag)tag;
             LocalDateTime searchForBMStartTime = t.getTime().plusHours(hoursAfterTagToStartLookingForBM);
             LocalDateTime searchForBMStopTime = t.getTime().plusHours(hoursAfterTagToStopLookingForBM);

@@ -1,6 +1,6 @@
 package com.johanlund.util;
 
-import com.johanlund.base_classes.TagBase;
+import com.johanlund.base_classes.Tag;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TagsWrapperBase {
 
-    List<TagBase> getTags();
+    List<Tag> getTags();
     
     List<ScoreTime>getScoreTimes();
 

@@ -1,7 +1,6 @@
 package com.johanlund.statistics_avg;
 
 import com.johanlund.base_classes.Tag;
-import com.johanlund.base_classes.TagBase;
 import com.johanlund.util.RatingTimes;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TagsWrapperBase;
@@ -17,20 +16,20 @@ import java.util.List;
  * TODO remove RatingTimes and use its components instead
  */
 public class TagsWrapper implements TagsWrapperBase {
-    private List<TagBase> tags;
+    private List<Tag> tags;
     private RatingTimes ratings;
 
-    public TagsWrapper(List<TagBase> tags, RatingTimes ratings) {
+    public TagsWrapper(List<Tag> tags, RatingTimes ratings) {
         this.tags = tags;
         this.ratings = ratings;
     }
 
-    public TagsWrapper(List<TagBase> pts, List<ScoreTime> scoreTimes, LocalDateTime chunkEnd) {
+    public TagsWrapper(List<Tag> pts, List<ScoreTime> scoreTimes, LocalDateTime chunkEnd) {
         tags = pts;
         ratings = new RatingTimes (scoreTimes, chunkEnd);
     }
 
-    public List<TagBase> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
@@ -64,7 +63,7 @@ public class TagsWrapper implements TagsWrapperBase {
         int indRatings = 0;
         LocalDateTime chunkEnd = null;
         for (LocalDateTime b: breaks){
-            List<TagBase>tags = new ArrayList<>();
+            List<Tag>tags = new ArrayList<>();
             List<ScoreTime>ratings = new ArrayList<>();
             for (int i = indTags;i<tags1.size();i++){
                 if (b.isBefore(tags1.get(i).getTime())){

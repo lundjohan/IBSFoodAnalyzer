@@ -1,7 +1,6 @@
 package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Tag;
-import com.johanlund.base_classes.TagBase;
 import com.johanlund.statistics_point_classes.TagPoint;
 import com.johanlund.util.RatingTime;
 import com.johanlund.util.TagsWrapperBase;
@@ -22,8 +21,8 @@ public class DeltaPointMaker {
     /*Extremely ineffective to calculate avg twice, but I just want to see if delta stat give meaningful results...*/
     private static void makeDeltaTagPoints(TagsWrapperBase chunk, int startHoursAfterEvent, int
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
-        List<TagBase> tagsMaterial = chunk.getTags();
-        for (TagBase tag : tagsMaterial) {
+        List<Tag> tagsMaterial = chunk.getTags();
+        for (Tag tag : tagsMaterial) {
             Tag t = (Tag)tag;
 //1. Calculate normal avg===========================================================================
             TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));

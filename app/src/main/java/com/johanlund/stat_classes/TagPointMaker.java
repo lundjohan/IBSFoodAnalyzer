@@ -1,10 +1,8 @@
 package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Tag;
-import com.johanlund.base_classes.TagBase;
 import com.johanlund.statistics_point_classes.TagPoint;
 import com.johanlund.util.RatingTime;
-import com.johanlund.statistics_avg.TagsWrapper;
 import com.johanlund.util.TagsWrapperBase;
 import com.johanlund.util.TimePeriod;
 
@@ -15,8 +13,8 @@ public class TagPointMaker {
 
     private static void makeTagPoints(TagsWrapperBase chunk, int startHoursAfterEvent, int
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
-        List<TagBase> tagsMaterial = chunk.getTags();
-        for (TagBase tTemp : tagsMaterial) {
+        List<Tag> tagsMaterial = chunk.getTags();
+        for (Tag tTemp : tagsMaterial) {
             Tag t = (Tag)tTemp;
             TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));
 
