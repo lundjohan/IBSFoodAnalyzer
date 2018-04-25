@@ -1,9 +1,9 @@
 package com.johanlund.stat_classes;
 
+import com.johanlund.base_classes.Tag;
 import com.johanlund.base_classes.TagBase;
 import com.johanlund.statistics_avg.TagsWrapper;
 import com.johanlund.statistics_point_classes.PortionPoint;
-import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
 import com.johanlund.util.RatingTime;
 import com.johanlund.util.TagsWrapperBase;
@@ -116,7 +116,7 @@ public class PortionPointMaker {
         }
         TagBase p2 = ptsOrig.get(0);
         if (p1.getTime().plusHours(distRema).isAfter(p2.getTime())){
-            PortionTime joinedPt = new PortionTime(p1.getSize() + p2.getSize(), p2.getTime());
+            TagBase joinedPt = new Tag(p2.getTime(),  "",p1.getSize() + p2.getSize());
             joinPt(joinedPt, distRema - (int)(p2.getTime().toEpochSecond(ZoneOffset.UTC)-p1.getTime().toEpochSecond(ZoneOffset.UTC))/(60*60), ptsOrig.subList(1, ptsOrig.size()), toList, minDist);
         }
         else{

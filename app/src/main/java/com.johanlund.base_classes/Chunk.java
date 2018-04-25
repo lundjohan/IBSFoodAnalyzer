@@ -1,6 +1,5 @@
 package com.johanlund.base_classes;
 
-import com.johanlund.statistics_portions.PortionTime;
 import com.johanlund.util.IBSUtil;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TimePeriod;
@@ -111,17 +110,6 @@ public class Chunk {
         return meals;
     }
 
-    public List<TagBase> getPortionTimes() {
-        List<TagBase> pts = new ArrayList<>();
-        for (Event e : events) {
-            if (e instanceof Meal) {
-                Meal m = (Meal) e;
-                TagBase pt = new PortionTime(m.getPortions(), m.getTime());
-                pts.add(pt);
-            }
-        }
-        return pts;
-    }
 
     /**
      * Prerequisite events>0
