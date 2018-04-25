@@ -1,6 +1,5 @@
 package com.johanlund.statistics_portion_scorewrapper;
 
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.stat_classes.PortionPointMaker;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
@@ -48,14 +47,6 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
         super(ranges, waitHoursAfterMeal, stopHoursAfterMeal, minHoursBetweenMeals);
     }
 
-    /*
-        For performance it would be preferable if chunks was replaced with object that contains only
-        <PortionSize, TimeForMeal>, Ratings, Breaks (Breaks can be replaced by a list that
-        contains the others) and stopTime for each Chunk.
-
-        (main reason is that database cursor don't have to carry the weight
-        of all the events)
-     */
     @Override
     public List<PortionPoint> calcPoints(List<TagsWrapperBase> chunks) {
         return PortionPointMaker.doPortionsPoints(chunks, ranges, waitHoursAfterMeal, stopHoursAfterMeal, minHoursBetweenMeals);
