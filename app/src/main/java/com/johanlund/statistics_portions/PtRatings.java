@@ -38,18 +38,4 @@ public class PtRatings implements TagsWrapperBase{
     public LocalDateTime getChunkEnd() {
         return lastTimeInChunk;
     }
-
-    public void setPortionTimes(List<TagBase> portionTimes) {
-        this.portionTimes = portionTimes;
-    }
-
-    public static List<PtRatings> toPtRatings(List<TagsWrapper> chunks) {
-        List<PtRatings> toReturn = new ArrayList<>();
-        /*for (TagsWrapper c : chunks) {
-            PtRatings ptsAndRs = new PtRatings(c.getTags(), c
-                    .getScoreTimes(), c.getLastTime());
-            toReturn.add(ptsAndRs);
-        }*/
-        return toReturn;
-    }
 }
