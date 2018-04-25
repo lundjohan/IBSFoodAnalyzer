@@ -1293,7 +1293,7 @@ public class DBHandler extends SQLiteOpenHelper {
         LocalDate ld = null;
         LocalDateTime ldt = getTimeOfLastEvent();
         if (ldt!= null){
-            ld = null;
+            ld = ldt.toLocalDate();
         }
         return ld;
     }
