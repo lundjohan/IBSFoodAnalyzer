@@ -13,14 +13,21 @@ import java.util.List;
 
 /**
  * Replacement for Chunk
+ *
+ * TODO remove RatingTimes and use its components instead
  */
 public class TagsWrapper implements TagsWrapperBase {
     private List<TagBase> tags;
     private RatingTimes ratings;
 
-    private TagsWrapper(List<TagBase> tags, RatingTimes ratings) {
+    public TagsWrapper(List<TagBase> tags, RatingTimes ratings) {
         this.tags = tags;
         this.ratings = ratings;
+    }
+
+    public TagsWrapper(List<TagBase> pts, List<ScoreTime> scoreTimes, LocalDateTime chunkEnd) {
+        tags = pts;
+        ratings = new RatingTimes (scoreTimes, chunkEnd);
     }
 
     public List<TagBase> getTags() {

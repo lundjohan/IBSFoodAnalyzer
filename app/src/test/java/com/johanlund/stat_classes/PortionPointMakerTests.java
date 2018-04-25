@@ -1,10 +1,9 @@
 package com.johanlund.stat_classes;
 
-import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.TagBase;
+import com.johanlund.statistics_avg.TagsWrapper;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
-import com.johanlund.statistics_portions.PtRatings;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TagsWrapperBase;
@@ -41,7 +40,7 @@ public class PortionPointMakerTests {
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
 
-        PtRatings ptRatings = new PtRatings(Arrays.asList(ptWithinRange), Arrays.asList(rStart),
+        TagsWrapperBase ptRatings = new TagsWrapper(Arrays.asList(ptWithinRange), Arrays.asList(rStart),
                 newYear.plusHours(10));
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptRatings),
                 startHoursAfterMeal, stopHoursAfterMeal);
@@ -61,7 +60,7 @@ public class PortionPointMakerTests {
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
 
-        PtRatings ptRatings = new PtRatings(Arrays.asList(pt1, pt2), Arrays.asList(rStart,
+        TagsWrapperBase ptRatings = new TagsWrapper(Arrays.asList(pt1, pt2), Arrays.asList(rStart,
                 rLater), newYear.plusHours(20));
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptRatings),
                 startHoursAfterMeal, stopHoursAfterMeal);
@@ -83,7 +82,7 @@ public class PortionPointMakerTests {
         ScoreTime rStart = new ScoreTime(newYear, 3);
 
         //chunk end < stopHoursAfterMeal
-        PtRatings ptRatings = new PtRatings(Arrays.asList(pt1), Arrays.asList(rStart), newYear.plusHours(6));
+        TagsWrapperBase ptRatings = new TagsWrapper(Arrays.asList(pt1), Arrays.asList(rStart), newYear.plusHours(6));
 
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
@@ -107,7 +106,7 @@ public class PortionPointMakerTests {
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 6;
 
-        PtRatings ptRatings = new PtRatings(Arrays.asList(pt1), Arrays.asList(rStart, rSecond), newYear.plusHours(5));
+        TagsWrapperBase ptRatings = new TagsWrapper(Arrays.asList(pt1), Arrays.asList(rStart, rSecond), newYear.plusHours(5));
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptRatings),
                 startHoursAfterMeal, stopHoursAfterMeal);
 
@@ -217,7 +216,7 @@ public class PortionPointMakerTests {
         long startHoursAfterMeal = 0;
         long stopHoursAfterMeal = 8;
 
-        TagsWrapperBase ptRatings = new PtRatings(Arrays.asList(p1, p2, p3), Arrays.asList(rStart, r2), newYear.plusHours(20));
+        TagsWrapperBase ptRatings = new TagsWrapper(Arrays.asList(p1, p2, p3), Arrays.asList(rStart, r2), newYear.plusHours(20));
         List<PortionPoint> pps = toReplaceCalcPoints(Arrays.asList(ptRatings), Arrays.asList(range),startHoursAfterMeal, stopHoursAfterMeal, 20 );
 
 
@@ -307,7 +306,7 @@ public class PortionPointMakerTests {
         TagBase p2 = new PortionTime(1.5, newYear.plusHours(4));
         ScoreTime r1 = new ScoreTime(newYear, 3);
         ScoreTime r2 = new ScoreTime(newYear.plusHours(4), 3);
-        PtRatings ptr = new PtRatings(Arrays.asList(p1, p2), Arrays.asList(r1, r2), newYear.plusHours(20));
+        TagsWrapperBase ptr = new TagsWrapper(Arrays.asList(p1, p2), Arrays.asList(r1, r2), newYear.plusHours(20));
 
 
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);
@@ -324,7 +323,7 @@ public class PortionPointMakerTests {
         //too large
         TagBase p2 = new PortionTime(1.5, newYear.plusHours(4));
         ScoreTime rLate = new ScoreTime(newYear.plusHours(1), 3);
-        PtRatings ptr = new PtRatings(Arrays.asList(p1,p2), Arrays.asList(rLate), newYear.plusHours(20));
+        TagsWrapperBase ptr = new TagsWrapper(Arrays.asList(p1,p2), Arrays.asList(rLate), newYear.plusHours(20));
 
         PortionPoint pp = getPPForRange(range, Arrays.asList(ptr), 0, 10);
 

@@ -1,9 +1,9 @@
 package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.TagBase;
+import com.johanlund.statistics_avg.TagsWrapper;
 import com.johanlund.statistics_point_classes.PortionPoint;
 import com.johanlund.statistics_portions.PortionTime;
-import com.johanlund.statistics_portions.PtRatings;
 import com.johanlund.statistics_settings_portions.PortionStatRange;
 import com.johanlund.util.RatingTime;
 import com.johanlund.util.TagsWrapperBase;
@@ -37,7 +37,7 @@ public class PortionPointMaker {
     static List<PortionPoint> toReplaceCalcPoints(List<TagsWrapperBase> ptr,
                                                   List<PortionStatRange>
             ranges, long startHoursAfterMeal, long stopHoursAfterMeal, int minHoursBetweenMeals) {
-        List<PtRatings> ptrJoined = joinTooClosePortions(ptr, minHoursBetweenMeals);
+        List<TagsWrapperBase> ptrJoined = joinTooClosePortions(ptr, minHoursBetweenMeals);
         List<PortionPoint> toReturn = new ArrayList<>();
         for (PortionStatRange range : ranges) {
             PortionPoint pp = getPPForRange(range, ptrJoined, startHoursAfterMeal, stopHoursAfterMeal);
@@ -47,12 +47,12 @@ public class PortionPointMaker {
     }
 
     //TagsWrapper will be dynamically used here.
-    private static List<PtRatings> joinTooClosePortions(List<TagsWrapperBase> tagsWrapperList, int
+    private static List<TagsWrapperBase> joinTooClosePortions(List<TagsWrapperBase> tagsWrapperList, int
             minHoursBetweenMeals) {
-        List<PtRatings>toReturn = new ArrayList<>();
+        List<TagsWrapperBase>toReturn = new ArrayList<>();
         for (TagsWrapperBase tagsWrapper : tagsWrapperList) {
             List<TagBase> pts = joinTooClosePortions2(tagsWrapper.getTags(), minHoursBetweenMeals);
-            PtRatings ptr = new PtRatings(pts, tagsWrapper.getScoreTimes(), tagsWrapper.getChunkEnd());
+            TagsWrapperBase ptr = new TagsWrapper(pts, tagsWrapper.getScoreTimes(), tagsWrapper.getChunkEnd());
             toReturn.add(ptr);
         }
         return toReturn;
@@ -128,15 +128,16 @@ public class PortionPointMaker {
     }
 
     /**
+     * @param afterJoin
      * @param startHour != stopHour
      */
-    static PortionPoint getPPForRange(PortionStatRange range, List<PtRatings>
+    static PortionPoint getPPForRange(PortionStatRange range, List<TagsWrapperBase>
             afterJoin, long startHour, long stopHour) {
         //format: avg_rating*quant
         double rangeTotalScore = .0;
         //format: quant
         double rangeTotalQuant = .0;
-        for (PtRatings ptAndR : afterJoin) {
+        for (TagsWrapperBase ptAndR : afterJoin) {
             List<TimePeriod> tpsAfterExcept = makeExceptTps(range, ptAndR.getTags(),
                     startHour, stopHour);
             for (TimePeriod tpExc : tpsAfterExcept) {
