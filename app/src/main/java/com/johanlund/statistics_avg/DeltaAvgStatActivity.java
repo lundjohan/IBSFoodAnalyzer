@@ -4,11 +4,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
+import com.johanlund.base_classes.Break;
+import com.johanlund.base_classes.Tag;
+import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.statistics_adapters.AvgStatAdapter;
 import com.johanlund.statistics_avg_scorewrapper.AvgScoreWrapper;
-import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.statistics_avg_scorewrapper.DeltaAvgScoreWrapper;
+import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TagsWrapperBase;
+
+import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
@@ -26,10 +32,17 @@ public class DeltaAvgStatActivity extends AvgStatActivity {
 
 
     }
-
+    //copied from RatingAvgStatActivity
     @Override
     protected List<TagsWrapperBase> getTagsWrapperBase() {
-        return null;
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+
+        List<Tag>tags = dbHandler.getAllTags();
+        List <ScoreTime> ratings = dbHandler.getRatingTimes();
+        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
+
+        return TagsWrapper.makeTagsWrappers(tags, ratings,
+                allBreaks);
     }
 
     @Override
@@ -39,7 +52,7 @@ public class DeltaAvgStatActivity extends AvgStatActivity {
         int wait_hours_after_event = preferences.getInt(getResources().getString(R.string.avg_rating_pref_wait_key),0);
         int hours_ahead_for_av = preferences.getInt(getResources().getString(R.string.avg_rating_pref_stop_key), HOURS_AHEAD_FOR_AVG);
         int quantLimit = preferences.getInt(getResources().getString(R.string.avg_rating_pref_quant_key),0);
-        return null;//new DeltaAvgScoreWrapper(wait_hours_after_event,hours_ahead_for_av, quantLimit);
+        return new DeltaAvgScoreWrapper(wait_hours_after_event,hours_ahead_for_av, quantLimit);
     }
 
     @Override
