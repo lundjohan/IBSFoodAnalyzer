@@ -53,10 +53,12 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
         calculateStats();
     }
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        if (asyncThread!= null && !asyncThread.isCancelled()){
-            asyncThread.cancel(true);
+        if (asyncThread != null) {
+            if (!asyncThread.isCancelled()) {
+                asyncThread.cancel(true);
+            }
             asyncThread = null;
         }
     }
