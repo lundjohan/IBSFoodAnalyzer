@@ -57,6 +57,7 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
         super.onDestroy();
         if (asyncThread!= null && !asyncThread.isCancelled()){
             asyncThread.cancel(true);
+            asyncThread = null;
         }
     }
     @Override

@@ -41,7 +41,7 @@ public class RatingAvgStatActivity extends AvgStatActivity {
         List<Tag>tags = dbHandler.getAllTags();
         List <ScoreTime> ratings = dbHandler.getRatingTimes();
         List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
-
+        dbHandler.close();
         return TagsWrapper.makeTagsWrappers(tags, ratings,
                 allBreaks);
     }

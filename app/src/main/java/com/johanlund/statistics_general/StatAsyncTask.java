@@ -21,6 +21,7 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
     private WeakReference<Activity> activity;
     private WeakReference<StatAdapter> adapter;
     private WeakReference<RecyclerView> recyclerView;
+
     public StatAsyncTask(Activity activity, StatAdapter adapter, RecyclerView recyclerView) {
         this.activity = new WeakReference<>(activity);
         this.adapter = new WeakReference(adapter);
@@ -29,17 +30,17 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
     @Override
     protected List<E> doInBackground(Object... params) {
         List<E>toReturn = new ArrayList<>();
-        if (!isCancelled() && activity.get() != null && adapter.get() != null && recyclerView.get() != null) {
-            ScoreWrapperBase wrapper = (ScoreWrapperBase) params[0];
-            List<TagsWrapperBase> chunks = (List<TagsWrapperBase>) params[1];
+        if (!isCancelled() && activity.get() != null) {
+            WeakReference<ScoreWrapperBase> wrapper = new WeakReference(params[0]);
+            WeakReference<List<TagsWrapperBase>> chunks = new WeakReference(params[1]);
 
-            List<E> points = wrapper.calcPoints(chunks);
+            List<E> points = wrapper.get().calcPoints(chunks.get());
 
             //sort points here
-            List<E> sortedList = wrapper.toSortedList(points);
+            List<E> sortedList = wrapper.get().toSortedList(points);
 
             //remove points with too low amount of duration
-            toReturn = wrapper.removePointsWithTooLowQuant(sortedList);
+            toReturn = wrapper.get().removePointsWithTooLowQuant(sortedList);
         }
         return toReturn;
     }
@@ -48,16 +49,18 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
 
     @Override
     protected void onPostExecute(List<E> sortedList) {
-        StatAdapter<E> sa = adapter.get();
-        if (sa != null){
-            sa.setPointsList(sortedList);
-            sa.notifyDataSetChanged();
+        if (adapter.get() != null){
+            adapter.get().setPointsList(sortedList);
+            adapter.get().notifyDataSetChanged();
         }
         //scrolling to top is needed, otherwise it starts at the bottom.
-        RecyclerView rw = recyclerView.get();
-        if (rw != null){
-            rw.scrollToPosition(sortedList.size()-1);
+        if (recyclerView.get() != null){
+            recyclerView.get().scrollToPosition(sortedList.size()-1);
         }
+        //null references for memory allocation
+        activity = null;
+        adapter = null;
+        recyclerView = null;
     }
 }
 
