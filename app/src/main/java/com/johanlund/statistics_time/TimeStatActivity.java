@@ -57,9 +57,4 @@ public abstract class TimeStatActivity extends StatBaseActivity<TimePoint> imple
     }
 
     protected abstract List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks);
-
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 }
