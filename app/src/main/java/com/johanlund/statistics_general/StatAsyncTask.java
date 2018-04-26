@@ -1,5 +1,6 @@
 package com.johanlund.statistics_general;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
@@ -16,16 +17,19 @@ import java.util.List;
  */
 
 public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void, List<E>> {
+    // read https://medium.com/google-developer-experts/finally-understanding-how-references-work-in-android-and-java-26a0d9c92f83
+    private WeakReference<Activity> activity;
     private WeakReference<StatAdapter> adapter;
     private WeakReference<RecyclerView> recyclerView;
-    public StatAsyncTask(StatAdapter adapter, RecyclerView recyclerView) {
+    public StatAsyncTask(Activity activity, StatAdapter adapter, RecyclerView recyclerView) {
+        this.activity = new WeakReference<>(activity);
         this.adapter = new WeakReference(adapter);
         this.recyclerView = new WeakReference(recyclerView);
     }
     @Override
     protected List<E> doInBackground(Object... params) {
         List<E>toReturn = new ArrayList<>();
-        if (!isCancelled()) {
+        if (!isCancelled() && activity.get() != null && adapter.get() != null && recyclerView.get() != null) {
             ScoreWrapperBase wrapper = (ScoreWrapperBase) params[0];
             List<TagsWrapperBase> chunks = (List<TagsWrapperBase>) params[1];
 

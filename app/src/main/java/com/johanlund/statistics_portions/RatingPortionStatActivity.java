@@ -55,7 +55,7 @@ public class RatingPortionStatActivity extends PortionStatActivity {
     @Override
     protected void calculateStats() {
         List<TagsWrapperBase> twbs = getTagsWrapperBase();
-        StatAsyncTask asyncThread = new StatAsyncTask(adapter, recyclerView);
+        StatAsyncTask asyncThread = new StatAsyncTask(this, adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), twbs);
     }
     //copied from RatingAvgStatActivity

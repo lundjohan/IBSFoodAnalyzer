@@ -26,7 +26,7 @@ public abstract class AvgStatActivity extends StatBaseActivity {
 
     protected void calculateStats() {
         List<TagsWrapperBase> twbs = getTagsWrapperBase();
-        StatAsyncTask asyncThread = new StatAsyncTask(adapter, recyclerView);
+        StatAsyncTask asyncThread = new StatAsyncTask(this, adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), twbs);
     }
 
