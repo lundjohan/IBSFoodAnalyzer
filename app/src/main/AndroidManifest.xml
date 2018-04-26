@@ -13,6 +13,31 @@
         android:roundIcon="@mipmap/foodanalyzer_rounded"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name="com.ipaulpro.afilechooser.FileChooserActivity"
+            android:enabled="@bool/use_activity"
+            android:exported="true"
+            android:icon="@drawable/ic_chooser"
+            android:label="@string/choose_file">
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.OPENABLE"/>
+
+                <data android:mimeType="*/*"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.johanlund.main.DrawerActivity"
+            android:label="@string/title_activity_drawer"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity android:name="com.johanlund.event_activities.MealActivity">
         </activity>
         <activity android:name="com.johanlund.event_activities.RatingActivity">
@@ -50,7 +75,6 @@
             android:name="com.johanlund.external_storage.SaveToCSVForGraphIntentService"
             android:exported="false">
         </service>
-
         <activity
             android:name=".TagTypeAdderActivity"
             android:parentActivityName=".TagAdderActivity">
@@ -64,32 +88,41 @@
         </activity>
         <activity android:name="com.johanlund.settings.GeneralSettingsActivity">
         </activity>
-        <activity
-            android:name="com.ipaulpro.afilechooser.FileChooserActivity"
-            android:enabled="@bool/use_activity"
-            android:exported="true"
-            android:icon="@drawable/ic_chooser"
-            android:label="@string/choose_file">
-            <intent-filter>
-                <action android:name="android.intent.action.GET_CONTENT"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.OPENABLE"/>
-
-                <data android:mimeType="*/*"/>
-            </intent-filter>
+        <activity android:name="com.johanlund.statistics_avg.RatingAvgStatActivity"
+                  android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.statistics_avg.RatingAvgStatActivity">
+        <activity android:name="com.johanlund.statistics_avg.CompleteAvgStatActivity"
+                  android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.statistics_avg.CompleteAvgStatActivity">
+        <activity android:name="com.johanlund.statistics_avg.BristolAvgStatActivity"
+                  android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.statistics_avg.BristolAvgStatActivity">
+        <activity android:name="com.johanlund.statistics_time.RatingTimeStatActivity"
+                  android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.statistics_time.RatingTimeStatActivity">
+        <activity android:name="com.johanlund.statistics_time.CompleteTimeStatActivity"
+                  android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.statistics_time.CompleteTimeStatActivity">
-        </activity>
-        <activity android:name="com.johanlund.statistics_time.BristolTimeStatActivity">
+        <activity android:name="com.johanlund.statistics_time.BristolTimeStatActivity"
+                  android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
         <activity
             android:name="com.johanlund.statistics_settings_portions.PortionStatSettingsActivity"
@@ -101,16 +134,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.statistics_settings_portions.PortionStatSettingsActivity"/>
-        </activity>
-        <activity
-            android:name="com.johanlund.main.DrawerActivity"
-            android:label="@string/title_activity_drawer"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name="com.johanlund.statistics_settings.AvgRatingSettingsActivity">
         </activity>
@@ -133,15 +156,19 @@
         </activity>
         <activity android:name="com.johanlund.info.ActivityInfoContent">
         </activity>
-        <activity android:name="com.johanlund.statistics_general.StatBaseActivity">
-        </activity>
         <activity android:name="com.johanlund.statistics_settings_portions.PortionStatSettingsMoreActivity">
         </activity>
-        <activity android:name="com.johanlund.statistics_portions.PortionStatActivity">
+        <activity android:name="com.johanlund.statistics_portions.RatingPortionStatActivity"
+                  android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.statistics_portions.RatingPortionStatActivity">
-        </activity>
-        <activity android:name="com.johanlund.statistics_avg.DeltaAvgStatActivity">
+        <activity android:name="com.johanlund.statistics_avg.DeltaAvgStatActivity"
+            android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
     </application>
 
