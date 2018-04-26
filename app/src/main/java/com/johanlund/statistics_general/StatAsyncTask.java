@@ -57,10 +57,6 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
         if (recyclerView.get() != null){
             recyclerView.get().scrollToPosition(sortedList.size()-1);
         }
-        //null references for memory allocation
-        activity = null;
-        adapter = null;
-        recyclerView = null;
     }
 }
 
