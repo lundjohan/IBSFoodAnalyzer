@@ -1330,8 +1330,9 @@ public class DBHandler extends SQLiteOpenHelper {
     private boolean tableIsEmpty(String tablename) {
         SQLiteDatabase db = this.getReadableDatabase();
         String count = "SELECT count(*) FROM " + tablename;
-        Cursor c = db.rawQuery(count, null);
+        Cursor c = null;
         try {
+            c = db.rawQuery(count, null);
             c.moveToFirst();
             if (c.getInt(0) > 0) {
                 return false;
@@ -1352,8 +1353,9 @@ public class DBHandler extends SQLiteOpenHelper {
         List<LocalDateTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_HAS_BREAK + " = 1 " + " ORDER BY " + COLUMN_DATETIME + " ASC ";
-        Cursor c = db.rawQuery(QUERY, null);
+        Cursor c = null;
         try {
+            c = db.rawQuery(QUERY, null);
             if (c != null) {
                 if (c.moveToFirst()) {
                     while (!c.isAfterLast()) {
@@ -1389,8 +1391,9 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS  + " ORDER BY " + COLUMN_DATETIME + " ASC ";
 
-        Cursor c = db.rawQuery(QUERY, null);
+        Cursor c = null;
         try {
+            c = db.rawQuery(QUERY, null);
             if (c != null) {
                 if (c.moveToFirst()) {
                     while (!c.isAfterLast()) {
@@ -1448,8 +1451,9 @@ public class DBHandler extends SQLiteOpenHelper {
         final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", b." + scoreColumn +
                 " FROM " + TABLE_EVENTS + " e " + " JOIN " + eventTable + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT +  " ORDER BY " + COLUMN_DATETIME + " ASC ";
 
-        Cursor c = db.rawQuery(QUERY, null);
+        Cursor c = null;
         try {
+            c = db.rawQuery(QUERY, null);
             if (c != null) {
                 if (c.moveToFirst()) {
                     while (!c.isAfterLast()) {
@@ -1482,8 +1486,9 @@ public class DBHandler extends SQLiteOpenHelper {
         final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_DATETIME + ", t." + COLUMN_SIZE +
                 " FROM " + TABLE_TAGTYPES + " tt " + " JOIN " + TABLE_TAGS + " t " + " ON tt. " + COLUMN_ID + " = t."+ COLUMN_TAGTYPE +  " ORDER BY " + COLUMN_DATETIME + " ASC ";
 
-        Cursor c = db.rawQuery(QUERY, null);
+        Cursor c = null;
         try {
+            c = db.rawQuery(QUERY, null);
             if (c != null) {
                 if (c.moveToFirst()) {
                     while (!c.isAfterLast()) {
