@@ -126,7 +126,11 @@
         </activity>
         <activity
             android:name="com.johanlund.statistics_settings_portions.PortionStatSettingsActivity"
-            android:label="Portion Stat Settings">
+            android:label="Portion Stat Settings"
+            android:parentActivityName="com.johanlund.main.DrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.main.DrawerActivity"/>
         </activity>
         <activity
             android:name="com.johanlund.statistics_settings_portions.NewPortionRangeActivity"
