@@ -145,6 +145,36 @@
             tools:layout_editor_absoluteY="80dp"/>
 
         <TextView
+            android:id="@+id/tinyDBHeadLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="TinyDB - Android"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/threeTenText"
+            tools:layout_editor_absoluteY="80dp"/>
+
+        <TextView
+            android:id="@+id/tinyDBText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Copyright (C) 2014 KC Ochibili\nhttps://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo/blob/master/TinyDB.java"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tinyDBHeadLine"
+            tools:layout_editor_absoluteY="80dp"/>
+
+
+
+        <TextView
             android:id="@+id/apacheHeadLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -156,7 +186,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/threeTenText"
+            app:layout_constraintTop_toBottomOf="@+id/tinyDBText"
             tools:layout_editor_absoluteY="80dp"/>
 
         <TextView
