@@ -202,6 +202,7 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
     private void newStatActivity(Activity instance) {
         Intent intent = new Intent(getActivity(), instance.getClass());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 

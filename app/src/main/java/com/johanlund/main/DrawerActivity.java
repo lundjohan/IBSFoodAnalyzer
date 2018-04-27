@@ -264,6 +264,7 @@ public class DrawerActivity extends AppCompatActivity
 
             case R.id.aboutItem:
                 Intent intentAbout = new Intent(this, AboutActivity.class);
+                intentAbout.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intentAbout);
                 break;
         }
