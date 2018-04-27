@@ -15,6 +15,13 @@ public class TimeBristolSettingsActivity extends SettingsBaseActivity{
         return new BristolTimeSettingsFragment();
     }
 
+    @Override
+    protected void restoreDefaultForThesePref() {
+        prefToDefault(getResources().getString(R.string.time_bristol_start));
+        prefToDefault(getResources().getString(R.string.time_bristol_end));
+        prefToDefault(getResources().getString(R.string.time_bristol_duration_key));
+    }
+
     public static class BristolTimeSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(final Bundle savedInstanceState) {

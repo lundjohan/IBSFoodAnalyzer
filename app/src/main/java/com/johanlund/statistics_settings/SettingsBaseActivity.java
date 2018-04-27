@@ -1,9 +1,13 @@
 package com.johanlund.statistics_settings;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v7.preference.PreferenceManager;
+import android.view.Menu;
 import android.view.MenuItem;
 
+import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.settings.AppCompatPreferenceActivity;
 
 
@@ -23,8 +27,27 @@ public abstract class SettingsBaseActivity extends AppCompatPreferenceActivity {
         if (id == android.R.id.home) {
             finish();
         }
+        if (id == R.id.menu_to_default) {
+            //1. let the classes above restore pref values to default
+            restoreDefaultForThesePref();
+
+
+            //2. Reload fragment (same as in onCreate above)
+            getFragmentManager().beginTransaction()
+                    .replace(getFragmentContainer(), getFragment())
+                    .commit();
+
+            //below didn't work (seekbar beccomes null)
+            //SeekBarPreference seekBar = (SeekBarPreference) findPreference("hours_break");
+        }
         return true;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.to_default_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     protected abstract PreferenceFragment getFragment();
 
     /**
@@ -36,4 +59,10 @@ public abstract class SettingsBaseActivity extends AppCompatPreferenceActivity {
     protected int getFragmentContainer(){
         return android.R.id.content;
     }
+
+    protected void prefToDefault(String key){
+        SharedPreferences settings= PreferenceManager.getDefaultSharedPreferences(this);
+        settings.edit().remove(key).commit();
+    }
+    protected abstract void restoreDefaultForThesePref();
 }

@@ -15,6 +15,13 @@ public class TimeRatingSettingsActivity extends SettingsBaseActivity{
         return new AvgTimeSettingsFragment();
     }
 
+    @Override
+    protected void restoreDefaultForThesePref() {
+        prefToDefault(getResources().getString(R.string.time_rating_start));
+        prefToDefault(getResources().getString(R.string.time_rating_end));
+        prefToDefault(getResources().getString(R.string.time_rating_duration_key));
+    }
+
     public static class AvgTimeSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(final Bundle savedInstanceState) {

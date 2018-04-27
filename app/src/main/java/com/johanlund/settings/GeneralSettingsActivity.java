@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.statistics_settings.SettingsBaseActivity;
 
 import java.util.Map;
 
@@ -17,14 +18,20 @@ import java.util.Map;
  * Created by Johan on 2017-10-05.
  */
 
-public class GeneralSettingsActivity extends AppCompatPreferenceActivity {
+public class GeneralSettingsActivity extends SettingsBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new GeneralPreferenceFragment())
-                .commit();
+    }
+
+    @Override
+    protected PreferenceFragment getFragment() {
+        return new GeneralPreferenceFragment();
+    }
+
+    @Override
+    protected void restoreDefaultForThesePref() {
+        prefToDefault("hours_break");
     }
 
     public static class GeneralPreferenceFragment extends PreferenceFragment {
@@ -33,34 +40,5 @@ public class GeneralSettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.general_preferences);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.to_default_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            finish();
-        }
-        if (id == R.id.menu_to_default) {
-            //a bit ugly solution but it works perfectly
-            //1. Set preference values to default (default values is set in the pref xml file itself)
-            SharedPreferences settings= PreferenceManager.getDefaultSharedPreferences(this);
-            settings.edit().remove("hours_break").commit();
-
-            //2. Reload fragment (same as in onCreate above)
-            getFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, new GeneralPreferenceFragment())
-                    .commit();
-
-            //below didn't work (seekbar beccomes null)
-            //SeekBarPreference seekBar = (SeekBarPreference) findPreference("hours_break");
-        }
-        return true;
     }
 }

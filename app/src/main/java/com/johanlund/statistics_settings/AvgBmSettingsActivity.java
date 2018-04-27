@@ -17,6 +17,13 @@ public class AvgBmSettingsActivity extends SettingsBaseActivity {
         return new AvgBMSettingsFragment();
     }
 
+    @Override
+    protected void restoreDefaultForThesePref() {
+        prefToDefault(getResources().getString(R.string.hours_before_bm_closest_distance_limit));
+        prefToDefault(getResources().getString(R.string.hours_before_bm_furthest_distance_limit));
+        prefToDefault(getResources().getString(R.string.avg_bm_pref_quant_key));
+    }
+
     public static class AvgBMSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(final Bundle savedInstanceState) {

@@ -17,6 +17,13 @@ public class AvgRatingSettingsActivity extends SettingsBaseActivity {
         return new AvgRatingSettingsFragment();
     }
 
+    @Override
+    protected void restoreDefaultForThesePref() {
+        prefToDefault(getResources().getString(R.string.avg_rating_pref_wait_key));
+        prefToDefault(getResources().getString(R.string.avg_rating_pref_stop_key));
+        prefToDefault(getResources().getString(R.string.avg_rating_pref_quant_key));
+    }
+
     public static class AvgRatingSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
