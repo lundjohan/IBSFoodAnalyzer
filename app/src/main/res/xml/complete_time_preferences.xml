@@ -27,5 +27,11 @@
             sample:msbp_maxValue="5"
             sample:msbp_measurementUnit="points"
             />
+        <Preference
+            android:key="pref_static_field_key"
+            android:selectable="false"
+            android:persistent="false"
+            android:title="Score Reference"
+            android:summary="@string/complete_info_score"/>
     </PreferenceCategory>
 </PreferenceScreen>

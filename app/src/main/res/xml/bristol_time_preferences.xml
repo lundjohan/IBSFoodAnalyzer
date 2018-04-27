@@ -39,5 +39,11 @@
             sample:msbp_maxValue="72"
             sample:msbp_measurementUnit="h"
             />
+        <Preference
+            android:key="pref_static_field_key"
+            android:selectable="false"
+            android:persistent="false"
+            android:title="Score Reference"
+            android:summary="@string/bristol_info_score"/>
     </PreferenceCategory>
 </PreferenceScreen>
