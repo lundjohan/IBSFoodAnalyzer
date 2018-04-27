@@ -15,18 +15,22 @@
             android:id="@+id/exportMenuItem"
             android:title="Export to file"
             />
-        <item
+        <!--<item
             android:id="@+id/importFromCsvMenuItem"
             android:title="Import from .csv file"
-            />
+            />-->
         <item
             android:id="@+id/exportToCsvMenuItem"
             android:title="Export to .csv file"
             />
         <item
+            android:id="@+id/advSettingsItem"
+            android:title="Advanced Settings"
+            />
+        <!--<item
             android:id="@+id/exportCsvForGraph"
             android:title="Export to .csv file for graph"
-            />
+            />-->
         <item
             android:id="@+id/clearDBItem"
             android:title="Clear database"/>
