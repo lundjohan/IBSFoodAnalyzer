@@ -146,14 +146,6 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.three_dots_menu_item_drawer, menu);
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -162,11 +154,11 @@ public class DrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+       /* if (id == R.id.action_settings) {
             Intent i = new Intent(this, GeneralSettingsActivity.class);
             startActivity(i);
             return true;
-        }
+        }*/
         //this is solely used from TemplateFragment
         if (id == android.R.id.home) {
             //pop away TemplateFragment from BackStack
@@ -213,11 +205,10 @@ public class DrawerActivity extends AppCompatActivity
                 showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
                 break;
 
-            case R.id.importFromCsvMenuItem:
-                //ok, read from external file? Otherwise ask for permission
+            /*case R.id.importFromCsvMenuItem:
                 ExternalStorageHandler.showReadablePermission(this);
                 showChooserForCSVImport();
-                break;
+                break;*/
 
             case R.id.exportToCsvMenuItem:
                 //ok, write to file? Otherwise ask for permission
@@ -228,14 +219,17 @@ public class DrawerActivity extends AppCompatActivity
                 //show pop up that shows location where file was saved.
                 showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
                 break;
-            case R.id.exportCsvForGraph:
-                //ok, write to file? Otherwise ask for permission
+            /*case R.id.exportCsvForGraph:
                 ExternalStorageHandler.showWritablePermission(this);
-                //IntentService
                 Intent csvGraphIntent = new Intent(this, SaveToCSVForGraphIntentService.class);
                 startService(csvGraphIntent);
                 showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
+                break;*/
+            case R.id.advSettingsItem:{
+                Intent i = new Intent(this, GeneralSettingsActivity.class);
+                startActivity(i);
                 break;
+            }
             case R.id.clearDBItem:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false).
