@@ -28,7 +28,7 @@
             sample:msbp_measurementUnit="points"
             />
         <com.pavelsikun.seekbarpreference.SeekBarPreference
-            android:defaultValue="24"
+            android:defaultValue="0"
             android:enabled="true"
             android:key="@string/time_bristol_duration_key"
             android:title="Min duration"
