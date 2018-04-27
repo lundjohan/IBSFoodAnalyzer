@@ -48,14 +48,18 @@ public class GeneralSettingsActivity extends AppCompatPreferenceActivity {
             finish();
         }
         if (id == R.id.menu_to_default) {
+            //a bit ugly solution but it works perfectly
+            //1. Set preference values to default (default values is set in the pref xml file itself)
             SharedPreferences settings= PreferenceManager.getDefaultSharedPreferences(this);
             settings.edit().remove("hours_break").commit();
-            //PreferenceManager.setDefaultValues(getApplicationContext(),R.xml.general_preferences,true);
-           // int d =  settings.getInt("hours_break", 10);
-            //SeekBarPreference yourSeekBar = (SeekBarPreference) findViewById(R.id.pref_hours_break);
-            //yourSeekBar.setCurrentValue(20);
 
-           // Log.d(getClass().getSimpleName(), Integer.toString(d));
+            //2. Reload fragment (same as in onCreate above)
+            getFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, new GeneralPreferenceFragment())
+                    .commit();
+
+            //below didn't work (seekbar beccomes null)
+            //SeekBarPreference seekBar = (SeekBarPreference) findPreference("hours_break");
         }
         return true;
     }
