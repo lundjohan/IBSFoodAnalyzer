@@ -7,7 +7,7 @@
         android:defaultValue="20"
         android:enabled="true"
         android:key="hours_break"
-        android:summary="After a break, the algorithm waits until next event before it gathers points again."
+        android:summary="@string/inactive_hours_over_this_leads_to_break"
         android:title="Hours after event before a break"
 
         sample:msbp_dialogEnabled="false"

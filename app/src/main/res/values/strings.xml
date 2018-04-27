@@ -20,10 +20,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="avg_info">Gives an average score of an event type based on its relationship to Rating, Bm Completeness or Bm Bristol.</string>
+    <string name="avg_info">Gives an average score of a tag (for example "Milk" or "Running") based <b>on</b> how it influences Rating, Bm Completeness or Bm Bristol.\n\n<b>Delta</b>\n Compares the average Rating to the score that was just before Hours to Wait (change this number in Delta settings) A positive Delta means the Rating score has increased since just before Hours to Wait. The reason Delta was implemented was because some tags in Average Score are going to have some scores that seems unlikely (perhaps you ate a healthy vegetable at a time when you felt awful, then that vegetable will have lower score than otherwise). If the Delta score is very high or very low it might be an inclination to take a very strange result in Average Score with a grain of salt.</string>
     <string name="freq_info">UPCOMING FEATURE. Shows a percentage for event types that describes how often they have been within a certain score (Rating, Bm Completeness or Bm Bristol) interval</string>
-    <string name="time_info">Shows the time periods that the diary has been within a certain score (Rating, Bm Completeness or Bm Bristol) interval.</string>
-    <string name="portions_info">Portion Statistics returns average score of different meal sizes (meal portionSize) based on their relationships to Rating, Bm Completeness or Bm Bristol. The meal sizes to investigate are added manually by user in Portion Stat Settings.</string>
+    <string name="time_info">Shows the time periods that the diary has been within a certain score (Rating, Bm Completeness or Bm Bristol) interval. This is a very useful tool to fast investigate your best or worst days, and figure out on your own why it was so.</string>
+    <string name="portions_info">Portion Statistics returns average score of different meal sizes (meal portionSize) based on their relationships to Rating, Bm Completeness or Bm Bristol. The meal sizes to investigate are added manually by user in Portion Stat Settings. You can for example add a size interval of 0.0 - 1.5 and another: 1.5 - 3.0 to see if you in generally feel better after eating small meals than after large meals.</string>
 
     <string name="avg_info_score">SCORE\tNAME\n
         6.0\tPhenomenal\n
@@ -51,6 +51,7 @@
     </string>
 
     <!--Stat Settings variables-->
+    <string name="inactive_hours_over_this_leads_to_break">If no events have been added after this amount of hours, there will be an automatic break. This makes the statistics algorithms more accurate, since they then don\'t extrapolate the Ratings too long in the future. In general try to nor have a smaller Hours-After-Break than your largest time difference between meals (including sleep, so at least 8 hours, probably more).</string>
 
     <string name="avg_rating_pref_wait_key">avg_rating_stat_wait_hours_after_event</string>
     <string name="avg_rating_pref_stop_key">avg_rating_stat_stop_hours_after_event</string>
@@ -81,4 +82,5 @@
     <string name="no_parent_of_tag_type_added">no parent added</string>
     <string name="add_new_tagtype_name_info">Write the name of the TagType. For example \"Butter\" or \"Running\".</string>
     <string name="add_new_tagtype_parent_info">Add a parent to this Tag Type. For example: The Tag Type \'Cheese\' might have the parent \'Lacteo Product\'. This option is not necessary.</string>
+
 </resources>
