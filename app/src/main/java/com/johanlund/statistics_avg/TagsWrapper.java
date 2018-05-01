@@ -49,14 +49,14 @@ public class TagsWrapper implements TagsWrapperBase {
 
     /**
      *
-     * @param tags1
+     * @param allTags
      * @param scoreTimes
      * @param breaks should at least be of size one => the last one is the chunkEnd.
      * @return
      */
-    //TODO test it!
+    //Breaks shall split allTags and scoretimes into TagsWrapperBases.
     //TODO this method could use same methods as Break.getRatingTimes, we only have to write smaller methods
-    public static List<TagsWrapperBase> makeTagsWrappers(List<Tag> tags1, List<ScoreTime> scoreTimes,
+    public static List<TagsWrapperBase> makeTagsWrappers(List<Tag> allTags, List<ScoreTime> scoreTimes,
                                         List<LocalDateTime> breaks) {
         List<TagsWrapperBase>toReturn = new ArrayList<>();
         int indTags = 0;
@@ -65,12 +65,12 @@ public class TagsWrapper implements TagsWrapperBase {
         for (LocalDateTime b: breaks){
             List<Tag>tags = new ArrayList<>();
             List<ScoreTime>ratings = new ArrayList<>();
-            for (int i = indTags;i<tags1.size();i++){
-                if (b.isBefore(tags1.get(i).getTime())){
+            for (int i = indTags;i<allTags.size();i++){
+                if (b.isBefore(allTags.get(i).getTime())){
                     break;
                 }
                 else{
-                    tags.add(tags1.get(i));
+                    tags.add(allTags.get(i));
                     chunkEnd = b;
                 }
                 indTags = i;
