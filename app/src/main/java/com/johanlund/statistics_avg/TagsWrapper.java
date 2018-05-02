@@ -65,17 +65,6 @@ public class TagsWrapper implements TagsWrapperBase {
         LocalDateTime chunkEnd = null;
         for (int i = 0; i < breaks.size(); i++){
             LocalDateTime b = breaks.get(i);
-            //last break
-            //if (i == breaks.size()-1){
-                //create
-            //}
-
-            //loop over dublettes
-            if (i<breaks.size()-1 && b.isEqual(breaks.get(i+1))){
-                continue;
-            }
-
-
             List<Tag>tags = new ArrayList<>();
             List<ScoreTime>ratings = new ArrayList<>();
             while (indTags < allTags.size()){
