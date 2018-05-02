@@ -82,22 +82,19 @@ public class TagsWrapperTest {
 
     //this case can actually happen if 2 events have same time, and they both have breaks set on them.
     @Test
-    public void twoLocalDateTimesBetweenEventsShouldActLikeTheyWereOne() {
+    public void dubletteBreakShouldActLikeOne() {
         ScoreTime rStart1 = new ScoreTime(newYear, 3);
-        ScoreTime rStart2 = new ScoreTime(newYear, 3);
         LocalDateTime bAfterStart1 = newYear;
-        LocalDateTime bAfterStart2 = newYear;
         ScoreTime rMiddle = new ScoreTime(newYear.plusHours(2), 3);
-        LocalDateTime bBeforeEnd = newYear.plusHours(3);
-        ScoreTime rEnd = new ScoreTime(newYear.plusHours(4), 3);
-        LocalDateTime chunkEnd = newYear.plusHours(5);
+        LocalDateTime chunkEnd = newYear.plusHours(3);
 
-        List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(rStart1, rStart2, rMiddle, rEnd), asList(bAfterStart1, bAfterStart2, bBeforeEnd, chunkEnd));
+        List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(rStart1, rMiddle), asList(bAfterStart1, chunkEnd));
 
-        assertEquals(3, chunks.size());
-        assertEquals(2, chunks.get(0).getScoreTimes().size());
+        assertEquals(2, chunks.size());
+        assertEquals(1, chunks.get(0).getScoreTimes().size());
+        assertEquals(newYear.toString(), chunks.get(0).getScoreTimes().get(0).getTime().toString());
+        assertEquals(newYear, chunks.get(0).getChunkEnd());
         assertEquals(1, chunks.get(1).getScoreTimes().size());
-        assertEquals(1, chunks.get(2).getScoreTimes().size());
     }
     
 
