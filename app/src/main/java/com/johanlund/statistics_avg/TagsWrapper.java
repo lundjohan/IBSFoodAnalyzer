@@ -90,19 +90,6 @@ public class TagsWrapper implements TagsWrapperBase {
                     }
                 }
             }
-            for (int k = indRatings;k<scoreTimes.size();k++){
-                if (b.isBefore(scoreTimes.get(k).getTime())){
-                    break;
-                }
-                else{
-                    ratings.add(scoreTimes.get(k));
-                    if (chunkEnd == null || b.isAfter(chunkEnd)){
-                        chunkEnd = b;
-                        indRatings = k;
-                    }
-                }
-
-            }
             //meaningless to make new RAtingTimes with only chunkEnd (this can happen when breaks are next to each other)
             if (ratings.size() > 0 || tags.size() > 0) {
                 toReturn.add(new TagsWrapper(tags, new RatingTimes(ratings, chunkEnd)));
