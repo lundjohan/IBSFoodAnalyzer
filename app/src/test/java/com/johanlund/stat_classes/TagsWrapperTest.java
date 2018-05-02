@@ -83,7 +83,7 @@ public class TagsWrapperTest {
 
     //this crashed before.
     @Test
-    public void testLastChunkHasNoMoreScoreTimesThanInShould() {
+    public void testLastChunkHasNoMoreScoreTimesThanItShould() {
         ScoreTime rStart1 = new ScoreTime(newYear, 3);
         LocalDateTime bAfterStart1 = newYear;
         ScoreTime rMiddle = new ScoreTime(newYear.plusHours(2), 3);
@@ -98,7 +98,7 @@ public class TagsWrapperTest {
         assertEquals(1, chunks.get(1).getScoreTimes().size());
     }
     //this case can actually happen if 2 events have same time, and they both have breaks set on them.
-    //except for dublette same as above test
+    //except for dublettes same as above test
     @Test
     public void dubletteBreakShouldActLikeOne() {
         ScoreTime rStart1 = new ScoreTime(newYear, 3);
@@ -106,8 +106,9 @@ public class TagsWrapperTest {
         LocalDateTime bAfterStart2 = newYear;
         ScoreTime rMiddle = new ScoreTime(newYear.plusHours(2), 3);
         LocalDateTime chunkEnd = newYear.plusHours(3);
+        LocalDateTime chunkEnd2 = newYear.plusHours(3);
 
-        List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(rStart1, rMiddle), asList(bAfterStart1, bAfterStart2, chunkEnd));
+        List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(rStart1, rMiddle), asList(bAfterStart1, bAfterStart2, chunkEnd, chunkEnd2));
 
         assertEquals(2, chunks.size());
         assertEquals(1, chunks.get(0).getScoreTimes().size());
