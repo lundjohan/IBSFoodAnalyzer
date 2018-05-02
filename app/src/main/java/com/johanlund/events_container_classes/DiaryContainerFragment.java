@@ -152,16 +152,8 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         pager.setCurrentItem(MAX_SLIDES / 2);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             public void onPageSelected(int position) {
-                Log.d("DiaryContainerFragment", "currentDatebefore " + currentDate);
-                Log.d("DiaryContainerFragment", "position " + position);
-
-
                 //this one returns null for DiaryFragments currentDate
                 changeToDate(((DiaryFragment) adapter.getItem(position)).getCurrentDate());
-
-                //this one is not in sync with diartFragment
-                //changeToDate(currentDate.plusDays(position - START_POS_VIEWPAGER));
-                Log.d("DiaryContainerFragment", "currentDateAfterSwipe " + currentDate);
             }
         });
         return view;

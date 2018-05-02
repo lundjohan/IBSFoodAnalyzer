@@ -288,8 +288,6 @@ public abstract class EventActivity extends AppCompatActivity implements
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Log.d("Debug", "inuti RatingActivity.onDateSet");
-
         //month datepicker +1 == LocalDate.Month
         LocalDate ld = LocalDate.of(year, month + 1, dayOfMonth);
         setDateView(ld);

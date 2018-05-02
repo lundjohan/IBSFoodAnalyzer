@@ -83,17 +83,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
         Collections.sort(ec.eventsOfDay);
         ec.adapter.notifyDataSetChanged();
     }
-
-    //runs without a timer by reposting this handler at the end of the runnable
-    private synchronized void logTimePassed() {
-        long nanos = System.nanoTime() - startTime;
-       /* int seconds = (int) (millis / 1000);
-        int minutes = seconds / 60;
-        seconds = seconds % 60;*/
-
-        Log.d(TAG, "Time passed in ms: " + nanos / 1000000);
-
-    }
 //==================================================================================================
 
     @Override
@@ -120,11 +109,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
         } else { //behövs denna eller räcker det med onRestoreInstanceState?
             //   ec.eventsOfDay = savedInstanceState.getParcelableArrayList("ec.eventsOfDay");
         }
-
-        //=====================TIMER================================================================
-        Log.d(TAG, "BEFORE quiting onCreateView");
-        logTimePassed();
-        //==========================================================================================
         return view;
     }
     //this might be called before onCreateView is finished (/started?).
@@ -179,8 +163,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
      */
     @Override
     public void onItemClicked(View v, int position) {
-        final Event pressedEvent = ec.eventsOfDay.get(position);
-        Log.d("Debug", "inside fragment, item was clicked");
         if (!markingModeIsOn()) {
             ec.editEvent(position);
         } else {

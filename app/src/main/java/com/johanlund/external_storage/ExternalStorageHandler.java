@@ -65,7 +65,6 @@ public class ExternalStorageHandler {
                         REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE, activity);
             }
         } else {
-            Log.d("Debug", "Permission is already granted for writing to external storage");
             Toast.makeText(activity, "Permission (already) Granted!", Toast
                     .LENGTH_SHORT).show();
         }
@@ -83,7 +82,6 @@ public class ExternalStorageHandler {
                         REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE, activity);
             }
         } else {
-            Log.d("Debug", "Permission is already granted for reading from external storage");
             Toast.makeText(activity, "Permission (already) Granted!", Toast
                     .LENGTH_SHORT).show();
         }
@@ -126,7 +124,6 @@ public class ExternalStorageHandler {
             @Override
             public void onScanCompleted(final String path, final Uri uri)
             {
-                Log.d("Debug", "Scan of "+mimeType + " has been completed");
             }
         });
     }
@@ -157,7 +154,6 @@ public class ExternalStorageHandler {
                 fos.close();
 
             } else {
-                Log.d("Debug", "There seem to be no database to save");
             }
 
         } catch (
@@ -166,7 +162,6 @@ public class ExternalStorageHandler {
 
         {
             Log.e("", e.getStackTrace().toString());
-            Log.d("Debug", "Problems in saving database to external storage");
         }
 
     }

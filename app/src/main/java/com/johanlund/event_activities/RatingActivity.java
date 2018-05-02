@@ -57,7 +57,6 @@ public class RatingActivity extends EventActivity {
         scoreBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.d("Debug", "inside onProgressChanged");
                 int score = ++progress;
                 scoreName.setText(Rating.pointsToText(score));
             }

@@ -49,7 +49,6 @@ public class TemplateFragment extends Fragment {
 
         int mNoOfColumns = Util.calculateNoOfColumns(getActivity().getApplicationContext(), 180);
         int width = Util.calculateWidthOfItem(getActivity().getApplicationContext(), mNoOfColumns);
-        Log.d("Debug", "width of item in GridLayout: " + width);
         layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
         recyclerView.setLayoutManager(layoutManager);
 

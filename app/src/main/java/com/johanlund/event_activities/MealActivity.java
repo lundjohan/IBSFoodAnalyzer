@@ -58,7 +58,6 @@ public class MealActivity extends TagEventActivity {
     @Override
     protected void buildEvent() {
         //create meal
-        Log.d("Debug", "finish inside MealActivity");
         double portions = Double.parseDouble((String) portionView.getText());
         Meal event = new Meal(getLocalDateTime(), getComment(), tagsList, portions);
         returnEvent(event);

@@ -108,7 +108,6 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        Log.d("Debug", "just above switch");
         switch (v.getId()) {
 
             //to stat
@@ -194,7 +193,6 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
             case R.id.portionsSettingsRatingItem: {
                 Intent intent = new Intent(getActivity(), PortionStatSettingsActivity.class);
                 startActivity(intent);
-                Log.d("Debug", "inside case for starting PortionStatActivity");
                 break;
             }
         }
