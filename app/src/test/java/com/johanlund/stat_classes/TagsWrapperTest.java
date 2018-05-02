@@ -56,6 +56,7 @@ public class TagsWrapperTest {
         assertEquals(newYear.plusHours(2), chunks.get(0).getChunkEnd());
         assertEquals(0, chunks.get(0).getTags().size());
         assertEquals(2, chunks.get(0).getScoreTimes().size());
+
         assertEquals(newYear.plusHours(1).toString(), chunks.get(0).getScoreTimes().get(1).toString());
     }
 
@@ -80,15 +81,33 @@ public class TagsWrapperTest {
         assertEquals(newYear.plusHours(5), chunks.get(2).getChunkEnd());
     }
 
-    //this case can actually happen if 2 events have same time, and they both have breaks set on them.
+    //this crashed before.
     @Test
-    public void dubletteBreakShouldActLikeOne() {
+    public void testLastChunkHasNoMoreScoreTimesThanInShould() {
         ScoreTime rStart1 = new ScoreTime(newYear, 3);
         LocalDateTime bAfterStart1 = newYear;
         ScoreTime rMiddle = new ScoreTime(newYear.plusHours(2), 3);
         LocalDateTime chunkEnd = newYear.plusHours(3);
 
         List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(rStart1, rMiddle), asList(bAfterStart1, chunkEnd));
+
+        assertEquals(2, chunks.size());
+        assertEquals(1, chunks.get(0).getScoreTimes().size());
+        assertEquals(newYear.toString(), chunks.get(0).getScoreTimes().get(0).getTime().toString());
+        assertEquals(newYear, chunks.get(0).getChunkEnd());
+        assertEquals(1, chunks.get(1).getScoreTimes().size());
+    }
+    //this case can actually happen if 2 events have same time, and they both have breaks set on them.
+    //except for dublette same as above test
+    @Test
+    public void dubletteBreakShouldActLikeOne() {
+        ScoreTime rStart1 = new ScoreTime(newYear, 3);
+        LocalDateTime bAfterStart1 = newYear;
+        LocalDateTime bAfterStart2 = newYear;
+        ScoreTime rMiddle = new ScoreTime(newYear.plusHours(2), 3);
+        LocalDateTime chunkEnd = newYear.plusHours(3);
+
+        List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(rStart1, rMiddle), asList(bAfterStart1, bAfterStart2, chunkEnd));
 
         assertEquals(2, chunks.size());
         assertEquals(1, chunks.get(0).getScoreTimes().size());
