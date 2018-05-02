@@ -1,22 +1,15 @@
 package com.johanlund.stat_classes;
 
-import com.johanlund.base_classes.Break;
-import com.johanlund.base_classes.Chunk;
-import com.johanlund.base_classes.Event;
-import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.statistics_avg.TagsWrapper;
-import com.johanlund.statistics_general.ScoreWrapperBase;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TagsWrapperBase;
 
 import org.junit.Test;
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -36,6 +29,7 @@ public class TagsWrapperTest {
                 <ScoreTime>(), breaks);
         assertEquals(0, tw.size());
     }
+    //remember that for TagsWrapper, a requirement for the function makeTagsWrappers is that the "chunk collection" ends with a break.
     @Test
     public void testEventsBecomesTwoChunks() {
         ScoreTime beforeSplit = new ScoreTime(newYear, 3);
@@ -46,7 +40,22 @@ public class TagsWrapperTest {
         List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(beforeSplit, afterSplit), asList(splitter, chunkEnd));
 
         assertEquals(2, chunks.size());
+        assertEquals(newYear.plusHours(1), chunks.get(0).getChunkEnd());
         assertEquals(newYear.plusHours(3), chunks.get(1).getChunkEnd());
+    }
+    @Test
+    public void testEventsBecomeOneChunk() {
+        ScoreTime beforeSplit1 = new ScoreTime(newYear, 3);
+        ScoreTime beforeSplit2 = new ScoreTime(newYear.plusHours(1), 3);
+        LocalDateTime splitter = newYear.plusHours(2);
+        List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(beforeSplit1, beforeSplit2), asList(splitter));
+
+
+        assertEquals(1, chunks.size());
+        assertEquals(newYear.plusHours(2), chunks.get(0).getChunkEnd());
+        assertEquals(0, chunks.get(0).getTags().size());
+        assertEquals(2, chunks.get(0).getScoreTimes().size());
+        assertEquals(newYear.plusHours(1).toString(), chunks.get(0).getScoreTimes().get(1).toString());
     }
 
 }

@@ -81,6 +81,9 @@ public class TagsWrapper implements TagsWrapperBase {
                 }
                 else{
                     ratings.add(scoreTimes.get(j));
+                    if (chunkEnd == null || b.isAfter(chunkEnd)){
+                        chunkEnd = b;
+                    }
                 }
                 indRatings = j;
             }
