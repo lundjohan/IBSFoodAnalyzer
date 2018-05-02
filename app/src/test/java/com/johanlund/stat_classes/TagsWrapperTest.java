@@ -10,6 +10,7 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -57,5 +58,47 @@ public class TagsWrapperTest {
         assertEquals(2, chunks.get(0).getScoreTimes().size());
         assertEquals(newYear.plusHours(1).toString(), chunks.get(0).getScoreTimes().get(1).toString());
     }
+
+    @Test
+    public void canMakeThreeChunks() {
+        Tag tStart = new Tag(newYear,"", 3.);
+        LocalDateTime bAfterStart = newYear.plusHours(1);
+        ScoreTime rMiddle = new ScoreTime(newYear.plusHours(2), 3);
+        LocalDateTime bBeforeEnd = newYear.plusHours(3);
+        Tag tLast = new Tag(newYear.plusHours(4),"", 3.);
+        LocalDateTime chunkEnd = newYear.plusHours(5);
+
+        List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(Arrays.asList(tStart, tLast), asList(rMiddle), asList(bAfterStart, bBeforeEnd, chunkEnd));
+
+
+        assertEquals(3, chunks.size());
+        assertEquals(0, chunks.get(0).getScoreTimes().size());
+        assertEquals(1, chunks.get(0).getTags().size());
+        assertEquals(newYear.toString(), chunks.get(0).getTags().get(0).getTime().toString());
+        assertEquals(newYear.plusHours(1), chunks.get(0).getChunkEnd());
+        assertEquals(newYear.plusHours(3), chunks.get(1).getChunkEnd());
+        assertEquals(newYear.plusHours(5), chunks.get(2).getChunkEnd());
+    }
+
+    //this case can actually happen if 2 events have same time, and they both have breaks set on them.
+    @Test
+    public void twoLocalDateTimesBetweenEventsShouldActLikeTheyWereOne() {
+        ScoreTime rStart1 = new ScoreTime(newYear, 3);
+        ScoreTime rStart2 = new ScoreTime(newYear, 3);
+        LocalDateTime bAfterStart1 = newYear;
+        LocalDateTime bAfterStart2 = newYear;
+        ScoreTime rMiddle = new ScoreTime(newYear.plusHours(2), 3);
+        LocalDateTime bBeforeEnd = newYear.plusHours(3);
+        ScoreTime rEnd = new ScoreTime(newYear.plusHours(4), 3);
+        LocalDateTime chunkEnd = newYear.plusHours(5);
+
+        List<TagsWrapperBase>chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList(rStart1, rStart2, rMiddle, rEnd), asList(bAfterStart1, bAfterStart2, bBeforeEnd, chunkEnd));
+
+        assertEquals(3, chunks.size());
+        assertEquals(2, chunks.get(0).getScoreTimes().size());
+        assertEquals(1, chunks.get(1).getScoreTimes().size());
+        assertEquals(1, chunks.get(2).getScoreTimes().size());
+    }
+    
 
 }
