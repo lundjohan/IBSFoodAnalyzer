@@ -96,6 +96,4 @@ public class TagsWrapperTest {
         assertEquals(newYear, chunks.get(0).getChunkEnd());
         assertEquals(1, chunks.get(1).getScoreTimes().size());
     }
-    
-
 }

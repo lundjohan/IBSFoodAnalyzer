@@ -1,5 +1,6 @@
 package com.johanlund.statistics_avg;
 
+import com.johanlund.base_classes.Break;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.util.RatingTimes;
 import com.johanlund.util.ScoreTime;
@@ -62,30 +63,56 @@ public class TagsWrapper implements TagsWrapperBase {
         int indTags = 0;
         int indRatings = 0;
         LocalDateTime chunkEnd = null;
-        for (LocalDateTime b: breaks){
+        for (int i = 0; i < breaks.size(); i++){
+            LocalDateTime b = breaks.get(i);
+            //last break
+            //if (i == breaks.size()-1){
+                //create
+            //}
+
+            //loop over dublettes
+            if (i<breaks.size()-1 && b.isEqual(breaks.get(i+1))){
+                continue;
+            }
+
+
             List<Tag>tags = new ArrayList<>();
             List<ScoreTime>ratings = new ArrayList<>();
-            for (int i = indTags;i<allTags.size();i++){
-                if (b.isBefore(allTags.get(i).getTime())){
+            while (indTags < allTags.size()){
+                if (b.isBefore(allTags.get(indTags).getTime())){
                     break;
                 }
                 else{
-                    tags.add(allTags.get(i));
+                    tags.add(allTags.get(indTags));
+                    indTags++;
                     chunkEnd = b;
                 }
-                indTags = i;
             }
-            for (int j = indRatings;j<scoreTimes.size();j++){
-                if (b.isBefore(scoreTimes.get(j).getTime())){
+
+            while (indRatings < scoreTimes.size()){
+                if (b.isBefore(scoreTimes.get(indRatings).getTime())){
                     break;
                 }
                 else{
-                    ratings.add(scoreTimes.get(j));
+                    ratings.add(scoreTimes.get(indRatings));
+                    indRatings++;
                     if (chunkEnd == null || b.isAfter(chunkEnd)){
                         chunkEnd = b;
                     }
                 }
-                indRatings = j;
+            }
+            for (int k = indRatings;k<scoreTimes.size();k++){
+                if (b.isBefore(scoreTimes.get(k).getTime())){
+                    break;
+                }
+                else{
+                    ratings.add(scoreTimes.get(k));
+                    if (chunkEnd == null || b.isAfter(chunkEnd)){
+                        chunkEnd = b;
+                        indRatings = k;
+                    }
+                }
+
             }
             //meaningless to make new RAtingTimes with only chunkEnd (this can happen when breaks are next to each other)
             if (ratings.size() > 0 || tags.size() > 0) {
