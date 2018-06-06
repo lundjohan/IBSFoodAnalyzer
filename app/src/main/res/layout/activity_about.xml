@@ -10,7 +10,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.johanlund.about.AboutActivity">
+        tools:context="com.johanlund.screens.about.AboutActivity">
 
         <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/zeroAboutHeadLine"

@@ -5,7 +5,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.johanlund.main.DrawerActivity;
+import com.johanlund.screens.main.DrawerActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

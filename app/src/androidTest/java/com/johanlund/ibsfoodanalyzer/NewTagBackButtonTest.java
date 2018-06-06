@@ -5,19 +5,15 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.johanlund.base_classes.Tag;
 import com.johanlund.database.DBHandler;
 import com.johanlund.help_classes.AndroidTestUtil;
-import com.johanlund.main.DrawerActivity;
+import com.johanlund.screens.main.DrawerActivity;
 import com.johanlund.model.TagType;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;

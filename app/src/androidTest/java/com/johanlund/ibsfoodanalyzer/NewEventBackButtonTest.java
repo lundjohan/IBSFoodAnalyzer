@@ -6,7 +6,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.johanlund.main.DrawerActivity;
+import com.johanlund.screens.main.DrawerActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
 
 import org.junit.Before;

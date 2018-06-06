@@ -1,7 +1,7 @@
 package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Tag;
-import com.johanlund.statistics_avg.TagsWrapper;
+import com.johanlund.screens.statistics.avg_stat.common.TagsWrapper;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TagsWrapperBase;
 

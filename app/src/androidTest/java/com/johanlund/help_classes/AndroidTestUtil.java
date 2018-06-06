@@ -6,7 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.main.DrawerActivity;
+import com.johanlund.screens.main.DrawerActivity;
 
 import org.threeten.bp.LocalDate;
 

@@ -6,7 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.johanlund.database.DBHandler;
-import com.johanlund.main.DrawerActivity;
+import com.johanlund.screens.main.DrawerActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
 import com.johanlund.model.TagType;
 

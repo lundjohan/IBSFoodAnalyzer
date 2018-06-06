@@ -1,9 +1,9 @@
 package com.johanlund.stat_classes;
 
 import com.johanlund.base_classes.Tag;
-import com.johanlund.statistics_avg.TagsWrapper;
-import com.johanlund.statistics_point_classes.PortionPoint;
-import com.johanlund.statistics_settings_portions.PortionStatRange;
+import com.johanlund.screens.statistics.avg_stat.common.TagsWrapper;
+import com.johanlund.stat_backend.point_classes.PortionPoint;
+import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
 import com.johanlund.util.ScoreTime;
 import com.johanlund.util.TagsWrapperBase;
 import com.johanlund.util.TimePeriod;
@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.johanlund.stat_classes.PortionPointMaker.getPPForRange;
-import static com.johanlund.stat_classes.PortionPointMaker.joinTooClosePortions2;
-import static com.johanlund.stat_classes.PortionPointMaker.leftExceptRights;
-import static com.johanlund.stat_classes.PortionPointMaker.makeExceptTps;
-import static com.johanlund.stat_classes.PortionPointMaker.toReplaceCalcPoints;
+import static com.johanlund.stat_backend.makers.PortionPointMaker.getPPForRange;
+import static com.johanlund.stat_backend.makers.PortionPointMaker.joinTooClosePortions2;
+import static com.johanlund.stat_backend.makers.PortionPointMaker.leftExceptRights;
+import static com.johanlund.stat_backend.makers.PortionPointMaker.makeExceptTps;
+import static com.johanlund.stat_backend.makers.PortionPointMaker.toReplaceCalcPoints;
 import static junit.framework.Assert.assertEquals;
 
 public class PortionPointMakerTests {

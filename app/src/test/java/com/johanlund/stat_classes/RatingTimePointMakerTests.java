@@ -1,6 +1,7 @@
 package com.johanlund.stat_classes;
 
-import com.johanlund.statistics_point_classes.TimePoint;
+import com.johanlund.stat_backend.makers.TimePointMaker;
+import com.johanlund.stat_backend.point_classes.TimePoint;
 import com.johanlund.util.ScoreTime;
 
 import org.junit.Test;

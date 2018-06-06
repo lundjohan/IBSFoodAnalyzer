@@ -9,7 +9,7 @@
     app:layout_constraintRight_toRightOf="parent"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    tools:context="com.johanlund.info.InfoActivity">
+    tools:context="com.johanlund.screens.info.InfoActivity">
 
     <TextView
         android:id="@+id/infoTextView"

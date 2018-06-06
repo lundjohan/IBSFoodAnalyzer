@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.johanlund.statistics_settings_portions.NewPortionRangeActivity">
+    tools:context="com.johanlund.screens.statistics.portions_settings.NewPortionRangeActivity">
 
     <TextView
         android:id="@+id/startPortions"
