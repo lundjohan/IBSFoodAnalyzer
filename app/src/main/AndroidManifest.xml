@@ -80,7 +80,7 @@
             android:parentActivityName="com.johanlund.screens.tag_adder.TagAdderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.johanlund.ibsfoodanalyzer.com.johanlund.screens.tag_adder.TagAdderActivity"/>
+                android:value="com.johanlund.screens.tag_adder.TagAdderActivity"/>
         </activity>
         <activity android:name="com.johanlund.screens.tag_type.TagTypeEditActivity">
         </activity>
