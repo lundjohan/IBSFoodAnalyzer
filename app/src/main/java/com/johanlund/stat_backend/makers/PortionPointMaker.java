@@ -33,9 +33,9 @@ public class PortionPointMaker {
                 minHoursBetweenMeals);
     }
 
-    static List<PortionPoint> toReplaceCalcPoints(List<TagsWrapperBase> ptr,
-                                                  List<PortionStatRange>
-            ranges, long startHoursAfterMeal, long stopHoursAfterMeal, int minHoursBetweenMeals) {
+    public static List<PortionPoint> toReplaceCalcPoints(List<TagsWrapperBase> ptr,
+                                                         List<PortionStatRange>
+                                                                 ranges, long startHoursAfterMeal, long stopHoursAfterMeal, int minHoursBetweenMeals) {
         List<TagsWrapperBase> ptrJoined = joinTooClosePortions(ptr, minHoursBetweenMeals);
         List<PortionPoint> toReturn = new ArrayList<>();
         for (PortionStatRange range : ranges) {
@@ -75,7 +75,7 @@ public class PortionPointMaker {
      * @param minDist == minHourDistanceBetweenMeals
      * @return
      */
-    static List<Tag> joinTooClosePortions2(final List<Tag> ptsOrig, int
+    public static List<Tag> joinTooClosePortions2(final List<Tag> ptsOrig, int
             minDist) {
         if (ptsOrig.size()<2){
             return ptsOrig;
@@ -130,7 +130,7 @@ public class PortionPointMaker {
      * @param afterJoin
      * @param startHour != stopHour
      */
-    static PortionPoint getPPForRange(PortionStatRange range, List<TagsWrapperBase>
+    public static PortionPoint getPPForRange(PortionStatRange range, List<TagsWrapperBase>
             afterJoin, long startHour, long stopHour) {
         //format: avg_rating*quant
         double rangeTotalScore = .0;
@@ -156,7 +156,7 @@ public class PortionPointMaker {
         return new PortionPoint(range, avgScore, rangeTotalQuant);
     }
 
-    static List<TimePeriod> makeExceptTps(PortionStatRange range, List<Tag>
+    public static List<TimePeriod> makeExceptTps(PortionStatRange range, List<Tag>
             portionTimes, long waitHoursAfterMeal, long stopHoursAfterMeal) {
 
         //1. variables: range, portionTimes, waitHoursAfterMeal, stopHoursAfterMeal
@@ -242,7 +242,7 @@ public class PortionPointMaker {
      * @param rightList must be in ASC order, all of same time length as left.
      * @return
      */
-    static TimePeriod leftExceptRights(TimePeriod left, final List<TimePeriod> rightList) {
+    public static TimePeriod leftExceptRights(TimePeriod left, final List<TimePeriod> rightList) {
         LocalDateTime newStart = left.getStart();
         LocalDateTime newEnd = left.getEnd();
         for (TimePeriod right : rightList) {
