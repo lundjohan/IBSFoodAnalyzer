@@ -18,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
+import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
 import com.johanlund.screens.events_templates.common.EventsTemplateAdapter;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
@@ -30,7 +32,6 @@ import com.johanlund.screens.event_activities.RatingActivity;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.info.ActivityInfoContent;
 import com.johanlund.model.EventsTemplate;
-import com.johanlund.screens.events_container_classes.common.EventButtonsContainer;
 
 import org.threeten.bp.LocalDate;
 
@@ -64,7 +65,7 @@ import static com.johanlund.screens.events_container_classes.common.EventsContai
  * <p>
  * If a new event (the date can be changed inside EventActivity by user) has been created and
  * Done has been pressed, then the diary should start at that date.
- * =>(This is done in executeNewEvent via buttons.onActivityResult).
+ * =>(This is done in executeNewEvent via mButtonsViewMvc.onActivityResult).
  * <p>
  * On loading from TemplateFragment, diary should start at that date.
  * => not done right now...
@@ -86,8 +87,7 @@ import static com.johanlund.screens.events_container_classes.common.EventsContai
  * => if-statement in this onCreateView
  */
 public class DiaryContainerFragment extends Fragment implements DiaryFragment.DiaryFragmentUser,
-        EventButtonsContainer
-                .EventButtonContainerUser, DatePickerDialog.OnDateSetListener {
+        EventButtonsViewMvc.Listener, DatePickerDialog.OnDateSetListener {
     public interface DiaryContainerListener {
         void startTemplateFragment();
 
@@ -104,7 +104,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     LocalDate startDate;
     LocalDate currentDate;
     TextView dateView;
-    private EventButtonsContainer buttons;
+    private EventButtonsViewMvcImpl mButtonsViewMvc;
     private DiaryContainerListener listener;
     //switcher tab and it's tabs
     ViewSwitcher tabsLayoutSwitcher;
@@ -129,8 +129,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
 
         //starts as invisible appBarLayout but when user marks something this pops up
         tabsLayoutSwitcher = (ViewSwitcher) view.findViewById(R.id.tabLayoutSwitcher);
-        buttons = new EventButtonsContainer(this);
-        buttons.setUpEventButtons(view);
+        mButtonsViewMvc = new EventButtonsViewMvcImpl(inflater, (ViewGroup) view.findViewById(R.id.buttons));
         setUpMenu(view);
 
         Bundle args = getArguments();
@@ -157,6 +156,16 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
             }
         });
         return view;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mButtonsViewMvc.registerListener(this);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        mButtonsViewMvc.unregisterListener(this);
     }
 
     private boolean diaryIsEmpty() {
@@ -256,12 +265,6 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         startActivity(intent);
     }
 
-    /*This is needed since onClick otherwise goes to parent Activity*/
-    @Override
-    public void onClick(View v) {
-        buttons.doOnClick(v);
-    }
-
     @Override
     public void executeNewEvent(int requestCode, Intent data) {
         DBHandler dbHandler = new DBHandler(getContext());
@@ -316,7 +319,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data.hasExtra(NEW_EVENT)) {
-            buttons.onActivityResult(requestCode, resultCode, data);
+            executeNewEvent(requestCode, data);
         }
 
     }

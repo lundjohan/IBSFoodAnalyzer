@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +21,10 @@ import com.johanlund.screens.event_activities.MealActivity;
 import com.johanlund.screens.event_activities.OtherActivity;
 import com.johanlund.screens.event_activities.RatingActivity;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
+import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
 import com.johanlund.screens.info.ActivityInfoContent;
 import com.johanlund.model.EventsTemplate;
-import com.johanlund.screens.events_container_classes.common.EventButtonsContainer;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 
 import java.util.Collections;
@@ -32,6 +34,7 @@ import static com.johanlund.constants.Constants.EVENT_POSITION;
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
+import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
@@ -48,10 +51,10 @@ import static com.johanlund.screens.events_container_classes.common.EventsContai
  * should be abstracted completely in this parent class.
  */
 public abstract class EventsTemplateActivity extends AppCompatActivity implements EventsContainer
-        .EventsContainerUser, EventButtonsContainer.EventButtonContainerUser {
+        .EventsContainerUser, EventButtonsViewMvc.Listener {
 
     protected EventsContainer ec;
-    protected EventButtonsContainer ebc;
+    protected EventButtonsViewMvcImpl mButtonsViewMvc;
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,23 +112,28 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec = new EventsContainer(this, getApplicationContext());
         ec.eventsOfDay = getStartingEvents();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        View buttons = findViewById(R.id.buttons);
         ec.initiateRecyclerView(recyclerView, false,this);
         ec.adapter.notifyDataSetChanged();
 
-        //Set up EventButtonsContainer
-        ebc = new EventButtonsContainer(this);
-        ebc.setUpEventButtons(buttons);
-
-
-
+        //Set up EventButtonsViewMvcImpl
+        mButtonsViewMvc = new EventButtonsViewMvcImpl(LayoutInflater.from(this), (ViewGroup) findViewById(R.id.buttons));
     }
-
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        mButtonsViewMvc.registerListener(this);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        mButtonsViewMvc.unregisterListener(this);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data.hasExtra(NEW_EVENT)) {
+            executeNewEvent(requestCode, data);
+        }
         ec.onActivityResult(requestCode, resultCode, data);
-        ebc.onActivityResult(requestCode, resultCode, data);
     }
 
     protected abstract int getLayoutRes();
@@ -222,12 +230,6 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         Intent intent = new Intent(this, RatingActivity.class);
         intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
         startActivityForResult(intent, NEW_RATING);
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        ebc.doOnClick(v);
     }
 
     @Override

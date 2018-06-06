@@ -3,7 +3,7 @@
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
-                                             tools:context="com.johanlund.ibsfoodanalyzer.DiaryContainerFragment">
+                                             tools:context="com.johanlund.screens.events_container_classes.DiaryContainerFragment">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -122,11 +122,12 @@
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"/>
+        tools:layout_constraintTop_creator="1">
 
-    <include
+    </android.support.v4.view.ViewPager>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/buttons"
-        layout="@layout/event_buttons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -137,5 +138,4 @@
         tools:layout_conversion_absoluteWidth="368dp"
         tools:layout_conversion_absoluteX="8dp"
         tools:layout_conversion_absoluteY="454dp"/>
-
 </android.support.constraint.ConstraintLayout>
