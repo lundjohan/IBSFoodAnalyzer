@@ -92,7 +92,7 @@ public class EventsTemplateTests {
         dbHandler.addEventsTemplate(et);
     }
 
-    @Test
+   /* @Test
     public void creatingAnEventsTemplateTest() {
         //go to correct date.
         AndroidTestUtil.changeDate(mActivityTestRule, LocalDate.of(2018, Month.JANUARY, 9));
@@ -130,7 +130,7 @@ public class EventsTemplateTests {
         //TODO here, check that one item is in eventstemplate list
 
         //ok inside diary view
-    }
+    }*/
 
     /**
      * I had a problem before that when pressing back button after choosing 'Load into diary' that anyhow the event was stored in diary.
