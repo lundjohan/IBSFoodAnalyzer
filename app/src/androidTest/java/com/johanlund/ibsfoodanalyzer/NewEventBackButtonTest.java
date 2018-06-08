@@ -27,6 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.johanlund.ibsfoodanalyzer.NewEventsDisplayedCorrectlyInDiaryTests.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -48,8 +49,12 @@ public class NewEventBackButtonTest {
     // click.
     public void fillRecyclerViewWithAnRatingEvent() {
         ViewInteraction appCompatImageButton = onView(
-                allOf(withId(R.id.ratingBtn),withContentDescription("Rating"),
-                        withParent(withId(R.id.buttons)),
+                allOf(withId(R.id.ratingBtn), withContentDescription("Rating"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                4),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
@@ -58,11 +63,15 @@ public class NewEventBackButtonTest {
 
     }
 
-    private void checkThatBackActionCameBackToSameView(int id, String contentDesc, int notExistingId) {
+    private void checkThatBackActionCameBackToSameView(int id, String contentDesc, int notExistingId, int pos) {
         //Click "New Meal Button"
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(id),withContentDescription(contentDesc),
-                        withParent(withId(R.id.buttons)),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                pos),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
@@ -97,13 +106,13 @@ public class NewEventBackButtonTest {
     @Test
     public void newEventsBackButtonTest() {
         fillRecyclerViewWithAnRatingEvent();
-        checkThatBackActionCameBackToSameView(R.id.mealBtn, "Meal", R.id.meal_item_container);
-        checkThatBackActionCameBackToSameView(R.id.otherBtn, "Other",R.id.other_item_container);
-        checkThatBackActionCameBackToSameView(R.id.exerciseBtn, "Exercise",R.id.exercise_item_container);
-        checkThatBackActionCameBackToSameView(R.id.bmBtn, "Bowel Movement",R.id.bm_item_container);
+        checkThatBackActionCameBackToSameView(R.id.mealBtn, "Meal", R.id.meal_item_container, 0);
+        checkThatBackActionCameBackToSameView(R.id.otherBtn, "Other",R.id.other_item_container,1);
+        checkThatBackActionCameBackToSameView(R.id.exerciseBtn, "Exercise",R.id.exercise_item_container,2);
+        checkThatBackActionCameBackToSameView(R.id.bmBtn, "Bowel Movement",R.id.bm_item_container,3);
 
         //cannot have rating as not existing, therefore meal
-        checkThatBackActionCameBackToSameView(R.id.ratingBtn, "Rating", R.id.meal_item_container);
+        checkThatBackActionCameBackToSameView(R.id.ratingBtn, "Rating", R.id.meal_item_container,4);
         cleanUp();
     }
 }

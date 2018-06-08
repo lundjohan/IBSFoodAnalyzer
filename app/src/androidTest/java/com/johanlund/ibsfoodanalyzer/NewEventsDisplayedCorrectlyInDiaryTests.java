@@ -8,6 +8,9 @@ import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.johanlund.base_classes.Bm;
 import com.johanlund.base_classes.Event;
@@ -24,6 +27,9 @@ import com.johanlund.screens.event_activities.OtherActivity;
 import com.johanlund.screens.event_activities.RatingActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -107,7 +113,11 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.mealBtn), withContentDescription("Meal"),
-                        withParent(withId(R.id.buttons)),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                0),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
@@ -141,7 +151,11 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.otherBtn), withContentDescription("Other"),
-                        withParent(withId(R.id.buttons)),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                1),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
@@ -175,7 +189,11 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         //Press Exercise Btn
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.exerciseBtn), withContentDescription("Exercise"),
-                        withParent(withId(R.id.buttons)),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                2),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
@@ -211,7 +229,11 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.bmBtn), withContentDescription("Bowel Movement"),
-                        withParent(withId(R.id.buttons)),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                3),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
@@ -243,7 +265,11 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.ratingBtn), withContentDescription("Rating"),
-                        withParent(withId(R.id.buttons)),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                4),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
@@ -275,7 +301,11 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.mealBtn), withContentDescription("Meal"),
-                        withParent(withId(R.id.buttons)),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                0),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
@@ -287,7 +317,11 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         stubOutActivity(MealActivity.class.getName(), result2);
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withId(R.id.mealBtn), withContentDescription("Meal"),
-                        withParent(withId(R.id.buttons)),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttons),
+                                        0),
+                                0),
                         isDisplayed()));
         appCompatImageButton2.perform(click());
 
@@ -308,5 +342,23 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
                 hasDescendant(withText("20:00"))
         ))
                 .check(matches(isDisplayed()));
+    }
+    public static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
     }
 }
