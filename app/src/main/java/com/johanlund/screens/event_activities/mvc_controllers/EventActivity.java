@@ -14,8 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,7 +26,6 @@ import com.johanlund.database.DBHandler;
 import com.johanlund.date_time.DatePickerFragment;
 import com.johanlund.factories.EventFactory;
 import com.johanlund.factories.EventFactoryImpl;
-import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.TagType;
 import com.johanlund.screens.event_activities.factories.EventViewFactory;
 import com.johanlund.screens.event_activities.factories.EventViewFactoryImpl;
@@ -258,7 +255,7 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
         if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
             TagType tagType = (TagType) data.getExtras().getSerializable
                     (RETURN_TAG_TEMPLATE_SERIALIZABLE);
-            mViewMVC.bindTagToView(tagType.get_tagname());
+            mViewMVC.bindAddedTagToView(tagType.get_tagname());
         }
     }
 

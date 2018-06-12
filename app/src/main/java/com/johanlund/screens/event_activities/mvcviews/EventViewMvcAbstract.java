@@ -1,7 +1,6 @@
 package com.johanlund.screens.event_activities.mvcviews;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,14 +13,10 @@ import android.widget.TextView;
 import com.johanlund.base_classes.Event;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.screens.info.ActivityInfoContent;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
-
-import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
-import static com.johanlund.constants.Constants.TITLE_STRING;
 
 public abstract class EventViewMvcAbstract implements EventViewMvc {
     protected final Context context;
@@ -83,7 +78,7 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
                     doneClicked(null);
                 }
                 else if (item.getItemId() == R.id.menu_info){
-                    listener.showInfo(getTitleStr(), getInfoLayout());
+                    listener.showInfo(getBarTitle(), getInfoLayout());
                 }
                 return true;
             }
@@ -96,17 +91,14 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
         setDateView(e.getTime().toLocalDate());
         setTimeView(e.getTime().toLocalTime());
         commentView.setText(e.getComment());
-        bindSpecToView(e);
+        bindEventSpecsToView(e);
     }
 
+    protected abstract void bindEventSpecsToView(Event e);
     protected abstract int getLayoutRes();
     protected abstract int getInfoLayout();
-    protected abstract String getTitleStr();
-
-
-    protected abstract void bindSpecToView(Event e);
+    protected abstract String getBarTitle();
     protected abstract Event makeEventFromView(LocalDateTime ldt, String comment);
-
 
     @Override
     public void setDateView(LocalDate ld) {

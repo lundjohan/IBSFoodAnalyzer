@@ -34,12 +34,12 @@ public class RatingViewMvc extends EventViewMvcAbstract{
     }
 
     @Override
-    protected String getTitleStr() {
+    protected String getBarTitle() {
         return "New Rating";
     }
 
     @Override
-    protected void bindSpecToView(Event e) {
+    protected void bindEventSpecsToView(Event e) {
         scoreName = (TextView) rootView.findViewById(R.id.intensityName);
         scoreBar = (SeekBar) rootView.findViewById(R.id.intensityBar);
         scoreBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -68,5 +68,5 @@ public class RatingViewMvc extends EventViewMvcAbstract{
     }
 
     @Override
-    public void bindTagToView(String tagName) {/*no tags to bind in this view*/}
+    public void bindAddedTagToView(String tagName) {/*no tags to bind in this view*/}
 }

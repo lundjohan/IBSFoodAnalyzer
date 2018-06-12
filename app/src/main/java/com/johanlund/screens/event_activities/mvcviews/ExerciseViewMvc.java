@@ -53,12 +53,12 @@ public class ExerciseViewMvc extends EventViewMvcAbstract {
     }
 
     @Override
-    protected String getTitleStr() {
+    protected String getBarTitle() {
         return "New Exercise";
     }
 
     @Override
-    protected void bindSpecToView(Event e) {
+    protected void bindEventSpecsToView(Event e) {
         Exercise exercise = (Exercise) e;
         intensityBar.setProgress(exercise.getIntensity() - 1);
         intensityName.setText(Exercise.intensityLevelToText(exercise.getIntensity()));
@@ -72,5 +72,5 @@ public class ExerciseViewMvc extends EventViewMvcAbstract {
     }
 
     @Override
-    public void bindTagToView(String tagName) {/*no tags to bind in this view*/}
+    public void bindAddedTagToView(String tagName) {/*no tags to bind in this view*/}
 }

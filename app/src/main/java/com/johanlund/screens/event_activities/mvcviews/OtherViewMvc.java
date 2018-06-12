@@ -29,7 +29,7 @@ public class OtherViewMvc extends TagEventViewMvcAbstract {
     }
 
     @Override
-    protected String getTitleStr() {
+    protected String getBarTitle() {
         return "New Other";
     }
 

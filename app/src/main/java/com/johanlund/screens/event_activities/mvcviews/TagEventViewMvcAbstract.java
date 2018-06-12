@@ -48,13 +48,13 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
         recyclerView.addItemDecoration(mDividerItemDecoration);
     }
     @Override
-    protected void bindSpecToView(Event e) {
+    protected void bindEventSpecsToView(Event e) {
         tagsList.addAll(((InputEvent)e).getTags());
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void bindTagToView(String tagName){
+    public void bindAddedTagToView(String tagName){
         Tag tag = new Tag(getLocalDateTime(), tagName, 1.0);
         tagsList.add(tag);
         adapter.notifyItemInserted(tagsList.size() - 1);

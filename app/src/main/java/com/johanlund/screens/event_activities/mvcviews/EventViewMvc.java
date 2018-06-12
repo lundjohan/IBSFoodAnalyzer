@@ -26,7 +26,7 @@ public interface EventViewMvc extends ViewMvc{
 
     void bindEventToView(Event e);
 
-    void bindTagToView(String tagName);
+    void bindAddedTagToView(String tagName);
 
     void setDateView(LocalDate ld);
 

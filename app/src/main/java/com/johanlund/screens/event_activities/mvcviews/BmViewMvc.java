@@ -35,12 +35,12 @@ public class BmViewMvc extends EventViewMvcAbstract {
     }
 
     @Override
-    protected String getTitleStr() {
+    protected String getBarTitle() {
         return "New Bowel Movement";
     }
 
     @Override
-    protected void bindSpecToView(Event e) {
+    protected void bindEventSpecsToView(Event e) {
         bristolName = (TextView) rootView.findViewById(R.id.bristolName);
         bristolBar = (SeekBar) rootView.findViewById(R.id.bristolBar);
         completeName = (TextView) rootView.findViewById(R.id.completeName);
@@ -90,7 +90,7 @@ public class BmViewMvc extends EventViewMvcAbstract {
     }
 
     @Override
-    public void bindTagToView(String tagName) {/*no tags to bind in this view*/}
+    public void bindAddedTagToView(String tagName) {/*no tags to bind in this view*/}
 
     private static void setBristolNrAndText(TextView v, int bristolScore) {
         v.setText("("+bristolScore + ") "+ Bm.bristolToText(bristolScore));

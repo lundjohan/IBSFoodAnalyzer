@@ -28,7 +28,7 @@ public class MealViewMvc extends TagEventViewMvcAbstract {
     }
 
     @Override
-    protected String getTitleStr() {
+    protected String getBarTitle() {
         return "New Meal";
     }
 
@@ -39,8 +39,8 @@ public class MealViewMvc extends TagEventViewMvcAbstract {
     }
 
     @Override
-    protected void bindSpecToView(Event e) {
-        super.bindSpecToView(e);
+    protected void bindEventSpecsToView(Event e) {
+        super.bindEventSpecsToView(e);
         portionView.setText(Double.toString(((Meal)e).getPortions()));
     }
 
