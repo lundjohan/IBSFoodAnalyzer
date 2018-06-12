@@ -15,34 +15,27 @@ import android.view.ViewGroup;
 import com.johanlund.base_classes.Event;
 import com.johanlund.constants.Constants;
 import com.johanlund.database.DBHandler;
-import com.johanlund.screens.event_activities.BmActivity;
-import com.johanlund.screens.event_activities.ExerciseActivity;
-import com.johanlund.screens.event_activities.MealActivity;
-import com.johanlund.screens.event_activities.OtherActivity;
-import com.johanlund.screens.event_activities.RatingActivity;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.model.EventsTemplate;
+import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
+import com.johanlund.screens.events_container_classes.common.EventsContainer;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
 import com.johanlund.screens.info.ActivityInfoContent;
-import com.johanlund.model.EventsTemplate;
-import com.johanlund.screens.events_container_classes.common.EventsContainer;
 
 import java.util.Collections;
 import java.util.List;
 
 import static com.johanlund.constants.Constants.EVENT_POSITION;
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
+import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_BM;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_EXERCISE;
 import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_MEAL;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_OTHER;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_RATING;
 
 /**
  * Reuses a lot of code from DiaryFragment.
@@ -112,22 +105,26 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec = new EventsContainer(this, getApplicationContext());
         ec.eventsOfDay = getStartingEvents();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        ec.initiateRecyclerView(recyclerView, false,this);
+        ec.initiateRecyclerView(recyclerView, false, this);
         ec.adapter.notifyDataSetChanged();
 
         //Set up EventButtonsViewMvcImpl
-        mButtonsViewMvc = new EventButtonsViewMvcImpl(LayoutInflater.from(this), (ViewGroup) findViewById(R.id.buttons));
+        mButtonsViewMvc = new EventButtonsViewMvcImpl(LayoutInflater.from(this), (ViewGroup)
+                findViewById(R.id.buttons));
     }
+
     @Override
     public void onStart() {
         super.onStart();
         mButtonsViewMvc.registerListener(this);
     }
+
     @Override
     public void onStop() {
         super.onStop();
         mButtonsViewMvc.unregisterListener(this);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data.hasExtra(NEW_EVENT)) {
@@ -180,6 +177,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec.adapter.notifyDataSetChanged();
 
     }
+
     //TODO code is extremly similar to DiaryFragment (except for database handling)
     @Override
     public void executeNewEvent(int requestCode, Intent data) {
@@ -188,6 +186,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
             addEventToList(event);
         }
     }
+
     //TODO code is extremly similar to DiaryFragment (except for database handling)
     @Override
     public void executeChangedEvent(int requestCode, Intent data) {
@@ -197,39 +196,15 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
                     "Activity (MealActivity etc)");
         }
         if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
-            Event event = (Event)data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
+            Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
             ec.changeEventInList(posInList, event);
         }
     }
 
-    public void newMealActivity(View view) {
-        Intent intent = new Intent(this, MealActivity.class);
-        intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
+    public void newEventActivity(int eventType) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra(Constants.EVENT_TYPE, eventType);
         startActivityForResult(intent, NEW_MEAL);
-    }
-
-    public void newOtherActivity(View v) {
-        Intent intent = new Intent(this, OtherActivity.class);
-        intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
-        startActivityForResult(intent, NEW_OTHER);
-    }
-
-    public void newExerciseActivity(View v) {
-        Intent intent = new Intent(this, ExerciseActivity.class);
-        intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
-        startActivityForResult(intent, NEW_EXERCISE);
-    }
-
-    public void newBmActivity(View v) {
-        Intent intent = new Intent(this, BmActivity.class);
-        intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
-        startActivityForResult(intent, NEW_BM);
-    }
-
-    public void newScoreItem(View view) {
-        Intent intent = new Intent(this, RatingActivity.class);
-        intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
-        startActivityForResult(intent, NEW_RATING);
     }
 
     @Override
@@ -257,9 +232,10 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     }
 
     //user requests to change event
-    public void changeEventActivity(Event event, Class activityClass, int valueToReturn, int
+    public void changeEventActivity(Event event, int eventType, int valueToReturn, int
             posInList) {
-        Intent intent = new Intent(this, activityClass);
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra(EVENT_TYPE, eventType);
         intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
         intent.putExtra(EVENT_TO_CHANGE, event);
         intent.putExtra(EVENT_POSITION, posInList);
@@ -268,6 +244,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         intent.putExtra(ID_OF_EVENT, eventId);
         startActivityForResult(intent, valueToReturn);
     }
+
     @Override
     public void updateTagsInListOfEventsAfterTagTemplateChange() {
 

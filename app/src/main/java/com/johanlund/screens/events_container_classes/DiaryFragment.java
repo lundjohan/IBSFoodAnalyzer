@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 
 import org.threeten.bp.LocalDate;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import static com.johanlund.constants.Constants.EVENT_POSITION;
 import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
+import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.ID_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
@@ -296,9 +298,10 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
 
     //user requests to change event
-    public void changeEventActivity(Event event, Class activityClass, int valueToReturn, int
+    public void changeEventActivity(Event event, int eventType, int valueToReturn, int
             posInList) {
-        Intent intent = new Intent(getActivity(), activityClass);
+        Intent intent = new Intent(getActivity(), EventActivity.class);
+        intent.putExtra(EVENT_TYPE, eventType);
         intent.putExtra(EVENT_TO_CHANGE, event);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getContext());

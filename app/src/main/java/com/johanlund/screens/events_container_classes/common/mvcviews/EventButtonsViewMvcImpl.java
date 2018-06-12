@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.johanlund.common.BaseObservable;
+import com.johanlund.constants.Constants;
 import com.johanlund.ibsfoodanalyzer.R;
 
 /**
@@ -37,22 +38,24 @@ public class EventButtonsViewMvcImpl extends BaseObservable<EventButtonsViewMvc.
     }
 
     public void doOnClick(View v, EventButtonsViewMvc.Listener listener) {
+        int eventType = -1;
         switch (v.getId()) {
             case R.id.mealBtn:
-                listener.newMealActivity(v);
+                eventType = Constants.MEAL;
                 break;
             case R.id.otherBtn:
-                listener.newOtherActivity(v);
+                eventType = Constants.OTHER;
                 break;
             case R.id.exerciseBtn:
-                listener.newExerciseActivity(v);
+                eventType = Constants.EXERCISE;
                 break;
             case R.id.bmBtn:
-                listener.newBmActivity(v);
+                eventType = Constants.BM;
                 break;
             case R.id.ratingBtn:
-                listener.newScoreItem(v);
+                eventType = Constants.RATING;
                 break;
         }
+        listener.newEventActivity(eventType);
     }
 }

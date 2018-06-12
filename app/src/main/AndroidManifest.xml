@@ -38,17 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.johanlund.screens.event_activities.MealActivity">
-        </activity>
-        <activity android:name="com.johanlund.screens.event_activities.RatingActivity">
-        </activity>
-        <activity android:name="com.johanlund.screens.event_activities.BmActivity">
+        <activity android:name="com.johanlund.screens.event_activities.mvc_controllers.EventActivity">
         </activity>
         <activity android:name="com.johanlund.screens.tag_adder.TagAdderActivity"/>
-        <activity android:name="com.johanlund.screens.event_activities.OtherActivity">
-        </activity>
-        <activity android:name="com.johanlund.screens.event_activities.ExerciseActivity">
-        </activity>
         <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
         <activity
             android:name="com.johanlund.screens.events_container_classes.SaveEventsTemplateActivity"

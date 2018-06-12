@@ -18,20 +18,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
-import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
-import com.johanlund.screens.events_templates.common.EventsTemplateAdapter;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.date_time.DatePickerFragment;
-import com.johanlund.screens.event_activities.BmActivity;
-import com.johanlund.screens.event_activities.ExerciseActivity;
-import com.johanlund.screens.event_activities.MealActivity;
-import com.johanlund.screens.event_activities.OtherActivity;
-import com.johanlund.screens.event_activities.RatingActivity;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.screens.info.ActivityInfoContent;
 import com.johanlund.model.EventsTemplate;
+import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
+import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
+import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
+import com.johanlund.screens.events_templates.common.EventsTemplateAdapter;
+import com.johanlund.screens.info.ActivityInfoContent;
 
 import org.threeten.bp.LocalDate;
 
@@ -40,6 +36,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.johanlund.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
+import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
 import static com.johanlund.constants.Constants.LOCALDATE;
@@ -47,11 +44,7 @@ import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_BM;
 import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_EXERCISE;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_MEAL;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_OTHER;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_RATING;
 
 /**
  * This class uses an adapter that is using DiaryFragment
@@ -282,38 +275,11 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     }
 
     @Override
-    public void newMealActivity(View view) {
-        Intent intent = new Intent(getActivity(), MealActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_MEAL);
-    }
-
-    @Override
-    public void newOtherActivity(View v) {
-        Intent intent = new Intent(getActivity(), OtherActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_OTHER);
-    }
-
-    @Override
-    public void newExerciseActivity(View v) {
-        Intent intent = new Intent(getActivity(), ExerciseActivity.class);
-        addDateToNewEventIntent(intent);
+    public void newEventActivity(int eventType) {
+        Intent intent = new Intent(getActivity(), EventActivity.class);
+        intent.putExtra(EVENT_TYPE, eventType);
+        intent.putExtra(DATE_TO_START_NEW_EVENTACTIVITY, (Serializable) currentDate);
         startActivityForResult(intent, NEW_EXERCISE);
-    }
-
-    @Override
-    public void newBmActivity(View v) {
-        Intent intent = new Intent(getActivity(), BmActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_BM);
-    }
-
-    @Override
-    public void newScoreItem(View view) {
-        Intent intent = new Intent(getActivity(), RatingActivity.class);
-        addDateToNewEventIntent(intent);
-        startActivityForResult(intent, NEW_RATING);
     }
 
     @Override

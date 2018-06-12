@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.johanlund.base_classes.Event;
 import com.johanlund.date_time.DatePickerFragment;
 import com.johanlund.date_time.DateTimeFormat;
-import com.johanlund.screens.event_activities.common.EventActivity;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.model.EventModel;
 import com.johanlund.model.EventsTemplate;
 
 import org.threeten.bp.LocalDate;
@@ -78,7 +78,8 @@ public class LoadEventsTemplateActivity extends EventsTemplateActivity implement
             String ldStr = (String) dateView.getText();
             LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);
             e.setDate(ld);
-            if (!EventActivity.eventTypeAtSameTimeAlreadyExists(e.getType(),e.getTime(), getApplicationContext())){
+            if (!EventModel.eventTypeAtSameTimeAlreadyExists(e.getType(), e.getTime(),
+                    getApplicationContext())) {
                 eventsToReturnWithUniqueTypeAndTimes.add(e);
             }
         }
