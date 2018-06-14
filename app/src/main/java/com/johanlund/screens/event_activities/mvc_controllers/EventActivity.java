@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
 import com.johanlund.base_classes.Event;
-import com.johanlund.database.DBHandler;
 import com.johanlund.date_time.DatePickerFragment;
 import com.johanlund.factories.EventFactory;
 import com.johanlund.factories.EventFactoryImpl;
+import com.johanlund.model.EventManager;
 import com.johanlund.model.TagType;
 import com.johanlund.screens.event_activities.factories.EventViewFactory;
 import com.johanlund.screens.event_activities.factories.EventViewFactoryImpl;
@@ -59,6 +58,7 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
         .EventActivityViewMvcListener, DatePickerDialog.OnDateSetListener, TimePickerDialog
         .OnTimeSetListener {
     private EventViewMvc mViewMVC;
+    private EventManager eventManager;
     //variables used for changing events.
     //Connected to isChangingEvent. The variable is later used
     // in database to know which event to be changed.
@@ -88,6 +88,7 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
             eventType = intent.getIntExtra(EVENT_TYPE, -1);
         }
 
+        eventManager = new EventManager(getApplicationContext());
         Event eventToBindToView = null;
         EventFactory eventFactory = new EventFactoryImpl();
         if (savedInstanceState != null) {
@@ -113,8 +114,7 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
             eventToBindToView = eventFactory.makeDummyEventWithTime(LocalDateTime.of(ld, lt), eventType);
         } else if (intent.hasExtra(EVENT_TO_CHANGE)) {
             eventToBindToView = (Event) intent.getSerializableExtra(EVENT_TO_CHANGE);
-            DBHandler dbHandler = new DBHandler(getApplicationContext());
-            eventId = dbHandler.getEventIdOutsideEventsTemplate(eventToBindToView);
+            eventId = eventManager.getEventIdOutsideEventsTemplate(eventToBindToView);
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
             changingEventStartingDateTime = eventToBindToView.getTime();
         }
@@ -151,7 +151,7 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
          2. an event with this eventype already exists, AND is a changing event, datetime has
            been changed to other datetime than start.
         */
-        if (eventTypeAtSameTimeAlreadyExists(type, e.getTime(), getApplicationContext()) &&
+        if (eventManager.eventTypeAtSameTimeAlreadyExists(type, e.getTime()) &&
                 (!isChangingEvent() ||
                 changingEventHasDifferentDateTimeThanStart(e))) {
             showEventAlreadyExistsPopUp(type);
@@ -200,12 +200,6 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
         setResult(RESULT_OK, data);
     }
 
-    public static boolean eventTypeAtSameTimeAlreadyExists(int type, LocalDateTime ldt, Context
-            context) {
-        DBHandler dbHandler = new DBHandler(context);
-        return dbHandler.eventDoesExistOutsideOfEventsTemplate(type, ldt);
-    }
-
     protected boolean isChangingEvent() {
         return eventId > -1;
     }
@@ -223,6 +217,7 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
         return !e.getTime().isEqual(changingEventStartingDateTime);
     }
 
+    //this should be in view
     private void showEventAlreadyExistsPopUp(int eventType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false).
