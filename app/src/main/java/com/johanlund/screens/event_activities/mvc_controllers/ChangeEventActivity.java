@@ -10,6 +10,7 @@ import org.threeten.bp.LocalDateTime;
 import static com.johanlund.constants.Constants.CHANGED_EVENT;
 import static com.johanlund.constants.Constants.CHANGING_EVENT_ID;
 import static com.johanlund.constants.Constants.EVENT_POSITION;
+import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.ID_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
@@ -30,8 +31,8 @@ public class ChangeEventActivity extends EventActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        if (intent.hasExtra(CHANGING_EVENT_ID) && intent.hasExtra(EVENT_POSITION)) {
-            eventId = intent.getIntExtra(CHANGING_EVENT_ID, -1);
+        if (intent.hasExtra(ID_OF_EVENT) && intent.hasExtra(EVENT_POSITION)) {
+            eventId = intent.getLongExtra(ID_OF_EVENT, -1);
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
         }
         Event eventToBind  = eventManager.fetchEventById(eventId);

@@ -239,7 +239,6 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         Intent intent = new Intent(this, ChangeEventActivity.class);
         intent.putExtra(EVENT_TYPE, eventType);
         intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
-        intent.putExtra(CHANGING_EVENT_ID, event);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);

@@ -303,7 +303,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
             posInList) {
         Intent intent = new Intent(getActivity(), ChangeEventActivity.class);
         intent.putExtra(EVENT_TYPE, eventType);
-        intent.putExtra(CHANGING_EVENT_ID, event);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getContext());
         long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);

@@ -630,20 +630,22 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT " + COLUMN_DATETIME + ", " + COLUMN_COMMENT + ", "+ COLUMN_HAS_BREAK + ", "+ COLUMN_TYPE_OF_EVENT +  " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ID + " = ?";
         Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(id)});
-        try {
-            toReturn = getEvent(id, c);
-        }
-        catch(InvalidEventType invalid){
-
-        }
-        finally {
-            c.close();
-            db.close();
+        if (c != null) {
+            if (c.moveToFirst()) {
+                try {
+                    toReturn = getEvent(id, c);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    c.close();
+                    db.close();
+                }
+            }
         }
         return toReturn;
     }
     private Event getEvent(long eventId, Cursor c) throws InvalidEventType {
-        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+        String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME)); //denna kraschar
         int type = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
         String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
         boolean hasBreak = getHasBreak(c);
