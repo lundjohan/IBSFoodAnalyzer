@@ -1,6 +1,5 @@
 package com.johanlund.screens.event_activities.mvcviews;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -19,8 +18,6 @@ import android.widget.TimePicker;
 import com.johanlund.base_classes.Event;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.picker_views.DatePickerFragment;
-import com.johanlund.picker_views.TimePickerFragment;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
