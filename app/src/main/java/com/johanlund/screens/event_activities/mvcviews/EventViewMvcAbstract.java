@@ -118,13 +118,16 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
 
     @Override
     public void doneClicked(View view) {
-        Event e = makeEventFromView(getLocalDateTime(), commentView.getText().toString());
+        Event e = retrieveEventFromView();
         listener.completeSession(e);
     }
-
+    @Override
+    public Event retrieveEventFromView(){
+        return makeEventFromView(getLocalDateTime(), commentView.getText().toString());
+    }
 
     //keep this method instead of local variables, it keeps it much less error prone
-    protected LocalDateTime getLocalDateTime() {
+    public LocalDateTime getLocalDateTime() {
         String ldStr = (String) dateView.getText();
         String ltStr = (String) timeView.getText();
         LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);

@@ -24,6 +24,7 @@ import com.johanlund.screens.event_activities.mvcviews.EventViewMvc;
 import com.johanlund.screens.info.ActivityInfoContent;
 import com.johanlund.screens.tag_adder.TagAdderActivity;
 
+import static com.johanlund.constants.Constants.EVENT_SAVED_FROM_VIEW;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TAGS_TO_ADD;
@@ -33,12 +34,22 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
         .EventActivityViewMvcListener  {
     protected EventViewMvc mViewMVC;
     protected EventManager eventManager;
+    protected Event eventToBind = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            eventToBind = (Event)savedInstanceState.getSerializable(EVENT_SAVED_FROM_VIEW );
+        }
         eventManager = new EventManager(getApplicationContext());
     }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EVENT_SAVED_FROM_VIEW, mViewMVC.retrieveEventFromView());
+    }
+
     protected void initMvcView(Event eventToBindToView){
         EventViewFactory viewFactory = new EventViewFactoryImpl();
         mViewMVC = viewFactory.make(LayoutInflater.from(this), null, eventToBindToView.getType());

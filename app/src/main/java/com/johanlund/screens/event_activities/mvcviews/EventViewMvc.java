@@ -10,6 +10,7 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.screens.common.mvcviews.ViewMvc;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 
 public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListener, TimePickerDialog
@@ -29,6 +30,8 @@ public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListene
 
     void bindEventToView(Event e);
 
+    Event retrieveEventFromView();
+
     void bindAddedTagToView(String tagName);
 
     void setDateView(LocalDate ld);
@@ -36,6 +39,8 @@ public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListene
     void setTimeView(LocalTime lt);
 
     void doneClicked(View view);
+
+    LocalDateTime getLocalDateTime();
 
 
 

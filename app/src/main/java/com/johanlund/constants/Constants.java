@@ -52,8 +52,10 @@ public class Constants {
     //same id but used at different places.
     public final static String ID_OF_EVENT = "idOfEvent";
     public final static String ID_OF_EVENT_RETURNED = "idOfEventReturned";
-
     public final static String NEW_EVENT_DATE = "dateToStartNewEventActivity";
+    public final static String STARTING_DATE_TIME = "DateTimeWhereChangingEventCameFrom";
+    public final static String EVENT_SAVED_FROM_VIEW = "eventSavedFromView";
+
 
     //For TagTypeEditActivity
     public final static int TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED = 1357;

@@ -28,10 +28,13 @@ public class NewEventActivity extends EventActivity {
         LocalDate ld = (LocalDate) intent.getSerializableExtra(NEW_EVENT_DATE);
         int eventType = intent.getIntExtra(EVENT_TYPE, -1);
 
-        EventFactory eventFactory = new EventFactoryImpl();
-        Event eventToBindToView = eventFactory.makeDummyEventWithTime(LocalDateTime.of(ld, LocalTime.now()),
-                eventType);
-        initMvcView(eventToBindToView);
+        //if savedInstance exists eventToBind will be created from that.
+        if (savedInstanceState == null) {
+            EventFactory eventFactory = new EventFactoryImpl();
+            eventToBind = eventFactory.makeDummyEventWithTime(LocalDateTime.of(ld, LocalTime.now()),
+                    eventType);
+        }
+        initMvcView(eventToBind);
     }
 
     @Override
