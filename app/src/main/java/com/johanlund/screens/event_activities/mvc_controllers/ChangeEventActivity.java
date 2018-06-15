@@ -31,12 +31,30 @@ public class ChangeEventActivity extends EventActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        if (intent.hasExtra(ID_OF_EVENT) && intent.hasExtra(EVENT_POSITION)) {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("idOfEvent")) {
+                eventId = (long) savedInstanceState.get
+                        (ID_OF_EVENT);
+            }
+            if (savedInstanceState.containsKey(EVENT_POSITION)) {
+                posOfEvent = (int) savedInstanceState.get
+                        (EVENT_POSITION);
+            }
+        }
+        else if (intent.hasExtra(ID_OF_EVENT) && intent.hasExtra(EVENT_POSITION)) {
             eventId = intent.getLongExtra(ID_OF_EVENT, -1);
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
         }
         Event eventToBind  = eventManager.fetchEventById(eventId);
+        changingEventStartingDateTime = eventToBind.getTime();
         initMvcView(eventToBind);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(ID_OF_EVENT, eventId);
+        outState.putInt(EVENT_POSITION, posOfEvent);
     }
 
     @Override
@@ -69,9 +87,6 @@ public class ChangeEventActivity extends EventActivity {
      * @return
      */
     private boolean changingEventHasDifferentDateTimeThanStart(Event e) {
-        if (!getIntent().hasExtra(CHANGING_EVENT_ID)) {
-            //could throw exception, but feels a bit unecessary. Just use this method with caution!
-        }
         return !e.getTime().isEqual(changingEventStartingDateTime);
     }
 }
