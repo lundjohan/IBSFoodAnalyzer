@@ -41,7 +41,7 @@ public class Constants {
     public final static int NEW_TYPE_FOR_TAGTEMPLATE = 8888;
     public final static String RETURN_EVENT_SERIALIZABLE = "returnEventSer";
     //sent to new Event activities if all you want to do is change an event
-    public final static String EVENT_TO_CHANGE = "eventToChange";
+    public final static String CHANGING_EVENT_ID = "eventToChange";
     //changed event or new event?
     public final static String CHANGED_EVENT = "changedEvent";
     public final static String NEW_EVENT = "newEvent";
@@ -53,7 +53,7 @@ public class Constants {
     public final static String ID_OF_EVENT = "idOfEvent";
     public final static String ID_OF_EVENT_RETURNED = "idOfEventReturned";
 
-    public final static String DATE_TO_START_NEW_EVENTACTIVITY = "dateToStartNewEventActivity";
+    public final static String NEW_EVENT_DATE = "dateToStartNewEventActivity";
 
     //For TagTypeEditActivity
     public final static int TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED = 1357;

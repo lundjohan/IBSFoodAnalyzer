@@ -38,7 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.johanlund.screens.event_activities.mvc_controllers.EventActivity">
+        <activity android:name="com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity">
+        </activity>
+        <activity android:name="com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity">
         </activity>
         <activity android:name="com.johanlund.screens.tag_adder.TagAdderActivity"/>
         <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->

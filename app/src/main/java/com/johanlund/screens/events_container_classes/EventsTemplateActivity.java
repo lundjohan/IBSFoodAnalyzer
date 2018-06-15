@@ -17,7 +17,9 @@ import com.johanlund.constants.Constants;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
+import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity;
 import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
+import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
@@ -27,7 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.johanlund.constants.Constants.EVENT_POSITION;
-import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
+import static com.johanlund.constants.Constants.CHANGING_EVENT_ID;
 import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
@@ -202,7 +204,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     }
 
     public void newEventActivity(int eventType) {
-        Intent intent = new Intent(this, EventActivity.class);
+        Intent intent = new Intent(this, NewEventActivity.class);
         intent.putExtra(Constants.EVENT_TYPE, eventType);
         startActivityForResult(intent, NEW_MEAL);
     }
@@ -234,10 +236,10 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     //user requests to change event
     public void changeEventActivity(Event event, int eventType, int valueToReturn, int
             posInList) {
-        Intent intent = new Intent(this, EventActivity.class);
+        Intent intent = new Intent(this, ChangeEventActivity.class);
         intent.putExtra(EVENT_TYPE, eventType);
         intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
-        intent.putExtra(EVENT_TO_CHANGE, event);
+        intent.putExtra(CHANGING_EVENT_ID, event);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);

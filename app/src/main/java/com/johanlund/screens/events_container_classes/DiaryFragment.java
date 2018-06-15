@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity;
 import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 
@@ -27,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.johanlund.constants.Constants.EVENT_POSITION;
-import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
+import static com.johanlund.constants.Constants.CHANGING_EVENT_ID;
 import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.ID_OF_EVENT_RETURNED;
@@ -300,9 +301,9 @@ public class DiaryFragment extends Fragment implements EventsContainer
     //user requests to change event
     public void changeEventActivity(Event event, int eventType, int valueToReturn, int
             posInList) {
-        Intent intent = new Intent(getActivity(), EventActivity.class);
+        Intent intent = new Intent(getActivity(), ChangeEventActivity.class);
         intent.putExtra(EVENT_TYPE, eventType);
-        intent.putExtra(EVENT_TO_CHANGE, event);
+        intent.putExtra(CHANGING_EVENT_ID, event);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getContext());
         long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);

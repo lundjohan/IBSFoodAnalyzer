@@ -1,0 +1,76 @@
+package com.johanlund.screens.event_activities.mvc_controllers;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.johanlund.base_classes.Event;
+
+import org.threeten.bp.LocalDateTime;
+
+import static com.johanlund.constants.Constants.CHANGED_EVENT;
+import static com.johanlund.constants.Constants.CHANGING_EVENT_ID;
+import static com.johanlund.constants.Constants.EVENT_POSITION;
+import static com.johanlund.constants.Constants.ID_OF_EVENT_RETURNED;
+import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
+import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
+
+public class ChangeEventActivity extends EventActivity {
+    //variables used for changing events.
+    //Connected to isChangingEvent. The variable is later used
+    // in database to know which event to be changed.
+    protected long eventId = -1;
+
+    //position in eventsOfDay (in DiaryFragment) for changing event
+    protected int posOfEvent = -1;
+
+    //this is solely used to see if a ChangingEvent has changed its time during this interaction
+    //it should not be used in a context of a new event
+    LocalDateTime changingEventStartingDateTime;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        if (intent.hasExtra(CHANGING_EVENT_ID) && intent.hasExtra(EVENT_POSITION)) {
+            eventId = intent.getIntExtra(CHANGING_EVENT_ID, -1);
+            posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
+        }
+        Event eventToBind  = eventManager.fetchEventById(eventId);
+        initMvcView(eventToBind);
+    }
+
+    @Override
+    public void completeSession(Event e) {
+        int type = e.getType();
+        if (eventManager.eventTypeAtSameTimeAlreadyExists(type, e.getTime()) && changingEventHasDifferentDateTimeThanStart(e)) {
+            showEventAlreadyExistsPopUp(type);
+        }
+        else {
+            returnEventAndFinish(e);
+        }
+    }
+
+    @Override
+    protected void returnEvent(Event event) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(RETURN_EVENT_SERIALIZABLE, event);
+        bundle.putLong(ID_OF_EVENT_RETURNED, eventId);
+        bundle.putInt(POS_OF_EVENT_RETURNED, posOfEvent);
+        bundle.putBoolean(CHANGED_EVENT, true);
+        Intent data = new Intent();
+        data.putExtras(bundle);
+        setResult(RESULT_OK, data);
+    }
+
+    /**
+     * Prerequisite: changingEventStartingDateTime must be initatied with a ldt =>
+     * this method should only be called if we are in a ChangingEventActivity
+     *
+     * @return
+     */
+    private boolean changingEventHasDifferentDateTimeThanStart(Event e) {
+        if (!getIntent().hasExtra(CHANGING_EVENT_ID)) {
+            //could throw exception, but feels a bit unecessary. Just use this method with caution!
+        }
+        return !e.getTime().isEqual(changingEventStartingDateTime);
+    }
+}

@@ -22,7 +22,7 @@ public class EventManager {
         return dbHandler.eventDoesExistOutsideOfEventsTemplate(type, ldt);
     }
 
-    public long getEventIdOutsideEventsTemplate(Event e) {
-        return dbHandler.getEventIdOutsideEventsTemplate(e);
+    public Event fetchEventById(long id){
+        return dbHandler.retrieveEvent(id);
     }
 }

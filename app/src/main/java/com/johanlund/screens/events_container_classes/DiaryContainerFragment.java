@@ -24,6 +24,7 @@ import com.johanlund.picker_views.DatePickerFragment;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
+import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
 import com.johanlund.screens.events_templates.common.EventsTemplateAdapter;
@@ -35,7 +36,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.johanlund.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
+import static com.johanlund.constants.Constants.NEW_EVENT_DATE;
 import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
@@ -276,9 +277,9 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
 
     @Override
     public void newEventActivity(int eventType) {
-        Intent intent = new Intent(getActivity(), EventActivity.class);
+        Intent intent = new Intent(getActivity(), NewEventActivity.class);
         intent.putExtra(EVENT_TYPE, eventType);
-        intent.putExtra(DATE_TO_START_NEW_EVENTACTIVITY, (Serializable) currentDate);
+        intent.putExtra(NEW_EVENT_DATE, (Serializable) currentDate);
         startActivityForResult(intent, NEW_EXERCISE);
     }
 
@@ -291,7 +292,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     }
 
     private void addDateToNewEventIntent(Intent intent) {
-        intent.putExtra(DATE_TO_START_NEW_EVENTACTIVITY, (Serializable) currentDate);
+        intent.putExtra(NEW_EVENT_DATE, (Serializable) currentDate);
     }
 
     //just testing
