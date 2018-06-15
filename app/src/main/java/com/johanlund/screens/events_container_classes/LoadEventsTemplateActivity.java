@@ -8,7 +8,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.johanlund.base_classes.Event;
-import com.johanlund.date_time.DatePickerFragment;
+import com.johanlund.picker_views.DatePickerFragment;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventModel;

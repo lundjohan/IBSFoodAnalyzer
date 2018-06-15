@@ -1,5 +1,7 @@
 package com.johanlund.screens.event_activities.mvcviews;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -10,7 +12,8 @@ import com.johanlund.screens.common.mvcviews.ViewMvc;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
-public interface EventViewMvc extends ViewMvc{
+public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListener, TimePickerDialog
+        .OnTimeSetListener{
 
 
     interface EventActivityViewMvcListener {

@@ -1,5 +1,6 @@
 package com.johanlund.screens.event_activities.mvcviews;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,11 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.picker_views.DatePickerFragment;
+import com.johanlund.picker_views.TimePickerFragment;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -130,5 +135,23 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
     @Override
     public View getRootView() {
         return rootView;
+    }
+
+
+    /**
+     * DATE AND TIME PICKER
+     */
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        //month datepicker +1 == LocalDate.Month
+        LocalDate ld = LocalDate.of(year, month + 1, dayOfMonth);
+        setDateView(ld);
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        LocalTime lt = LocalTime.of(hourOfDay, minute);
+        setTimeView(lt);
     }
 }

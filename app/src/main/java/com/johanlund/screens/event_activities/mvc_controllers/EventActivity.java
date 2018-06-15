@@ -1,31 +1,26 @@
 package com.johanlund.screens.event_activities.mvc_controllers;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.TimePicker;
 
 import com.johanlund.base_classes.Event;
-import com.johanlund.date_time.DatePickerFragment;
 import com.johanlund.factories.EventFactory;
 import com.johanlund.factories.EventFactoryImpl;
 import com.johanlund.model.EventManager;
 import com.johanlund.model.TagType;
+import com.johanlund.picker_views.DatePickerFragment;
+import com.johanlund.picker_views.TimePickerFragment;
 import com.johanlund.screens.event_activities.factories.EventViewFactory;
 import com.johanlund.screens.event_activities.factories.EventViewFactoryImpl;
 import com.johanlund.screens.event_activities.mvcviews.EventViewMvc;
@@ -37,7 +32,6 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 import static com.johanlund.constants.Constants.CHANGED_EVENT;
 import static com.johanlund.constants.Constants.DATE_TO_START_NEW_EVENTACTIVITY;
@@ -53,10 +47,8 @@ import static com.johanlund.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE
 import static com.johanlund.constants.Constants.TAGS_TO_ADD;
 import static com.johanlund.constants.Constants.TITLE_STRING;
 
-//this will replace EventActivity
 public class EventActivity extends AppCompatActivity implements EventViewMvc
-        .EventActivityViewMvcListener, DatePickerDialog.OnDateSetListener, TimePickerDialog
-        .OnTimeSetListener {
+        .EventActivityViewMvcListener  {
     private EventViewMvc mViewMVC;
     private EventManager eventManager;
     //variables used for changing events.
@@ -259,19 +251,14 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
         startActivityForResult(intent, TAGS_TO_ADD);
     }
 
-
     /**
      * DATE AND TIME PICKER
-     * <p>
-     * Would have been cleaner if they were entirely in MvcView,
-     * however TimePicker class is dependent on Context which MvcView should be agnostic about.
-     * <p>
-     * TODO Later note. I think these classes still should be placed in View class, fix
-     * transmission of context.
      */
     @Override
     public void startTimePicker(View view) {
-        DialogFragment newFragment = new TimePickerFragment();
+        TimePickerFragment newFragment = new TimePickerFragment();
+        newFragment.setContext(this);
+        newFragment.setListener(mViewMVC);
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
@@ -279,53 +266,7 @@ public class EventActivity extends AppCompatActivity implements EventViewMvc
     public void startDatePicker(View view) {
         DatePickerFragment newFragment = new DatePickerFragment();
         newFragment.setContext(this);
-        newFragment.setListener(this);
+        newFragment.setListener(mViewMVC);
         newFragment.show(getFragmentManager(), "datePicker");
     }
-
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        //month datepicker +1 == LocalDate.Month
-        LocalDate ld = LocalDate.of(year, month + 1, dayOfMonth);
-        mViewMVC.setDateView(ld);
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        LocalTime lt = LocalTime.of(hourOfDay, minute);
-        mViewMVC.setTimeView(lt);
-    }
-
-    public static class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-        public LocalTime lt;
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current timeView as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            //see http://stackoverflow
-            // .com/questions/11527051/get-date-from-datepicker-using-dialogfragment accepted
-            // answer.
-            ((TimePickerDialog.OnTimeSetListener) getActivity()).onTimeSet(view, hourOfDay, minute);
-
-        }
-
-        public LocalTime getTime() {
-            return lt;
-        }
-    }
-
-
 }

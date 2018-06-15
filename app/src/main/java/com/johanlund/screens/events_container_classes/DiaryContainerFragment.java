@@ -20,7 +20,7 @@ import android.widget.ViewSwitcher;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
-import com.johanlund.date_time.DatePickerFragment;
+import com.johanlund.picker_views.DatePickerFragment;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
