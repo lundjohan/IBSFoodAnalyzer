@@ -2,6 +2,8 @@ package com.johanlund.screens.event_activities.mvcviews;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -156,5 +159,25 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         LocalTime lt = LocalTime.of(hourOfDay, minute);
         setTimeView(lt);
+    }
+
+    public void showEventAlreadyExistsPopUp(int eventType) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false).
+                setTitle("Event already exists").
+                setMessage("A(n) " + Event.getEventTypeStr(eventType) + " at this date and time " +
+                        "already exists in diary. Change the date or time of the event.").
+                setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //don't do anything
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        final Button positiveButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton
+                .getLayoutParams();
+        positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        positiveButton.setLayoutParams(positiveButtonLL);
     }
 }

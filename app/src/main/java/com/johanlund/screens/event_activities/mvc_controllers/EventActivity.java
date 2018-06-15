@@ -83,27 +83,6 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
     }
     protected abstract void returnEvent(Event event);
 
-    //this should be in view
-    protected void showEventAlreadyExistsPopUp(int eventType) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false).
-                setTitle("Event already exists").
-                setMessage("A(n) " + Event.getEventTypeStr(eventType) + " at this date and time " +
-                        "already exists in diary. Change the date or time of the event.").
-                setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //don't do anything
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-        final Button positiveButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
-        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton
-                .getLayoutParams();
-        positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        positiveButton.setLayoutParams(positiveButtonLL);
-    }
-
     //data coming back from TagAdder
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

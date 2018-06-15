@@ -41,7 +41,7 @@ public class NewEventActivity extends EventActivity {
     public void completeSession(Event e) {
         int type = e.getType();
         if (eventManager.eventTypeAtSameTimeAlreadyExists(type, e.getTime())) {
-            showEventAlreadyExistsPopUp(type);
+            mViewMVC.showEventAlreadyExistsPopUp(type);
         }
         else {
             returnEventAndFinish(e);

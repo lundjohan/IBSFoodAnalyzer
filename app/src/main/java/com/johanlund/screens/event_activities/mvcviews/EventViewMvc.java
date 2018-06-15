@@ -38,9 +38,11 @@ public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListene
 
     void setTimeView(LocalTime lt);
 
-    void doneClicked(View view);
-
     LocalDateTime getLocalDateTime();
+
+    void showEventAlreadyExistsPopUp(int eventType);
+
+    void doneClicked(View view);
 
 
 
