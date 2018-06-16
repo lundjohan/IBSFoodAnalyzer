@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.johanlund.base_classes.Event;
+import com.johanlund.factories.DaggerEventFactoryComponent;
 import com.johanlund.factories.EventFactory;
+import com.johanlund.factories.EventFactoryComponent;
 import com.johanlund.factories.EventFactoryImpl;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
+
+import javax.inject.Inject;
 
 import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.NEW_EVENT;
@@ -17,7 +21,8 @@ import static com.johanlund.constants.Constants.NEW_EVENT_DATE;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 
 public class NewEventActivity extends EventActivity {
-
+    @Inject
+    EventFactory eventFactory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +35,7 @@ public class NewEventActivity extends EventActivity {
 
         //if savedInstance exists eventToBind will be created from that.
         if (savedInstanceState == null) {
-            EventFactory eventFactory = new EventFactoryImpl();
+            DaggerEventFactoryComponent.create().inject(this);
             eventToBind = eventFactory.makeDummyEventWithTime(LocalDateTime.of(ld, LocalTime.now()),
                     eventType);
         }
