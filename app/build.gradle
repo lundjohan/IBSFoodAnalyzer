@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "com.johanlund.ibsfoodanalyzer"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 4
         versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
