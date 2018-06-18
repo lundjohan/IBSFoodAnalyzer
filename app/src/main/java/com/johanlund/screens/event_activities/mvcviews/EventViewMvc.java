@@ -24,6 +24,7 @@ public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListene
         void completeSession(Event finalEvent);
 
         void showInfo(String titleStr, int infoLayout);
+        void finish();
     }
 
     boolean createOptionsMenu(Menu menu, MenuInflater menuInflater);
@@ -43,6 +44,8 @@ public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListene
     void showEventAlreadyExistsPopUp(int eventType);
 
     void doneClicked(View view);
+
+    void giveOptionToQuitOrCancel();
 
 
 

@@ -177,4 +177,27 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
         positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;
         positiveButton.setLayoutParams(positiveButtonLL);
     }
+
+    @Override
+    public void giveOptionToQuitOrCancel() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false).
+                setTitle("Leave changes undone?").
+                setCancelable(true).
+                setNegativeButton(android.R.string.cancel, new DialogInterface
+                        .OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).
+                setMessage("Are you sure you want to go back to diary without saving changes?").
+                setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        listener.finish();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

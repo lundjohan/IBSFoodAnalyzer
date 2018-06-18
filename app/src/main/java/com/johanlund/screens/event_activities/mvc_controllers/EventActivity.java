@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.johanlund.base_classes.Event;
@@ -116,5 +117,23 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
         newFragment.setContext(this);
         newFragment.setListener(mViewMVC);
         newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onBackPressed() {
+        mViewMVC.giveOptionToQuitOrCancel();
+    }
+
+    //in case API<21 onBackPressed is not called
+    //this is blocking natural behavoiur of backbutton
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //finish();
+                onBackPressed();
+                break;
+        }
+        return true;
     }
 }
