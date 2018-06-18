@@ -5,7 +5,7 @@
                                              android:id="@+id/mealContainer"
                                              android:layout_width="match_parent"
                                              android:layout_height="wrap_content"
-                                             tools:context="com.johanlund.screens.event_activities.MealActivity">
+                                             tools:context="com.johanlund.screens.event_activities.mvc_controllers.EventActivity">
 
     <TextView
         android:id="@+id/textView4"

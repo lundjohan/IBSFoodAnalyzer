@@ -1,6 +1,5 @@
 package com.johanlund.screens.event_activities.mvc_controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.view.View;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.model.EventManager;
-import com.johanlund.model.TagType;
 import com.johanlund.picker_views.DatePickerFragment;
 import com.johanlund.picker_views.TimePickerFragment;
 import com.johanlund.screens.event_activities.factories.EventViewFactory;
@@ -22,7 +20,6 @@ import com.johanlund.screens.tag_adder.TagAdderActivity;
 
 import static com.johanlund.constants.Constants.EVENT_SAVED_FROM_VIEW;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
-import static com.johanlund.constants.Constants.RETURN_TAG_TEMPLATE_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TAGS_TO_ADD;
 import static com.johanlund.constants.Constants.TITLE_STRING;
 
@@ -79,29 +76,10 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
     }
     protected abstract void returnEvent(Event event);
 
-    //data coming back from TagAdder
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if (requestCode != TAGS_TO_ADD) {
-            return;
-        }
-        if (data.hasExtra(RETURN_TAG_TEMPLATE_SERIALIZABLE)) {
-            TagType tagType = (TagType) data.getExtras().getSerializable
-                    (RETURN_TAG_TEMPLATE_SERIALIZABLE);
-            mViewMVC.bindAddedTagToView(tagType.get_tagname());
-        }
-    }
-
-    public void newTagAdderActivity(View view) {
-        Intent intent = new Intent(this, TagAdderActivity.class);
-        startActivityForResult(intent, TAGS_TO_ADD);
-    }
-
     /**
+     * =============================================================================================
      * DATE AND TIME PICKER
+     * =============================================================================================
      */
     @Override
     public void startTimePicker(View view) {

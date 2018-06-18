@@ -6,8 +6,6 @@ import android.os.Bundle;
 import com.johanlund.base_classes.Event;
 import com.johanlund.factories.DaggerEventFactoryComponent;
 import com.johanlund.factories.EventFactory;
-import com.johanlund.factories.EventFactoryComponent;
-import com.johanlund.factories.EventFactoryImpl;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -20,7 +18,7 @@ import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.NEW_EVENT_DATE;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 
-public class NewEventActivity extends EventActivity {
+public class NewEventActivity extends TagEventActivity {
     @Inject
     EventFactory eventFactory;
     @Override

@@ -11,6 +11,8 @@ import com.johanlund.ibsfoodanalyzer.R;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.List;
+
 public class ExerciseViewMvc extends EventViewMvcAbstract {
     TextView typeOfExercise;
     TextView intensityName;
@@ -73,4 +75,19 @@ public class ExerciseViewMvc extends EventViewMvcAbstract {
 
     @Override
     public void bindAddedTagToView(String tagName) {/*no tags to bind in this view*/}
+
+    @Override
+    public void removeTagFromView(String tagName) {
+        /*
+        not applicable
+         */
+    }
+
+    @Override
+    public List<String> getTagNames() {
+        /*
+        not applicable
+         */
+        return null;
+    }
 }

@@ -25,4 +25,10 @@ public class EventManager {
     public Event fetchEventById(long id){
         return dbHandler.retrieveEvent(id);
     }
+    public boolean tagTemplateDoesntExist(String tagName){
+        return dbHandler.getTagTemplateId(tagName) == -1;
+    }
+    public String retrieveNameOfTagTemplate(long idOfTagTemplate){
+        return dbHandler.getTagTemplateName (idOfTagTemplate);
+    }
 }

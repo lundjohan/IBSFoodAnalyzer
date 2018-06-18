@@ -11,6 +11,8 @@ import com.johanlund.ibsfoodanalyzer.R;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.List;
+
 public class BmViewMvc extends EventViewMvcAbstract {
     TextView bristolName;
     SeekBar bristolBar;
@@ -94,5 +96,19 @@ public class BmViewMvc extends EventViewMvcAbstract {
 
     private static void setBristolNrAndText(TextView v, int bristolScore) {
         v.setText("("+bristolScore + ") "+ Bm.bristolToText(bristolScore));
+    }
+    @Override
+    public void removeTagFromView(String tagName) {
+        /*
+        not applicable
+         */
+    }
+
+    @Override
+    public List<String> getTagNames() {
+        /*
+        not applicable
+         */
+        return null;
     }
 }

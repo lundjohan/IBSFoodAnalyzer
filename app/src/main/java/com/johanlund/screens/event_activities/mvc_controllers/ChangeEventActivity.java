@@ -16,7 +16,7 @@ import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.STARTING_DATE_TIME;
 
-public class ChangeEventActivity extends EventActivity {
+public class ChangeEventActivity extends TagEventActivity {
     //variables used for changing events.
     //Connected to isChangingEvent. The variable is later used
     // in database to know which event to be changed.

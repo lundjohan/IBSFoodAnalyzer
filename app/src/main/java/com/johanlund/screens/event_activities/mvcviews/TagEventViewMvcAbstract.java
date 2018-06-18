@@ -60,6 +60,27 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
         adapter.notifyItemInserted(tagsList.size() - 1);
     }
 
+
+    @Override
+    public void removeTagFromView(String tagName) {
+        for (int i = 0 ;i<tagsList.size(); i++){
+            if (tagsList.get(i).getName().equals(tagName)){
+                tagsList.remove(i);
+            }
+            //break: should be here, but first has to implement that tags can not have dublettes in tagsList
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public List<String> getTagNames() {
+        List<String> tagNames = new ArrayList<>();
+        for (Tag t: tagsList){
+            tagNames.add(t.getName());
+        }
+        return tagNames;
+    }
+
     /**
      * Get the text for the button that adds tags. ("Tags" is not intuitive for a new user).
      * @return

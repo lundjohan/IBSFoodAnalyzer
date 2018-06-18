@@ -10,6 +10,8 @@ import com.johanlund.ibsfoodanalyzer.R;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.List;
+
 public class MealViewMvc extends TagEventViewMvcAbstract {
     private TextView portionView;
 
