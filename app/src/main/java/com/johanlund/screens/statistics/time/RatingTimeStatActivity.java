@@ -8,8 +8,8 @@ import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.stat_backend.time_scorewrapper.RatingTimeScoreWrapper;
 import com.johanlund.stat_backend.time_scorewrapper.TimeScoreWrapper;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
 
 import org.threeten.bp.LocalDateTime;
 

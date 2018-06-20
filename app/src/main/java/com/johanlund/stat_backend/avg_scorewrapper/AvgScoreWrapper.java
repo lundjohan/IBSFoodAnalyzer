@@ -2,7 +2,7 @@ package com.johanlund.stat_backend.avg_scorewrapper;
 
 import com.johanlund.screens.statistics.common.ScoreWrapperBase;
 import com.johanlund.stat_backend.point_classes.TagPoint;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import java.util.ArrayList;
 import java.util.Collection;

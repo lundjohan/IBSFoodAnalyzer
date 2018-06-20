@@ -11,7 +11,7 @@ import com.johanlund.screens.statistics.time.common.TimeStatAdapter;
 import com.johanlund.screens.statistics.common.StatBaseActivity;
 import com.johanlund.screens.statistics.common.TimeStatAsyncTask;
 import com.johanlund.stat_backend.point_classes.TimePoint;
-import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;

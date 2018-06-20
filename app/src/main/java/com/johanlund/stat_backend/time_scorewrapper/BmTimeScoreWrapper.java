@@ -2,7 +2,7 @@ package com.johanlund.stat_backend.time_scorewrapper;
 
 import com.johanlund.stat_backend.makers.TimePointMaker;
 import com.johanlund.stat_backend.point_classes.TimePoint;
-import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
 
 import java.util.List;
 

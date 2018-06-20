@@ -2,9 +2,9 @@ package com.johanlund.stat_backend.makers;
 
 import com.johanlund.base_classes.Tag;
 import com.johanlund.stat_backend.point_classes.TagPoint;
-import com.johanlund.util.RatingTime;
-import com.johanlund.util.TagsWrapperBase;
-import com.johanlund.util.TimePeriod;
+import com.johanlund.stat_backend.stat_util.RatingTime;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.TimePeriod;
 
 import java.util.List;
 import java.util.Map;

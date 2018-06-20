@@ -1,6 +1,6 @@
 package com.johanlund.base_classes;
 
-import com.johanlund.util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;

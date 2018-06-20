@@ -1,6 +1,8 @@
 package com.johanlund.util;
 
-import com.johanlund.base_classes.Rating;
+import com.johanlund.stat_backend.stat_util.RatingTime;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.TimePeriod;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
@@ -9,7 +11,7 @@ import org.threeten.bp.Month;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.johanlund.util.RatingTime.getRatingsBetweenAndSometimesOneBefore;
+import static com.johanlund.stat_backend.stat_util.RatingTime.getRatingsBetweenAndSometimesOneBefore;
 import static junit.framework.Assert.assertEquals;
 
 /**

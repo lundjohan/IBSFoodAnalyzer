@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.stat_backend.point_classes.PointBase;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

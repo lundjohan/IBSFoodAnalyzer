@@ -1,7 +1,7 @@
 package com.johanlund.screens.statistics.common;
 
 import com.johanlund.stat_backend.point_classes.PointBase;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import java.util.ArrayList;
 import java.util.List;

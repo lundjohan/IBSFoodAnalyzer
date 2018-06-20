@@ -14,8 +14,8 @@ import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.statistics.avg_stat.common.BmsWrapper;
 import com.johanlund.stat_backend.avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.stat_backend.avg_scorewrapper.BristolAvgScoreWrapper;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import org.threeten.bp.LocalDateTime;
 

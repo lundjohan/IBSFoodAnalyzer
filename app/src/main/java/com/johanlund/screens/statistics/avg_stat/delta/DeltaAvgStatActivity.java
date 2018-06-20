@@ -13,8 +13,8 @@ import com.johanlund.screens.statistics.avg_stat.common.AvgStatActivity;
 import com.johanlund.screens.statistics.avg_stat.common.TagsWrapper;
 import com.johanlund.stat_backend.avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.stat_backend.avg_scorewrapper.DeltaAvgScoreWrapper;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import org.threeten.bp.LocalDateTime;
 

@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.statistics.common.StatAsyncTask;
 import com.johanlund.screens.statistics.common.StatBaseActivity;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import java.util.List;
 

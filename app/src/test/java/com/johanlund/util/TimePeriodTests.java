@@ -1,5 +1,7 @@
 package com.johanlund.util;
 
+import com.johanlund.stat_backend.stat_util.TimePeriod;
+
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;

@@ -3,8 +3,8 @@ package com.johanlund.stat_backend.makers;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.stat_backend.point_classes.TagPoint;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import org.threeten.bp.LocalDateTime;
 

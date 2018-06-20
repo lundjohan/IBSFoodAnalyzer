@@ -1,8 +1,8 @@
 package com.johanlund.base_classes;
 
-import com.johanlund.util.IBSUtil;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.TimePeriod;
+import com.johanlund.stat_backend.stat_util.IBSUtil;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.TimePeriod;
 import com.johanlund.util.Util;
 
 import org.threeten.bp.LocalDateTime;

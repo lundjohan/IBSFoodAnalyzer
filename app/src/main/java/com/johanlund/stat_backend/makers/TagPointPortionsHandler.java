@@ -3,7 +3,7 @@ package com.johanlund.stat_backend.makers;
 import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Meal;
 import com.johanlund.stat_backend.point_classes.TagPoint;
-import com.johanlund.util.TPUtil;
+import com.johanlund.stat_backend.stat_util.TPUtil;
 
 import org.threeten.bp.LocalDateTime;
 

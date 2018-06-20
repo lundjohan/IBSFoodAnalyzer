@@ -3,7 +3,7 @@ package com.johanlund.stat_backend.portion_scorewrapper;
 import com.johanlund.stat_backend.makers.PortionPointMaker;
 import com.johanlund.stat_backend.point_classes.PortionPoint;
 import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import java.util.Collections;
 import java.util.Comparator;

@@ -10,8 +10,8 @@ import com.johanlund.screens.statistics.avg_stat.common.BmsWrapper;
 import com.johanlund.screens.statistics.avg_stat.bristol.BristolAvgStatActivity;
 import com.johanlund.stat_backend.avg_scorewrapper.BristolAvgScoreWrapper;
 import com.johanlund.stat_backend.avg_scorewrapper.CompleteAvgScoreWrapper;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import org.threeten.bp.LocalDateTime;
 

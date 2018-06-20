@@ -4,8 +4,8 @@ import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.stat_backend.point_classes.TagPoint;
-import com.johanlund.util.IBSUtil;
-import com.johanlund.util.TimePeriod;
+import com.johanlund.stat_backend.stat_util.IBSUtil;
+import com.johanlund.stat_backend.stat_util.TimePeriod;
 
 import org.threeten.bp.LocalDateTime;
 

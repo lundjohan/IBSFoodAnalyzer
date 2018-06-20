@@ -15,8 +15,8 @@ import com.johanlund.screens.statistics.common.StatAsyncTask;
 import com.johanlund.stat_backend.portion_scorewrapper.PortionScoreWrapper;
 import com.johanlund.stat_backend.portion_scorewrapper.RatingPortionScoreWrapper;
 import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import org.threeten.bp.LocalDateTime;
 

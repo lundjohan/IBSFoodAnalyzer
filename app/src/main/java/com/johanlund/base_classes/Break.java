@@ -6,10 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.database.DBHandler;
-import com.johanlund.util.BmTimes;
-import com.johanlund.util.RatingTimes;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.stat_backend.stat_util.BmTimes;
+import com.johanlund.stat_backend.stat_util.RatingTimes;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
 
 import org.threeten.bp.LocalDateTime;
 

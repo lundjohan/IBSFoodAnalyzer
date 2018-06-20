@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.johanlund.stat_backend.makers.TagPointMaker;
-import com.johanlund.util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 /**
  * Created by Johan on 2017-06-25.

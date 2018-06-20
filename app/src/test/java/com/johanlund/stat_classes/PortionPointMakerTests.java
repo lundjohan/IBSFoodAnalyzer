@@ -4,9 +4,9 @@ import com.johanlund.base_classes.Tag;
 import com.johanlund.screens.statistics.avg_stat.common.TagsWrapper;
 import com.johanlund.stat_backend.point_classes.PortionPoint;
 import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
-import com.johanlund.util.ScoreTime;
-import com.johanlund.util.TagsWrapperBase;
-import com.johanlund.util.TimePeriod;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
+import com.johanlund.stat_backend.stat_util.TimePeriod;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;

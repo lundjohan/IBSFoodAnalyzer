@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.screens.statistics.time.common.TimeStatAdapter;
 import com.johanlund.stat_backend.time_scorewrapper.TimeScoreWrapper;
-import com.johanlund.util.ScoreTimesBase;
+import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

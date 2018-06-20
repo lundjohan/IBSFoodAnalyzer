@@ -1,4 +1,4 @@
-package com.johanlund.util;
+package com.johanlund.stat_backend.stat_util;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;

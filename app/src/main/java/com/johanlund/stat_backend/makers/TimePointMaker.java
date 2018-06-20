@@ -1,8 +1,8 @@
 package com.johanlund.stat_backend.makers;
 
 import com.johanlund.stat_backend.point_classes.TimePoint;
-import com.johanlund.util.RatingTimes;
-import com.johanlund.util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.RatingTimes;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
 
 import org.threeten.bp.LocalDateTime;
 

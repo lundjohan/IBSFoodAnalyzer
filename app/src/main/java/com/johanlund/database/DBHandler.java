@@ -15,7 +15,7 @@ import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.exceptions.InvalidEventType;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.model.TagType;
-import com.johanlund.util.ScoreTime;
+import com.johanlund.stat_backend.stat_util.ScoreTime;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
