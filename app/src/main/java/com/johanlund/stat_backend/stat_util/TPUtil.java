@@ -1,6 +1,5 @@
 package com.johanlund.stat_backend.stat_util;
 
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Rating;

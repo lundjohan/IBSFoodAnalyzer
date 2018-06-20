@@ -1,5 +1,6 @@
 package com.johanlund.base_classes;
 
+import com.johanlund.stat_backend.stat_util.Chunk;
 import com.johanlund.stat_backend.stat_util.ScoreTime;
 
 import org.junit.Test;

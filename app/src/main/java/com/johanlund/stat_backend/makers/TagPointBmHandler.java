@@ -1,6 +1,6 @@
 package com.johanlund.stat_backend.makers;
 
-import com.johanlund.base_classes.Chunk;
+import com.johanlund.stat_backend.stat_util.Chunk;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.stat_backend.point_classes.TagPoint;
 import com.johanlund.stat_backend.stat_util.ScoreTime;

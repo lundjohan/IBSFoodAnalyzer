@@ -1,8 +1,11 @@
-package com.johanlund.base_classes;
+package com.johanlund.stat_backend.stat_util;
 
-import com.johanlund.stat_backend.stat_util.IBSUtil;
-import com.johanlund.stat_backend.stat_util.ScoreTime;
-import com.johanlund.stat_backend.stat_util.TimePeriod;
+import com.johanlund.base_classes.Bm;
+import com.johanlund.base_classes.Break;
+import com.johanlund.base_classes.Event;
+import com.johanlund.base_classes.Meal;
+import com.johanlund.base_classes.Rating;
+import com.johanlund.base_classes.Tag;
 import com.johanlund.util.Util;
 
 import org.threeten.bp.LocalDateTime;

@@ -1,7 +1,6 @@
 package com.johanlund.stat_backend.stat_util;
 
 
-import com.johanlund.base_classes.Chunk;
 import com.johanlund.base_classes.Tag;
 
 import org.threeten.bp.LocalDateTime;

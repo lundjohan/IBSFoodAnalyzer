@@ -1,5 +1,7 @@
 package com.johanlund.base_classes;
 
+import com.johanlund.stat_backend.stat_util.Chunk;
+
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.Month;
