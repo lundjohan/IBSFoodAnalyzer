@@ -77,7 +77,7 @@ public class Util {
             if (e instanceof InputEvent) {
                 tags.addAll(((InputEvent) e).getInputTags());
             } else if (e instanceof Exercise) {
-                tags.add(((Exercise) e).getTypeOfExercise());
+                tags.add(new Tag(e.getTime(),((Exercise) e).getTypeOfExercise()));
             }
         }
         return tags;
