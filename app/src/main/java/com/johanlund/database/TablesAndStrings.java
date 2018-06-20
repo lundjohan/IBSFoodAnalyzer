@@ -5,7 +5,7 @@ package com.johanlund.database;
  */
 
 public class TablesAndStrings {
-    public static final int DATABASE_VERSION = 39;
+    public static final int DATABASE_VERSION = 40;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -55,6 +55,7 @@ public class TablesAndStrings {
     //Ratings
     public static final String TABLE_RATINGS = "ratings";
     public static final String TMP_TABLE_RATINGS = "tmp_ratings_table";
+    public static final String TMP_TABLE_TAGS = "tmp_tags_table";
     public static final String COLUMN_AFTER = "after_score";
 
     //EventsTemplates
@@ -79,7 +80,6 @@ public class TablesAndStrings {
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_TAGTYPE + " INTEGER NOT NULL, " +
             COLUMN_SIZE + " REAL NOT NULL, " +
-            COLUMN_DATETIME + " TEXT NOT NULL, " +
             COLUMN_EVENT + " INTEGER NOT NULL, " +
             " FOREIGN KEY( " + COLUMN_TAGTYPE + ") REFERENCES " + TABLE_TAGTYPES
             + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +

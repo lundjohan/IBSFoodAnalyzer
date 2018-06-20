@@ -8,16 +8,16 @@ import java.util.List;
 
 public class Other extends InputEvent {
 
-    public Other(LocalDateTime time, List<Tag> tags) {
+    public Other(LocalDateTime time, List<TagWithoutTime> tags) {
 
         super(time, tags);
     }
-    public Other(LocalDateTime time, String comment, List<Tag> tags) {
+    public Other(LocalDateTime time, String comment, List<TagWithoutTime> tags) {
 
         super(time, comment, tags);
     }
 
-    public Other(LocalDateTime ldt, String comment, boolean hasBreak, List<Tag> tags) {
+    public Other(LocalDateTime ldt, String comment, boolean hasBreak, List<TagWithoutTime> tags) {
         super(ldt, comment, hasBreak,tags);
     }
 

@@ -2,6 +2,7 @@ package com.johanlund.base_classes;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,42 +12,33 @@ import java.util.List;
  */
 
 public abstract class InputEvent extends Event {
-    protected List<Tag> tags;
+    protected List<TagWithoutTime> tags;
 
-    public InputEvent(LocalDateTime time, List<Tag> tags) {
+    public InputEvent(LocalDateTime time, List<TagWithoutTime> tags) {
         super(time);
         this.tags = tags;
     }
-    public InputEvent(LocalDateTime time, String comment, List<Tag> tags) {
+    public InputEvent(LocalDateTime time, String comment, List<TagWithoutTime> tags) {
         super(time, comment);
         this.tags = tags;
     }
-    public InputEvent(LocalDateTime time, String comment, boolean hasBreak, List<Tag> tags) {
+    public InputEvent(LocalDateTime time, String comment, boolean hasBreak, List<TagWithoutTime> tags) {
         super(time, comment, hasBreak);
         this.tags = tags;
     }
 
 
-
-
-    public List<Tag> getTags() {
+    public List<TagWithoutTime> getTagsWithoutTime(){
         return tags;
     }
 
-    /**
-     * Compares string with name of tag.
-     *
-     * @return TagModel with same name as string, or null if it doesn't exist.
-     */
-    public Tag getTag(String string) {
-        Tag t = null;
-        for (Tag tag : tags) {
-            if (tag.getName().equals(string)) {
-                t = tag;
-                break;
-            }
+    //exists for legacy reasons, should probably be phased out
+    public List<Tag> getTags() {
+        List<Tag>tagsToReturn = new ArrayList<>();
+        for (TagWithoutTime twt: tags){
+            tagsToReturn.add(new Tag(time, twt));
         }
-        return t;
+        return tagsToReturn;
     }
 
     /**

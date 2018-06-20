@@ -11,15 +11,15 @@ import java.util.List;
 public class Meal extends InputEvent {
     private double portions;
 
-    public Meal(LocalDateTime time, List<Tag> tags, double portions) {
+    public Meal(LocalDateTime time, List<TagWithoutTime> tags, double portions) {
         super(time, "",tags);
         this.portions = portions;
     }
-    public Meal(LocalDateTime time, String comment, List<Tag> tags, double portions) {
+    public Meal(LocalDateTime time, String comment, List<TagWithoutTime> tags, double portions) {
         super(time, comment, tags);
         this.portions = portions;
     }
-    public Meal(LocalDateTime time, String comment, boolean hasBreak, List<Tag> tags, double portions) {
+    public Meal(LocalDateTime time, String comment, boolean hasBreak, List<TagWithoutTime> tags, double portions) {
         super(time, comment, hasBreak, tags);
         this.portions = portions;
     }

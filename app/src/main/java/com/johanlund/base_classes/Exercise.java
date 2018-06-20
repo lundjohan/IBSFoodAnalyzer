@@ -5,22 +5,22 @@ import com.johanlund.constants.Constants;
 import org.threeten.bp.LocalDateTime;
 
 public class Exercise extends Event {
-    private Tag typeOfExercise;
+    private TagWithoutTime typeOfExercise;
     //from 1 to 5
     private int intensity;
 
-    public Exercise(LocalDateTime time, Tag typeOfExercise, int intensity) {
+    public Exercise(LocalDateTime time, TagWithoutTime typeOfExercise, int intensity) {
         super(time);
         this.typeOfExercise = typeOfExercise;
         this.intensity = intensity;
     }
-    public Exercise(LocalDateTime time, String comment, Tag typeOfExercise, int intensity) {
+    public Exercise(LocalDateTime time, String comment, TagWithoutTime typeOfExercise, int intensity) {
         super(time, comment);
         this.typeOfExercise = typeOfExercise;
         this.intensity = intensity;
     }
 
-    public Exercise(LocalDateTime ldt, String comment, boolean hasBreak, Tag t, int intensity) {
+    public Exercise(LocalDateTime ldt, String comment, boolean hasBreak, TagWithoutTime t, int intensity) {
         super(ldt, comment, hasBreak);
         this.typeOfExercise = t;
         this.intensity = intensity;
@@ -48,7 +48,7 @@ public class Exercise extends Event {
         return text;
     }
 
-    public Tag getTypeOfExercise() {
+    public TagWithoutTime getTypeOfExercise() {
         return typeOfExercise;
     }
 

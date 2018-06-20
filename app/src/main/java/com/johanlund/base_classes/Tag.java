@@ -23,6 +23,12 @@ public class Tag implements Serializable {
         this.size = size;
         this.time = time;
     }
+
+    public Tag(LocalDateTime time, TagWithoutTime twt) {
+        this.name = twt.getName();
+        this.size = twt.getSize();
+        this.time = time;
+    }
 /*
     protected Tag(Parcel in) {
         readFromParcel(in);

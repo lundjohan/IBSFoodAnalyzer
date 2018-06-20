@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Rating;
-import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.exceptions.InvalidEventType;
 import com.johanlund.model.EventsTemplate;
@@ -67,6 +67,7 @@ import static com.johanlund.database.TablesAndStrings.TABLE_RATINGS;
 import static com.johanlund.database.TablesAndStrings.TABLE_TAGS;
 import static com.johanlund.database.TablesAndStrings.TABLE_TAGTYPES;
 import static com.johanlund.database.TablesAndStrings.TMP_TABLE_RATINGS;
+import static com.johanlund.database.TablesAndStrings.TMP_TABLE_TAGS;
 import static com.johanlund.database.TablesAndStrings.TYPE_OF;
 
 /**
@@ -106,6 +107,25 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        //action done to remove time dependency of Tag Table
+        if (oldVersion <= 39) {
+            db.beginTransaction();
+            try {
+                // Changing name of column
+                // Before the column's name was 'after' which is a keyword in SQLITE syntax
+                db.execSQL(CHANGE_TAG_TABLE_NAME);
+                db.execSQL(CREATE_NEW_TAG_TABLE);
+                db.execSQL(COPY_CONTENTS_TO_NEW_TAG_TABLE);
+                db.execSQL(DROP_OLD_TAG_TABLE);
+
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+
         //this must be done before CHANGE_RATING_SCALE
         if (oldVersion <= 38){
             db.beginTransaction();
@@ -137,6 +157,21 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
     }
+    private String CHANGE_TAG_TABLE_NAME = " ALTER TABLE " + TABLE_TAGS +" RENAME TO " + TMP_TABLE_TAGS + "; ";
+    private String CREATE_NEW_TAG_TABLE = "CREATE TABLE " + TABLE_TAGS + " (  " +
+    COLUMN_ID + " INTEGER PRIMARY KEY, " +
+    COLUMN_TAGTYPE + " INTEGER NOT NULL, " +
+    COLUMN_SIZE + " REAL NOT NULL, " +
+    COLUMN_EVENT + " INTEGER NOT NULL, " +
+            " FOREIGN KEY( " + COLUMN_TAGTYPE + ") REFERENCES " + TABLE_TAGTYPES
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE, " + " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
+            ");";
+    private String COPY_CONTENTS_TO_NEW_TAG_TABLE = " INSERT INTO "+ TABLE_TAGS +" ( " + COLUMN_ID +", "+ COLUMN_TAGTYPE + ", " + COLUMN_SIZE  + ", " + COLUMN_EVENT +" ) "+
+            " SELECT " + COLUMN_ID + ", " + COLUMN_TAGTYPE +", " + COLUMN_SIZE  + ", " + COLUMN_EVENT + " FROM "+ TMP_TABLE_TAGS;
+    private String DROP_OLD_TAG_TABLE = "DROP TABLE " + TMP_TABLE_TAGS;
+
+
     //Before the column's name was 'after' which is a keyword in SQLITE syntax
     private String CHANGE_RATING_TABLE_NAME = " ALTER TABLE " + TABLE_RATINGS +" RENAME TO " + TMP_TABLE_RATINGS + "; ";
     private String CREATE_NEW_RATING_TABLE = "CREATE TABLE " + TABLE_RATINGS + " (  " + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_EVENT + " INTEGER NOT NULL, " +
@@ -396,14 +431,14 @@ public class DBHandler extends SQLiteOpenHelper {
         //if inputEvent (Meal, Other)=> add tags
         if (event instanceof InputEvent) {
             InputEvent ie = (InputEvent) event;
-            for (Tag t : ie.getTags()) {
+            for (TagWithoutTime t : ie.getTagsWithoutTime()) {
                 addTagAndPossiblyTagTemplate(t, eventId);
 
             }
         }
         //Exercise is does not inherit InputEvent but has one tag
         else if (event instanceof com.johanlund.base_classes.Exercise) {
-            Tag t = ((com.johanlund.base_classes.Exercise) event).getTypeOfExercise();
+            TagWithoutTime t = ((com.johanlund.base_classes.Exercise) event).getTypeOfExercise();
             addTagAndPossiblyTagTemplate(t, eventId);
         }
         db.close();
@@ -715,7 +750,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (c != null) {
             if (c.moveToFirst()) {  //hoppar här
                 double portions = c.getDouble(c.getColumnIndex(COLUMN_PORTIONS));
-                List<Tag> tags = getTagsWithEventId(eventId);
+                List<TagWithoutTime> tags = getTagsWithEventId(eventId);
                 meal = new com.johanlund.base_classes.Meal(ldt, tags, portions);
             }
         }
@@ -732,7 +767,7 @@ public class DBHandler extends SQLiteOpenHelper {
         com.johanlund.base_classes.Other other = null;
         if (c != null) {
             if (c.moveToFirst()) {  //k
-                List<Tag> tags = getTagsWithEventId(eventId);
+                List<TagWithoutTime> tags = getTagsWithEventId(eventId);
                 other = new com.johanlund.base_classes.Other(ldt, tags);
             }
         }
@@ -750,7 +785,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (c != null) {
             if (c.moveToFirst()) {
                 int intensity = c.getInt(c.getColumnIndex(COLUMN_INTENSITY));
-                Tag tag = getTagsWithEventId(eventId).get(0);
+                TagWithoutTime tag = getTagsWithEventId(eventId).get(0);
                 exercise = new com.johanlund.base_classes.Exercise(ldt, tag, intensity);
             }
         }
@@ -845,7 +880,7 @@ public class DBHandler extends SQLiteOpenHelper {
             long eventId = c.getLong(c.getColumnIndex(COLUMN_EVENT));
             LocalDateTime ldt = getDateFromEvent(eventId);
 
-            List<Tag> tags = getTagsWithEventId(eventId);
+            List<TagWithoutTime> tags = getTagsWithEventId(eventId);
             com.johanlund.base_classes.Meal meal = new com.johanlund.base_classes.Meal(ldt, tags,
                     portions);
             meals.add(meal);
@@ -909,7 +944,7 @@ public class DBHandler extends SQLiteOpenHelper {
             //this would mean that cursor don't have a row with meal.
             return null;
         }
-        List<Tag> tags = getTagsWithEventId(eventId);
+        List<TagWithoutTime> tags = getTagsWithEventId(eventId);
         return new com.johanlund.base_classes.Meal(ldt, tags, portions);
     }
 
@@ -988,22 +1023,20 @@ public class DBHandler extends SQLiteOpenHelper {
     //==================================================================================================
     //TAGS
     //==================================================================================================
-    private List<Tag> getTagsWithEventId(long event_id) {
+    private List<TagWithoutTime> getTagsWithEventId(long event_id) {
         final String TAG_QUERY = "SELECT * FROM " + TABLE_TAGS + " WHERE " + COLUMN_EVENT + " =? ";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(TAG_QUERY, new String[]{String.valueOf(event_id)});
-        List<Tag> tags = new ArrayList<>();
+        List<TagWithoutTime> tags = new ArrayList<>();
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
 
                 while (!cursor.isAfterLast()) {
-                    String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATETIME));
-                    LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(date);
                     double size = cursor.getDouble(cursor.getColumnIndex(COLUMN_SIZE));
                     long tagTemplateId = cursor.getLong(cursor.getColumnIndex(COLUMN_TAGTYPE));
                     String tagname = getTagname(tagTemplateId);
-                    Tag t = new Tag(ldt, tagname, size);
+                    TagWithoutTime t = new TagWithoutTime(tagname, size);
                     tags.add(t);
                     cursor.moveToNext();
                 }
@@ -1020,10 +1053,9 @@ public class DBHandler extends SQLiteOpenHelper {
      * @param t
      * @param eventId
      */
-    private void addTagAndPossiblyTagTemplate(Tag t, long eventId) {
+    private void addTagAndPossiblyTagTemplate(TagWithoutTime t, long eventId) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_EVENT, eventId);
-        values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(t.getTime()));
         values.put(COLUMN_SIZE, t.getSize());
 
         long tagTemplateId = getTagTemplateId(t.getName());
@@ -1499,8 +1531,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return toReturn;
     }
 
-    public List<Tag> getAllTags() {
-        List<Tag> toReturn = new ArrayList<>();
+    public List<TagWithoutTime> getAllTags() {
+        List<TagWithoutTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_DATETIME + ", t." + COLUMN_SIZE +
                 " FROM " + TABLE_TAGTYPES + " tt " + " JOIN " + TABLE_TAGS + " t " + " ON tt. " + COLUMN_ID + " = t."+ COLUMN_TAGTYPE +  " ORDER BY " + COLUMN_DATETIME + " ASC ";
@@ -1512,11 +1544,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 if (c.moveToFirst()) {
                     while (!c.isAfterLast()) {
                         try {
-                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME));
-                            LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(datetime);
                             String tagName = c.getString(c.getColumnIndex(COLUMN_TAGNAME));
                             double size = c.getDouble(c.getColumnIndex(COLUMN_SIZE));
-                            toReturn.add(new Tag(ldt, tagName, size));
+                            toReturn.add(new TagWithoutTime(tagName, size));
                         } finally {
                             c.moveToNext();
                         }
