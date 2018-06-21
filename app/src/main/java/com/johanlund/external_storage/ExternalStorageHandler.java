@@ -13,23 +13,13 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.johanlund.base_classes.Event;
-import com.johanlund.database.DBHandler;
-import com.johanlund.importer_and_exporter.Exporter;
-import com.johanlund.importer_and_exporter.Importer;
-
 import org.threeten.bp.LocalDateTime;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.johanlund.constants.Constants.DIRECTORY_IBSFOODANALYZER;
 import static com.johanlund.constants.Constants.REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE;
@@ -168,9 +158,8 @@ public class ExternalStorageHandler {
 
     /**
      * Saves all events to a csv file. NB: eventstemplates are not saved.
-     * @param context
      */
-    public static void saveCSVFile(Context context) {
+  /*  public static void saveCSVFile(Context context) {
         File outFile = makeFileToSaveTo(LocalDateTime.now() + ".csv");
         DBHandler dbHandler = new DBHandler(context);
         List<Event>allEvents = dbHandler.getAllEventsMinusEventsTemplatesSorted();
@@ -191,7 +180,7 @@ public class ExternalStorageHandler {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
+    }*/
     private static boolean isExternalStorageAccessable() {
 
         //override the other upmost file with new
@@ -227,10 +216,8 @@ public class ExternalStorageHandler {
      * and store them (together with TagTemplates)
      * in database
      */
-    public static List<Event> importEventsFromCsv(File file) {
+    /*public static List<Event> importEventsFromCsv(File file) {
         List<Event> importedEvents = new ArrayList<>();
-
-        //read in each row
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             for (String line; (line = br.readLine()) != null; ) {
                 try {
@@ -245,7 +232,7 @@ public class ExternalStorageHandler {
             Log.e("Error", "Something went wrong when reading from file");
         }
         return importedEvents;
-    }
+    }*/
 
 
 

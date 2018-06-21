@@ -28,7 +28,6 @@ import com.johanlund.database.DBHandler;
 import com.johanlund.screens.events_container_classes.DiaryContainerFragment;
 import com.johanlund.external_storage.ExternalStorageHandler;
 import com.johanlund.external_storage.SaveDBIntentService;
-import com.johanlund.external_storage.SaveToCSVIntentService;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.events_templates.TemplateFragment;
 import com.johanlund.screens.settings.GeneralSettingsActivity;
@@ -121,6 +120,7 @@ public class DrawerActivity extends AppCompatActivity
     }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
         DiaryContainerFragment diaryContainer = (DiaryContainerFragment)
                 getSupportFragmentManager().findFragmentByTag(DIARY_CONTAINER);
         if (diaryContainer != null && diaryContainer.isVisible()) {
@@ -208,7 +208,7 @@ public class DrawerActivity extends AppCompatActivity
                 showChooserForCSVImport();
                 break;*/
 
-            case R.id.exportToCsvMenuItem:
+            /*case R.id.exportToCsvMenuItem:
                 //ok, write to file? Otherwise ask for permission
                 ExternalStorageHandler.showWritablePermission(this);
                 //IntentService
@@ -216,7 +216,7 @@ public class DrawerActivity extends AppCompatActivity
                 startService(csvIntent);
                 //show pop up that shows location where file was saved.
                 showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
-                break;
+                break;*/
             /*case R.id.exportCsvForGraph:
                 ExternalStorageHandler.showWritablePermission(this);
                 Intent csvGraphIntent = new Intent(this, SaveToCSVForGraphIntentService.class);
@@ -377,7 +377,7 @@ public class DrawerActivity extends AppCompatActivity
                     }
                 }
                 break;
-            case IMPORT_FROM_CSV_FILE:
+           /* case IMPORT_FROM_CSV_FILE:
                 if (data != null) {
                     File csvFileToImport = getChosenFile(data);
                     if (csvFileToImport != null) {
@@ -385,7 +385,7 @@ public class DrawerActivity extends AppCompatActivity
                         asyncThread.execute(0);
                     }
                 }
-                break;
+                break;*/
 
             //TODO shoudln't this be transfered to Diary- or DiaryContainerFragment?
             case LOAD_EVENTS_FROM_EVENTSTEMPLATE: {
@@ -477,7 +477,7 @@ public class DrawerActivity extends AppCompatActivity
      * Best ways to fix that? => probably in database (similar to "unique ignore" or something
      * like it)
      */
-    private class ImportCsvAsyncTask extends AsyncTask<Integer, Void, Void> {
+  /*  private class ImportCsvAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
         File file = null;
 
@@ -489,19 +489,15 @@ public class DrawerActivity extends AppCompatActivity
         protected Void doInBackground(Integer... notUsedParams) {
             List<Event> importedEvents = ExternalStorageHandler.importEventsFromCsv(file);
             DBHandler db = new DBHandler(getApplicationContext());
-            // db.deleteAllTablesRows(); This is not meant to be here,
-            // better just to add events and cascade ignore on existing ones (same type, same time).
             db.addEvents(importedEvents);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void notUsed) {
-            //after db has been replaced, make the date shown for user the last date filled in
-            // new db.
             startDiaryAtLastDate();
         }
 
 
-    }
+    }*/
 }
