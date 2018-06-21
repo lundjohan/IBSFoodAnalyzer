@@ -19,11 +19,12 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class BreaksTest {
-    LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1 , 0, 0);
+    LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0);
+
     /**
      * this test checks that autoBreaks method in Event class works properly.
      * breaks should be added or removed depending on hours between events.
-     *
+     * <p>
      * Also checks that Chunk division is made accordingly
      */
     @Test
@@ -79,6 +80,7 @@ public class BreaksTest {
         assertEquals(3, chunks.get(1).getEvents().size());
         assertEquals(1, chunks.get(2).getEvents().size());
     }
+
     @Test
     public void manualBreaksTest() {
         //empty tags list
@@ -142,6 +144,7 @@ public class BreaksTest {
         assertEquals(2, chunks.get(2).getEvents().size());
         assertEquals(2, chunks.get(3).getEvents().size());
     }
+
     @Test
     //tests the method that combines autoBreaks and manualBreaks tests commutativity (1+3 == 3+1)
     public void allBreaksTest() {
@@ -160,14 +163,14 @@ public class BreaksTest {
         //1 hour after
         Event event4 = new Rating(LocalDateTime.of(2017, 10, 5, 23, 0), 3);
 
-        List<Event>events = new ArrayList<>();
+        List<Event> events = new ArrayList<>();
         events.add(event1);
         events.add(event2);
         events.add(event3);
         events.add(event4);
 
 
-        List<Break>autoBreaks = Break.makeAutoBreaks(events, 5);
+        List<Break> autoBreaks = Break.makeAutoBreaks(events, 5);
 
         //hours ahead 5 < 11 hours after bteween 2 and 3 event => 1 break
         assertEquals(1, autoBreaks.size());
@@ -176,13 +179,13 @@ public class BreaksTest {
         assertEquals(LocalDateTime.of(2017, 10, 5, 11, 0), autoBreaks.get(0).getTime());
 
         //now get the manual break (should be at event1)
-        List<Break>manualBreaks = Break.getManualBreaks(events);
+        List<Break> manualBreaks = Break.getManualBreaks(events);
         //hours ahead 5 < 11 hours after bteween 2 and 3 event => 1 break
         assertEquals(1, manualBreaks.size());
         assertEquals(LocalDateTime.of(2017, 10, 5, 10, 0), manualBreaks.get(0).getTime());
 
         //now test that the method for adding manual- and autobreaks works
-        List<Break>allBreaks = makeAllBreaks(events, 5);
+        List<Break> allBreaks = makeAllBreaks(events, 5);
         assertEquals(2, allBreaks.size());
 
         //list should be sorted by DateTime in ASC order , check that that is so...
@@ -193,21 +196,23 @@ public class BreaksTest {
         event1.setHasBreak(false);
         event3.setHasBreak(true);
 
-        List<Break>allBreaksStillInAscOrder = makeAllBreaks(events, 5);
+        List<Break> allBreaksStillInAscOrder = makeAllBreaks(events, 5);
         assertEquals(2, allBreaksStillInAscOrder.size());
-        assertEquals(true, allBreaksStillInAscOrder.get(0).getTime().isBefore(allBreaksStillInAscOrder.get(1).getTime()));
+        assertEquals(true, allBreaksStillInAscOrder.get(0).getTime().isBefore
+                (allBreaksStillInAscOrder.get(1).getTime()));
     }
 
     //==============================================================================================
     //divideTimes tests
     //==============================================================================================
     @Test
-    public void divideToTwoListsTest(){
+    public void divideToTwoListsTest() {
         ScoreTime ctStart = new ScoreTime(newYear, 3);
         //at same time should also break it
         LocalDateTime breakInMiddle = newYear;
         ScoreTime ctEnd = new ScoreTime(newYear.plusHours(1), 3);
-        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart, ctEnd), Arrays.asList(breakInMiddle));
+        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart, ctEnd),
+                Arrays.asList(breakInMiddle));
 
         assertEquals(2, ctsDivided.size());
         assertEquals(1, ctsDivided.get(0).size());
@@ -216,14 +221,16 @@ public class BreaksTest {
         assertEquals(newYear, ctsDivided.get(0).get(0).getTime());
         assertEquals(newYear.plusHours(1), ctsDivided.get(1).get(0).getTime());
     }
+
     @Test
-    public void divideToTwoListsEvenThoughTwoBreaksInMiddleTest(){
+    public void divideToTwoListsEvenThoughTwoBreaksInMiddleTest() {
         ScoreTime ctStart = new ScoreTime(newYear, 3);
         //at same time should also break it
         LocalDateTime breakInMiddle = newYear;
         LocalDateTime breakInMiddle2 = newYear.plusMinutes(10);
         ScoreTime ctEnd = new ScoreTime(newYear.plusHours(1), 3);
-        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart, ctEnd), Arrays.asList(breakInMiddle));
+        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart, ctEnd),
+                Arrays.asList(breakInMiddle));
 
         assertEquals(2, ctsDivided.size());
         assertEquals(1, ctsDivided.get(0).size());
@@ -232,11 +239,13 @@ public class BreaksTest {
         assertEquals(newYear, ctsDivided.get(0).get(0).getTime());
         assertEquals(newYear.plusHours(1), ctsDivided.get(1).get(0).getTime());
     }
+
     @Test
-    public void breakAtEndShouldntDivideTest(){
+    public void breakAtEndShouldntDivideTest() {
         ScoreTime ctStart = new ScoreTime(newYear, 3);
         LocalDateTime breakAtEnd = newYear;
-        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart), Arrays.asList(breakAtEnd));
+        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart), Arrays
+                .asList(breakAtEnd));
         assertEquals(1, ctsDivided.size());
         assertEquals(1, ctsDivided.get(0).size());
 
@@ -245,52 +254,59 @@ public class BreaksTest {
 
     // 'Larger' == 2 items in list
     @Test
-    public void divideToLargerListsTests(){
+    public void divideToLargerListsTests() {
         ScoreTime ctStart1 = new ScoreTime(newYear, 3);
         ScoreTime ctStart2 = new ScoreTime(newYear.plusHours(1), 3);
         LocalDateTime breakMiddle = newYear.plusHours(2);
         ScoreTime ctEnd = new ScoreTime(newYear.plusHours(3), 3);
-        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart1, ctStart2, ctEnd), Arrays.asList(breakMiddle));
+        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ctStart1, ctStart2,
+                ctEnd), Arrays.asList(breakMiddle));
         assertEquals(2, ctsDivided.size());
         assertEquals(2, ctsDivided.get(0).size());
 
         assertEquals(newYear.plusHours(1), ctsDivided.get(0).get(1).getTime());
     }
+
     @Test
-    public void divideToThreeListsTests(){
+    public void divideToThreeListsTests() {
         ScoreTime ct1 = new ScoreTime(newYear, 3);
         LocalDateTime break1 = newYear.plusHours(1);
         ScoreTime ct2 = new ScoreTime(newYear.plusHours(2), 3);
         LocalDateTime break2 = newYear.plusHours(3);
         ScoreTime ct3 = new ScoreTime(newYear.plusHours(4), 3);
-        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ct1, ct2, ct3), Arrays.asList(break1, break2));
+        List<List<ScoreTime>> ctsDivided = Break.divideTimes(Arrays.asList(ct1, ct2, ct3), Arrays
+                .asList(break1, break2));
         assertEquals(3, ctsDivided.size());
         assertEquals(1, ctsDivided.get(0).size());
 
         assertEquals(newYear.plusHours(4), ctsDivided.get(2).get(0).getTime());
     }
+
     //==============================================================================================
     //makeAllBreaks tests
     //==============================================================================================
     @Test
-    public void makeOneAutomaticBreak(){
+    public void makeOneAutomaticBreak() {
         int hoursInFrontOfAutoBreak = 2;
 
         //distance between times == 4 hours
         ScoreTime ct1 = new ScoreTime(newYear, 3);
         ScoreTime ct2 = new ScoreTime(newYear.plusHours(4), 3);
 
-        List<LocalDateTime> ldts = makeAllBreaks(Arrays.asList(ct1, ct2), new ArrayList<LocalDateTime>(), hoursInFrontOfAutoBreak);
+        List<LocalDateTime> ldts = makeAllBreaks(Arrays.asList(ct1, ct2), new
+                ArrayList<LocalDateTime>(), hoursInFrontOfAutoBreak);
 
         assertEquals(1, ldts.size());
         assertEquals(newYear, ldts.get(0));
     }
+
     @Test
-    public void manualBreaksArePreserved(){
+    public void manualBreaksArePreserved() {
         LocalDateTime oldBreak1 = newYear;
         LocalDateTime oldBreak2 = newYear.plusHours(1);
 
-        List<LocalDateTime>ldts = makeAllBreaks(new ArrayList<ScoreTime>(), Arrays.asList(oldBreak1, oldBreak2), 2);
+        List<LocalDateTime> ldts = makeAllBreaks(new ArrayList<ScoreTime>(), Arrays.asList
+                (oldBreak1, oldBreak2), 2);
         assertEquals(2, ldts.size());
         assertEquals(newYear, ldts.get(0));
         assertEquals(newYear.plusHours(1), ldts.get(1));

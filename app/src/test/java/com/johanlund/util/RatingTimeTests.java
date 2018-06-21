@@ -11,7 +11,8 @@ import org.threeten.bp.Month;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.johanlund.stat_backend.stat_util.RatingTime.getRatingsBetweenAndSometimesOneBefore;
+import static com.johanlund.stat_backend.stat_util.RatingTime
+        .getRatingsBetweenAndSometimesOneBefore;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -34,7 +35,6 @@ public class RatingTimeTests {
         TimePeriod tp = new TimePeriod(firstTime.plusHours(1), firstTime.plusHours(8));
 
 
-
         /**match tp with ratings and chunkEnd so we have (proportional scale)
          * ratings     |o---------||
          * tp:          |-------|
@@ -44,7 +44,8 @@ public class RatingTimeTests {
         LocalDateTime chunkEnd = firstTime.plusHours(10); //=> several hours after tp.end
 
         //this is the method we are testing
-        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart), chunkEnd);
+        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart),
+                chunkEnd);
         assertEquals(6.0, avgscoreAndWeight[0]);
 
         /*  weight should equal durationOfRatingsInScopeOfTp/tp.duration
@@ -55,6 +56,7 @@ public class RatingTimeTests {
 
         assertEquals(1.0, avgscoreAndWeight[1], 0.01);
     }
+
     /*
      *
      * ratings     |--o----||
@@ -70,7 +72,6 @@ public class RatingTimeTests {
         TimePeriod tp = new TimePeriod(firstTime.plusHours(0), firstTime.plusHours(7));
 
 
-
         /**match tp with ratings and chunkEnd so we have (proportional scale)
          * ratings     |--o----||
          * tp:         |-------|
@@ -80,7 +81,8 @@ public class RatingTimeTests {
         LocalDateTime chunkEnd = firstTime.plusHours(7); //=> same as tp.end
 
         //this is the method we are testing
-        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart), chunkEnd);
+        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart),
+                chunkEnd);
         assertEquals(3.0, avgscoreAndWeight[0]);
 
         /*  weight should equal durationOfRatingsInScopeOfTp/tp.duration
@@ -89,8 +91,9 @@ public class RatingTimeTests {
             weight should be 5/7
          */
 
-        assertEquals(5./7., avgscoreAndWeight[1], 0.01);
+        assertEquals(5. / 7., avgscoreAndWeight[1], 0.01);
     }
+
     /*
      *
      * ratings      |o----||
@@ -106,7 +109,6 @@ public class RatingTimeTests {
         TimePeriod tp = new TimePeriod(firstTime, firstTime.plusHours(6));
 
 
-
         /**match tp with ratings and chunkEnd so we have (proportional scale)
          * ratings     |o----||
          * tp:         |------|
@@ -116,7 +118,8 @@ public class RatingTimeTests {
         LocalDateTime chunkEnd = firstTime.plusHours(5); //=> 1 hour before tp.end
 
         //this is the method we are testing
-        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart), chunkEnd);
+        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart),
+                chunkEnd);
         assertEquals(4.0, avgscoreAndWeight[0]);
 
         /*  weight should equal durationOfRatingsInScopeOfTp/tp.duration
@@ -125,7 +128,7 @@ public class RatingTimeTests {
             weight should be 5/6
          */
 
-        assertEquals(5./6., avgscoreAndWeight[1], 0.01);
+        assertEquals(5. / 6., avgscoreAndWeight[1], 0.01);
     }
 
     /* This test is very well written.
@@ -156,11 +159,12 @@ public class RatingTimeTests {
          * tp:         |-----|
          *
          */
-        ScoreTime rStart = new ScoreTime(firstTime.plusHours(2),4);
+        ScoreTime rStart = new ScoreTime(firstTime.plusHours(2), 4);
         LocalDateTime chunkEnd = firstTime.plusHours(5); //=> 1 hour before tp.end
 
         //this is the method we are testing
-        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart), chunkEnd);
+        double[] avgscoreAndWeight = RatingTime.calcAvgAndWeight(tp, Arrays.asList(rStart),
+                chunkEnd);
         assertEquals(4.0, avgscoreAndWeight[0]);
 
         /*  weight should equal durationOfRatingsInScopeOfTp/tp.duration
@@ -172,16 +176,20 @@ public class RatingTimeTests {
         assertEquals(0.5, avgscoreAndWeight[1]);
     }
 
-    //testing if getRatingsBetweenAndSometimesOneBefore is returning the a rating if it occurs at same time as start of tp. This is important because if it does it means that a rating and a tag/portion can be at same time with no worries that the tag/ portion will not get the score from that rating.
+    //testing if getRatingsBetweenAndSometimesOneBefore is returning the a rating if it occurs at
+    // same time as start of tp. This is important because if it does it means that a rating and
+    // a tag/portion can be at same time with no worries that the tag/ portion will not get the
+    // score from that rating.
     @Test
     public void ratingAtSameTimeAsStartIsReturned() {
-        LocalDateTime firstTime = LocalDateTime.of(2017, Month.JANUARY, 1, 0,0);
+        LocalDateTime firstTime = LocalDateTime.of(2017, Month.JANUARY, 1, 0, 0);
 
         TimePeriod tp = new TimePeriod(firstTime, firstTime.plusHours(4));
-        ScoreTime r1 = new ScoreTime (firstTime, 3);
-        ScoreTime r2 = new ScoreTime (firstTime.plusHours(3),3);
+        ScoreTime r1 = new ScoreTime(firstTime, 3);
+        ScoreTime r2 = new ScoreTime(firstTime.plusHours(3), 3);
 
-        List<ScoreTime> returnedList = getRatingsBetweenAndSometimesOneBefore(tp, Arrays.asList(r1,r2));
+        List<ScoreTime> returnedList = getRatingsBetweenAndSometimesOneBefore(tp, Arrays.asList
+                (r1, r2));
         assertEquals(2, returnedList.size());
         assertEquals(r1.getTime(), returnedList.get(0).getTime());
         assertEquals(r2.getTime(), returnedList.get(1).getTime());

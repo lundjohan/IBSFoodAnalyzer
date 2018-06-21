@@ -7,9 +7,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.johanlund.base_classes.Break;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.screens.statistics.time.common.TimeStatAdapter;
 import com.johanlund.screens.statistics.common.StatBaseActivity;
 import com.johanlund.screens.statistics.common.TimeStatAsyncTask;
+import com.johanlund.screens.statistics.time.common.TimeStatAdapter;
 import com.johanlund.stat_backend.point_classes.TimePoint;
 import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
 
@@ -24,7 +24,8 @@ import static com.johanlund.constants.Constants.DATE_TO_START_DIARY;
  * Created by Johan on 2018-03-17.
  */
 
-public abstract class TimeStatActivity extends StatBaseActivity<TimePoint> implements TimeStatAdapter.TimeStatAdapterUser{
+public abstract class TimeStatActivity extends StatBaseActivity<TimePoint> implements
+        TimeStatAdapter.TimeStatAdapterUser {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +35,12 @@ public abstract class TimeStatActivity extends StatBaseActivity<TimePoint> imple
     }
 
     @Override
-    public TimeStatAdapter getStatAdapter(){
+    public TimeStatAdapter getStatAdapter() {
         return new TimeStatAdapter(getScoreWrapper(), this);
     }
 
     @Override
-    public void restartDiaryAtDate(LocalDate ld){
+    public void restartDiaryAtDate(LocalDate ld) {
         Intent intent = getIntent();
         intent.putExtra(DATE_TO_START_DIARY, ld);
         setResult(Activity.RESULT_OK, intent);
@@ -49,7 +50,7 @@ public abstract class TimeStatActivity extends StatBaseActivity<TimePoint> imple
 
     @Override
     protected void calculateStats() {
-        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
+        List<LocalDateTime> allBreaks = Break.getAllBreaks(getApplicationContext());
         List<ScoreTimesBase> stb = getScoreTimesBases(allBreaks);
         TimeStatAsyncTask asyncThread = new TimeStatAsyncTask(adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), stb);

@@ -8,7 +8,8 @@ import org.threeten.bp.LocalDateTime;
 
 
 public abstract class EventModel {
-    public static boolean eventTypeAtSameTimeAlreadyExists(int type, LocalDateTime ldt, Context context) {
+    public static boolean eventTypeAtSameTimeAlreadyExists(int type, LocalDateTime ldt, Context
+            context) {
         DBHandler dbHandler = new DBHandler(context);
         return dbHandler.eventDoesExistOutsideOfEventsTemplate(type, ldt);
     }

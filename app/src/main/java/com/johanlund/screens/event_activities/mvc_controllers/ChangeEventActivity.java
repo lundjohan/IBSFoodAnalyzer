@@ -28,6 +28,7 @@ public class ChangeEventActivity extends TagEventActivity {
     //this is solely used to see if a ChangingEvent has changed its time during this interaction
     //it should not be used in a context of a new event
     LocalDateTime startingTimeBeforeChanges;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +43,15 @@ public class ChangeEventActivity extends TagEventActivity {
                         (EVENT_POSITION);
             }
             if (savedInstanceState.containsKey(STARTING_DATE_TIME)) {
-                startingTimeBeforeChanges = DateTimeFormat.fromSqLiteFormat((String) savedInstanceState.get
+                startingTimeBeforeChanges = DateTimeFormat.fromSqLiteFormat((String)
+                        savedInstanceState.get
                         (STARTING_DATE_TIME));
             }
 
-        }
-        else if (intent.hasExtra(ID_OF_EVENT) && intent.hasExtra(EVENT_POSITION)) {
+        } else if (intent.hasExtra(ID_OF_EVENT) && intent.hasExtra(EVENT_POSITION)) {
             eventId = intent.getLongExtra(ID_OF_EVENT, -1);
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
-            eventToBind  = eventManager.fetchEventById(eventId);
+            eventToBind = eventManager.fetchEventById(eventId);
             startingTimeBeforeChanges = eventToBind.getTime();
         }
         initMvcView(eventToBind);
@@ -61,16 +62,17 @@ public class ChangeEventActivity extends TagEventActivity {
         super.onSaveInstanceState(outState);
         outState.putLong(ID_OF_EVENT, eventId);
         outState.putInt(EVENT_POSITION, posOfEvent);
-        outState.putString(STARTING_DATE_TIME,DateTimeFormat.toSqLiteFormat(startingTimeBeforeChanges));
+        outState.putString(STARTING_DATE_TIME, DateTimeFormat.toSqLiteFormat
+                (startingTimeBeforeChanges));
     }
 
     @Override
     public void completeSession(Event e) {
         int type = e.getType();
-        if (eventManager.eventTypeAtSameTimeAlreadyExists(type, e.getTime()) && changingEventHasDifferentDateTimeThanStart(e)) {
+        if (eventManager.eventTypeAtSameTimeAlreadyExists(type, e.getTime()) &&
+                changingEventHasDifferentDateTimeThanStart(e)) {
             mViewMVC.showEventAlreadyExistsPopUp(type);
-        }
-        else {
+        } else {
             returnEventAndFinish(e);
         }
     }

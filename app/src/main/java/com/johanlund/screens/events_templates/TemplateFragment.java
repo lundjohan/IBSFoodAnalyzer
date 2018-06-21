@@ -69,7 +69,7 @@ public class TemplateFragment extends Fragment {
             }
         });
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(TITLE_STR);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(TITLE_STR);
         //Toolbar eventsTemplateToolBar = (Toolbar)v.findViewById(R.id.toolbar4);
         //eventsTemplateToolBar.setTitle(TITLE_STR);
         //v.setSupportActionBar(eventsTemplateToolBar);
@@ -84,6 +84,7 @@ public class TemplateFragment extends Fragment {
          * @param events
          */
         void addEventsFromEventsTemplateToDiary(List<Event> events);
+
         void fixToolBarForTemplateFragment();
     }
 }

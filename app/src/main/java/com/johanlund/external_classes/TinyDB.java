@@ -54,6 +54,26 @@ public class TinyDB {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
     }
 
+    /**
+     * Check if external storage is writable or not
+     *
+     * @return true if writable, false otherwise
+     */
+    public static boolean isExternalStorageWritable() {
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+    }
+
+    /**
+     * Check if external storage is readable or not
+     *
+     * @return true if readable, false otherwise
+     */
+    public static boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+
+        return Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
+    }
 
     /**
      * Decodes the Bitmap from 'path' and returns it
@@ -74,7 +94,6 @@ public class TinyDB {
         return bitmapFromPath;
     }
 
-
     /**
      * Returns the String path of the last saved image
      *
@@ -83,7 +102,6 @@ public class TinyDB {
     public String getSavedImagePath() {
         return lastImagePath;
     }
-
 
     /**
      * Saves 'theBitmap' into folder 'theFolder' with the name 'theImageName'
@@ -108,7 +126,6 @@ public class TinyDB {
         return mFullPath;
     }
 
-
     /**
      * Saves 'theBitmap' into 'fullPath'
      *
@@ -119,6 +136,8 @@ public class TinyDB {
     public boolean putImageWithFullPath(String fullPath, Bitmap theBitmap) {
         return !(fullPath == null || theBitmap == null) && saveBitmap(fullPath, theBitmap);
     }
+
+    // Getters
 
     /**
      * Creates the path for the image with name 'imageName' in DEFAULT_APP.. directory
@@ -193,8 +212,6 @@ public class TinyDB {
 
         return (fileCreated && bitmapCompressed && streamClosed);
     }
-
-    // Getters
 
     /**
      * Get int value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
@@ -319,6 +336,20 @@ public class TinyDB {
                 , "‚‗‚")));
     }
 
+
+    /* public ArrayList<Object> getListObject(String key, Class<?> mClass){
+        Gson gson = new Gson();
+
+        ArrayList<String> objStrings = getListString(key);
+        ArrayList<Object> objects =  new ArrayList<Object>();
+
+        for(String jObjString : objStrings){
+            Object value  = gson.fromJson(jObjString,  mClass);
+            objects.add(value);
+        }
+        return objects;
+    }*/
+
     /**
      * Get boolean value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
      *
@@ -329,6 +360,19 @@ public class TinyDB {
     public boolean getBoolean(String key) {
         return preferences.getBoolean(key, false);
     }
+
+
+//    public <T> T getObject(String key, Class<T> classOfT){
+//
+//        String json = getString(key);
+//        Object value = new Gson().fromJson(json, classOfT);
+//        if (value == null)
+//            throw new NullPointerException();
+//        return (T)value;
+//    }
+
+
+    // Put methods
 
     /**
      * Get parsed ArrayList of Boolean from SharedPreferences at 'key'
@@ -351,46 +395,19 @@ public class TinyDB {
         return newList;
     }
 
-
-    /* public ArrayList<Object> getListObject(String key, Class<?> mClass){
-        Gson gson = new Gson();
-
-        ArrayList<String> objStrings = getListString(key);
-        ArrayList<Object> objects =  new ArrayList<Object>();
-
-        for(String jObjString : objStrings){
-            Object value  = gson.fromJson(jObjString,  mClass);
-            objects.add(value);
-        }
-        return objects;
-    }*/
-
     //rewritten by Johan
-    public ArrayList<PortionStatRange> getListPortionRange(String key){
+    public ArrayList<PortionStatRange> getListPortionRange(String key) {
         Gson gson = new Gson();
 
         ArrayList<String> objStrings = getListString(key);
-        ArrayList<PortionStatRange> objects =  new ArrayList<PortionStatRange>();
+        ArrayList<PortionStatRange> objects = new ArrayList<PortionStatRange>();
 
-        for(String jObjString : objStrings){
-            PortionStatRange value  = gson.fromJson(jObjString,  PortionStatRange.class);
+        for (String jObjString : objStrings) {
+            PortionStatRange value = gson.fromJson(jObjString, PortionStatRange.class);
             objects.add(value);
         }
         return objects;
     }
-
-
-//    public <T> T getObject(String key, Class<T> classOfT){
-//
-//        String json = getString(key);
-//        Object value = new Gson().fromJson(json, classOfT);
-//        if (value == null)
-//            throw new NullPointerException();
-//        return (T)value;
-//    }
-
-
-    // Put methods
 
     /**
      * Put int value into SharedPreferences with 'key' and save
@@ -530,6 +547,7 @@ public class TinyDB {
 
     /**
      * Put ObJect any type into SharedPrefrences with 'key' and save
+     *
      * @param key SharedPreferences key
      * @param obj is the Object you want to put
      */
@@ -549,16 +567,18 @@ public class TinyDB {
 //    	putListString(key, objStrings);
 //    }
     //added by Johan
-    //see https://stackoverflow.com/questions/35101437/android-shared-preference-tinydb-putlistobject-frunction
-    public void putListPortionRange(String key, ArrayList<PortionStatRange> objArray){
+    //see https://stackoverflow.com/questions/35101437/android-shared-preference-tinydb
+    // -putlistobject-frunction
+    public void putListPortionRange(String key, ArrayList<PortionStatRange> objArray) {
         checkForNullKey(key);
         Gson gson = new Gson();
         ArrayList<String> objStrings = new ArrayList<String>();
-        for(PortionStatRange range : objArray){
+        for (PortionStatRange range : objArray) {
             objStrings.add(gson.toJson(range));
         }
         putListString(key, objStrings);
     }
+
     /**
      * Remove SharedPreferences item with 'key'
      *
@@ -578,7 +598,6 @@ public class TinyDB {
         return new File(path).delete();
     }
 
-
     /**
      * Clear SharedPreferences (remove everything)
      */
@@ -594,7 +613,6 @@ public class TinyDB {
     public Map<String, ?> getAll() {
         return preferences.getAll();
     }
-
 
     /**
      * Register SharedPreferences change listener
@@ -616,28 +634,6 @@ public class TinyDB {
             SharedPreferences.OnSharedPreferenceChangeListener listener) {
 
         preferences.unregisterOnSharedPreferenceChangeListener(listener);
-    }
-
-
-    /**
-     * Check if external storage is writable or not
-     *
-     * @return true if writable, false otherwise
-     */
-    public static boolean isExternalStorageWritable() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-    }
-
-    /**
-     * Check if external storage is readable or not
-     *
-     * @return true if readable, false otherwise
-     */
-    public static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-
-        return Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
     /**

@@ -42,6 +42,7 @@ public abstract class SettingsBaseActivity extends AppCompatPreferenceActivity {
         }
         return true;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.to_default_menu, menu);
@@ -56,13 +57,14 @@ public abstract class SettingsBaseActivity extends AppCompatPreferenceActivity {
      * (This is currently not used. It is frankly hell to mix like that with preferencefragment,
      * its not very flexible.)
      */
-    protected int getFragmentContainer(){
+    protected int getFragmentContainer() {
         return android.R.id.content;
     }
 
-    protected void prefToDefault(String key){
-        SharedPreferences settings= PreferenceManager.getDefaultSharedPreferences(this);
+    protected void prefToDefault(String key) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         settings.edit().remove(key).commit();
     }
+
     protected abstract void restoreDefaultForThesePref();
 }

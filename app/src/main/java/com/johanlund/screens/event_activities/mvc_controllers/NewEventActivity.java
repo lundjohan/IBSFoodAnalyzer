@@ -21,6 +21,7 @@ import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 public class NewEventActivity extends TagEventActivity {
     @Inject
     EventFactory eventFactory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +46,7 @@ public class NewEventActivity extends TagEventActivity {
         int type = e.getType();
         if (eventManager.eventTypeAtSameTimeAlreadyExists(type, e.getTime())) {
             mViewMVC.showEventAlreadyExistsPopUp(type);
-        }
-        else {
+        } else {
             returnEventAndFinish(e);
         }
     }

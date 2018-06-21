@@ -12,8 +12,9 @@ import com.johanlund.ibsfoodanalyzer.R;
 
 /**
  * Created by Johan on 2017-12-03.
- *
- * It seems a bit complicated but the reason for this class is to use the same item base for all events, in case I would like to change something later.
+ * <p>
+ * It seems a bit complicated but the reason for this class is to use the same item base for all
+ * events, in case I would like to change something later.
  */
 
 public class EventLayout extends ConstraintLayout {
@@ -28,14 +29,16 @@ public class EventLayout extends ConstraintLayout {
         init(context, attrs);
     }
 
-    private void init(Context context,AttributeSet attrs) {
+    private void init(Context context, AttributeSet attrs) {
         inflate(getContext(), R.layout.item_base, this);
         TypedArray arr = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.EventLayout,
                 0, 0);
-        int imgSrc = arr.getResourceId(R.styleable.EventLayout_itemImg,R.styleable.EventLayout_itemImg);
-        int color = arr.getColor(R.styleable.EventLayout_itemColor, ContextCompat.getColor(context, R.color.colorLightBlue));
+        int imgSrc = arr.getResourceId(R.styleable.EventLayout_itemImg, R.styleable
+                .EventLayout_itemImg);
+        int color = arr.getColor(R.styleable.EventLayout_itemColor, ContextCompat.getColor
+                (context, R.color.colorLightBlue));
         boolean hasTags = arr.getBoolean(R.styleable.EventLayout_hasTags, false);
 
         ImageView icon = (ImageView) findViewById(R.id.item_icon);
@@ -44,7 +47,7 @@ public class EventLayout extends ConstraintLayout {
         icon.setBackgroundColor(color);
 
         //for Meal and Other events only
-        if (hasTags){
+        if (hasTags) {
         }
     }
 }

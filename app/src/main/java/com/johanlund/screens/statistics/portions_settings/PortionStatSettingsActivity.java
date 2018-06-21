@@ -18,9 +18,10 @@ import static com.johanlund.constants.Constants.CHOSEN_TO_RANGE;
 import static com.johanlund.constants.Constants.NEW_PORTION_RANGES;
 
 /**
- * This class, and this class alone, takes care of relevant Shared Preferences (the adapter is agnostic about it)
+ * This class, and this class alone, takes care of relevant Shared Preferences (the adapter is
+ * agnostic about it)
  */
-public class PortionStatSettingsActivity extends AppCompatActivity{
+public class PortionStatSettingsActivity extends AppCompatActivity {
     PortionStatRangeAdapter adapter;
 
     @Override
@@ -44,7 +45,7 @@ public class PortionStatSettingsActivity extends AppCompatActivity{
         });
     }
 
-    private void goToMorePortionsSettings(){
+    private void goToMorePortionsSettings() {
         Intent intent = new Intent(this, PortionStatSettingsMoreActivity.class);
         startActivity(intent);
     }

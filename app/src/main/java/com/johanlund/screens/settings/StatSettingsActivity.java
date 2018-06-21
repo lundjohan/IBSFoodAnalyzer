@@ -17,14 +17,6 @@ public class StatSettingsActivity extends AppCompatPreferenceActivity {
                 .commit();
     }
 
-    public static class StatPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(final Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
-        }
-    }
-
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -32,5 +24,13 @@ public class StatSettingsActivity extends AppCompatPreferenceActivity {
             finish();
         }
         return true;
+    }
+
+    public static class StatPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(final Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preferences);
+        }
     }
 }

@@ -10,8 +10,6 @@ import com.johanlund.ibsfoodanalyzer.R;
 
 import org.threeten.bp.LocalDateTime;
 
-import java.util.List;
-
 public class MealViewMvc extends TagEventViewMvcAbstract {
     private TextView portionView;
 
@@ -43,7 +41,7 @@ public class MealViewMvc extends TagEventViewMvcAbstract {
     @Override
     protected void bindEventSpecsToView(Event e) {
         super.bindEventSpecsToView(e);
-        portionView.setText(Double.toString(((Meal)e).getPortions()));
+        portionView.setText(Double.toString(((Meal) e).getPortions()));
     }
 
     @Override
@@ -53,6 +51,7 @@ public class MealViewMvc extends TagEventViewMvcAbstract {
 
     @Override
     protected Event makeEventFromView(LocalDateTime ldt, String comment) {
-        return new Meal(ldt, comment, eventHasBreak, tagsList, Double.parseDouble(portionView.getText().toString()));
+        return new Meal(ldt, comment, eventHasBreak, tagsList, Double.parseDouble(portionView
+                .getText().toString()));
     }
 }

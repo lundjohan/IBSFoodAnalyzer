@@ -47,7 +47,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //this is used solely to retrieve resources
     private Context context;
 
-    public EventAdapter(List<Event> daysEvents, EventAdapterUser usingEntity, boolean shouldHaveColorRating, Context context) {
+    public EventAdapter(List<Event> daysEvents, EventAdapterUser usingEntity, boolean
+            shouldHaveColorRating, Context context) {
         this.daysEvents = daysEvents;
         this.usingEntity = usingEntity;
         this.shouldHaveColorRating = shouldHaveColorRating;
@@ -204,75 +205,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    /*
-    Click Listeners
-     */
-    public interface EventAdapterUser {
-        public void onItemClicked(View v, int position);
-
-        public boolean onItemLongClicked(View v, int position);
-    }
-
-    abstract class EventViewHolder extends RecyclerView.ViewHolder {
-        public View colorFromRating;
-        public View itemView;
-        public TextView comment;
-
-        //used for time for all daysEvents except Rating, Rating prints a "From".
-        public TextView firstLine;
-
-        //used for type of exercise for Exercise, Bristol for BM, time for Rating, portions for Meal
-        public TextView secondLine;
-
-        public View breakLine;
-
-        public EventViewHolder(View itemView) {
-            super(itemView);
-            this.itemView = itemView;
-            colorFromRating = itemView.findViewById(R.id.color_from_rating);
-            comment = (TextView) itemView.findViewById(R.id.commentInItem);
-            firstLine = (TextView) itemView.findViewById(R.id.firstLine);
-            secondLine = (TextView) itemView.findViewById(R.id.secondLine);
-            breakLine = (View) itemView.findViewById(R.id.break_line);
-        }
-
-        public void setBreakLayout() {
-            breakLine.setVisibility(View.VISIBLE);
-
-        }
-    }
-
-    //this is for Meal and Other Events
-    class InputEventViewHolder extends EventViewHolder {
-        public LinearLayout tagQuantsLayout;
-        public LinearLayout tagNamesLayout;
-        public Context context;
-
-        public InputEventViewHolder(View itemView, Context context) {
-            super(itemView);
-            //used for initation of textViews for lists
-            this.context = context;
-            tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
-            tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
-        }
-    }
-
-    //RangeHolder class for Exercise, BM and Rating.
-    class ViewHolderWithoutTagList extends EventViewHolder {
-
-
-        //used as score for Rating, completeness for BM, intensity for Exercise
-        public TextView rightLine;
-
-        public ViewHolderWithoutTagList(View itemView) {
-            super(itemView);
-            rightLine = (TextView) itemView.findViewById(R.id.rightLine);
-        }
-    }
-//==================================================================================================
-//Coloring of Event based on preceding Rating - these calculations are made here
-//==================================================================================================
-
     /**
      * returns an int reflecting a color
      * if int is outside of scope, color white will be returned
@@ -338,7 +270,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * @param posInEventsList
      * @return
      */
-    private int retrieveScoreRatingOfPrecedingRatingInDay(int posInEventsList, List<Event>eventsOfDay) {
+    private int retrieveScoreRatingOfPrecedingRatingInDay(int posInEventsList, List<Event>
+            eventsOfDay) {
         int score = 0;
         //loop backwards, starting from event in list preceding posIn...
         for (int i = posInEventsList - 1; i >= 0; --i) {
@@ -376,7 +309,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         //database returns an empty list, in case there are no events to be retrieved for that day
         List<Event> eventsDay = dbHandler.getAllEventsMinusEventsTemplateSortedFromDay(theDay);
-        if (eventsDay.isEmpty()){
+        if (eventsDay.isEmpty()) {
             return -1;
         }
         //send last position of eventsDay as argument
@@ -386,5 +319,74 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             retrieveScoreFromLastOccurringRatingFromDay(dayBefore);
         }
         return score;
+    }
+//==================================================================================================
+//Coloring of Event based on preceding Rating - these calculations are made here
+//==================================================================================================
+
+    /*
+    Click Listeners
+     */
+    public interface EventAdapterUser {
+        public void onItemClicked(View v, int position);
+
+        public boolean onItemLongClicked(View v, int position);
+    }
+
+    abstract class EventViewHolder extends RecyclerView.ViewHolder {
+        public View colorFromRating;
+        public View itemView;
+        public TextView comment;
+
+        //used for time for all daysEvents except Rating, Rating prints a "From".
+        public TextView firstLine;
+
+        //used for type of exercise for Exercise, Bristol for BM, time for Rating, portions for Meal
+        public TextView secondLine;
+
+        public View breakLine;
+
+        public EventViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+            colorFromRating = itemView.findViewById(R.id.color_from_rating);
+            comment = (TextView) itemView.findViewById(R.id.commentInItem);
+            firstLine = (TextView) itemView.findViewById(R.id.firstLine);
+            secondLine = (TextView) itemView.findViewById(R.id.secondLine);
+            breakLine = (View) itemView.findViewById(R.id.break_line);
+        }
+
+        public void setBreakLayout() {
+            breakLine.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    //this is for Meal and Other Events
+    class InputEventViewHolder extends EventViewHolder {
+        public LinearLayout tagQuantsLayout;
+        public LinearLayout tagNamesLayout;
+        public Context context;
+
+        public InputEventViewHolder(View itemView, Context context) {
+            super(itemView);
+            //used for initation of textViews for lists
+            this.context = context;
+            tagQuantsLayout = (LinearLayout) itemView.findViewById(tagQuantities);
+            tagNamesLayout = (LinearLayout) itemView.findViewById(tagNames);
+        }
+    }
+
+    //RangeHolder class for Exercise, BM and Rating.
+    class ViewHolderWithoutTagList extends EventViewHolder {
+
+
+        //used as score for Rating, completeness for BM, intensity for Exercise
+        public TextView rightLine;
+
+        public ViewHolderWithoutTagList(View itemView) {
+            super(itemView);
+            rightLine = (TextView) itemView.findViewById(R.id.rightLine);
+        }
     }
 }

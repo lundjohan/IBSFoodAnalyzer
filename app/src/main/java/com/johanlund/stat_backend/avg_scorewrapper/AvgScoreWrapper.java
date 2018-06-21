@@ -25,7 +25,6 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
     Map<String, TagPoint> tagPoints = new HashMap<>();
 
     /**
-     *
      * @param startHoursAfterEvent
      * @param stopHoursAfterEvent
      * @param quantLimit
@@ -43,30 +42,31 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
 
     /**
      * Given: breaks have already been accounted for.
+     *
      * @param chunks
      * @return
      */
     @Override
     public List<TagPoint> calcPoints(List<TagsWrapperBase> chunks) {
 
-        /*TODO TYPE CONVERSION TO ARRAYLIST => PROBABLY SLOW AND INEFFECTIVE, TRY INSTEAD to use Collection instead of List lower in hierarchy.
+        /*TODO TYPE CONVERSION TO ARRAYLIST => PROBABLY SLOW AND INEFFECTIVE, TRY INSTEAD to use
+        Collection instead of List lower in hierarchy.
 
          */
         return calcScore(chunks, tagPoints);
         //return new ArrayList<>(calcScore(chunks, tagPoints).values());
     }
+
     @Override
     public List<TagPoint> toSortedList(List<TagPoint> toBeSorted) {
         //without this filter, later sort can crasch
         List<TagPoint> validTPList = removeNaNFromList(toBeSorted);
 
         //Sort actually requires List as parameter!
-        Collections.sort(validTPList, new Comparator<TagPoint>()
-                {
+        Collections.sort(validTPList, new Comparator<TagPoint>() {
                     @Override
-                    public int compare(TagPoint t1, TagPoint t2)
-                    {
-                        return (int)((getScore(t1)- getScore(t2))*100);
+                    public int compare(TagPoint t1, TagPoint t2) {
+                        return (int) ((getScore(t1) - getScore(t2)) * 100);
                     }
                 }
         );
@@ -75,13 +75,14 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
 
     /**
      * Removes TagPoint that shows a  getScore of "NaN" (can be becouse of 0.0/0.0 for example).
+     *
      * @param tagPoints
      * @return
      */
     private List<TagPoint> removeNaNFromList(Collection<TagPoint> tagPoints) {
-        List<TagPoint>tagPointsToReturn = new ArrayList<>();
-        for (TagPoint tp: tagPoints){
-            if (!Double.isNaN(getScore(tp))){
+        List<TagPoint> tagPointsToReturn = new ArrayList<>();
+        for (TagPoint tp : tagPoints) {
+            if (!Double.isNaN(getScore(tp))) {
                 tagPointsToReturn.add(tp);
             }
         }
@@ -89,15 +90,17 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
     }
 
     /**
-     * Sometimes you want to avoid to list stat for tags that only occurred once or three times i diary.
+     * Sometimes you want to avoid to list stat for tags that only occurred once or three times i
+     * diary.
+     *
      * @param tpList
-     * @param limit inclusive
+     * @param limit  inclusive
      * @return
      */
-    public List<TagPoint> removePointsWithTooLowQuant(List<TagPoint> tpList, int limit){
-        List<TagPoint>trimmedTpList = new ArrayList<>();
-        for (TagPoint tp:tpList){
-            if(getQuantityOfTagPoint(tp)>=limit){
+    public List<TagPoint> removePointsWithTooLowQuant(List<TagPoint> tpList, int limit) {
+        List<TagPoint> trimmedTpList = new ArrayList<>();
+        for (TagPoint tp : tpList) {
+            if (getQuantityOfTagPoint(tp) >= limit) {
                 trimmedTpList.add(tp);
             }
         }
@@ -105,7 +108,9 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
     }
 
     /**
-     * Statistics counting on Average and BM uses different quanitity parameters (duration and nrOfBms)
+     * Statistics counting on Average and BM uses different quanitity parameters (duration and
+     * nrOfBms)
+     *
      * @return
      */
     protected abstract double getQuantityOfTagPoint(TagPoint tp);
@@ -115,7 +120,7 @@ public abstract class AvgScoreWrapper extends ScoreWrapperBase<TagPoint> {
 
     @Override
     protected boolean quantIsOverLimit(TagPoint point) {
-        return getQuantityOfTagPoint(point)>=getQuantityLimit();
+        return getQuantityOfTagPoint(point) >= getQuantityLimit();
     }
 }
 

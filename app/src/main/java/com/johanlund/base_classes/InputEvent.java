@@ -18,24 +18,27 @@ public abstract class InputEvent extends Event {
         super(time);
         this.tags = tags;
     }
+
     public InputEvent(LocalDateTime time, String comment, List<TagWithoutTime> tags) {
         super(time, comment);
         this.tags = tags;
     }
-    public InputEvent(LocalDateTime time, String comment, boolean hasBreak, List<TagWithoutTime> tags) {
+
+    public InputEvent(LocalDateTime time, String comment, boolean hasBreak, List<TagWithoutTime>
+            tags) {
         super(time, comment, hasBreak);
         this.tags = tags;
     }
 
 
-    public List<TagWithoutTime> getTagsWithoutTime(){
+    public List<TagWithoutTime> getTagsWithoutTime() {
         return tags;
     }
 
     //exists for legacy reasons, should probably be phased out
     public List<Tag> getTags() {
-        List<Tag>tagsToReturn = new ArrayList<>();
-        for (TagWithoutTime twt: tags){
+        List<Tag> tagsToReturn = new ArrayList<>();
+        for (TagWithoutTime twt : tags) {
             tagsToReturn.add(new Tag(time, twt));
         }
         return tagsToReturn;

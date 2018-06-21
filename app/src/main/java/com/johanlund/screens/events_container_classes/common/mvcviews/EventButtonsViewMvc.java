@@ -1,9 +1,8 @@
 package com.johanlund.screens.events_container_classes.common.mvcviews;
 
 import android.content.Intent;
-import android.view.View;
 
-public interface EventButtonsViewMvc  {
+public interface EventButtonsViewMvc {
     interface Listener {
         void newEventActivity(int eventType);
 

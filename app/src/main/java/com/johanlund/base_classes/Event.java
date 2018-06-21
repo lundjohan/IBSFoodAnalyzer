@@ -4,8 +4,6 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.johanlund.constants.Constants.BM;
 import static com.johanlund.constants.Constants.EXERCISE;
@@ -37,6 +35,37 @@ public abstract class Event implements Comparable<Event>, Serializable {
         this.hasBreak = hasBreak;
     }
 
+    /**
+     * @param eventType
+     * @return null if eventype is not a valid one
+     */
+    public static String getEventTypeStr(int eventType) {
+        String str = null;
+        switch (eventType) {
+            case MEAL: {
+                str = "Meal";
+                break;
+            }
+            case OTHER: {
+                str = "Other";
+                break;
+            }
+            case EXERCISE: {
+                str = "Exercise";
+                break;
+            }
+            case BM: {
+                str = "Bm";
+                break;
+            }
+            case RATING: {
+                str = "Rating";
+                break;
+            }
+        }
+        return str;
+    }
+
     public LocalDateTime getTime() {
         return time;
     }
@@ -65,52 +94,22 @@ public abstract class Event implements Comparable<Event>, Serializable {
 
     /**
      * This method only changes the date of the event, not the time
+     *
      * @param ld
      */
-    public void setDate(LocalDate ld){
-       time =  LocalDateTime.of(ld, time.toLocalTime());
+    public void setDate(LocalDate ld) {
+        time = LocalDateTime.of(ld, time.toLocalTime());
     }
 
     public String getComment() {
         return comment;
     }
+
     public void setComment(String comment) {
         this.comment = comment;
     }
 
- public abstract int getType();
-
-    /**
-     *
-     * @param eventType
-     * @return null if eventype is not a valid one
-     */
-    public static String getEventTypeStr(int eventType){
-        String str = null;
-        switch (eventType) {
-            case MEAL: {
-                str = "Meal";
-                break;
-            }
-            case OTHER: {
-                str = "Other";
-                break;
-            }
-            case EXERCISE: {
-                str = "Exercise";
-                break;
-            }
-            case BM: {
-                str = "Bm";
-                break;
-            }
-            case RATING: {
-                str = "Rating";
-                break;
-            }
-        }
-        return str;
-    }
+    public abstract int getType();
 
     //classes for parceable, most of them are implemented higher up in hierarchy.
     /*public Event(Parcel in){

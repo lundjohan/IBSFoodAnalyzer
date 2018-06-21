@@ -7,8 +7,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.johanlund.database.DBHandler;
 import com.johanlund.help_classes.AndroidTestUtil;
-import com.johanlund.screens.main.DrawerActivity;
 import com.johanlund.model.TagType;
+import com.johanlund.screens.main.DrawerActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,11 +27,12 @@ import static org.hamcrest.Matchers.allOf;
 public class NewTagBackButtonTest {
 
     @Rule
-    public ActivityTestRule<DrawerActivity> mActivityTestRule = new ActivityTestRule<>(DrawerActivity
+    public ActivityTestRule<DrawerActivity> mActivityTestRule = new ActivityTestRule<>
+            (DrawerActivity
             .class);
 
     @Before
-    public void clearDatabase(){
+    public void clearDatabase() {
         AndroidTestUtil.clearDatabaseByClicking();
     }
 
@@ -47,6 +48,7 @@ public class NewTagBackButtonTest {
         //should be back in MealActivity, check for some id there
         onView(withId(R.id.mealContainer)).check(matches(isDisplayed()));
     }
+
     @Test
     public void newTagBackButtonWhenThereAreTagsAddedTest() {
         //add a tag type...

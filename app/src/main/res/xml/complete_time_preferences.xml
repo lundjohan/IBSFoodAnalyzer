@@ -7,31 +7,31 @@
             android:defaultValue="4"
             android:enabled="true"
             android:key="@string/time_complete_start"
-            android:title="Completeness Score Start"
             android:summary="The lowest completeness score the time period is allowed to have."
+            android:title="Completeness Score Start"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_minValue="1"
             sample:msbp_maxValue="5"
             sample:msbp_measurementUnit="points"
+            sample:msbp_minValue="1"
             />
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="5"
             android:enabled="true"
             android:key="@string/time_complete_end"
-            android:title="Completeness Score End"
             android:summary="The highest completeness score the time period is allowed to have."
+            android:title="Completeness Score End"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_minValue="1"
             sample:msbp_maxValue="5"
             sample:msbp_measurementUnit="points"
+            sample:msbp_minValue="1"
             />
         <Preference
             android:key="pref_static_field_key"
-            android:selectable="false"
             android:persistent="false"
-            android:title="Score Reference"
-            android:summary="@string/complete_info_score"/>
+            android:selectable="false"
+            android:summary="@string/complete_info_score"
+            android:title="Score Reference"/>
     </PreferenceCategory>
 </PreferenceScreen>

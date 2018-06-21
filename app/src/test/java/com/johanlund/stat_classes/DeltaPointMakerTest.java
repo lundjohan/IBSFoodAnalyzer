@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class DeltaPointMakerTest {
     @Test
-    public void test(){
+    public void test() {
 
     }
 }

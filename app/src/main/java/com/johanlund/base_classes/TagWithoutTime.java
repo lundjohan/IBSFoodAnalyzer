@@ -18,7 +18,8 @@ public class TagWithoutTime implements Serializable {
     public double getSize() {
         return size;
     }
-    public void setSize(double d){
+
+    public void setSize(double d) {
         size = d;
     }
 }

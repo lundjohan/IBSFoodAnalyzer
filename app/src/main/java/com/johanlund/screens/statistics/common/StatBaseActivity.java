@@ -12,7 +12,7 @@ import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.info.InfoActivity;
 import com.johanlund.stat_backend.point_classes.PointBase;
 
-public abstract class StatBaseActivity <E extends PointBase> extends AppCompatActivity {
+public abstract class StatBaseActivity<E extends PointBase> extends AppCompatActivity {
     protected RecyclerView recyclerView;
     protected StatAdapter<E> adapter;
     protected LinearLayoutManager layoutManager;
@@ -27,7 +27,8 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
                 .VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
 
-        //Don't reduce this two lines to one. Variable adapter is needed later in AsyncTask and must be initialized.
+        //Don't reduce this two lines to one. Variable adapter is needed later in AsyncTask and
+        // must be initialized.
         adapter = getStatAdapter();
         recyclerView.setAdapter(adapter);
         //add line separator
@@ -38,6 +39,7 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
         getSupportActionBar().setTitle(getStringForTitle());
         calculateStats();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -48,6 +50,7 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
             asyncThread = null;
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -95,6 +98,7 @@ public abstract class StatBaseActivity <E extends PointBase> extends AppCompatAc
     public abstract StatAdapter<E> getStatAdapter();
 
     public abstract String getStringForTitle();
+
     public abstract ScoreWrapperBase<E> getScoreWrapper();
     //public abstract List<ScoreTimesBase> getScoreTimesBases(List<LocalDateTime> allBreaks);
 }

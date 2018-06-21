@@ -1,6 +1,6 @@
 package com.johanlund.stat_backend.point_classes;
 
-public class TagPoint implements PointBase{
+public class TagPoint implements PointBase {
     private String name;
     private double quantity;
 
@@ -30,10 +30,6 @@ public class TagPoint implements PointBase{
         this.quantity = quantity;
     }
 
-    public int getNrOfBMs(){
-        return nrOfBMs;
-    }
-
     public TagPoint(String name, double quantity, double orig_tot_points) {
         super();
         this.name = name;
@@ -42,6 +38,10 @@ public class TagPoint implements PointBase{
 
         //initiate with this value
         this.tot_points = orig_tot_points;
+    }
+
+    public int getNrOfBMs() {
+        return nrOfBMs;
     }
 
     private double getSumCompletes() {

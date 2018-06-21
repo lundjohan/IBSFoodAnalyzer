@@ -6,8 +6,8 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.johanlund.screens.main.DrawerActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
+import com.johanlund.screens.main.DrawerActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +40,7 @@ public class NewEventBackButtonTest {
             (DrawerActivity.class);
 
     @Before
-    public void clearDatabase(){
+    public void clearDatabase() {
         AndroidTestUtil.clearDatabaseByClicking();
     }
 
@@ -63,10 +63,11 @@ public class NewEventBackButtonTest {
 
     }
 
-    private void checkThatBackActionCameBackToSameView(int id, String contentDesc, int notExistingId, int pos) {
+    private void checkThatBackActionCameBackToSameView(int id, String contentDesc, int
+            notExistingId, int pos) {
         //Click "New Meal Button"
         ViewInteraction appCompatImageButton = onView(
-                allOf(withId(id),withContentDescription(contentDesc),
+                allOf(withId(id), withContentDescription(contentDesc),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.buttons),
@@ -91,9 +92,10 @@ public class NewEventBackButtonTest {
         onView(withId(notExistingId))
                 .check(doesNotExist());
     }
+
     //removed the rating that was added in beginning.
     //the code in method comes from espresso recording.
-    public void cleanUp(){
+    public void cleanUp() {
         ViewInteraction linearLayout = onView(
                 allOf(withClassName(is("android.widget.LinearLayout")),
                         withParent(withId(R.id.events_layout)),
@@ -102,17 +104,22 @@ public class NewEventBackButtonTest {
 
         ViewInteraction appCompatTextView = onView(
                 allOf(withId(R.id.title), withText("Delete Event"), isDisplayed()));
-        appCompatTextView.perform(click());   }
+        appCompatTextView.perform(click());
+    }
+
     @Test
     public void newEventsBackButtonTest() {
         fillRecyclerViewWithAnRatingEvent();
         checkThatBackActionCameBackToSameView(R.id.mealBtn, "Meal", R.id.meal_item_container, 0);
-        checkThatBackActionCameBackToSameView(R.id.otherBtn, "Other",R.id.other_item_container,1);
-        checkThatBackActionCameBackToSameView(R.id.exerciseBtn, "Exercise",R.id.exercise_item_container,2);
-        checkThatBackActionCameBackToSameView(R.id.bmBtn, "Bowel Movement",R.id.bm_item_container,3);
+        checkThatBackActionCameBackToSameView(R.id.otherBtn, "Other", R.id.other_item_container, 1);
+        checkThatBackActionCameBackToSameView(R.id.exerciseBtn, "Exercise", R.id
+                .exercise_item_container, 2);
+        checkThatBackActionCameBackToSameView(R.id.bmBtn, "Bowel Movement", R.id
+                .bm_item_container, 3);
 
         //cannot have rating as not existing, therefore meal
-        checkThatBackActionCameBackToSameView(R.id.ratingBtn, "Rating", R.id.meal_item_container,4);
+        checkThatBackActionCameBackToSameView(R.id.ratingBtn, "Rating", R.id.meal_item_container,
+                4);
         cleanUp();
     }
 }

@@ -18,11 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.johanlund.database.DBHandler;
+import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.model.EventsTemplate;
 import com.johanlund.screens.events_container_classes.EditEventsTemplateActivity;
 import com.johanlund.screens.events_container_classes.LoadEventsTemplateActivity;
-import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.events_templates.TemplateFragment;
-import com.johanlund.model.EventsTemplate;
 
 import java.io.Serializable;
 
@@ -93,10 +93,18 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         };
     }
 
+    //also used in copy function in Diary
+    public static void startLoadEventsTemplate(EventsTemplate et, Activity activity) {
+        Intent intent = new Intent(activity, LoadEventsTemplateActivity.class);
+        intent.putExtra(EVENTSTEMPLATE_TO_LOAD, et);
+        activity.startActivityForResult(intent, LOAD_EVENTS_FROM_EVENTSTEMPLATE);
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Passing the inflater job to the cursor-adapter
-        View v = mCursorAdapter.newView(usingFragment.getContext(), mCursorAdapter.getCursor(), parent);
+        View v = mCursorAdapter.newView(usingFragment.getContext(), mCursorAdapter.getCursor(),
+                parent);
         return new ViewHolder(v);
     }
 
@@ -104,7 +112,8 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         mCursorAdapter.getCursor().moveToPosition(position);
-        mCursorAdapter.bindView(holder.itemView, usingFragment.getContext(), mCursorAdapter.getCursor());
+        mCursorAdapter.bindView(holder.itemView, usingFragment.getContext(), mCursorAdapter
+                .getCursor());
         viewHolder.three_dots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,18 +124,9 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         });
     }
 
-
     @Override
     public int getItemCount() {
         return mCursorAdapter.getCount();
-    }
-
-
-    //also used in copy function in Diary
-    public static void startLoadEventsTemplate(EventsTemplate et, Activity activity){
-        Intent intent = new Intent(activity, LoadEventsTemplateActivity.class);
-        intent.putExtra(EVENTSTEMPLATE_TO_LOAD, et);
-        activity.startActivityForResult(intent, LOAD_EVENTS_FROM_EVENTSTEMPLATE);
     }
 
     public void doPopupMenu(View v, final int position) {
@@ -145,7 +145,8 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                     EventsTemplate et = retrieveEventsTemplate(eventsTemplateId);
 
-                    Intent intent = new Intent(usingFragment.getContext(), EditEventsTemplateActivity.class);
+                    Intent intent = new Intent(usingFragment.getContext(),
+                            EditEventsTemplateActivity.class);
                     intent.putExtra(EVENTSTEMPLATE_TO_CHANGE, (Serializable) et);
                     intent.putExtra(ID_OF_EVENTSTEMPLATE, eventsTemplateId);
 
@@ -159,7 +160,8 @@ public class EventsTemplateAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     String nameOfTemplate = c.getString(c.getColumnIndex(COLUMN_NAME));
 
                     //this code is very similar to delete pop up in other places. Place in Util?
-                    AlertDialog.Builder builder = new AlertDialog.Builder(usingFragment.getContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(usingFragment
+                            .getContext());
                     builder.setCancelable(true);
                     builder.setTitle("Confirm remove");
                     builder.setMessage("Remove template " + nameOfTemplate + "?");

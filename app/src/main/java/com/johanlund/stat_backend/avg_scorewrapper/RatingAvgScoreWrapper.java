@@ -1,13 +1,12 @@
 package com.johanlund.stat_backend.avg_scorewrapper;
 
+import com.johanlund.stat_backend.makers.TagPointMaker;
 import com.johanlund.stat_backend.point_classes.TagPoint;
+import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.johanlund.stat_backend.makers.TagPointMaker;
-import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 /**
  * Created by Johan on 2017-06-25.
@@ -29,9 +28,11 @@ public class RatingAvgScoreWrapper extends AvgScoreWrapper {
 
     @Override
     public List<TagPoint> calcScore(List<TagsWrapperBase> chunks, Map<String, TagPoint> tagPoints) {
-        /*TODO TYPE CONVERSION TO ARRAYLIST => PROBABLY SLOW AND INEFFECTIVE, TRY INSTEAD to use Collection instead of List lower in hierarchy.
+        /*TODO TYPE CONVERSION TO ARRAYLIST => PROBABLY SLOW AND INEFFECTIVE, TRY INSTEAD to use
+        Collection instead of List lower in hierarchy.
          */
-        return new ArrayList<>(TagPointMaker.doAvgScore(chunks, startHoursAfterEvent, stopHoursAfterEvent,
+        return new ArrayList<>(TagPointMaker.doAvgScore(chunks, startHoursAfterEvent,
+                stopHoursAfterEvent,
                 tagPoints).values());
     }
 

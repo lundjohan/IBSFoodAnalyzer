@@ -12,13 +12,14 @@ public class Other extends InputEvent {
 
         super(time, tags);
     }
+
     public Other(LocalDateTime time, String comment, List<TagWithoutTime> tags) {
 
         super(time, comment, tags);
     }
 
     public Other(LocalDateTime ldt, String comment, boolean hasBreak, List<TagWithoutTime> tags) {
-        super(ldt, comment, hasBreak,tags);
+        super(ldt, comment, hasBreak, tags);
     }
 
     @Override

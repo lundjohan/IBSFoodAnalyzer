@@ -18,7 +18,6 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Exercise;
 import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Tag;
-import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.ibsfoodanalyzer.R;
 
 import java.util.ArrayList;
@@ -66,6 +65,7 @@ public class Util {
         return (int) (dpWidth);
         //return (int)(dpWidth/mNoOfColumns);
     }
+
     /**
      * tags exist in Meal, Other and Exercise events.
      *
@@ -78,19 +78,20 @@ public class Util {
             if (e instanceof InputEvent) {
                 tags.addAll(((InputEvent) e).getInputTags());
             } else if (e instanceof Exercise) {
-                tags.add(new Tag(e.getTime(),((Exercise) e).getTypeOfExercise()));
+                tags.add(new Tag(e.getTime(), ((Exercise) e).getTypeOfExercise()));
             }
         }
         return tags;
     }
 
-    public static void setNrsForNumberPicker (NumberPicker np, boolean startValueIsOne){
+    public static void setNrsForNumberPicker(NumberPicker np, boolean startValueIsOne) {
         np.setMinValue(0);
         np.setMaxValue(9);
         if (startValueIsOne == true) {
             np.setValue(1);
         }
     }
+
     public static void useNumberPickerDialog(Activity activity, final TextView textWithNrToChange) {
         View v = activity.getLayoutInflater().inflate(R.layout.decimal_number_picker, null);
         final NumberPicker np1 = (NumberPicker) v.findViewById(R.id.numberPicker1);
@@ -119,28 +120,28 @@ public class Util {
                 .show();
     }
 
-    public static long [] appendToArray(long [] arr, long toAdd){
-        long [] ret;
-        if (arr == null){
-            ret = new long [1];
-        }
-        else {
+    public static long[] appendToArray(long[] arr, long toAdd) {
+        long[] ret;
+        if (arr == null) {
+            ret = new long[1];
+        } else {
             ret = new long[arr.length + 1];
         }
-        for(int i = 0;i < ret.length;i++)
-            ret[ret.length-1] = toAdd;
+        for (int i = 0; i < ret.length; i++)
+            ret[ret.length - 1] = toAdd;
         return ret;
     }
 
     // suGar => Sugar
     public static String makeFirstLetterCapitalAndRestSmall(String str) {
-        if (str == null || str.length() == 0){
+        if (str == null || str.length() == 0) {
             return str;
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 
-    public static void addLineSeparator(RecyclerView recyclerView, LinearLayoutManager layoutManager){
+    public static void addLineSeparator(RecyclerView recyclerView, LinearLayoutManager
+            layoutManager) {
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(recyclerView
                 .getContext(),
                 layoutManager.getOrientation());

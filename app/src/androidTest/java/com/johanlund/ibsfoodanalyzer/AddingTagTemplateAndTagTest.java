@@ -22,14 +22,14 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.hasToString;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class AddingTagTemplateAndTagTest {
 
     @Rule
-    public ActivityTestRule<DrawerActivity> mActivityTestRule = new ActivityTestRule<>(DrawerActivity
+    public ActivityTestRule<DrawerActivity> mActivityTestRule = new ActivityTestRule<>
+            (DrawerActivity
             .class);
 
     @Test

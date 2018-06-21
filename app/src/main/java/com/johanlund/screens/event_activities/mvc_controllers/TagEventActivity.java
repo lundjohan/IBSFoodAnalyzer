@@ -15,16 +15,17 @@ import static com.johanlund.constants.Constants.TAGS_TO_ADD;
 import static com.johanlund.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 
 public abstract class TagEventActivity extends EventActivity {
-     /*
-    ================================================================================================
-    TAG RELATED
-    ================================================================================================
+    /*
+   ================================================================================================
+   TAG RELATED
+   ================================================================================================
 
-     */
-     public void newTagAdderActivity(View view) {
-         Intent intent = new Intent(this, TagAdderActivity.class);
-         startActivityForResult(intent, TAGS_TO_ADD);
-     }
+    */
+    public void newTagAdderActivity(View view) {
+        Intent intent = new Intent(this, TagAdderActivity.class);
+        startActivityForResult(intent, TAGS_TO_ADD);
+    }
+
     //data coming back from TagAdder
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -63,7 +64,7 @@ public abstract class TagEventActivity extends EventActivity {
 
     private void delTagsWithNamesThatHasNoOccuranceInModel() {
         List<String> tagNames = mViewMVC.getTagNames();
-        for (String tagName: tagNames){
+        for (String tagName : tagNames) {
             if (eventManager.tagTemplateDoesntExist(tagName)) {
                 mViewMVC.removeTagFromView(tagName);
             }

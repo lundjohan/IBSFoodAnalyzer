@@ -6,9 +6,9 @@ import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
 
 import java.util.List;
 
-public class BmTimeScoreWrapper extends TimeScoreWrapper{
+public class BmTimeScoreWrapper extends TimeScoreWrapper {
     public BmTimeScoreWrapper(int scoreStart, int scoreEnd) {
-        super(scoreStart, scoreEnd,0);
+        super(scoreStart, scoreEnd, 0);
     }
 
     @Override

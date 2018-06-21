@@ -9,8 +9,8 @@ import java.util.List;
 public interface TagsWrapperBase {
 
     List<Tag> getTags();
-    
-    List<ScoreTime>getScoreTimes();
+
+    List<ScoreTime> getScoreTimes();
 
     LocalDateTime getChunkEnd();
 }

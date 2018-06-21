@@ -1,8 +1,8 @@
 package com.johanlund.stat_backend.makers;
 
-import com.johanlund.stat_backend.stat_util.Chunk;
 import com.johanlund.base_classes.Meal;
 import com.johanlund.stat_backend.point_classes.TagPoint;
+import com.johanlund.stat_backend.stat_util.Chunk;
 import com.johanlund.stat_backend.stat_util.TPUtil;
 
 import org.threeten.bp.LocalDateTime;
@@ -108,7 +108,8 @@ public class TagPointPortionsHandler {
     }
 
     public static void addPortionScore(List<Chunk> chunks,
-                                       Map<String, TagPoint> tagPoints, long hours, long size) throws Exception {
+                                       Map<String, TagPoint> tagPoints, long hours, long size)
+            throws Exception {
         for (Chunk chunk : chunks) {
             addPortionScore(chunk, tagPoints, hours, size);
         }

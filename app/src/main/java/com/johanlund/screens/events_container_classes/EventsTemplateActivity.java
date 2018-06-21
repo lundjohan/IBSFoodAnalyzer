@@ -18,7 +18,6 @@ import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity;
-import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
 import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
@@ -29,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.johanlund.constants.Constants.EVENT_POSITION;
-import static com.johanlund.constants.Constants.CHANGING_EVENT_ID;
 import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;

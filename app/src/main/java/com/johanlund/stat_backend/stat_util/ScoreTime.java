@@ -20,7 +20,7 @@ public class ScoreTime {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return datetime.toString();
     }
 }

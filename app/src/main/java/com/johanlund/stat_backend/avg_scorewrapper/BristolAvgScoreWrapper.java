@@ -14,9 +14,11 @@ import java.util.Map;
 
 public class BristolAvgScoreWrapper extends AvgScoreWrapper {
 
-    public BristolAvgScoreWrapper(int furthest_distance_hours_before_bm_limit, int shortest_distance_hours_before_bm_limit, int
+    public BristolAvgScoreWrapper(int furthest_distance_hours_before_bm_limit, int
+            shortest_distance_hours_before_bm_limit, int
             quantLimit) {
-        super(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit, quantLimit);
+        super(furthest_distance_hours_before_bm_limit, shortest_distance_hours_before_bm_limit,
+                quantLimit);
     }
 
     @Override

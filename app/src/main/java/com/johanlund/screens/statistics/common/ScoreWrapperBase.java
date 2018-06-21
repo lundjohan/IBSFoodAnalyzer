@@ -11,10 +11,11 @@ import java.util.List;
  * Generic abstract class
  */
 
-public abstract class ScoreWrapperBase <E extends PointBase>{
+public abstract class ScoreWrapperBase<E extends PointBase> {
 
     /**
      * Given: breaks have already been accounted for.
+     *
      * @param chunks
      * @return
      */
@@ -22,10 +23,10 @@ public abstract class ScoreWrapperBase <E extends PointBase>{
 
     public abstract List<E> toSortedList(List<E> points);
 
-    public List<E> removePointsWithTooLowQuant(List<E> sortedList){
-        List<E>trimmedTimePointList = new ArrayList<>();
-        for (E p:sortedList){
-            if(quantIsOverLimit(p)){
+    public List<E> removePointsWithTooLowQuant(List<E> sortedList) {
+        List<E> trimmedTimePointList = new ArrayList<>();
+        for (E p : sortedList) {
+            if (quantIsOverLimit(p)) {
                 trimmedTimePointList.add(p);
             }
         }
@@ -34,6 +35,7 @@ public abstract class ScoreWrapperBase <E extends PointBase>{
 
     /**
      * Return false, in case it is not implemented.
+     *
      * @param point
      * @return
      */

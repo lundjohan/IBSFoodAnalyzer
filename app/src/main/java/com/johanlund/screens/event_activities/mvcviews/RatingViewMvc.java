@@ -13,9 +13,10 @@ import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
-public class RatingViewMvc extends EventViewMvcAbstract{
+public class RatingViewMvc extends EventViewMvcAbstract {
     TextView scoreName;
     SeekBar scoreBar;
+
     public RatingViewMvc(LayoutInflater inflater, ViewGroup container) {
         super(inflater, container);
     }
@@ -71,6 +72,7 @@ public class RatingViewMvc extends EventViewMvcAbstract{
 
     @Override
     public void bindAddedTagToView(String tagName) {/*no tags to bind in this view*/}
+
     @Override
     public void removeTagFromView(String tagName) {
         /*

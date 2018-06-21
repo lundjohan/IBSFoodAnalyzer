@@ -10,6 +10,7 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="Score"
@@ -18,16 +19,15 @@
         tools:layout_conversion_absoluteHeight="16dp"
         tools:layout_conversion_absoluteWidth="36dp"
         tools:layout_conversion_absoluteX="8dp"
-        tools:layout_conversion_absoluteY="120dp"
-        android:layout_marginStart="8dp"/>
+        tools:layout_conversion_absoluteY="120dp"/>
 
     <TextView
         android:id="@+id/intensityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_toEndOf="@+id/textView12"
         android:layout_toRightOf="@+id/textView12"
         android:text="name"
@@ -45,9 +45,9 @@
         style="@android:style/Widget.SeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/textView12"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_marginTop="11dp"
         android:layout_toEndOf="@+id/textView12"
         android:layout_toRightOf="@+id/textView12"

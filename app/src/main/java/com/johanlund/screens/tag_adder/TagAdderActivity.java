@@ -17,8 +17,8 @@ import com.johanlund.constants.Constants;
 import com.johanlund.database.DBHandler;
 import com.johanlund.database.TagnameCursorAdapter;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.screens.info.ActivityInfoContent;
 import com.johanlund.model.TagType;
+import com.johanlund.screens.info.ActivityInfoContent;
 import com.johanlund.screens.tag_type.TagTypeAdderActivity;
 import com.johanlund.screens.tag_type.TagTypeEditActivity;
 

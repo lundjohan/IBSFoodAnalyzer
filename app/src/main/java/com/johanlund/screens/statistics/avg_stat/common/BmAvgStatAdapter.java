@@ -2,7 +2,6 @@ package com.johanlund.screens.statistics.avg_stat.common;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.johanlund.screens.statistics.avg_stat.common.AvgStatAdapter;
 import com.johanlund.stat_backend.avg_scorewrapper.AvgScoreWrapper;
 import com.johanlund.stat_backend.point_classes.TagPoint;
 
@@ -14,6 +13,7 @@ public class BmAvgStatAdapter extends AvgStatAdapter {
     public BmAvgStatAdapter(AvgScoreWrapper avgScoreWrapper) {
         super(avgScoreWrapper);
     }
+
     //this is the essential one
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {

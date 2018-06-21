@@ -15,13 +15,15 @@ public class TagPointMaker {
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
         List<Tag> tagsMaterial = chunk.getTags();
         for (Tag tTemp : tagsMaterial) {
-            Tag t = (Tag)tTemp;
-            TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));
+            Tag t = (Tag) tTemp;
+            TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime
+                    ().plusHours(stopHoursAfterEvent));
 
             /*very waste of resources giving all Ratings everytime (since tagsMaterial and Ratings
             are sorted, perhaps a cache can be used. A wrapper class called RatingCache perhaps?)*/
 
-            double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getScoreTimes(), chunk.getChunkEnd());
+            double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getScoreTimes(), chunk
+                    .getChunkEnd());
             if (scoreQuant[1] == 0.0) {
                 continue;
             }
@@ -32,7 +34,7 @@ public class TagPointMaker {
 
             double pointsForTag = scoreQuant[0];
             //multiply tag size with factor
-            double quant = t.getSize()*scoreQuant[1];
+            double quant = t.getSize() * scoreQuant[1];
 
             if (tpInMap == null) {
                 tpToInsert = new TagPoint(name, quant, pointsForTag * quant);
@@ -44,7 +46,8 @@ public class TagPointMaker {
         }
     }
 
-    public static Map<String, TagPoint> doAvgScore(List<TagsWrapperBase> chunks, int waitHoursAfterEvent,
+    public static Map<String, TagPoint> doAvgScore(List<TagsWrapperBase> chunks, int
+            waitHoursAfterEvent,
                                                    int stopHoursAfterEvent, Map<String,
             TagPoint> tagPoints) {
         for (TagsWrapperBase chunk : chunks) {

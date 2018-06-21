@@ -6,9 +6,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.johanlund.database.DBHandler;
-import com.johanlund.screens.main.DrawerActivity;
 import com.johanlund.help_classes.AndroidTestUtil;
 import com.johanlund.model.TagType;
+import com.johanlund.screens.main.DrawerActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -43,20 +43,21 @@ public class TagTemplateChangesAndDeletesTests {
     @Rule
     public ActivityTestRule<DrawerActivity> mActivityTestRule = new ActivityTestRule<>
             (DrawerActivity
-            .class);
+                    .class);
 
     @Before
-    public void clearDatabase(){
-        AndroidTestUtil.clearDatabaseByClickingAndInternally(mActivityTestRule.getActivity().getApplicationContext());
+    public void clearDatabase() {
+        AndroidTestUtil.clearDatabaseByClickingAndInternally(mActivityTestRule.getActivity()
+                .getApplicationContext());
     }
 
-    private void goToTagAdderActivity(){
+    private void goToTagAdderActivity() {
         onView(allOf(withId(R.id.otherBtn), isDisplayed())).perform(click());
         onView(withId(R.id.addTagsBtn)).perform(click());
     }
 
     //starts inside TagAdderActivity
-    private void createATagTemplate(String nameOfTagTemplate){
+    private void createATagTemplate(String nameOfTagTemplate) {
         //create a new TagType and add it to an OtherEvent and click done in TagAdderActivity
         // and in OtherActivity so it is placed in diary.
         onView(withId(R.id.menu_add_new)).perform(click());
@@ -66,7 +67,8 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withId(R.id.menu_done)).perform(click());
 
         //Inside DiaryFragment, check that the tag has been added.
-        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString(nameOfTagTemplate))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                (nameOfTagTemplate))))).check(matches(isDisplayed()));
         //go back into the event
         onView(allOf(isDisplayed(), withId(R.id.events_layout)))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
@@ -76,6 +78,7 @@ public class TagTemplateChangesAndDeletesTests {
 
 
     }
+
     @Test
     public void deletedTagTemplateBackBtnTest() throws InterruptedException {
         goToTagAdderActivity();
@@ -102,10 +105,12 @@ public class TagTemplateChangesAndDeletesTests {
         pressBack();
         //You should now be inside DiaryFragment, and
         // the tag should not be found anywhere.
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Butter"))))).check(doesNotExist());
 
 
     }
+
     @Test
     public void editedTagTemplateBackBtnTest() throws InterruptedException {
         goToTagAdderActivity();
@@ -149,11 +154,14 @@ public class TagTemplateChangesAndDeletesTests {
 
         //You should now be inside DiaryFragment, and
         // the tag should not be found anywhere.
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Cream"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Butter"))))).check(doesNotExist());
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Cream"))))).check(matches(isDisplayed()));
 
 
     }
+
     @Test
     public void deletedTagTemplateDoneTest() {
         goToTagAdderActivity();
@@ -166,8 +174,10 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withId(R.id.menu_done)).perform(click());
 
         //Now should be back in OtherActivity, check that there are Butter and Sugar tags in list.
-        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Butter"))))).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Sugar"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Butter"))
+        ))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Sugar")))
+        )).check(matches(isDisplayed()));
 
         //go back to TagAdder and remove "Butter"
         onView(withId(R.id.addTagsBtn)).perform(click());
@@ -181,19 +191,27 @@ public class TagTemplateChangesAndDeletesTests {
                 closeSoftKeyboard());
         onView(withId(R.id.menu_done)).perform(click());
 
-        //Now, inside OtherActivity again, there should only be two tags, Sugar and Honey. Butter should be gone.
-        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Honey"))))).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Sugar"))))).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
+        //Now, inside OtherActivity again, there should only be two tags, Sugar and Honey. Butter
+        // should be gone.
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Honey")))
+        )).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Sugar")))
+        )).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.addedTagsView), hasDescendant(withText(containsString("Butter"))
+        ))).check(doesNotExist());
 
         //change the event to the one displayed in OtherActivity
         onView(withId(R.id.menu_done)).perform(click());
 
         //now inside DiaryFragment, do checks
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Honey"))))).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Sugar"))))).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Honey"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Sugar"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Butter"))))).check(doesNotExist());
     }
+
     @Test
     public void editedTagTemplateDoneTest() {
         goToTagAdderActivity();
@@ -231,16 +249,22 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withId(R.id.menu_done)).perform(click());
         //You should now be inside DiaryFragment, and
         // the tag should not be found anywhere.
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(doesNotExist());
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Cream"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Butter"))))).check(doesNotExist());
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Cream"))))).check(matches(isDisplayed()));
     }
+
     /**
-     * This test exists simply because there was an error when deleting a tagTemplate say in place 0 in ListView, than it was always the TagType in last position that was deleted instead.
+     * This test exists simply because there was an error when deleting a tagTemplate say in
+     * place 0 in ListView, than it was always the TagType in last position that was deleted
+     * instead.
      */
     @Test
     public void correctTagTemplateIsDeletedTest() {
         //add 2 TagTemplates
-        DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
+        DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext
+                ());
         TagType butter = new TagType("Butter", null);
         TagType sugar = new TagType("Sugar", null);
         dbHandler.addTagTemplate(butter);
@@ -248,8 +272,10 @@ public class TagTemplateChangesAndDeletesTests {
 
         goToTagAdderActivity();
 
-        /*temporary test, right now the tagtemplate that was added first is placed first in listOfTags,
-        this will probably change later though (to sort order by name etc). Change this sentence then. I don't know how to do it now.
+        /*temporary test, right now the tagtemplate that was added first is placed first in
+        listOfTags,
+        this will probably change later though (to sort order by name etc). Change this sentence
+        then. I don't know how to do it now.
         */
         onData(anything())
                 .inAdapterView(withId(R.id.listOfTags))
@@ -279,9 +305,11 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withText(containsString("Sugar"))).check(matches(isDisplayed()));
 
     }
+
     @Test
     public void whileInEditingTagTemplateAddingInheritance() {
-        DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext());
+        DBHandler dbHandler = new DBHandler(mActivityTestRule.getActivity().getApplicationContext
+                ());
         TagType butter = new TagType("Butter", null);
         dbHandler.addTagTemplate(butter);
 
@@ -313,7 +341,8 @@ public class TagTemplateChangesAndDeletesTests {
         //now in TagAdder again
         onView(allOf(withId(R.id.menu_add_new))).check(matches(isDisplayed()));
         onView(withText("Butter")).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.name_of_stat_option), withText("Lacteo"))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.name_of_stat_option), withText("Lacteo"))).check(matches
+                (isDisplayed()));
 
         //remove soft keyboard
         pressBack();
@@ -329,7 +358,9 @@ public class TagTemplateChangesAndDeletesTests {
         onView(withId(R.id.menu_done)).perform(click());
 
         //You should now be in Diary
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Butter"))))).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.tagNames),isDisplayed(), hasDescendant(withText(containsString("Lacteo"))))).check(doesNotExist());
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Butter"))))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.tagNames), isDisplayed(), hasDescendant(withText(containsString
+                ("Lacteo"))))).check(doesNotExist());
     }
 }

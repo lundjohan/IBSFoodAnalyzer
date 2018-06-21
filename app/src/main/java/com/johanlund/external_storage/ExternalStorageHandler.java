@@ -28,7 +28,7 @@ import static com.johanlund.database.TablesAndStrings.DATABASE_NAME;
 
 /**
  * Created by Johan on 2017-05-31.
- *
+ * <p>
  * To check if permissions work, disable permissions in Android Settings for app.
  */
 
@@ -49,7 +49,8 @@ public class ExternalStorageHandler {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 requestPermission(Manifest.permission
-                        .WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE, activity);
+                        .WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE,
+                        activity);
             } else {
                 requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE, activity);
@@ -59,6 +60,7 @@ public class ExternalStorageHandler {
                     .LENGTH_SHORT).show();
         }
     }
+
     public static void showReadablePermission(Activity activity) {
         int permissionCheck = ContextCompat.checkSelfPermission(
                 activity, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -66,7 +68,8 @@ public class ExternalStorageHandler {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 requestPermission(Manifest.permission
-                        .READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE, activity);
+                        .READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE,
+                        activity);
             } else {
                 requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
                         REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE, activity);
@@ -82,12 +85,13 @@ public class ExternalStorageHandler {
         ActivityCompat.requestPermissions(activity,
                 new String[]{permissionName}, permissionRequestCode);
     }
-    public static File getFolderToSaveIn(){
-     return Environment.getExternalStoragePublicDirectory
-             (DIRECTORY_IBSFOODANALYZER);
+
+    public static File getFolderToSaveIn() {
+        return Environment.getExternalStoragePublicDirectory
+                (DIRECTORY_IBSFOODANALYZER);
     }
 
-    private static File makeFileToSaveTo(String nameOfFile){
+    private static File makeFileToSaveTo(String nameOfFile) {
         File directoryToSaveIn = getFolderToSaveIn();
         if (!directoryToSaveIn.exists()) {
             directoryToSaveIn.mkdirs();
@@ -98,6 +102,7 @@ public class ExternalStorageHandler {
         }
         return file;
     }
+
     //N.B! If this doesnt work for new Mime-types (that is, you cannot se file in windows),
     // it usually works if you restart mobile!!!
     //
@@ -109,14 +114,14 @@ public class ExternalStorageHandler {
     /*https://stackoverflow
      .com/questions/4646913/android-how-to-use-mediascannerconnection-scanfile*/
     private static void scanFile(Context c, File f, final String mimeType) {
-        MediaScannerConnection.scanFile(c, new String[]{f.getAbsolutePath()}, new String[]{mimeType}, new MediaScannerConnection.OnScanCompletedListener()
-        {
+        MediaScannerConnection.scanFile(c, new String[]{f.getAbsolutePath()}, new
+                String[]{mimeType}, new MediaScannerConnection.OnScanCompletedListener() {
             @Override
-            public void onScanCompleted(final String path, final Uri uri)
-            {
+            public void onScanCompleted(final String path, final Uri uri) {
             }
         });
     }
+
     /**
      * Nota Bene! If file or folder isn't showing up in Windows File Explorer - restart the
      * device (it flushes).
@@ -133,7 +138,7 @@ public class ExternalStorageHandler {
             if (currentDB.exists()) {
                 FileChannel src = new FileInputStream(currentDB).getChannel();
 
-                scanFile(c,backupDB, "application/x-sqlite3");
+                scanFile(c, backupDB, "application/x-sqlite3");
                 FileOutputStream fos = new FileOutputStream(backupDB);
 
                 FileChannel dst = fos.getChannel();
@@ -233,7 +238,6 @@ public class ExternalStorageHandler {
         }
         return importedEvents;
     }*/
-
 
 
 }

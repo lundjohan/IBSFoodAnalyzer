@@ -14,10 +14,10 @@ import android.widget.TextView;
 import com.johanlund.custom_views.HeadLineLayout;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.screens.tag_adder.TagAdderActivity;
+import com.johanlund.model.TagType;
 import com.johanlund.screens.info.ActivityInfoContent;
 import com.johanlund.screens.info.InfoActivity;
-import com.johanlund.model.TagType;
+import com.johanlund.screens.tag_adder.TagAdderActivity;
 import com.johanlund.util.Util;
 
 import java.io.Serializable;
@@ -32,9 +32,9 @@ import static com.johanlund.constants.Constants.WHICH_TYPE;
 
 public abstract class TagTypeActivity extends AppCompatActivity {
     protected TagType is_a = null;
-    private DBHandler dbHandler;
     protected EditText name;
     protected TextView type_of;
+    private DBHandler dbHandler;
 
     /**
      * a TagType must be sent back because 1. TagAdderActivity must now which TagType
@@ -46,7 +46,8 @@ public abstract class TagTypeActivity extends AppCompatActivity {
      */
     protected void finishDoneClicked(long idOfTagTemplate) {
         //1. create a TagType object from name, is_a
-        TagType tagType = new TagType(Util.makeFirstLetterCapitalAndRestSmall(name.getText().toString()), is_a);
+        TagType tagType = new TagType(Util.makeFirstLetterCapitalAndRestSmall(name.getText()
+                .toString()), is_a);
         //2 update database
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         Intent data = new Intent();
@@ -113,13 +114,13 @@ public abstract class TagTypeActivity extends AppCompatActivity {
         });
 
         //If list is empty, hide Tag Type parent functions....
-        if (dbHandler.tagTypesTableIsEmpty()){
+        if (dbHandler.tagTypesTableIsEmpty()) {
             HeadLineLayout parentHeadLine = (HeadLineLayout) findViewById(R.id.parentHeadLine);
             makeInvisible(type_of);
             makeInvisible(parentHeadLine);
         }
         //else do onClick for those functions
-        else{
+        else {
             type_of.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -168,6 +169,7 @@ public abstract class TagTypeActivity extends AppCompatActivity {
     //==============================================================================================
     // on clicks
     //==============================================================================================
+
     /**
      * Is called when add parent button/ textview is pressed
      */
@@ -175,11 +177,15 @@ public abstract class TagTypeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TagAdderActivity.class);
         startActivityForResult(intent, NEW_TYPE_FOR_TAGTEMPLATE);
     }
-    private void infoAddTagTypeName(){
-        InfoActivity.newInfoActivity(this, getResources().getString(R.string.add_new_tagtype_name_info));
+
+    private void infoAddTagTypeName() {
+        InfoActivity.newInfoActivity(this, getResources().getString(R.string
+                .add_new_tagtype_name_info));
     }
-    private void infoAddTagTypeParent(){
-        InfoActivity.newInfoActivity(this, getResources().getString(R.string.add_new_tagtype_parent_info));
+
+    private void infoAddTagTypeParent() {
+        InfoActivity.newInfoActivity(this, getResources().getString(R.string
+                .add_new_tagtype_parent_info));
     }
 
 }

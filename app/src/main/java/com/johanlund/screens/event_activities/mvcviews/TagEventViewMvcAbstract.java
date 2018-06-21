@@ -12,7 +12,6 @@ import android.widget.Button;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.InputEvent;
-import com.johanlund.base_classes.Tag;
 import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.event_activities.listadapters.TagEventAdapter;
@@ -20,7 +19,8 @@ import com.johanlund.screens.event_activities.listadapters.TagEventAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract implements TagEventAdapter.Listener {
+public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract implements
+        TagEventAdapter.Listener {
     protected List<TagWithoutTime> tagsList;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
@@ -30,6 +30,7 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
     public TagEventViewMvcAbstract(LayoutInflater inflater, ViewGroup container) {
         super(inflater, container);
     }
+
     @Override
     protected void initializeSpecViews() {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.addedTagsView);
@@ -48,14 +49,15 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
     }
+
     @Override
     protected void bindEventSpecsToView(Event e) {
-        tagsList.addAll(((InputEvent)e).getTagsWithoutTime());
+        tagsList.addAll(((InputEvent) e).getTagsWithoutTime());
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void bindAddedTagToView(String tagName){
+    public void bindAddedTagToView(String tagName) {
         TagWithoutTime tag = new TagWithoutTime(tagName, 1.0);
         tagsList.add(tag);
         adapter.notifyItemInserted(tagsList.size() - 1);
@@ -64,11 +66,12 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
 
     @Override
     public void removeTagFromView(String tagName) {
-        for (int i = 0 ;i<tagsList.size(); i++){
-            if (tagsList.get(i).getName().equals(tagName)){
+        for (int i = 0; i < tagsList.size(); i++) {
+            if (tagsList.get(i).getName().equals(tagName)) {
                 tagsList.remove(i);
             }
-            //break: should be here, but first has to implement that tags can not have dublettes in tagsList
+            //break: should be here, but first has to implement that tags can not have dublettes
+            // in tagsList
         }
         adapter.notifyDataSetChanged();
     }
@@ -76,7 +79,7 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
     @Override
     public List<String> getTagNames() {
         List<String> tagNames = new ArrayList<>();
-        for (TagWithoutTime t: tagsList){
+        for (TagWithoutTime t : tagsList) {
             tagNames.add(t.getName());
         }
         return tagNames;
@@ -84,11 +87,12 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
 
     /**
      * Get the text for the button that adds tags. ("Tags" is not intuitive for a new user).
+     *
      * @return
      */
     protected abstract String getTextForAddTagsBtn();
 
-    public void onTagItemDeleteClicked(View v, final int position){
+    public void onTagItemDeleteClicked(View v, final int position) {
         String nameOfTag = tagsList.get(position).getName();
         //here. Should be a pop up ("Removed item okra")
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -101,7 +105,7 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
                     public void onClick(DialogInterface dialog, int which) {
                         tagsList.remove(position);
                         adapter.notifyItemRemoved(position);
-                        adapter.notifyItemRangeChanged(position,tagsList.size());
+                        adapter.notifyItemRangeChanged(position, tagsList.size());
                     }
                 });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

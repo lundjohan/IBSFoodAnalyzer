@@ -6,10 +6,10 @@ import android.support.v7.preference.PreferenceManager;
 import com.johanlund.base_classes.Break;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.stat_backend.time_scorewrapper.RatingTimeScoreWrapper;
-import com.johanlund.stat_backend.time_scorewrapper.TimeScoreWrapper;
 import com.johanlund.stat_backend.stat_util.ScoreTime;
 import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
+import com.johanlund.stat_backend.time_scorewrapper.RatingTimeScoreWrapper;
+import com.johanlund.stat_backend.time_scorewrapper.TimeScoreWrapper;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -34,10 +34,12 @@ public class RatingTimeStatActivity extends TimeStatActivity {
     public TimeScoreWrapper getScoreWrapper() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
-        int ratingStart = preferences.getInt(getResources().getString(R.string.time_rating_start),5);
+        int ratingStart = preferences.getInt(getResources().getString(R.string.time_rating_start)
+                , 5);
         int ratingEnd = preferences.getInt(getResources().getString(R.string.time_rating_end), 7);
-        int durationLimit = preferences.getInt(getResources().getString(R.string.time_rating_duration_key),0);
-        return new RatingTimeScoreWrapper(ratingStart,ratingEnd, durationLimit);
+        int durationLimit = preferences.getInt(getResources().getString(R.string
+                .time_rating_duration_key), 0);
+        return new RatingTimeScoreWrapper(ratingStart, ratingEnd, durationLimit);
     }
 
     @Override

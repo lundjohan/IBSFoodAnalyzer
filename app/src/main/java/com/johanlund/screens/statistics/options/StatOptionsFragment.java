@@ -16,15 +16,15 @@ import com.johanlund.screens.statistics.avg_stat.complete.CompleteAvgStatActivit
 import com.johanlund.screens.statistics.avg_stat.delta.DeltaAvgStatActivity;
 import com.johanlund.screens.statistics.avg_stat.rating.RatingAvgStatActivity;
 import com.johanlund.screens.statistics.portions.RatingPortionStatActivity;
-import com.johanlund.screens.statistics_settings.AvgBmSettingsActivity;
-import com.johanlund.screens.statistics_settings.AvgRatingSettingsActivity;
 import com.johanlund.screens.statistics.portions_settings.PortionStatSettingsActivity;
-import com.johanlund.screens.statistics_settings.TimeBristolSettingsActivity;
-import com.johanlund.screens.statistics_settings.TimeCompleteSettingsActivity;
-import com.johanlund.screens.statistics_settings.TimeRatingSettingsActivity;
 import com.johanlund.screens.statistics.time.BristolTimeStatActivity;
 import com.johanlund.screens.statistics.time.CompleteTimeStatActivity;
 import com.johanlund.screens.statistics.time.RatingTimeStatActivity;
+import com.johanlund.screens.statistics_settings.AvgBmSettingsActivity;
+import com.johanlund.screens.statistics_settings.AvgRatingSettingsActivity;
+import com.johanlund.screens.statistics_settings.TimeBristolSettingsActivity;
+import com.johanlund.screens.statistics_settings.TimeCompleteSettingsActivity;
+import com.johanlund.screens.statistics_settings.TimeRatingSettingsActivity;
 
 import org.threeten.bp.LocalDate;
 
@@ -46,11 +46,6 @@ import static com.johanlund.ibsfoodanalyzer.R.id.timeRatingItemTextView;
  * Gives the user options for statistics
  */
 public class StatOptionsFragment extends Fragment implements View.OnClickListener {
-
-    //used for TimeStat
-    public interface DiaryStarterActivity {
-        void startDiaryWithDate(LocalDate ld);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,7 +94,8 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
         view.findViewById(getResources().getIdentifier("timeSettingsBristolItem", "id", getContext
                 ().getPackageName())).setOnClickListener(this);
 
-        View portionSettingsView = view.findViewById(getResources().getIdentifier("portionsSettingsRatingItem", "id",
+        View portionSettingsView = view.findViewById(getResources().getIdentifier
+                ("portionsSettingsRatingItem", "id",
                 getContext().getPackageName()));
         portionSettingsView.setOnClickListener(this);
         return view;
@@ -138,16 +134,20 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
 
             //info buttons
             case avgInfoItem:
-                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources().getString(R.string.avg_info));
+                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources()
+                        .getString(R.string.avg_info));
                 break;
             case freqInfoItem:
-                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources().getString(R.string.freq_info));
+                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources()
+                        .getString(R.string.freq_info));
                 break;
             case timeInfoItem:
-                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources().getString(R.string.time_info));
+                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources()
+                        .getString(R.string.time_info));
                 break;
             case portionsInfoItem:
-                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources().getString(R.string.portions_info));
+                InfoActivity.newInfoActivity((AppCompatActivity) getActivity(), getResources()
+                        .getString(R.string.portions_info));
                 break;
 
             //settings buttons
@@ -204,13 +204,20 @@ public class StatOptionsFragment extends Fragment implements View.OnClickListene
     }
 
     /**
-     * Since it is possible in TimeStatActivities to press a date, and then start diary from that date,
+     * Since it is possible in TimeStatActivities to press a date, and then start diary from that
+     * date,
      * we need to use startActivityForResult.
+     *
      * @param instance
      */
     private void newTimeStatActivity(Activity instance) {
         Intent intent = new Intent(getActivity(), instance.getClass());
         getActivity().startActivityForResult(intent, RESTART_DATE_REQUEST);
+    }
+
+    //used for TimeStat
+    public interface DiaryStarterActivity {
+        void startDiaryWithDate(LocalDate ld);
     }
 
 }

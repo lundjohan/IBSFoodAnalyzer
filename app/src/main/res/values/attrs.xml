@@ -2,35 +2,35 @@
 <resources>
     <declare-styleable name="EventLayout">
         <!-- the starting time of the event-->
-        <attr name="timeLine" format="string" />
+        <attr name="timeLine" format="string"/>
 
         <!-- the line that is portionSize in meal, and type in exercise-->
-        <attr name="secondLine" format="string" />
+        <attr name="secondLine" format="string"/>
 
         <!-- all non-TagEvents has some string property to the right-->
-        <attr name="rightLine" format="string" />
+        <attr name="rightLine" format="string"/>
 
         <!-- the img icon that clearly shows which type of event it is-->
-        <attr name="itemImg" format="reference" />
+        <attr name="itemImg" format="reference"/>
 
         <!-- the background color of the img-->
-        <attr name="itemColor" format="reference" />
+        <attr name="itemColor" format="reference"/>
 
         <!-- in case of event has tags (it is a Meal or Other Event) build up tagsList, otherwise -->
-        <attr name="hasTags" format="boolean" />
+        <attr name="hasTags" format="boolean"/>
     </declare-styleable>
     <declare-styleable name="HeadLineLayout">
         <!-- the text string of textview-->
         <attr name="textString" format="string"/>
-        <attr name="notReady" format="boolean" />
-        <attr name="infoBtnExists" format="boolean" />
-        <attr name ="idOfInfoBtn" format="integer"/>
+        <attr name="notReady" format="boolean"/>
+        <attr name="infoBtnExists" format="boolean"/>
+        <attr name="idOfInfoBtn" format="integer"/>
     </declare-styleable>
     <declare-styleable name="StatMenuItemLayout">
         <!-- the text string of textview-->
-        <attr name="textStatMenu" format="string" />
-        <attr name ="idOfSettingsTextView" format="integer"/>
-        <attr name ="idOfSettingsBtn" format="integer"/>
+        <attr name="textStatMenu" format="string"/>
+        <attr name="idOfSettingsTextView" format="integer"/>
+        <attr name="idOfSettingsBtn" format="integer"/>
     </declare-styleable>
     <declare-styleable name="SecondHeadLineLayout">
         <!-- the text string of textview-->

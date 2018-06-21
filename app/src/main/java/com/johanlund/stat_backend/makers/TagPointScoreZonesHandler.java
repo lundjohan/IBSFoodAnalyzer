@@ -1,9 +1,9 @@
 package com.johanlund.stat_backend.makers;
 
-import com.johanlund.stat_backend.stat_util.Chunk;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.stat_backend.point_classes.TagPoint;
+import com.johanlund.stat_backend.stat_util.Chunk;
 import com.johanlund.stat_backend.stat_util.IBSUtil;
 import com.johanlund.stat_backend.stat_util.TimePeriod;
 
@@ -18,15 +18,15 @@ import static com.johanlund.constants.Constants.MAX_RATING_SCORE;
 
 public class TagPointScoreZonesHandler {
     /*
-	 * public static void addBlueZonesScore(List<Chunk> chunks, Map<String,
-	 * TagPoint> tagPoints, int percentsThatAreBluezones) { if
-	 * (percentsThatAreBluezones <= 0 || percentsThatAreBluezones > 100) { throw
-	 * new IllegalArgumentException(); } double scoreLimit =
-	 * getAbsoluteLimit(chunks, percentsThatAreBluezones); for (Chunk chunk :
-	 * chunks) { addBlueZonesScore(chunk, tagPoints, scoreLimit); }
-	 * 
-	 * }
-	 */
+     * public static void addBlueZonesScore(List<Chunk> chunks, Map<String,
+     * TagPoint> tagPoints, int percentsThatAreBluezones) { if
+     * (percentsThatAreBluezones <= 0 || percentsThatAreBluezones > 100) { throw
+     * new IllegalArgumentException(); } double scoreLimit =
+     * getAbsoluteLimit(chunks, percentsThatAreBluezones); for (Chunk chunk :
+     * chunks) { addBlueZonesScore(chunk, tagPoints, scoreLimit); }
+     *
+     * }
+     */
 
     /**
      *
@@ -35,11 +35,11 @@ public class TagPointScoreZonesHandler {
      * @param percentsThatAreBluezones
      *            can only be positive right now
      */
-	/*
-	 * private static void addBlueZonesScore(Chunk chunk, Map<String, TagPoint>
-	 * tagPoints, double scoreLimit) { addBlueZonesTagsToTagPoints(tagPoints,
-	 * chunk, scoreLimit); }
-	 */
+    /*
+     * private static void addBlueZonesScore(Chunk chunk, Map<String, TagPoint>
+     * tagPoints, double scoreLimit) { addBlueZonesTagsToTagPoints(tagPoints,
+     * chunk, scoreLimit); }
+     */
 
     /**
      * @param chunks
@@ -201,9 +201,12 @@ public class TagPointScoreZonesHandler {
      * @param scoreAboveAreBluezones
      * @param buffertHoursBluezones
      */
-    public static Map<String, TagPoint> addBlueZonesScore(List<Chunk> chunks, Map<String, TagPoint> tagPoints,
-                                                          double scoreAboveAreBluezones, int buffertHoursBluezones) {
-        List<TimePeriod> scorePeriods = TagPointScoreZonesHandler.retrieveScorePeriods(chunks, scoreAboveAreBluezones, MAX_RATING_SCORE, buffertHoursBluezones);
+    public static Map<String, TagPoint> addBlueZonesScore(List<Chunk> chunks, Map<String,
+            TagPoint> tagPoints,
+                                                          double scoreAboveAreBluezones, int
+                                                                  buffertHoursBluezones) {
+        List<TimePeriod> scorePeriods = TagPointScoreZonesHandler.retrieveScorePeriods(chunks,
+                scoreAboveAreBluezones, MAX_RATING_SCORE, buffertHoursBluezones);
         return TagPointScoreZonesHandler.addTagsInScoreZones(tagPoints, chunks, scorePeriods);
 
     }

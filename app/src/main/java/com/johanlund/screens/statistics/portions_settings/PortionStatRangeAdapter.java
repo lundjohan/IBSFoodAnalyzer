@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.external_classes.TinyDB;
+import com.johanlund.ibsfoodanalyzer.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,9 +25,9 @@ import java.util.Collections;
  * NB. Uses shared preferences!
  */
 public class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<PortionStatRange> ranges;
     private final TinyDB tinydb;
     Context context;
+    private ArrayList<PortionStatRange> ranges;
 
 
     public PortionStatRangeAdapter(Context context) {
@@ -35,24 +35,10 @@ public class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.V
         //get intervals from Shared Preferences, via help library TinyDB (TinyDB
         // takes care of conversion to and from String)
         tinydb = new TinyDB(context);
-        ranges = tinydb.getListPortionRange(context.getResources().getString(R.string.portions_ranges_key));
+        ranges = tinydb.getListPortionRange(context.getResources().getString(R.string
+                .portions_ranges_key));
         if (ranges == null) {
             ranges = new ArrayList<>();
-        }
-    }
-
-    public class RangeHolder extends RecyclerView.ViewHolder {
-        TextView rangesFrom;
-        TextView rangesTo;
-        Switch switchedOn;
-        ConstraintLayout container;
-
-        public RangeHolder(View v) {
-            super(v);
-            container = (ConstraintLayout) v.findViewById(R.id.itemRangeContainer);
-            rangesFrom = (TextView) v.findViewById(R.id.rangeFrom);
-            rangesTo = (TextView) v.findViewById(R.id.rangeTo);
-            switchedOn = (Switch) v.findViewById(R.id.switch1);
         }
     }
 
@@ -106,7 +92,8 @@ public class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.V
         ranges.add(portionStatRange);
         Collections.sort(ranges);
         //put in shared preferences to be able to retrieve the same settings at upstart
-        tinydb.putListPortionRange(context.getResources().getString(R.string.portions_ranges_key), ranges);
+        tinydb.putListPortionRange(context.getResources().getString(R.string.portions_ranges_key)
+                , ranges);
 
     }
 
@@ -114,7 +101,23 @@ public class PortionStatRangeAdapter extends RecyclerView.Adapter<RecyclerView.V
         ranges.remove(pos);
         notifyDataSetChanged();
         //put in shared preferences to be able to retrieve the same settings at upstart
-        tinydb.putListPortionRange(context.getResources().getString(R.string.portions_ranges_key), ranges);
+        tinydb.putListPortionRange(context.getResources().getString(R.string.portions_ranges_key)
+                , ranges);
 
+    }
+
+    public class RangeHolder extends RecyclerView.ViewHolder {
+        TextView rangesFrom;
+        TextView rangesTo;
+        Switch switchedOn;
+        ConstraintLayout container;
+
+        public RangeHolder(View v) {
+            super(v);
+            container = (ConstraintLayout) v.findViewById(R.id.itemRangeContainer);
+            rangesFrom = (TextView) v.findViewById(R.id.rangeFrom);
+            rangesTo = (TextView) v.findViewById(R.id.rangeTo);
+            switchedOn = (Switch) v.findViewById(R.id.switch1);
+        }
     }
 }

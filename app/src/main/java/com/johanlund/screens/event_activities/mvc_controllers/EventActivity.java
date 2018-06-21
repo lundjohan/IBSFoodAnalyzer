@@ -22,7 +22,7 @@ import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
 
 public abstract class EventActivity extends AppCompatActivity implements EventViewMvc
-        .EventActivityViewMvcListener  {
+        .EventActivityViewMvcListener {
     protected EventViewMvc mViewMVC;
     protected EventManager eventManager;
     protected Event eventToBind = null;
@@ -31,17 +31,18 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            eventToBind = (Event)savedInstanceState.getSerializable(EVENT_SAVED_FROM_VIEW );
+            eventToBind = (Event) savedInstanceState.getSerializable(EVENT_SAVED_FROM_VIEW);
         }
         eventManager = new EventManager(getApplicationContext());
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EVENT_SAVED_FROM_VIEW, mViewMVC.retrieveEventFromView());
     }
 
-    protected void initMvcView(Event eventToBindToView){
+    protected void initMvcView(Event eventToBindToView) {
         EventViewFactory viewFactory = new EventViewFactoryImpl();
         mViewMVC = viewFactory.make(LayoutInflater.from(this), null, eventToBindToView.getType());
         mViewMVC.setListener(this);
@@ -72,6 +73,7 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
         returnEvent(e);
         finish();
     }
+
     protected abstract void returnEvent(Event event);
 
     /**

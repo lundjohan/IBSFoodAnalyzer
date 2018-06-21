@@ -7,43 +7,43 @@
             android:defaultValue="5"
             android:enabled="true"
             android:key="@string/time_rating_start"
-            android:title="Rating start"
             android:summary="The lowest score the time period is allowed to have."
+            android:title="Rating start"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_minValue="1"
             sample:msbp_maxValue="6"
             sample:msbp_measurementUnit="points"
+            sample:msbp_minValue="1"
             />
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="7"
             android:enabled="true"
             android:key="@string/time_rating_end"
-            android:title="Rating end"
             android:summary="The highest score the time period is allowed to have."
+            android:title="Rating end"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_minValue="1"
             sample:msbp_maxValue="6"
             sample:msbp_measurementUnit="points"
+            sample:msbp_minValue="1"
             />
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="0"
             android:enabled="true"
             android:key="@string/time_rating_duration_key"
-            android:title="Min duration"
             android:summary="The minimum time in hours the period should last."
+            android:title="Min duration"
             sample:msbp_dialogEnabled="false"
             sample:msbp_interval="1"
-            sample:msbp_minValue="0"
             sample:msbp_maxValue="72"
             sample:msbp_measurementUnit="h"
+            sample:msbp_minValue="0"
             />
         <Preference
             android:key="pref_static_field_key"
-            android:selectable="false"
             android:persistent="false"
-            android:title="Score Reference"
-            android:summary="@string/avg_info_score"/>
+            android:selectable="false"
+            android:summary="@string/avg_info_score"
+            android:title="Score Reference"/>
     </PreferenceCategory>
 </PreferenceScreen>

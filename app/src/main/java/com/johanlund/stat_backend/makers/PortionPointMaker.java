@@ -2,8 +2,8 @@ package com.johanlund.stat_backend.makers;
 
 import com.johanlund.base_classes.Tag;
 import com.johanlund.screens.statistics.avg_stat.common.TagsWrapper;
-import com.johanlund.stat_backend.point_classes.PortionPoint;
 import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
+import com.johanlund.stat_backend.point_classes.PortionPoint;
 import com.johanlund.stat_backend.stat_util.RatingTime;
 import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 import com.johanlund.stat_backend.stat_util.TimePeriod;
@@ -25,33 +25,40 @@ public class PortionPointMaker {
     (main reason is that database cursor don't have to carry the weight
     of all the events)
  */
-    public static List<PortionPoint> doPortionsPoints(List<TagsWrapperBase> ptRatings, List<PortionStatRange>
+    public static List<PortionPoint> doPortionsPoints(List<TagsWrapperBase> ptRatings,
+                                                      List<PortionStatRange>
             ranges, long startHoursAfterMeal, long
                                                               stopHoursAfterMeal, int
-            minHoursBetweenMeals) {
+                                                              minHoursBetweenMeals) {
         return toReplaceCalcPoints(ptRatings, ranges, startHoursAfterMeal, stopHoursAfterMeal,
                 minHoursBetweenMeals);
     }
 
     public static List<PortionPoint> toReplaceCalcPoints(List<TagsWrapperBase> ptr,
                                                          List<PortionStatRange>
-                                                                 ranges, long startHoursAfterMeal, long stopHoursAfterMeal, int minHoursBetweenMeals) {
+                                                                 ranges, long
+                                                                 startHoursAfterMeal, long
+                                                                 stopHoursAfterMeal, int
+                                                                 minHoursBetweenMeals) {
         List<TagsWrapperBase> ptrJoined = joinTooClosePortions(ptr, minHoursBetweenMeals);
         List<PortionPoint> toReturn = new ArrayList<>();
         for (PortionStatRange range : ranges) {
-            PortionPoint pp = getPPForRange(range, ptrJoined, startHoursAfterMeal, stopHoursAfterMeal);
+            PortionPoint pp = getPPForRange(range, ptrJoined, startHoursAfterMeal,
+                    stopHoursAfterMeal);
             toReturn.add(pp);
         }
         return toReturn;
     }
 
     //TagsWrapper will be dynamically used here.
-    private static List<TagsWrapperBase> joinTooClosePortions(List<TagsWrapperBase> tagsWrapperList, int
+    private static List<TagsWrapperBase> joinTooClosePortions(List<TagsWrapperBase>
+                                                                      tagsWrapperList, int
             minHoursBetweenMeals) {
-        List<TagsWrapperBase>toReturn = new ArrayList<>();
+        List<TagsWrapperBase> toReturn = new ArrayList<>();
         for (TagsWrapperBase tagsWrapper : tagsWrapperList) {
             List<Tag> pts = joinTooClosePortions2(tagsWrapper.getTags(), minHoursBetweenMeals);
-            TagsWrapperBase ptr = new TagsWrapper(pts, tagsWrapper.getScoreTimes(), tagsWrapper.getChunkEnd());
+            TagsWrapperBase ptr = new TagsWrapper(pts, tagsWrapper.getScoreTimes(), tagsWrapper
+                    .getChunkEnd());
             toReturn.add(ptr);
         }
         return toReturn;
@@ -59,7 +66,7 @@ public class PortionPointMaker {
 
     /**
      * If two portions are too close to each other, they should be gathered together into one.
-     *
+     * <p>
      * This function could work in different ways. I have decided to use it in way as below:
      * <p>
      * minDist == --
@@ -71,16 +78,17 @@ public class PortionPointMaker {
      * <p>
      * p6 will not have joined with p4p5.
      *
-     * @param ptsOrig         in ASC order of time, will not be changed in method.
+     * @param ptsOrig in ASC order of time, will not be changed in method.
      * @param minDist == minHourDistanceBetweenMeals
      * @return
      */
     public static List<Tag> joinTooClosePortions2(final List<Tag> ptsOrig, int
             minDist) {
-        if (ptsOrig.size()<2){
+        if (ptsOrig.size() < 2) {
             return ptsOrig;
         }
-        return joinPt(ptsOrig.get(0), minDist, ptsOrig.subList(1, ptsOrig.size()), new ArrayList<Tag>(),minDist);
+        return joinPt(ptsOrig.get(0), minDist, ptsOrig.subList(1, ptsOrig.size()), new
+                ArrayList<Tag>(), minDist);
     }
 
     //recursive function, WELL TESTED
@@ -100,25 +108,25 @@ public class PortionPointMaker {
      */
 
     /**
-     *
-     * @param p1 is Tag (not PortionTime)
+     * @param p1        is Tag (not PortionTime)
      * @param distRema, 0 <= disRem <= distMin
      * @param ptsOrig
      * @param toList
      * @return
      */
     private static List<Tag> joinPt(Tag p1, int distRema, List<Tag> ptsOrig,
-                                        List<Tag>toList, final int minDist) {
-        if (ptsOrig.isEmpty()){
+                                    List<Tag> toList, final int minDist) {
+        if (ptsOrig.isEmpty()) {
             toList.add(p1);
             return toList;
         }
         Tag p2 = ptsOrig.get(0);
-        if (p1.getTime().plusHours(distRema).isAfter(p2.getTime())){
-            Tag joinedPt = new Tag(p2.getTime(),  "",p1.getSize() + p2.getSize());
-            joinPt(joinedPt, distRema - (int)(p2.getTime().toEpochSecond(ZoneOffset.UTC)-p1.getTime().toEpochSecond(ZoneOffset.UTC))/(60*60), ptsOrig.subList(1, ptsOrig.size()), toList, minDist);
-        }
-        else{
+        if (p1.getTime().plusHours(distRema).isAfter(p2.getTime())) {
+            Tag joinedPt = new Tag(p2.getTime(), "", p1.getSize() + p2.getSize());
+            joinPt(joinedPt, distRema - (int) (p2.getTime().toEpochSecond(ZoneOffset.UTC) -
+                    p1.getTime().toEpochSecond(ZoneOffset.UTC)) / (60 * 60), ptsOrig.subList(1,
+                    ptsOrig.size()), toList, minDist);
+        } else {
             toList.add(p1);
             joinPt(p2, minDist, ptsOrig.subList(1, ptsOrig.size()), toList, minDist);
 
@@ -142,13 +150,16 @@ public class PortionPointMaker {
             for (TimePeriod tpExc : tpsAfterExcept) {
                 double[] scoreAndWeight = RatingTime.calcAvgAndWeight(tpExc, ptAndR.getScoreTimes(),
                         ptAndR.getChunkEnd());
-                //calcAvgAndWeight do not know that tp might have been shortened due to except operation.
+                //calcAvgAndWeight do not know that tp might have been shortened due to except
+                // operation.
                 //=> weightAfter_exc takes care of that.
                 //looks complicated but is tested comp and algebraically
-                double weightAfter_exc = (double)tpExc.getLengthSec()/ (stopHour-startHour)/60/60;
+                double weightAfter_exc = (double) tpExc.getLengthSec() / (stopHour - startHour) /
+                        60 / 60;
                 double weightAfter_exc_lateRatings_earlyChunk = scoreAndWeight[1] * weightAfter_exc;
                 rangeTotalScore += scoreAndWeight[0] * weightAfter_exc_lateRatings_earlyChunk;
-                rangeTotalQuant += weightAfter_exc_lateRatings_earlyChunk; //for every portion max quant is 1.0
+                rangeTotalQuant += weightAfter_exc_lateRatings_earlyChunk; //for every portion
+                // max quant is 1.0
             }
         }
         //PortionPoint quant should be in hours
@@ -178,15 +189,16 @@ public class PortionPointMaker {
      * @param pts
      * @param startHour
      * @param stopHour
-     * @return TimePeriods that has not been subjected (yet) to early chunkEnd or late start of ratings
+     * @return TimePeriods that has not been subjected (yet) to early chunkEnd or late start of
+     * ratings
      */
     private static List<TimePeriod> getRawTps(List<Tag> pts, long startHour,
                                               long stopHour) {
-        List<TimePeriod>toReturn = new ArrayList<>();
-        for (Tag pt:pts){
+        List<TimePeriod> toReturn = new ArrayList<>();
+        for (Tag pt : pts) {
             LocalDateTime start = pt.getTime().plusHours(startHour);
             LocalDateTime end = pt.getTime().plusHours(stopHour);
-            toReturn.add(new TimePeriod(start,end));
+            toReturn.add(new TimePeriod(start, end));
         }
         return toReturn;
     }
@@ -268,7 +280,8 @@ public class PortionPointMaker {
                       |-----| left
                    |----------| right
                    or
-                   Equals. This should never happen in beginning since Meals are not allowed to be at same
+                   Equals. This should never happen in beginning since Meals are not allowed to
+                   be at same
                     time. However, after some loops here we might be at this state.
                    |-----| left
                    |----------| right

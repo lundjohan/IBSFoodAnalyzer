@@ -15,12 +15,14 @@ import com.johanlund.stat_backend.portion_scorewrapper.PortionScoreWrapper;
  * Created by Johan on 2018-04-06.
  */
 
-public class PortionStatAdapter extends StatAdapter<PortionPoint> {   //list needs to be initiated, otherwise getItemCount crashes.
+public class PortionStatAdapter extends StatAdapter<PortionPoint> {   //list needs to be
+    // initiated, otherwise getItemCount crashes.
     protected PortionScoreWrapper portionScoreWrapper;
 
     public PortionStatAdapter(PortionScoreWrapper portionScoreWrapper) {
         this.portionScoreWrapper = portionScoreWrapper;
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_stat, parent,

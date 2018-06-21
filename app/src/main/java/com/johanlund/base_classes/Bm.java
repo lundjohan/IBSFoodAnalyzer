@@ -15,6 +15,7 @@ public class Bm extends Event {
         this.complete = complete;
         this.bristol = bristol;
     }
+
     public Bm(LocalDateTime time, String comment, int complete, int bristol) {
         super(time, comment);
         this.complete = complete;

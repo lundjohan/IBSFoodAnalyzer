@@ -22,13 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
-import com.johanlund.screens.about.AboutActivity;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
-import com.johanlund.screens.events_container_classes.DiaryContainerFragment;
 import com.johanlund.external_storage.ExternalStorageHandler;
 import com.johanlund.external_storage.SaveDBIntentService;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.screens.about.AboutActivity;
+import com.johanlund.screens.events_container_classes.DiaryContainerFragment;
 import com.johanlund.screens.events_templates.TemplateFragment;
 import com.johanlund.screens.settings.GeneralSettingsActivity;
 import com.johanlund.screens.statistics.options.StatOptionsFragment;
@@ -105,19 +105,22 @@ public class DrawerActivity extends AppCompatActivity
                 .replace(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
     }
+
     public void startContainerDiary(LocalDate ld) {
         Fragment fragment = reOrStartContainerDiaryHelper(ld);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, fragment, DIARY_CONTAINER)
                 .commit();
     }
-    private Fragment reOrStartContainerDiaryHelper(LocalDate ld){
-            Fragment fragment = new DiaryContainerFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(LOCALDATE, ld);
-            fragment.setArguments(args);
-            return fragment;
+
+    private Fragment reOrStartContainerDiaryHelper(LocalDate ld) {
+        Fragment fragment = new DiaryContainerFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(LOCALDATE, ld);
+        fragment.setArguments(args);
+        return fragment;
     }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -223,7 +226,7 @@ public class DrawerActivity extends AppCompatActivity
                 startService(csvGraphIntent);
                 showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
                 break;*/
-            case R.id.advSettingsItem:{
+            case R.id.advSettingsItem: {
                 Intent i = new Intent(this, GeneralSettingsActivity.class);
                 startActivity(i);
                 break;
@@ -232,7 +235,8 @@ public class DrawerActivity extends AppCompatActivity
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false).
                         setTitle("Clear Database?").
-                        setMessage("Warning! Are you sure you want to erase all of the diary? (Manually saved files will not be erased.)").
+                        setMessage("Warning! Are you sure you want to erase all of the diary? " +
+                                "(Manually saved files will not be erased.)").
                         setCancelable(true).
                         setNegativeButton(android.R.string.cancel, new DialogInterface
                                 .OnClickListener() {
@@ -401,9 +405,9 @@ public class DrawerActivity extends AppCompatActivity
             }
 
             //used for clicking on date inside TimeStat
-            case RESTART_DATE_REQUEST:{
+            case RESTART_DATE_REQUEST: {
                 if (data.hasExtra(DATE_TO_START_DIARY)) {
-                    LocalDate ld = (LocalDate)data.getSerializableExtra(DATE_TO_START_DIARY);
+                    LocalDate ld = (LocalDate) data.getSerializableExtra(DATE_TO_START_DIARY);
                     restartContainerDiary(ld);
                 }
                 break;

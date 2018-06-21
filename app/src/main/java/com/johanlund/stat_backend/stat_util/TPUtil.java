@@ -13,10 +13,10 @@ public class TPUtil {
 
     /*
      * public static void addTP(Map<String, TagPoint>tagPoints, Tag t){ TagPoint
-	 * tp = tagPoints.get(t.getName()); if (tp != null) { tp.addJump(foundJump);
-	 * } else{ TagPoint newTp = new TagPoint(t.getName(), t.getSize());
-	 * newTp.addJump(foundJump); tagPoints.put(t.getName(), newTp); } }
-	 */
+     * tp = tagPoints.get(t.getName()); if (tp != null) { tp.addJump(foundJump);
+     * } else{ TagPoint newTp = new TagPoint(t.getName(), t.getSize());
+     * newTp.addJump(foundJump); tagPoints.put(t.getName(), newTp); } }
+     */
 
     /**
      * Get accumulated score from . Based on time passed after each div in time

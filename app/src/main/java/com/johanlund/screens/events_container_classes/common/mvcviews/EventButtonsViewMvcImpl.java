@@ -15,7 +15,8 @@ import com.johanlund.ibsfoodanalyzer.R;
  * <p>
  * Users of this class must implement functions related to new creations of events.
  */
-public class EventButtonsViewMvcImpl extends BaseObservable<EventButtonsViewMvc.Listener> implements EventButtonsViewMvc {
+public class EventButtonsViewMvcImpl extends BaseObservable<EventButtonsViewMvc.Listener>
+        implements EventButtonsViewMvc {
 
     public EventButtonsViewMvcImpl(LayoutInflater inflater, ViewGroup container) {
         inflater.inflate(R.layout.event_buttons, container);
@@ -26,7 +27,8 @@ public class EventButtonsViewMvcImpl extends BaseObservable<EventButtonsViewMvc.
         setUpEventButton(container.findViewById(R.id.bmBtn));
         setUpEventButton(container.findViewById(R.id.ratingBtn));
     }
-    private void setUpEventButton (View eventBtn){
+
+    private void setUpEventButton(View eventBtn) {
         eventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

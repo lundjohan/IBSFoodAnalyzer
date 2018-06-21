@@ -9,7 +9,7 @@ import com.johanlund.ibsfoodanalyzer.R;
  * Created by Johan on 2018-03-13.
  */
 
-public class TimeRatingSettingsActivity extends SettingsBaseActivity{
+public class TimeRatingSettingsActivity extends SettingsBaseActivity {
     @Override
     protected PreferenceFragment getFragment() {
         return new AvgTimeSettingsFragment();

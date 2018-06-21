@@ -75,38 +75,44 @@
         </activity>
         <activity android:name="com.johanlund.screens.settings.GeneralSettingsActivity">
         </activity>
-        <activity android:name="com.johanlund.screens.statistics.avg_stat.rating.RatingAvgStatActivity"
-                  android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
+        <activity
+            android:name="com.johanlund.screens.statistics.avg_stat.rating.RatingAvgStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.screens.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.screens.statistics.avg_stat.complete.CompleteAvgStatActivity"
-                  android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
+        <activity
+            android:name="com.johanlund.screens.statistics.avg_stat.complete.CompleteAvgStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.screens.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.screens.statistics.avg_stat.bristol.BristolAvgStatActivity"
-                  android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
+        <activity
+            android:name="com.johanlund.screens.statistics.avg_stat.bristol.BristolAvgStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.screens.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.screens.statistics.time.RatingTimeStatActivity"
-                  android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
+        <activity
+            android:name="com.johanlund.screens.statistics.time.RatingTimeStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.screens.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.screens.statistics.time.CompleteTimeStatActivity"
-                  android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
+        <activity
+            android:name="com.johanlund.screens.statistics.time.CompleteTimeStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.screens.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.screens.statistics.time.BristolTimeStatActivity"
-                  android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
+        <activity
+            android:name="com.johanlund.screens.statistics.time.BristolTimeStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.screens.main.DrawerActivity"/>
@@ -149,13 +155,15 @@
         </activity>
         <activity android:name="com.johanlund.screens.statistics.portions_settings.PortionStatSettingsMoreActivity">
         </activity>
-        <activity android:name="com.johanlund.screens.statistics.portions.RatingPortionStatActivity"
-                  android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
+        <activity
+            android:name="com.johanlund.screens.statistics.portions.RatingPortionStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.johanlund.screens.main.DrawerActivity"/>
         </activity>
-        <activity android:name="com.johanlund.screens.statistics.avg_stat.delta.DeltaAvgStatActivity"
+        <activity
+            android:name="com.johanlund.screens.statistics.avg_stat.delta.DeltaAvgStatActivity"
             android:parentActivityName="com.johanlund.screens.main.DrawerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

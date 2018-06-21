@@ -4,7 +4,7 @@ import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
-public class RatingTimes extends ScoreTimesBase{
+public class RatingTimes extends ScoreTimesBase {
 
     //the end of chunk might very well be after last rating
     private LocalDateTime chunkEnd;

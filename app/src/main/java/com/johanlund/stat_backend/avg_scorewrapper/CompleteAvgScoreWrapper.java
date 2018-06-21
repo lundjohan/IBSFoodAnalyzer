@@ -14,7 +14,8 @@ public class CompleteAvgScoreWrapper extends BristolAvgScoreWrapper {
 
     @Override
     public double getScore(TagPoint tp) {
-        //change getAvgBristol to getAvgBmScore and remove getComplete.... Change in TagPointBmHandler.doBmScore resulted in this
+        //change getAvgBristol to getAvgBmScore and remove getComplete.... Change in
+        // TagPointBmHandler.doBmScore resulted in this
         return tp.getAvgBristol();
     }
 }

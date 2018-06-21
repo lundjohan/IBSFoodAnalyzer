@@ -12,7 +12,7 @@ import org.threeten.bp.ZoneOffset;
  * end up easier.
  */
 
-public class TimePoint implements PointBase{
+public class TimePoint implements PointBase {
     LocalDateTime startTime;
     LocalDateTime stopTime;
 
@@ -30,8 +30,9 @@ public class TimePoint implements PointBase{
     }
 
     public long getDurationInHours() {
-        long secDiff = stopTime.toEpochSecond(ZoneOffset.UTC) - startTime.toEpochSecond(ZoneOffset.UTC);
+        long secDiff = stopTime.toEpochSecond(ZoneOffset.UTC) - startTime.toEpochSecond
+                (ZoneOffset.UTC);
         //some truncation is allowed
-        return secDiff/(60*60);
+        return secDiff / (60 * 60);
     }
 }

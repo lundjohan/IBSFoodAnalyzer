@@ -16,7 +16,8 @@ import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 public class InfoFragment extends Fragment {
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
+            Bundle savedInstanceState) {
         Bundle b = getArguments();
         int resource = b.getInt(LAYOUT_RESOURCE);
         View view = inflater.inflate(resource, container, false);

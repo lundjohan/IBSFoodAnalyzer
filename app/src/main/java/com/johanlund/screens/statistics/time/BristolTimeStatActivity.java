@@ -6,10 +6,10 @@ import android.support.v7.preference.PreferenceManager;
 import com.johanlund.base_classes.Break;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.stat_backend.time_scorewrapper.BmTimeScoreWrapper;
-import com.johanlund.stat_backend.time_scorewrapper.TimeScoreWrapper;
 import com.johanlund.stat_backend.stat_util.ScoreTime;
 import com.johanlund.stat_backend.stat_util.ScoreTimesBase;
+import com.johanlund.stat_backend.time_scorewrapper.BmTimeScoreWrapper;
+import com.johanlund.stat_backend.time_scorewrapper.TimeScoreWrapper;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -19,10 +19,11 @@ import java.util.List;
  * Created by Johan on 2018-03-13.
  */
 
-public class BristolTimeStatActivity extends TimeStatActivity  {
+public class BristolTimeStatActivity extends TimeStatActivity {
     @Override
     protected String getInfoStr() {
-        return "Bristol Time Stat helps you see when your bowel movements have been in a certain interval on the Bristol Scale (= texture of poop).";
+        return "Bristol Time Stat helps you see when your bowel movements have been in a certain " +
+                "interval on the Bristol Scale (= texture of poop).";
     }
 
     @Override
@@ -35,9 +36,10 @@ public class BristolTimeStatActivity extends TimeStatActivity  {
     public TimeScoreWrapper getScoreWrapper() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
-        int ratingStart = preferences.getInt(getResources().getString(R.string.time_bristol_start),4);
+        int ratingStart = preferences.getInt(getResources().getString(R.string
+                .time_bristol_start), 4);
         int ratingEnd = preferences.getInt(getResources().getString(R.string.time_bristol_end), 4);
-        return new BmTimeScoreWrapper(ratingStart,ratingEnd);
+        return new BmTimeScoreWrapper(ratingStart, ratingEnd);
     }
 
     @Override

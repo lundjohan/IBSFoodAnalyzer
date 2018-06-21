@@ -29,12 +29,6 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
     ChangingTagTemplate changingTagTemplate;
     Context mainContext;
 
-    public interface ChangingTagTemplate {
-        void editTagTemplate(long tagTemplateId);
-
-        void delTagTemplate(long tagTemplateId);
-    }
-
     public TagnameCursorAdapter(ChangingTagTemplate changingTagTemplate, Cursor c) {
         super((AppCompatActivity) changingTagTemplate, c, 0);
         this.changingTagTemplate = changingTagTemplate;
@@ -97,5 +91,11 @@ public class TagnameCursorAdapter extends CursorAdapter implements Filterable {
         //TODO: there should be a maxlength of each one of them.
         //inherits.append(parentName + " " + inheritanceTwo + " " + inheritanceThree);
 
+    }
+
+    public interface ChangingTagTemplate {
+        void editTagTemplate(long tagTemplateId);
+
+        void delTagTemplate(long tagTemplateId);
     }
 }

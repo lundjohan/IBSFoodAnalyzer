@@ -9,7 +9,7 @@ import com.johanlund.ibsfoodanalyzer.R;
  * Created by Johan on 2018-03-13.
  */
 
-public class TimeBristolSettingsActivity extends SettingsBaseActivity{
+public class TimeBristolSettingsActivity extends SettingsBaseActivity {
     @Override
     protected PreferenceFragment getFragment() {
         return new BristolTimeSettingsFragment();

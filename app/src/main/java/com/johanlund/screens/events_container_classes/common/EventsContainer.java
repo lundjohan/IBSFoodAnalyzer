@@ -29,18 +29,6 @@ import static com.johanlund.screens.events_container_classes.DiaryFragment.CHANG
  */
 
 public class EventsContainer {
-    public interface EventsContainerUser extends EventAdapter
-            .EventAdapterUser {
-        void addEventToList(Event event);
-
-        void executeChangedEvent(int requestCode, Intent data);
-
-        void changeEventActivity(Event event, int eventType, int valueToReturn, int
-                posInList);
-
-        void updateTagsInListOfEventsAfterTagTemplateChange();
-    }
-
     public static final int NEW_MEAL = 1000;
     public static final int NEW_OTHER = 1001;
     public static final int NEW_EXERCISE = 1002;
@@ -48,12 +36,11 @@ public class EventsContainer {
     public static final int NEW_RATING = 1004;
     public RecyclerView recyclerView;
     public List<Event> eventsOfDay = new ArrayList<>();
+    public EventAdapter adapter;
     EventsContainerUser user;
     LinearLayoutManager layoutManager;
-    public EventAdapter adapter;
     //context is solely used to retrieve resources inside EventAdapter
     private Context context;
-
     public EventsContainer(EventsContainerUser user, Context context) {
         this.user = user;
         this.context = context;
@@ -71,8 +58,8 @@ public class EventsContainer {
         }
     }
 
-
-    public void initiateRecyclerView(RecyclerView recyclerView, boolean colorRating, Context layoutInitiator) {
+    public void initiateRecyclerView(RecyclerView recyclerView, boolean colorRating, Context
+            layoutInitiator) {
         this.recyclerView = recyclerView;
         layoutManager = new LinearLayoutManager(layoutInitiator, LinearLayoutManager
                 .VERTICAL, true);
@@ -104,5 +91,17 @@ public class EventsContainer {
 
     public View getItemView(int pos) {
         return layoutManager.findViewByPosition(pos);
+    }
+
+    public interface EventsContainerUser extends EventAdapter
+            .EventAdapterUser {
+        void addEventToList(Event event);
+
+        void executeChangedEvent(int requestCode, Intent data);
+
+        void changeEventActivity(Event event, int eventType, int valueToReturn, int
+                posInList);
+
+        void updateTagsInListOfEventsAfterTagTemplateChange();
     }
 }

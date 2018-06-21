@@ -4,16 +4,16 @@ import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
 
 /**
  * Created by Johan on 2018-04-03.
- *
- *
+ * <p>
+ * <p>
  * Look in stat view:
- *
+ * <p>
  * Ranges           Avg Rating/Completeness     Quantity (nr of meals in calculation)
  * 1.0 - 2.0        5.6                         34
  * ...              ...                         ...
  */
 
-public class PortionPoint implements PointBase{
+public class PortionPoint implements PointBase {
     //from portions - to Portions
     PortionStatRange range;
 

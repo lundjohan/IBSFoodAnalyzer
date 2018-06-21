@@ -6,14 +6,15 @@ import android.support.annotation.NonNull;
  * Created by Johan on 2018-01-23.
  */
 
-public class PortionStatRange implements Comparable<PortionStatRange>{
+public class PortionStatRange implements Comparable<PortionStatRange> {
     //inclusive
     private float rangeStart;
 
     //exclusive
     private float rangeStop;
     private boolean turnedOn = true;
-    PortionStatRange(){
+
+    PortionStatRange() {
 
     }
 
@@ -36,7 +37,7 @@ public class PortionStatRange implements Comparable<PortionStatRange>{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("%.1f", rangeStart) + "-" + String.format("%.1f", rangeStop);
 
 
@@ -44,9 +45,9 @@ public class PortionStatRange implements Comparable<PortionStatRange>{
 
     @Override
     public int compareTo(@NonNull PortionStatRange p2) {
-        int startDiff = (int)((rangeStart - p2.getRangeStart())*100);
-        if (startDiff == 0){
-            return (int)((rangeStop - p2.getRangeStop())*100);
+        int startDiff = (int) ((rangeStart - p2.getRangeStart()) * 100);
+        if (startDiff == 0) {
+            return (int) ((rangeStop - p2.getRangeStop()) * 100);
         }
         return startDiff;
     }

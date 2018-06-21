@@ -19,13 +19,13 @@ import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
-import com.johanlund.screens.main.DrawerActivity;
+import com.johanlund.help_classes.AndroidTestUtil;
 import com.johanlund.screens.event_activities.BmActivity;
 import com.johanlund.screens.event_activities.ExerciseActivity;
 import com.johanlund.screens.event_activities.MealActivity;
 import com.johanlund.screens.event_activities.OtherActivity;
 import com.johanlund.screens.event_activities.RatingActivity;
-import com.johanlund.help_classes.AndroidTestUtil;
+import com.johanlund.screens.main.DrawerActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -50,7 +50,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
@@ -74,21 +73,42 @@ import static org.hamcrest.Matchers.allOf;
 public class NewEventsDisplayedCorrectlyInDiaryTests {
 
     @Rule
-    public IntentsTestRule<DrawerActivity> intentsRule = new IntentsTestRule<>(DrawerActivity.class);
+    public IntentsTestRule<DrawerActivity> intentsRule = new IntentsTestRule<>(DrawerActivity
+            .class);
     List<Tag> tags = new ArrayList<>();
     LocalDateTime ldt;
 
-    @Before
-    public void clearDatabase(){
-        AndroidTestUtil.clearDatabaseByClicking();
-    }
-
-    public static Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event event) {
+    public static Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event
+            event) {
         Intent resultData = new Intent();
         resultData.putExtra(putExtraStr, event);
         resultData.putExtra(NEW_EVENT, true);
         return new Instrumentation.ActivityResult(Activity
                 .RESULT_OK, resultData);
+    }
+
+    public static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
+
+    @Before
+    public void clearDatabase() {
+        AndroidTestUtil.clearDatabaseByClicking();
     }
 
     private void stubOutActivity(String className, Instrumentation.ActivityResult result) {
@@ -107,7 +127,8 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         tags.add(honey);
         Meal meal = new Meal(ldt, tags, 1.0);
 
-        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE, meal);
+        Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
+                meal);
         stubOutActivity(MealActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
@@ -128,7 +149,8 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
                 withId(R.id.meal_item_container),
                 //firstLine
                 hasDescendant(withText("16:00")),
-                //nr of portions, very sensitiv to changes of text ("Portions..."). Not so good, change in some way?
+                //nr of portions, very sensitiv to changes of text ("Portions..."). Not so good,
+                // change in some way?
                 hasDescendant(withText("Portions: 1.0")),
 
                 //tags in item
@@ -196,7 +218,6 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
                                 2),
                         isDisplayed()));
         appCompatImageButton.perform(click());
-
 
 
         //check that a relevant item exists in RecyclerView
@@ -285,6 +306,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         ))
                 .check(matches(isDisplayed()));
     }
+
     @Test
     public void mealAddedAfterOtherMealHasOtherTime() {
         // Create a meal object with timeView 19:00
@@ -295,7 +317,6 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         Instrumentation.ActivityResult result1 = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 meal1);
         stubOutActivity(MealActivity.class.getName(), result1);
-
 
 
         //now press click of MealBtn that makes us go to MealActivity stub above
@@ -342,23 +363,5 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
                 hasDescendant(withText("20:00"))
         ))
                 .check(matches(isDisplayed()));
-    }
-    public static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
     }
 }

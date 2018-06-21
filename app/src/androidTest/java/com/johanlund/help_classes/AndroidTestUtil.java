@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.allOf;
  */
 
 public class AndroidTestUtil {
-    public static void clearDatabaseByClickingAndInternally(Context context){
+    public static void clearDatabaseByClickingAndInternally(Context context) {
         DBHandler dbHandler = new DBHandler(context);
         dbHandler.deleteAllTablesRows();
         clearDatabaseByClicking();
@@ -50,7 +50,9 @@ public class AndroidTestUtil {
                 allOf(withId(android.R.id.button1), withText("OK")));
         appCompatButton.perform(scrollTo(), click());
     }
-    public static void changeDate (ActivityTestRule<DrawerActivity> activityTestRule, LocalDate date){
+
+    public static void changeDate(ActivityTestRule<DrawerActivity> activityTestRule, LocalDate
+            date) {
         activityTestRule.getActivity().restartContainerDiary(date);
     }
 }

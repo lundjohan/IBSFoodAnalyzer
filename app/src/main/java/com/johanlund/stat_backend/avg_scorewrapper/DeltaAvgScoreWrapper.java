@@ -21,7 +21,8 @@ public class DeltaAvgScoreWrapper extends AvgScoreWrapper {
 
     @Override
     public List<TagPoint> calcScore(List<TagsWrapperBase> chunks, Map<String, TagPoint> tagPoints) {
-        return new ArrayList<>(DeltaPointMaker.doDeltaScore(chunks, startHoursAfterEvent, stopHoursAfterEvent,
+        return new ArrayList<>(DeltaPointMaker.doDeltaScore(chunks, startHoursAfterEvent,
+                stopHoursAfterEvent,
                 tagPoints).values());
     }
 

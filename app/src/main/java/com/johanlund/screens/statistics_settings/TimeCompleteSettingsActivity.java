@@ -9,7 +9,7 @@ import com.johanlund.ibsfoodanalyzer.R;
  * Created by Johan on 2018-03-13.
  */
 
-public class TimeCompleteSettingsActivity extends SettingsBaseActivity{
+public class TimeCompleteSettingsActivity extends SettingsBaseActivity {
     @Override
     protected PreferenceFragment getFragment() {
         return new CompleteTimeSettingsFragment();

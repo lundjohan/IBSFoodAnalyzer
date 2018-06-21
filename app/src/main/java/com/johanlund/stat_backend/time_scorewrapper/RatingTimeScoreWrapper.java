@@ -18,7 +18,8 @@ public class RatingTimeScoreWrapper extends TimeScoreWrapper {
 
     @Override
     protected List<TimePoint> doCalc(ScoreTimesBase stb) {
-        RatingTimes rts = (RatingTimes)stb;
-        return TimePointMaker.doRatingTimePoints(rts.getScoreTimes(), rts.getChunkEnd(), scoreStart, scoreEnd);
+        RatingTimes rts = (RatingTimes) stb;
+        return TimePointMaker.doRatingTimePoints(rts.getScoreTimes(), rts.getChunkEnd(),
+                scoreStart, scoreEnd);
     }
 }

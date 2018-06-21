@@ -1,6 +1,5 @@
 package com.johanlund.screens.common.mvcviews;
 
-import android.os.Bundle;
 import android.view.View;
 
 
@@ -17,9 +16,10 @@ public interface ViewMvc {
      * to the user.<br>
      * The returned Android View might be used by an MVC Controller in order to query or alter the
      * properties of either the root Android View itself, or any of its child Android View's.
+     *
      * @return root Android View of this MVC View
      */
-     View getRootView();
+    View getRootView();
 
     /**
      * This method aggregates all the information about the state of this MVC View into Bundle

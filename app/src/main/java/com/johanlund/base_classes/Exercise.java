@@ -14,13 +14,16 @@ public class Exercise extends Event {
         this.typeOfExercise = typeOfExercise;
         this.intensity = intensity;
     }
-    public Exercise(LocalDateTime time, String comment, TagWithoutTime typeOfExercise, int intensity) {
+
+    public Exercise(LocalDateTime time, String comment, TagWithoutTime typeOfExercise, int
+            intensity) {
         super(time, comment);
         this.typeOfExercise = typeOfExercise;
         this.intensity = intensity;
     }
 
-    public Exercise(LocalDateTime ldt, String comment, boolean hasBreak, TagWithoutTime t, int intensity) {
+    public Exercise(LocalDateTime ldt, String comment, boolean hasBreak, TagWithoutTime t, int
+            intensity) {
         super(ldt, comment, hasBreak);
         this.typeOfExercise = t;
         this.intensity = intensity;

@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import com.johanlund.base_classes.Event;
-import com.johanlund.base_classes.Tag;
 import com.johanlund.screens.common.mvcviews.ViewMvc;
 
 import org.threeten.bp.LocalDate;
@@ -17,17 +16,7 @@ import org.threeten.bp.LocalTime;
 import java.util.List;
 
 public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListener, TimePickerDialog
-        .OnTimeSetListener{
-
-    interface EventActivityViewMvcListener {
-        void startTimePicker(View view);
-        void startDatePicker(View view);
-
-        void completeSession(Event finalEvent);
-
-        void showInfo(String titleStr, int infoLayout);
-        void finish();
-    }
+        .OnTimeSetListener {
 
     boolean createOptionsMenu(Menu menu, MenuInflater menuInflater);
 
@@ -53,11 +42,23 @@ public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListene
 
     List<String> getTagNames();
 
-
-
     /**
      * Set a listener that will be notified by this MVC view
+     *
      * @param listener listener that should be notified; null to clear
      */
     void setListener(EventActivityViewMvcListener listener);
+
+
+    interface EventActivityViewMvcListener {
+        void startTimePicker(View view);
+
+        void startDatePicker(View view);
+
+        void completeSession(Event finalEvent);
+
+        void showInfo(String titleStr, int infoLayout);
+
+        void finish();
+    }
 }

@@ -18,27 +18,25 @@ import java.util.List;
 
 /**
  * Created by Johan on 2018-03-20.
- *
+ * <p>
  * This class is very close to AvgStatAdapter. Using generics? (setList(List<E>) etc...)
  */
 
-public class TimeStatAdapter extends StatAdapter<TimePoint>{
-    public interface TimeStatAdapterUser{
-        void restartDiaryAtDate(LocalDate ld);
-    }
-
+public class TimeStatAdapter extends StatAdapter<TimePoint> {
+    protected ScoreWrapperBase<TimePoint> timeScoreWrapper;
     private TimeStatAdapterUser callBack;
 
-    //temp
-    public void setTimePointsList(List<TimePoint> pointList){
-        this.pointList = pointList;
-    }
-
-    protected ScoreWrapperBase<TimePoint> timeScoreWrapper;
-    public TimeStatAdapter(ScoreWrapperBase<TimePoint> timeScoreWrapper, TimeStatAdapterUser callBack) {
+    public TimeStatAdapter(ScoreWrapperBase<TimePoint> timeScoreWrapper, TimeStatAdapterUser
+            callBack) {
         this.timeScoreWrapper = timeScoreWrapper;
         this.callBack = callBack;
     }
+
+    //temp
+    public void setTimePointsList(List<TimePoint> pointList) {
+        this.pointList = pointList;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_stat_time, parent,
@@ -46,7 +44,6 @@ public class TimeStatAdapter extends StatAdapter<TimePoint>{
         RecyclerView.ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
-
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -61,11 +58,14 @@ public class TimeStatAdapter extends StatAdapter<TimePoint>{
         return pointList.size();
     }
 
+    public interface TimeStatAdapterUser {
+        void restartDiaryAtDate(LocalDate ld);
+    }
+
     /*@Override
     public void setPointsList(List<TimePoint>pointList){
         this.pointList = pointList;
     }*/
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView startTime;

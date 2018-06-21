@@ -13,6 +13,7 @@ public class OtherViewMvc extends TagEventViewMvcAbstract {
     public OtherViewMvc(LayoutInflater inflater, ViewGroup container) {
         super(inflater, container);
     }
+
     @Override
     protected String getTextForAddTagsBtn() {
         return "Add Other Components";

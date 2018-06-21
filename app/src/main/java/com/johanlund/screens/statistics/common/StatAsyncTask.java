@@ -15,8 +15,9 @@ import java.util.List;
  * Created by Johan on 2018-04-04.
  */
 
-public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void, List<E>> {
-    // read https://medium.com/google-developer-experts/finally-understanding-how-references-work-in-android-and-java-26a0d9c92f83
+public class StatAsyncTask<E extends PointBase> extends AsyncTask<Object, Void, List<E>> {
+    // read https://medium.com/google-developer-experts/finally-understanding-how-references-work
+    // -in-android-and-java-26a0d9c92f83
     private WeakReference<Activity> activity;
     private WeakReference<StatAdapter> adapter;
     private WeakReference<RecyclerView> recyclerView;
@@ -26,9 +27,10 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
         this.adapter = new WeakReference(adapter);
         this.recyclerView = new WeakReference(recyclerView);
     }
+
     @Override
     protected List<E> doInBackground(Object... params) {
-        List<E>toReturn = new ArrayList<>();
+        List<E> toReturn = new ArrayList<>();
         if (!isCancelled() && activity.get() != null) {
             WeakReference<ScoreWrapperBase> wrapper = new WeakReference(params[0]);
             WeakReference<List<TagsWrapperBase>> chunks = new WeakReference(params[1]);
@@ -45,16 +47,15 @@ public class StatAsyncTask <E extends PointBase> extends AsyncTask<Object, Void,
     }
 
 
-
     @Override
     protected void onPostExecute(List<E> sortedList) {
-        if (adapter.get() != null){
+        if (adapter.get() != null) {
             adapter.get().setPointsList(sortedList);
             adapter.get().notifyDataSetChanged();
         }
         //scrolling to top is needed, otherwise it starts at the bottom.
-        if (recyclerView.get() != null){
-            recyclerView.get().scrollToPosition(sortedList.size()-1);
+        if (recyclerView.get() != null) {
+            recyclerView.get().scrollToPosition(sortedList.size() - 1);
         }
     }
 }

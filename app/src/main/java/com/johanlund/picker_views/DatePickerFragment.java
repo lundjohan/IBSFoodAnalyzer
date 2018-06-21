@@ -17,13 +17,14 @@ public class DatePickerFragment extends DialogFragment
     Context context;
     DatePickerDialog.OnDateSetListener listener;
 
-    public void setContext(Context c){
+    public void setContext(Context c) {
         this.context = c;
     }
 
-    public void setListener(DatePickerDialog.OnDateSetListener listener){
+    public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
     }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current dateView as the default dateView in the picker

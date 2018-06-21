@@ -15,13 +15,14 @@ public class TimePointMaker {
      * 1. lastRating <= chunkEnd
      * 2. ratings in ASC order
      * 3. scoreStart <= scoreEnd
-     *
      */
-    public static List<TimePoint>doRatingTimePoints(RatingTimes rt, int
-            scoreStart, int scoreEnd){
+    public static List<TimePoint> doRatingTimePoints(RatingTimes rt, int
+            scoreStart, int scoreEnd) {
         return doRatingTimePoints(rt.getScoreTimes(), rt.getChunkEnd(), scoreStart, scoreEnd);
     }
-    public static List<TimePoint> doRatingTimePoints(List<ScoreTime> ratings, LocalDateTime chunkEnd, int
+
+    public static List<TimePoint> doRatingTimePoints(List<ScoreTime> ratings, LocalDateTime
+            chunkEnd, int
             scoreStart, int scoreEnd) {
         List<TimePoint> timePoints = new ArrayList<>();
         boolean periodHasStarted = false;
@@ -62,58 +63,61 @@ public class TimePointMaker {
         }
         return timePoints;
     }
-    private static boolean isLastRating(ScoreTime r, List<ScoreTime> ratings){
-        return r.getTime().equals(ratings.get(ratings.size()-1).getTime());
+
+    private static boolean isLastRating(ScoreTime r, List<ScoreTime> ratings) {
+        return r.getTime().equals(ratings.get(ratings.size() - 1).getTime());
     }
 
 
     private static boolean isBetweenScores(ScoreTime r, int scoreStart, int scoreEnd) {
         return r.getScore() >= scoreStart && r.getScore() <= scoreEnd;
     }
+
     /**
      * This is even simpler than above,
-     * the algorithm simply keeps on going for a TimePoint if the next bm is scorestart<=bm <=scoreend.
-     * The time period will be between the first bm in interval and the last bm in interval (which means that timeperiod length 0 will be common...)
-     *
+     * the algorithm simply keeps on going for a TimePoint if the next bm is scorestart<=bm
+     * <=scoreend.
+     * The time period will be between the first bm in interval and the last bm in interval
+     * (which means that timeperiod length 0 will be common...)
+     * <p>
      * Given:
      * 1. bms in ASC order
      * 2. two bm cannot have same time
-     *
-     *
      */
-    public static List<TimePoint> doBMTimePoints(List<ScoreTime> bms, int scoreStart, int scoreEnd) {
+    public static List<TimePoint> doBMTimePoints(List<ScoreTime> bms, int scoreStart, int
+            scoreEnd) {
         List<TimePoint> timePoints = new ArrayList<>();
         boolean periodHasStarted = false;
         LocalDateTime periodStart = null;
         LocalDateTime lastBmForPeriod = null;
 
-        for (ScoreTime b: bms){
+        for (ScoreTime b : bms) {
             //last bm
-            if (isBetweenScores(b, scoreStart, scoreEnd)){
-                if (periodHasStarted){
+            if (isBetweenScores(b, scoreStart, scoreEnd)) {
+                if (periodHasStarted) {
                     lastBmForPeriod = b.getTime();
 
                 }
                 //!periodHasStarted
-                else{
+                else {
                     periodHasStarted = true;
                     periodStart = b.getTime();
                     lastBmForPeriod = periodStart;
                 }
-                if (isLastBm(b, bms)){
+                if (isLastBm(b, bms)) {
                     TimePoint tp = new TimePoint(periodStart, b.getTime());
                     timePoints.add(tp);
                 }
             }
             //!isBetweenScores
-            else{
-                if (periodHasStarted){
+            else {
+                if (periodHasStarted) {
                     TimePoint tp = new TimePoint(periodStart, lastBmForPeriod);
                     timePoints.add(tp);
                     periodHasStarted = false;
                 }
                 //!periodHasStarted
-                else{
+                else {
                     continue;
                 }
             }
@@ -121,7 +125,7 @@ public class TimePointMaker {
         return timePoints;
     }
 
-    private static boolean isLastBm(ScoreTime b, List<ScoreTime>bms){
-        return b.getTime().equals(bms.get(bms.size()-1).getTime());
+    private static boolean isLastBm(ScoreTime b, List<ScoreTime> bms) {
+        return b.getTime().equals(bms.get(bms.size() - 1).getTime());
     }
 }

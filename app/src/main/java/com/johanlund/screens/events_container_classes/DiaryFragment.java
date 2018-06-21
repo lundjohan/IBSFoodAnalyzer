@@ -18,7 +18,6 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity;
-import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 
 import org.threeten.bp.LocalDate;
@@ -28,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.johanlund.constants.Constants.EVENT_POSITION;
-import static com.johanlund.constants.Constants.CHANGING_EVENT_ID;
 import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.ID_OF_EVENT_RETURNED;
@@ -43,24 +41,19 @@ import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 public class DiaryFragment extends Fragment implements EventsContainer
         .EventsContainerUser {
 
-    //the date of the day as put by calender.
-    LocalDate currentDate;
-
     public static final int CHANGED_MEAL = 1010;
     public static final int CHANGED_OTHER = 1011;
     public static final int CHANGED_EXERCISE = 1012;
-
     public static final int CHANGED_BM = 1013;
     public static final int CHANGED_RATING = 1014;
-
     public static final String TAG = "DebuggingDiaryFragment";
     static final int BACKGROUND_COLOR = Color.YELLOW;
     //===========================================================================================
     //timer used for tracking start time of app.
     public static long startTime = 0;
+    //the date of the day as put by calender.
+    LocalDate currentDate;
     //=============================================================================================
-
-
     //for pinning/ marking events, this must be cleaned when user quits application or app
     // crashes etc. List is sorted when added in asc order.
     List<Integer> eventsMarked = new ArrayList<>();
@@ -73,6 +66,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     EventsContainer ec;
     DiaryFragmentUser listener;
+
     public DiaryFragment() {
 
     }
@@ -114,13 +108,14 @@ public class DiaryFragment extends Fragment implements EventsContainer
         }
         return view;
     }
+
     //this might be called before onCreateView is finished (/started?).
-    LocalDate getCurrentDate(){
-        if (currentDate!= null){
+    LocalDate getCurrentDate() {
+        if (currentDate != null) {
             return currentDate;
         }
         Bundle b = this.getArguments();
-        return((LocalDate) b.getSerializable(SWIPING_TO_DATE));
+        return ((LocalDate) b.getSerializable(SWIPING_TO_DATE));
     }
 
     //Will this work??? A Fragment (DiaryContainerFragment) listening to a Fragment (this)
@@ -134,7 +129,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ec.onActivityResult(requestCode, resultCode, data);
     }
-
 
 
     @Override
@@ -290,7 +284,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
         return eventsToSend;
     }
-
 
 
     private boolean markingModeIsOn() {

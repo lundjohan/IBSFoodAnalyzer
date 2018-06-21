@@ -10,10 +10,12 @@ import org.threeten.bp.LocalDateTime;
 public class Rating extends Event {
     //after should be between 1 and 7
     private int after;
+
     public Rating(LocalDateTime ldt, int after) {
         super(ldt);
         this.after = after;
     }
+
     public Rating(LocalDateTime time, String comment, int after) {
         super(time, comment);
         this.after = after;

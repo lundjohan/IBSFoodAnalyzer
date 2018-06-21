@@ -1,7 +1,7 @@
 package com.johanlund.screens.about;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.johanlund.ibsfoodanalyzer.R;
 

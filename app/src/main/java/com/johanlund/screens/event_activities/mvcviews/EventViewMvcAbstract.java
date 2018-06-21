@@ -25,16 +25,13 @@ import org.threeten.bp.LocalTime;
 
 public abstract class EventViewMvcAbstract implements EventViewMvc {
     protected final Context context;
-
+    protected View rootView;
     TextView dateView;
     TextView timeView;
     TextView commentView;
     Button dateBtn;
     Button timeBtn;
-
     boolean eventHasBreak;
-
-    protected View rootView;
     EventActivityViewMvcListener listener;
 
     public EventViewMvcAbstract(LayoutInflater inflater, ViewGroup container) {
@@ -54,6 +51,7 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
         commentView = (TextView) rootView.findViewById(R.id.commentView);
         initializeSpecViews();
     }
+
     protected abstract void initializeSpecViews();
 
     @Override
@@ -62,7 +60,7 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
     }
 
     @Override
-    public boolean createOptionsMenu(Menu menu, MenuInflater inflater){
+    public boolean createOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.info_menu, menu);
         inflater.inflate(R.menu.done_menu, menu);
         menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
@@ -79,10 +77,9 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.menu_done){
+                if (item.getItemId() == R.id.menu_done) {
                     doneClicked(null);
-                }
-                else if (item.getItemId() == R.id.menu_info){
+                } else if (item.getItemId() == R.id.menu_info) {
                     listener.showInfo(getBarTitle(), getInfoLayout());
                 }
                 return true;
@@ -90,6 +87,7 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
         });
         return true;
     }
+
     @Override
     public void bindEventToView(Event e) {
         eventHasBreak = e.hasBreak();
@@ -100,9 +98,13 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
     }
 
     protected abstract void bindEventSpecsToView(Event e);
+
     protected abstract int getLayoutRes();
+
     protected abstract int getInfoLayout();
+
     protected abstract String getBarTitle();
+
     protected abstract Event makeEventFromView(LocalDateTime ldt, String comment);
 
     @Override
@@ -121,8 +123,9 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
         Event e = retrieveEventFromView();
         listener.completeSession(e);
     }
+
     @Override
-    public Event retrieveEventFromView(){
+    public Event retrieveEventFromView() {
         return makeEventFromView(getLocalDateTime(), commentView.getText().toString());
     }
 

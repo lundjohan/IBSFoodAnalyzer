@@ -79,7 +79,39 @@ import static com.johanlund.database.TablesAndStrings.TYPE_OF;
 
 public class DBHandler extends SQLiteOpenHelper {
     private final String TAG = DBHandler.class.toString();
-
+    private String CHANGE_TAG_TABLE_NAME = " ALTER TABLE " + TABLE_TAGS + " RENAME TO " +
+            TMP_TABLE_TAGS + "; ";
+    private String CREATE_NEW_TAG_TABLE = "CREATE TABLE " + TABLE_TAGS + " (  " +
+            COLUMN_ID + " INTEGER PRIMARY KEY, " +
+            COLUMN_TAGTYPE + " INTEGER NOT NULL, " +
+            COLUMN_SIZE + " REAL NOT NULL, " +
+            COLUMN_EVENT + " INTEGER NOT NULL, " +
+            " FOREIGN KEY( " + COLUMN_TAGTYPE + ") REFERENCES " + TABLE_TAGTYPES
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE, " + " FOREIGN KEY( " + COLUMN_EVENT
+            + ") REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
+            ");";
+    private String COPY_CONTENTS_TO_NEW_TAG_TABLE = " INSERT INTO " + TABLE_TAGS + " ( " +
+            COLUMN_ID + ", " + COLUMN_TAGTYPE + ", " + COLUMN_SIZE + ", " + COLUMN_EVENT + " ) " +
+            " SELECT " + COLUMN_ID + ", " + COLUMN_TAGTYPE + ", " + COLUMN_SIZE + ", " +
+            COLUMN_EVENT + " FROM " + TMP_TABLE_TAGS;
+    private String DROP_OLD_TAG_TABLE = "DROP TABLE " + TMP_TABLE_TAGS;
+    //Before the column's name was 'after' which is a keyword in SQLITE syntax
+    private String CHANGE_RATING_TABLE_NAME = " ALTER TABLE " + TABLE_RATINGS + " RENAME TO " +
+            TMP_TABLE_RATINGS + "; ";
+    private String CREATE_NEW_RATING_TABLE = "CREATE TABLE " + TABLE_RATINGS + " (  " + COLUMN_ID
+            + " INTEGER PRIMARY KEY," + COLUMN_EVENT + " INTEGER NOT NULL, " +
+            COLUMN_AFTER + " INTEGER NOT NULL, " + " FOREIGN KEY( " + COLUMN_EVENT + ") " +
+            "REFERENCES " + TABLE_EVENTS
+            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " + ");";
+    private String COPY_CONTENTS_TO_NEW_TABLE = " INSERT INTO " + TABLE_RATINGS + " ( " +
+            COLUMN_ID + ", " + COLUMN_EVENT + ", " + COLUMN_AFTER + ") " +
+            " SELECT " + COLUMN_ID + ", " + COLUMN_EVENT + ", after FROM " + TMP_TABLE_RATINGS;
+    private String DROP_OLD_TABLE = "DROP TABLE " + TMP_TABLE_RATINGS;
+    private String CHANGE_RATING_SCALE =
+            "UPDATE " + TABLE_RATINGS + " SET " +
+                    COLUMN_AFTER + " = " + COLUMN_AFTER + " -1 " + " WHERE " + COLUMN_AFTER + " " +
+                    "!= '1' ";
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -128,7 +160,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
 
         //this must be done before CHANGE_RATING_SCALE
-        if (oldVersion <= 38){
+        if (oldVersion <= 38) {
             db.beginTransaction();
             try {
                 // Changing name of column
@@ -158,36 +190,6 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
     }
-    private String CHANGE_TAG_TABLE_NAME = " ALTER TABLE " + TABLE_TAGS +" RENAME TO " + TMP_TABLE_TAGS + "; ";
-    private String CREATE_NEW_TAG_TABLE = "CREATE TABLE " + TABLE_TAGS + " (  " +
-    COLUMN_ID + " INTEGER PRIMARY KEY, " +
-    COLUMN_TAGTYPE + " INTEGER NOT NULL, " +
-    COLUMN_SIZE + " REAL NOT NULL, " +
-    COLUMN_EVENT + " INTEGER NOT NULL, " +
-            " FOREIGN KEY( " + COLUMN_TAGTYPE + ") REFERENCES " + TABLE_TAGTYPES
-            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE, " + " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
-            ");";
-    private String COPY_CONTENTS_TO_NEW_TAG_TABLE = " INSERT INTO "+ TABLE_TAGS +" ( " + COLUMN_ID +", "+ COLUMN_TAGTYPE + ", " + COLUMN_SIZE  + ", " + COLUMN_EVENT +" ) "+
-            " SELECT " + COLUMN_ID + ", " + COLUMN_TAGTYPE +", " + COLUMN_SIZE  + ", " + COLUMN_EVENT + " FROM "+ TMP_TABLE_TAGS;
-    private String DROP_OLD_TAG_TABLE = "DROP TABLE " + TMP_TABLE_TAGS;
-
-
-    //Before the column's name was 'after' which is a keyword in SQLITE syntax
-    private String CHANGE_RATING_TABLE_NAME = " ALTER TABLE " + TABLE_RATINGS +" RENAME TO " + TMP_TABLE_RATINGS + "; ";
-    private String CREATE_NEW_RATING_TABLE = "CREATE TABLE " + TABLE_RATINGS + " (  " + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_EVENT + " INTEGER NOT NULL, " +
-            COLUMN_AFTER + " INTEGER NOT NULL, " + " FOREIGN KEY( " + COLUMN_EVENT + ") REFERENCES " + TABLE_EVENTS
-            + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " + ");";
-  private String COPY_CONTENTS_TO_NEW_TABLE = " INSERT INTO "+ TABLE_RATINGS +" ( " + COLUMN_ID +", "+ COLUMN_EVENT + ", " + COLUMN_AFTER + ") "+
-          " SELECT " + COLUMN_ID +", " + COLUMN_EVENT + ", after FROM "+ TMP_TABLE_RATINGS;
-  private String DROP_OLD_TABLE = "DROP TABLE " + TMP_TABLE_RATINGS;
-
-
-
-    private String CHANGE_RATING_SCALE =
-            "UPDATE " + TABLE_RATINGS + " SET " +
-                    COLUMN_AFTER + " = " + COLUMN_AFTER + " -1 " + " WHERE " + COLUMN_AFTER + " " +
-                    "!= '1' ";
 
     //-----------------------------------------------------------------------------------
     //get cursor methods
@@ -593,12 +595,14 @@ public class DBHandler extends SQLiteOpenHelper {
         deleteEvent(eventId);
         addRating(toRating);
     }
+
     /*
          2018-04-04
          Introducing new method for retrieveing events.
 
          WindowLeaked problem made me come to this solution.
-         The original problem was that the Query became to large after a couple of months use of the diary.
+         The original problem was that the Query became to large after a couple of months use of
+         the diary.
 
          A cursor can only hold 1 mb of data.
 
@@ -610,8 +614,10 @@ public class DBHandler extends SQLiteOpenHelper {
          */
     public List<Event> getEventsForStatistics() {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String ONLY_RELEVANT_COLUMNS = COLUMN_ID + ", " + COLUMN_DATETIME + ", " + COLUMN_TYPE_OF_EVENT + ", " + COLUMN_HAS_BREAK;
-        final String QUERY = "SELECT "+ ONLY_RELEVANT_COLUMNS +" FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENTSTEMPLATE +
+        final String ONLY_RELEVANT_COLUMNS = COLUMN_ID + ", " + COLUMN_DATETIME + ", " +
+                COLUMN_TYPE_OF_EVENT + ", " + COLUMN_HAS_BREAK;
+        final String QUERY = "SELECT " + ONLY_RELEVANT_COLUMNS + " FROM " + TABLE_EVENTS + " " +
+                "WHERE " + COLUMN_EVENTSTEMPLATE +
                 " IS NULL " + " ORDER BY " + COLUMN_DATETIME + "" + " ASC";
         Cursor c = null;
         List<Event> events;
@@ -664,7 +670,9 @@ public class DBHandler extends SQLiteOpenHelper {
     public Event retrieveEvent(long id) {
         Event toReturn = null;
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT " + COLUMN_DATETIME + ", " + COLUMN_COMMENT + ", "+ COLUMN_HAS_BREAK + ", "+ COLUMN_TYPE_OF_EVENT +  " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_ID + " = ?";
+        final String QUERY = "SELECT " + COLUMN_DATETIME + ", " + COLUMN_COMMENT + ", " +
+                COLUMN_HAS_BREAK + ", " + COLUMN_TYPE_OF_EVENT + " FROM " + TABLE_EVENTS + " " +
+                "WHERE " + COLUMN_ID + " = ?";
         Cursor c = db.rawQuery(QUERY, new String[]{String.valueOf(id)});
         if (c != null) {
             if (c.moveToFirst()) {
@@ -680,6 +688,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return toReturn;
     }
+
     private Event getEvent(long eventId, Cursor c) throws InvalidEventType {
         String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME)); //denna kraschar
         int type = c.getInt(c.getColumnIndex(COLUMN_TYPE_OF_EVENT));
@@ -691,6 +700,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * For statistics, comments only create a big Heap of no use
+     *
      * @param eventId
      * @param c
      * @return
@@ -1340,15 +1350,17 @@ public class DBHandler extends SQLiteOpenHelper {
         this.close();
         return eventList;
     }
+
     //returns null on failure
     public LocalDate getDateOfLastEvent() {
         LocalDate ld = null;
         LocalDateTime ldt = getTimeOfLastEvent();
-        if (ldt!= null){
+        if (ldt != null) {
             ld = ldt.toLocalDate();
         }
         return ld;
     }
+
     //returns null on failure
     public LocalDateTime getTimeOfLastEvent() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1363,14 +1375,14 @@ public class DBHandler extends SQLiteOpenHelper {
                 ldt = DateTimeFormat.fromSqLiteFormat(dateTimeStr);
             } catch (Exception e) {
                 ldt = null;
-            }
-            finally {
+            } finally {
                 c.close();
                 db.close();
             }
         }
         return ldt;
     }
+
     public boolean diaryIsEmpty() {
         return tableIsEmpty(TABLE_EVENTS);
     }
@@ -1389,8 +1401,7 @@ public class DBHandler extends SQLiteOpenHelper {
             if (c.getInt(0) > 0) {
                 return false;
             }
-        }
-        finally {
+        } finally {
             c.close();
             db.close();
         }
@@ -1399,12 +1410,14 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * Cursor safe
+     *
      * @return
      */
-    public List<LocalDateTime> getManualBreaks(){
+    public List<LocalDateTime> getManualBreaks() {
         List<LocalDateTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS + " WHERE " + COLUMN_HAS_BREAK + " = 1 " + " ORDER BY " + COLUMN_DATETIME + " ASC ";
+        final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS + " WHERE " +
+                COLUMN_HAS_BREAK + " = 1 " + " ORDER BY " + COLUMN_DATETIME + " ASC ";
         Cursor c = null;
         try {
             c = db.rawQuery(QUERY, null);
@@ -1421,8 +1434,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     }
                 }
             }
-        }
-        finally {
+        } finally {
             if (c != null && !c.isClosed()) {
                 c.close();
             }
@@ -1432,16 +1444,19 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return toReturn;
     }
+
     /**
      * Cursor safe
+     *
      * @return autoBreaks sorted in in ascending time order
      */
-    public List<LocalDateTime> getAutoBreaks(int hoursAheadBreak){
+    public List<LocalDateTime> getAutoBreaks(int hoursAheadBreak) {
 
         //1. Get all event times in asc order
         List<LocalDateTime> eTimes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS  + " ORDER BY " + COLUMN_DATETIME + " ASC ";
+        final String QUERY = "Select " + COLUMN_DATETIME + " FROM " + TABLE_EVENTS + " ORDER BY "
+                + COLUMN_DATETIME + " ASC ";
 
         Cursor c = null;
         try {
@@ -1459,8 +1474,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     }
                 }
             }
-        }
-        finally{
+        } finally {
             if (c != null && !c.isClosed()) {
                 c.close();
             }
@@ -1470,38 +1484,43 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         //non-db operations
         //2. iterate eTimes and check closest laying elements time diff
-        List<LocalDateTime>aBreaks = new ArrayList<>();
-        for (int i = 0; i<eTimes.size()-1; i++){
-            if (eTimes.get(i).plusHours(hoursAheadBreak).isBefore(eTimes.get(i+1))){
+        List<LocalDateTime> aBreaks = new ArrayList<>();
+        for (int i = 0; i < eTimes.size() - 1; i++) {
+            if (eTimes.get(i).plusHours(hoursAheadBreak).isBefore(eTimes.get(i + 1))) {
                 aBreaks.add(eTimes.get(i));
             }
         }
         return aBreaks;
     }
-    public List<ScoreTime> getRatingTimes(){
+
+    public List<ScoreTime> getRatingTimes() {
         return getScoreTimes(TABLE_RATINGS, COLUMN_AFTER);
     }
 
     /**
      * Cursor safe
+     *
      * @return
      */
     public List<ScoreTime> getCompleteTimes() {
         return getScoreTimes(TABLE_BMS, COLUMN_COMPLETENESS);
     }
+
     /**
      * Cursor safe
+     *
      * @return
      */
     public List<ScoreTime> getBristolTimes() {
         return getScoreTimes(TABLE_BMS, COLUMN_BRISTOL);
     }
 
-    private List<ScoreTime>getScoreTimes(String eventTable, String scoreColumn){
+    private List<ScoreTime> getScoreTimes(String eventTable, String scoreColumn) {
         List<ScoreTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "Select " + " e." + COLUMN_DATETIME + ", b." + scoreColumn +
-                " FROM " + TABLE_EVENTS + " e " + " JOIN " + eventTable + " b " + " ON e. " + COLUMN_ID + " = b."+ COLUMN_EVENT +  " ORDER BY " + COLUMN_DATETIME + " ASC ";
+                " FROM " + TABLE_EVENTS + " e " + " JOIN " + eventTable + " b " + " ON e. " +
+                COLUMN_ID + " = b." + COLUMN_EVENT + " ORDER BY " + COLUMN_DATETIME + " ASC ";
 
         Cursor c = null;
         try {
@@ -1520,8 +1539,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     }
                 }
             }
-        }
-        finally {
+        } finally {
             if (c != null && !c.isClosed()) {
                 c.close();
             }
@@ -1531,13 +1549,17 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return toReturn;
     }
+
     public List<Tag> getAllTagsWithTime() {
         List<Tag> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_SIZE + ", e." + COLUMN_DATETIME +
-                 " FROM " + TABLE_TAGS + " t " +
-                " LEFT JOIN " + TABLE_TAGTYPES + " tt " + " ON tt. " + COLUMN_ID + " = t."+ COLUMN_TAGTYPE +
-                " LEFT JOIN " + TABLE_EVENTS + " e " + " ON e. " + COLUMN_ID + " = t."+ COLUMN_EVENT;
+        final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_SIZE + ", e."
+                + COLUMN_DATETIME +
+                " FROM " + TABLE_TAGS + " t " +
+                " LEFT JOIN " + TABLE_TAGTYPES + " tt " + " ON tt. " + COLUMN_ID + " = t." +
+                COLUMN_TAGTYPE +
+                " LEFT JOIN " + TABLE_EVENTS + " e " + " ON e. " + COLUMN_ID + " = t." +
+                COLUMN_EVENT;
         Cursor c = null;
         try {
             c = db.rawQuery(QUERY, null);
@@ -1556,8 +1578,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     }
                 }
             }
-        }
-        finally {
+        } finally {
             if (c != null && !c.isClosed()) {
                 c.close();
             }
@@ -1569,14 +1590,14 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     *
      * @return tagsWithoutTime in no particular order
      */
     public List<TagWithoutTime> getAllTags() {
         List<TagWithoutTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_SIZE +
-                " FROM " + TABLE_TAGTYPES + " tt " + " JOIN " + TABLE_TAGS + " t " + " ON tt. " + COLUMN_ID + " = t."+ COLUMN_TAGTYPE;
+                " FROM " + TABLE_TAGTYPES + " tt " + " JOIN " + TABLE_TAGS + " t " + " ON tt. " +
+                COLUMN_ID + " = t." + COLUMN_TAGTYPE;
 
         Cursor c = null;
         try {
@@ -1594,8 +1615,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     }
                 }
             }
-        }
-        finally {
+        } finally {
             if (c != null && !c.isClosed()) {
                 c.close();
             }

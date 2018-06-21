@@ -20,10 +20,9 @@ import android.widget.ViewSwitcher;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
-import com.johanlund.picker_views.DatePickerFragment;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
-import com.johanlund.screens.event_activities.mvc_controllers.EventActivity;
+import com.johanlund.picker_views.DatePickerFragment;
 import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
@@ -36,12 +35,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.johanlund.constants.Constants.NEW_EVENT_DATE;
 import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
 import static com.johanlund.constants.Constants.LOCALDATE;
 import static com.johanlund.constants.Constants.NEW_EVENT;
+import static com.johanlund.constants.Constants.NEW_EVENT_DATE;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
@@ -63,7 +62,7 @@ import static com.johanlund.screens.events_container_classes.common.EventsContai
  * <p>
  * On loading from TemplateFragment, diary should start at that date.
  * => not done right now...
- *
+ * <p>
  * When importing diary, you want the date to be at the last used day in database.
  * => this is done in in DrawerActivity.startDiaryAtLastDate. OK!
  * <p>
@@ -82,13 +81,6 @@ import static com.johanlund.screens.events_container_classes.common.EventsContai
  */
 public class DiaryContainerFragment extends Fragment implements DiaryFragment.DiaryFragmentUser,
         EventButtonsViewMvc.Listener, DatePickerDialog.OnDateSetListener {
-    public interface DiaryContainerListener {
-        void startTemplateFragment();
-
-        void restartContainerDiary(LocalDate ld);
-    }
-
-
     //preferably even number, variables used for setting correct date after swipe
     private static int MAX_SLIDES = 1000;
     private static int START_POS_VIEWPAGER = MAX_SLIDES / 2;
@@ -98,11 +90,10 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     LocalDate startDate;
     LocalDate currentDate;
     TextView dateView;
-    private EventButtonsViewMvcImpl mButtonsViewMvc;
-    private DiaryContainerListener listener;
     //switcher tab and it's tabs
     ViewSwitcher tabsLayoutSwitcher;
-
+    private EventButtonsViewMvcImpl mButtonsViewMvc;
+    private DiaryContainerListener listener;
     public DiaryContainerFragment() {
         // Required empty public constructor
     }
@@ -123,7 +114,8 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
 
         //starts as invisible appBarLayout but when user marks something this pops up
         tabsLayoutSwitcher = (ViewSwitcher) view.findViewById(R.id.tabLayoutSwitcher);
-        mButtonsViewMvc = new EventButtonsViewMvcImpl(inflater, (ViewGroup) view.findViewById(R.id.buttons));
+        mButtonsViewMvc = new EventButtonsViewMvcImpl(inflater, (ViewGroup) view.findViewById(R
+                .id.buttons));
         setUpMenu(view);
 
         Bundle args = getArguments();
@@ -151,11 +143,13 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         });
         return view;
     }
+
     @Override
     public void onStart() {
         super.onStart();
         mButtonsViewMvc.registerListener(this);
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -250,7 +244,6 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         });
     }
 
-
     private void doEventsTemplateAdder(List<Event> events) {
         Intent intent = new Intent(getActivity(), SaveEventsTemplateActivity.class);
         //Gson gson = new Gson();
@@ -335,17 +328,23 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         return (DiaryFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
     }
 
+    public interface DiaryContainerListener {
+        void startTemplateFragment();
+
+        void restartContainerDiary(LocalDate ld);
+    }
+
     //Internal adapter class
     private class DiarySlidePagerAdapter extends FragmentStatePagerAdapter {
-        public DiarySlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
         /**
          * @param position is used to set correct date also after swipe
          * @return
          */
         private DiaryFragment diaryFragment;
+
+        public DiarySlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
         @Override
         public Fragment getItem(int position) {

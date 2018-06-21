@@ -1,8 +1,8 @@
 package com.johanlund.stat_backend.portion_scorewrapper;
 
+import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
 import com.johanlund.stat_backend.makers.PortionPointMaker;
 import com.johanlund.stat_backend.point_classes.PortionPoint;
-import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
 import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
 import java.util.Collections;
@@ -11,18 +11,18 @@ import java.util.List;
 
 /**
  * Created by Johan on 2018-04-03.
- *
+ * <p>
  * The way Ration Portion Stat works:
  * ==================================
  * NB (it seems to work good, but this algorithm is not tested yet, this should of course be done).
- *
+ * <p>
  * Variables coming in from settings:
- *   ranges, waitHoursAfterMeal, validHours, minHoursBetweenMeals.
+ * ranges, waitHoursAfterMeal, validHours, minHoursBetweenMeals.
  * Relevant variables (can be represented in various ways) coming in from database:
- *   portionSizes and there times, Ratings.after and their times, breaks, endTimeOfEachChunk.
- *
+ * portionSizes and there times, Ratings.after and their times, breaks, endTimeOfEachChunk.
+ * <p>
  * The algorithm is looped for every range that the user has added.
- *
+ * <p>
  * Important to know is that if a bigger portion than the range max is occurring before or during
  * the timeperiod for the portions within the range, the timeperiod ==time scope) of the range will
  * be Excepted with the timeperiod of the larger portion (see method leftExceptRights).
@@ -30,14 +30,11 @@ import java.util.List;
  * otherwise would be expected (and that ranges with higher max seem to have longer quant).
  * But there is no way to get around it, larger portion might otherwise interfere and destroy the
  * meaning with this stat.
- *   Smaller portions in the same timeperiod as portions within the range are not,
- *   however, treated as a problem.
- *
+ * Smaller portions in the same timeperiod as portions within the range are not,
+ * however, treated as a problem.
+ * <p>
  * waitHoursAfterMeal == hours_after_portion_to_start_counting_score_from_rating
  * validHours == hours_after_portion_to_stop_counting_score_from_rating
- *
- *
- *
  */
 
 public class RatingPortionScoreWrapper extends PortionScoreWrapper {
@@ -49,14 +46,16 @@ public class RatingPortionScoreWrapper extends PortionScoreWrapper {
 
     @Override
     public List<PortionPoint> calcPoints(List<TagsWrapperBase> chunks) {
-        return PortionPointMaker.doPortionsPoints(chunks, ranges, waitHoursAfterMeal, stopHoursAfterMeal, minHoursBetweenMeals);
+        return PortionPointMaker.doPortionsPoints(chunks, ranges, waitHoursAfterMeal,
+                stopHoursAfterMeal, minHoursBetweenMeals);
     }
+
     @Override
     public List<PortionPoint> toSortedList(List<PortionPoint> points) {
         Collections.sort(points, new Comparator<PortionPoint>() {
                     @Override
                     public int compare(PortionPoint p1, PortionPoint p2) {
-                        return (int) ((p1.getScore() - p2.getScore())*100);
+                        return (int) ((p1.getScore() - p2.getScore()) * 100);
                     }
                 }
         );

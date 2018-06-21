@@ -55,7 +55,8 @@ public class TimePeriod {
         for (Chunk ch : chunks) {
             if ((tp.getStart().isAfter(ch.getStartTime()) || tp.getStart().isEqual(ch
                     .getStartTime()))
-                    && (tp.getEnd().isBefore(ch.getLastTime()) || tp.getEnd().isEqual(ch.getLastTime()))) {
+                    && (tp.getEnd().isBefore(ch.getLastTime()) || tp.getEnd().isEqual(ch
+                    .getLastTime()))) {
                 toReturn = ch;
                 break;
             }
@@ -63,7 +64,23 @@ public class TimePeriod {
         return toReturn;
     }
 
-    public long getLengthSec(){
+    /**
+     * Given: under should not be zero
+     * <p>
+     * returns the quote of the division of absolute length
+     */
+    public static double getQuote(TimePeriod above, TimePeriod below) {
+        long aboveSec = above.getLengthSec();
+        long belowSec = below.getLengthSec();
+        if (belowSec == 0) {
+            return Double.NaN;
+        }
+        //must convert to double first, otherwise qoute will round down
+        //btw => (double)aboveSec == ((double)aboveSec), but we want to avoid confusion
+        return ((double) aboveSec) / ((double) belowSec);
+    }
+
+    public long getLengthSec() {
         return end.toEpochSecond(ZoneOffset.UTC) - start.toEpochSecond(ZoneOffset.UTC);
     }
 
@@ -81,21 +98,6 @@ public class TimePeriod {
     private boolean isOkToTrim(long hours) {
         LocalDateTime ldt = end.minusHours(hours);
         return ldt.isAfter(start) || ldt.isEqual(start);
-    }
-    /**
-     * Given: under should not be zero
-     *
-     * returns the quote of the division of absolute length
-     */
-    public static double getQuote(TimePeriod above, TimePeriod below){
-        long aboveSec = above.getLengthSec();
-        long belowSec = below.getLengthSec();
-        if (belowSec == 0){
-            return Double.NaN;
-        }
-        //must convert to double first, otherwise qoute will round down
-        //btw => (double)aboveSec == ((double)aboveSec), but we want to avoid confusion
-        return ((double)aboveSec)/((double)belowSec);
     }
     // =================================================================================================================
 

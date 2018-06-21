@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Johan on 2018-03-20.
  */
 
-public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint>{
+public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint> {
     //incl
     int scoreStart;
     //incl
@@ -28,13 +28,11 @@ public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint>{
     }
 
     @Override
-    public List<TimePoint> toSortedList(List<TimePoint> timePoints){
-        Collections.sort(timePoints, new Comparator<TimePoint>()
-                {
+    public List<TimePoint> toSortedList(List<TimePoint> timePoints) {
+        Collections.sort(timePoints, new Comparator<TimePoint>() {
                     @Override
-                    public int compare(TimePoint t1, TimePoint t2)
-                    {
-                        return (int)((t1.getDurationInHours()- t2.getDurationInHours()));
+                    public int compare(TimePoint t1, TimePoint t2) {
+                        return (int) ((t1.getDurationInHours() - t2.getDurationInHours()));
                     }
                 }
         );
@@ -43,8 +41,8 @@ public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint>{
 
 
     @Override
-    protected boolean quantIsOverLimit(TimePoint tp){
-        return tp.getDurationInHours()>=durationLimitInHours;
+    protected boolean quantIsOverLimit(TimePoint tp) {
+        return tp.getDurationInHours() >= durationLimitInHours;
     }
 
     //copied from RatingTimeScoreWrapper
@@ -52,7 +50,7 @@ public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint>{
         List<TimePoint> points = new ArrayList<>();
         for (ScoreTimesBase sts : stsList) {
             List<TimePoint> tps = doCalc(sts);
-            for (TimePoint tp: tps) {
+            for (TimePoint tp : tps) {
                 points.add(tp);
             }
         }
@@ -60,6 +58,7 @@ public abstract class TimeScoreWrapper extends ScoreWrapperBase<TimePoint>{
     }
 
     protected abstract List<TimePoint> doCalc(ScoreTimesBase stb);
+
     @Override
     public List<TimePoint> calcPoints(List<TagsWrapperBase> chunks) {
         return null;

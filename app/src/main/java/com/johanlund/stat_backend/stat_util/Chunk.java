@@ -33,7 +33,7 @@ public class Chunk {
         int indStartNewChunk = 0; //incl
         for (int i = 0; i < events.size(); i++) {
             //remove break < event, see ChunkTests when this can occur.
-            for (int j = indBreaks; j<breaks.size();j++) {
+            for (int j = indBreaks; j < breaks.size(); j++) {
                 if (breaks.get(indBreaks).getTime().isBefore(events.get(i).getTime())) {
                     indBreaks++;
                 }
@@ -57,6 +57,21 @@ public class Chunk {
             }
         }
         return toReturn;
+    }
+
+    //incl, incl
+    public static List<ScoreTime> getBMsBetweenTimes(List<ScoreTime> bms, LocalDateTime
+            searchForBMStartTime, LocalDateTime
+            searchForBMStopTime) {
+
+        List<ScoreTime> filteredBms = new ArrayList<>();
+        for (ScoreTime bm : bms) {
+            if (!bm.getTime().isBefore(searchForBMStartTime) && !bm.getTime().isAfter
+                    (searchForBMStopTime)) {
+                filteredBms.add(bm);
+            }
+        }
+        return filteredBms;
     }
 
     public List<Event> getEvents() {
@@ -86,21 +101,6 @@ public class Chunk {
     //tags exist in Meal, Other and Exercise events.
     public List<Tag> getTags() {
         return Util.getTags(events);
-    }
-
-
-    //incl, incl
-    public static List<ScoreTime> getBMsBetweenTimes(List<ScoreTime> bms, LocalDateTime searchForBMStartTime, LocalDateTime
-            searchForBMStopTime) {
-
-        List<ScoreTime> filteredBms = new ArrayList<>();
-        for (ScoreTime bm : bms) {
-            if (!bm.getTime().isBefore(searchForBMStartTime) && !bm.getTime().isAfter
-                    (searchForBMStopTime)) {
-                filteredBms.add(bm);
-            }
-        }
-        return filteredBms;
     }
 
     public List<Meal> getMeals() {

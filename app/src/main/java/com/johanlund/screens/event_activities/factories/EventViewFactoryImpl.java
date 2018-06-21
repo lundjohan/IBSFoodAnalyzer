@@ -18,7 +18,8 @@ import static com.johanlund.constants.Constants.OTHER;
 import static com.johanlund.constants.Constants.RATING;
 
 public class EventViewFactoryImpl implements EventViewFactory {
-    public EventViewMvc make(LayoutInflater inflater, ViewGroup container, int eventType) throws InvalidEventType {
+    public EventViewMvc make(LayoutInflater inflater, ViewGroup container, int eventType) throws
+            InvalidEventType {
         switch (eventType) {
             case MEAL: {
                 return new MealViewMvc(inflater, container);
@@ -35,7 +36,7 @@ public class EventViewFactoryImpl implements EventViewFactory {
             case RATING: {
                 return new RatingViewMvc(inflater, container);
             }
-            default:{
+            default: {
                 throw new InvalidEventType(Integer.toString(eventType));
             }
         }

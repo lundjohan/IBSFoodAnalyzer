@@ -64,7 +64,8 @@ public class Constants {
     public final static String TAG_TEMPLATE_ID = "tagTemplateId";
 
     //Other uses for TagTemplates
-    public final static String TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED = "delete_or_edited_tagTemplate";
+    public final static String TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED =
+            "delete_or_edited_tagTemplate";
 
     //note: IDS_OF_EDITED_TAG_TEMPLATES & IDS_OF_EARLIER_EDITED_TAG_TEMPLATES are closely related.
     // TagAdderActivity -> TagEventActivity, //TagTypeEditActivity -> TagAdderActivity
@@ -72,7 +73,7 @@ public class Constants {
 
     //TagAdderActivity -> TagTypeEditActivity
     public final static String IDS_OF_EARLIER_EDITED_TAG_TEMPLATES = "idsOfEditedTagTemplates";
- //sent to Activity handling of EventsTemplates
+    //sent to Activity handling of EventsTemplates
     public final static String EVENTSTEMPLATE_TO_CHANGE = "eventsTemplateToChange";
 
     //=>
@@ -103,20 +104,18 @@ public class Constants {
     public static final int BLUE_ZONE_RATING_LIMIT_INCLUSIVE = 6;
     public static final double SCORE_BLUEZONES_FROM = 6;
     public static final double MAX_RATING_SCORE = 7;
-    //Portions
-    //====================FOR HEURISTIC TOOLS=================================
-    public static int HOURS_AHEAD_FOR_AVG = 24; //in hours
     public static final int HOURS_AHEAD_FOR_BLUEZONES = 24; //in hours
     public static final int HOURS_AHEAD_FOR_BM = 30; //in hours
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
-    //==================== HEURISTIC FLAGS======================================
-    public static String PACKAGE_NAME;
-    public static String SHOULD_HAVE_DATE = "shouldHaveDate";
-    //=================================TIME ZONE===================================
-
     //=================================SETTINGS VARIABLES APP===================================
     public static final int HOURS_AHEAD_FOR_BREAK_BACKUP = 20; //in hours
-
+    //Portions
+    //====================FOR HEURISTIC TOOLS=================================
+    public static int HOURS_AHEAD_FOR_AVG = 24; //in hours
+    //==================== HEURISTIC FLAGS======================================
+    public static String PACKAGE_NAME;
+    //=================================TIME ZONE===================================
+    public static String SHOULD_HAVE_DATE = "shouldHaveDate";
     //=================================INFO===================================
     public static String INFO_STR = "shouldHaveDate";
     public static String LAYOUT_RESOURCE = "resource_file_for_layout";

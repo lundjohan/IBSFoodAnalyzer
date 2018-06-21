@@ -9,13 +9,13 @@ import com.johanlund.database.DBHandler;
 import com.johanlund.external_classes.TinyDB;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventManager;
-import com.johanlund.screens.statistics.portions.common.PortionStatActivity;
-import com.johanlund.screens.statistics.portions.common.PortionStatAdapter;
 import com.johanlund.screens.statistics.avg_stat.common.TagsWrapper;
 import com.johanlund.screens.statistics.common.StatAsyncTask;
+import com.johanlund.screens.statistics.portions.common.PortionStatActivity;
+import com.johanlund.screens.statistics.portions.common.PortionStatAdapter;
+import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
 import com.johanlund.stat_backend.portion_scorewrapper.PortionScoreWrapper;
 import com.johanlund.stat_backend.portion_scorewrapper.RatingPortionScoreWrapper;
-import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
 import com.johanlund.stat_backend.stat_util.ScoreTime;
 import com.johanlund.stat_backend.stat_util.TagsWrapperBase;
 
@@ -40,12 +40,17 @@ public class RatingPortionStatActivity extends PortionStatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
         TinyDB tinydb = new TinyDB(getApplicationContext());
-        List<PortionStatRange> ranges= tinydb.getListPortionRange(getResources().getString(R.string.portions_ranges_key));
+        List<PortionStatRange> ranges = tinydb.getListPortionRange(getResources().getString(R
+                .string.portions_ranges_key));
         //look at getScoreWrapper from Time... to see what to do here
-        int waitHoursAfterMeal = preferences.getInt(getResources().getString(R.string.portions_rating_pref_wait_hours_key),0);
-        int validHours = preferences.getInt(getResources().getString(R.string.portions_rating_pref_valid_hours_key), 24);
-        int minHoursBetweenMeals = preferences.getInt(getResources().getString(R.string.portions_pref_min_hours_between_meals),0);
-        return new RatingPortionScoreWrapper(ranges, waitHoursAfterMeal, validHours, minHoursBetweenMeals);
+        int waitHoursAfterMeal = preferences.getInt(getResources().getString(R.string
+                .portions_rating_pref_wait_hours_key), 0);
+        int validHours = preferences.getInt(getResources().getString(R.string
+                .portions_rating_pref_valid_hours_key), 24);
+        int minHoursBetweenMeals = preferences.getInt(getResources().getString(R.string
+                .portions_pref_min_hours_between_meals), 0);
+        return new RatingPortionScoreWrapper(ranges, waitHoursAfterMeal, validHours,
+                minHoursBetweenMeals);
     }
 
     @Override
@@ -59,13 +64,14 @@ public class RatingPortionStatActivity extends PortionStatActivity {
         StatAsyncTask asyncThread = new StatAsyncTask(this, adapter, recyclerView);
         asyncThread.execute(getScoreWrapper(), twbs);
     }
+
     //copied from RatingAvgStatActivity
     protected List<TagsWrapperBase> getTagsWrapperBase() {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         EventManager em = new EventManager(getApplicationContext());
-        List<Tag>tags = em.getAllTagsWithTime();
-        List <ScoreTime> ratings = dbHandler.getRatingTimes();
-        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
+        List<Tag> tags = em.getAllTagsWithTime();
+        List<ScoreTime> ratings = dbHandler.getRatingTimes();
+        List<LocalDateTime> allBreaks = Break.getAllBreaks(getApplicationContext());
 
         return TagsWrapper.makeTagsWrappers(tags, ratings,
                 allBreaks);

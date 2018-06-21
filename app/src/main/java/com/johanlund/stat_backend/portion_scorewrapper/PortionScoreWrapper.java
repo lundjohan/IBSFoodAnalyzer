@@ -1,8 +1,8 @@
 package com.johanlund.stat_backend.portion_scorewrapper;
 
 import com.johanlund.screens.statistics.common.ScoreWrapperBase;
-import com.johanlund.stat_backend.point_classes.PortionPoint;
 import com.johanlund.screens.statistics.portions_settings.PortionStatRange;
+import com.johanlund.stat_backend.point_classes.PortionPoint;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Johan on 2018-04-03.
  */
 
-public abstract class PortionScoreWrapper extends ScoreWrapperBase<PortionPoint>{
+public abstract class PortionScoreWrapper extends ScoreWrapperBase<PortionPoint> {
     List<PortionStatRange> ranges;
     int waitHoursAfterMeal;
     int stopHoursAfterMeal;

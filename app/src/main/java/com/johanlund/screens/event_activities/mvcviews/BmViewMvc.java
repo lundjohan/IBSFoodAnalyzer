@@ -18,12 +18,18 @@ public class BmViewMvc extends EventViewMvcAbstract {
     SeekBar bristolBar;
     TextView completeName;
     SeekBar completeBar;
+
     public BmViewMvc(LayoutInflater inflater, ViewGroup container) {
         super(inflater, container);
     }
+
+    private static void setBristolNrAndText(TextView v, int bristolScore) {
+        v.setText("(" + bristolScore + ") " + Bm.bristolToText(bristolScore));
+    }
+
     @Override
     protected void initializeSpecViews() {
-        
+
     }
 
     @Override
@@ -94,9 +100,6 @@ public class BmViewMvc extends EventViewMvcAbstract {
     @Override
     public void bindAddedTagToView(String tagName) {/*no tags to bind in this view*/}
 
-    private static void setBristolNrAndText(TextView v, int bristolScore) {
-        v.setText("("+bristolScore + ") "+ Bm.bristolToText(bristolScore));
-    }
     @Override
     public void removeTagFromView(String tagName) {
         /*

@@ -10,24 +10,29 @@ import java.util.List;
 import java.util.Map;
 
 public class DeltaPointMaker {
-    public static Map<String,TagPoint> doDeltaScore(List<TagsWrapperBase>chunks, int startHoursAfterEvent, int
+    public static Map<String, TagPoint> doDeltaScore(List<TagsWrapperBase> chunks, int
+            startHoursAfterEvent, int
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
         for (TagsWrapperBase chunk : chunks) {
             makeDeltaTagPoints(chunk, startHoursAfterEvent, stopHoursAfterEvent, tagPoints);
         }
         return tagPoints;
     }
+
     //notice minusMinutes 1.
-    /*Extremely ineffective to calculate avg twice, but I just want to see if delta stat give meaningful results...*/
+    /*Extremely ineffective to calculate avg twice, but I just want to see if delta stat give
+    meaningful results...*/
     private static void makeDeltaTagPoints(TagsWrapperBase chunk, int startHoursAfterEvent, int
             stopHoursAfterEvent, Map<String, TagPoint> tagPoints) {
         List<Tag> tagsMaterial = chunk.getTags();
         for (Tag tag : tagsMaterial) {
-            Tag t = (Tag)tag;
+            Tag t = (Tag) tag;
 //1. Calculate normal avg===========================================================================
-            TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime().plusHours(stopHoursAfterEvent));
+            TimePeriod tp = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent), t.getTime
+                    ().plusHours(stopHoursAfterEvent));
 
-            double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getScoreTimes(), chunk.getChunkEnd());
+            double[] scoreQuant = RatingTime.calcAvgAndWeight(tp, chunk.getScoreTimes(), chunk
+                    .getChunkEnd());
             //better being on the safe side
             if (scoreQuant[1] != 1.0) {
                 continue;
@@ -35,8 +40,10 @@ public class DeltaPointMaker {
 
 //2. Calculate the score 1 min before===============================================================
             TimePeriod tpMinBefore = new TimePeriod(t.getTime().minusMinutes(1), t.getTime());
-            //TimePeriod tpMinBefore = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent).minusMinutes(1), t.getTime().plusHours(startHoursAfterEvent));
-            double[] scoreQuantMinBefore = RatingTime.calcAvgAndWeight(tpMinBefore, chunk.getScoreTimes(), chunk.getChunkEnd());
+            //TimePeriod tpMinBefore = new TimePeriod(t.getTime().plusHours(startHoursAfterEvent)
+            // .minusMinutes(1), t.getTime().plusHours(startHoursAfterEvent));
+            double[] scoreQuantMinBefore = RatingTime.calcAvgAndWeight(tpMinBefore, chunk
+                    .getScoreTimes(), chunk.getChunkEnd());
 
             //better being on the safe side
             if (scoreQuantMinBefore[1] != 1.0) {
@@ -53,7 +60,7 @@ public class DeltaPointMaker {
 
             //we have only allowed weight with 1.0
             double quant = 1.0;
-            
+
             if (tpInMap == null) {
                 tpToInsert = new TagPoint(name, quant, pointsForTag * quant);
             } else {

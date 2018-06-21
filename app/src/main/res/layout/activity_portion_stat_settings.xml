@@ -11,33 +11,32 @@
         android:id="@+id/linkToMorePortionSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="More Portion Stat Settings"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/frame"
         android:clickable="true"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:text="More Portion Stat Settings"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/portionsIntervals"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"/>
-
+        app:layout_constraintVertical_bias="0.0"/>
 
 
 </android.support.constraint.ConstraintLayout>
