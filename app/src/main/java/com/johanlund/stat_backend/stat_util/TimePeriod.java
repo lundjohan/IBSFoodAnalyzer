@@ -9,9 +9,6 @@ import org.threeten.bp.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-    start <= end
- */
 public class TimePeriod {
     LocalDateTime start;
     LocalDateTime end;
