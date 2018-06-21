@@ -12,6 +12,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.util.Util;
 
@@ -22,14 +23,14 @@ import java.util.List;
  */
 
 public class TagEventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<Tag> tagsList;
+    List<TagWithoutTime> tagsList;
     TagEventAdapter.Listener listener;
     Context context;
 
     public interface Listener{
         void onTagItemDeleteClicked(View v, int position);
     }
-    public TagEventAdapter(List<Tag> tagsList, TagEventAdapter.Listener listener, Context context ) {
+    public TagEventAdapter(List<TagWithoutTime> tagsList, TagEventAdapter.Listener listener, Context context ) {
         this.tagsList = tagsList;
         this.listener = listener;
         this.context = context;
@@ -46,7 +47,7 @@ public class TagEventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        Tag t = tagsList.get(position);
+        TagWithoutTime t = tagsList.get(position);
         viewHolder.tagName.setText(t.getName());
         final TextView quantity = viewHolder.quantity;
         viewHolder.quantity.setText(Double.toString(t.getSize()));
@@ -81,7 +82,7 @@ public class TagEventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             deleteTag = (ImageView) itemView.findViewById(R.id.deleteTag);
         }
     }
-    private static void useNumberPickerDialogForTag(Context context, final TextView textWithNrToChange, final Tag tag) {
+    private static void useNumberPickerDialogForTag(Context context, final TextView textWithNrToChange, final TagWithoutTime tag) {
         View v = LayoutInflater.from(context).inflate(R.layout.decimal_number_picker, null);
         final NumberPicker np1 = (NumberPicker) v.findViewById(R.id.numberPicker1);
         Util.setNrsForNumberPicker(np1, true);

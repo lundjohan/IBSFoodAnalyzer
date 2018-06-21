@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.event_activities.listadapters.TagEventAdapter;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract implements TagEventAdapter.Listener {
-    protected List<Tag> tagsList;
+    protected List<TagWithoutTime> tagsList;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private TagEventAdapter adapter;
@@ -49,13 +50,13 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
     }
     @Override
     protected void bindEventSpecsToView(Event e) {
-        tagsList.addAll(((InputEvent)e).getTags());
+        tagsList.addAll(((InputEvent)e).getTagsWithoutTime());
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void bindAddedTagToView(String tagName){
-        Tag tag = new Tag(getLocalDateTime(), tagName, 1.0);
+        TagWithoutTime tag = new TagWithoutTime(tagName, 1.0);
         tagsList.add(tag);
         adapter.notifyItemInserted(tagsList.size() - 1);
     }
@@ -75,7 +76,7 @@ public abstract class TagEventViewMvcAbstract extends EventViewMvcAbstract imple
     @Override
     public List<String> getTagNames() {
         List<String> tagNames = new ArrayList<>();
-        for (Tag t: tagsList){
+        for (TagWithoutTime t: tagsList){
             tagNames.add(t.getName());
         }
         return tagNames;

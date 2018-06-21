@@ -2,12 +2,11 @@ package com.johanlund.screens.statistics.avg_stat.complete;
 
 import android.os.Bundle;
 
-import com.johanlund.base_classes.Break;
 import com.johanlund.base_classes.Tag;
-import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.screens.statistics.avg_stat.common.BmsWrapper;
+import com.johanlund.model.EventManager;
 import com.johanlund.screens.statistics.avg_stat.bristol.BristolAvgStatActivity;
+import com.johanlund.screens.statistics.avg_stat.common.BmsWrapper;
 import com.johanlund.stat_backend.avg_scorewrapper.BristolAvgScoreWrapper;
 import com.johanlund.stat_backend.avg_scorewrapper.CompleteAvgScoreWrapper;
 import com.johanlund.stat_backend.stat_util.ScoreTime;
@@ -39,11 +38,10 @@ public class CompleteAvgStatActivity extends BristolAvgStatActivity {
 
     @Override
     protected List<TagsWrapperBase> getTagsWrapperBase() {
-        DBHandler dbHandler = new DBHandler(getApplicationContext());
-
-        List<Tag>tags = dbHandler.getAllTags();
-        List <ScoreTime> completeBms = dbHandler.getCompleteTimes();
-        List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
+        EventManager em = new EventManager(getApplicationContext());
+        List<Tag>tags = em.getAllTagsWithTime();
+        List <ScoreTime> completeBms = em.getCompleteTimes();
+        List<LocalDateTime>allBreaks = em.getAllBreaks();
         return BmsWrapper.makeBmsWrappers(tags, completeBms, allBreaks);
     }
 }

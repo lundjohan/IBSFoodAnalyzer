@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.database.DBHandler;
+import com.johanlund.model.EventManager;
 import com.johanlund.stat_backend.stat_util.BmTimes;
 import com.johanlund.stat_backend.stat_util.RatingTimes;
 import com.johanlund.stat_backend.stat_util.ScoreTime;
@@ -42,20 +43,9 @@ public class Break implements Comparable<Break>{
      * @return manual AND auto breaks
      */
     public static List<LocalDateTime> getAllBreaks(Context c) {
-        DBHandler dbHandler = new DBHandler(c);
-        List<LocalDateTime> mBreaks = dbHandler.getManualBreaks();
-        LocalDateTime lastBreak = dbHandler.getTimeOfLastEvent();
-        mBreaks.add(lastBreak);
+        EventManager em = new EventManager(c);
+        return em.getAllBreaks();
 
-
-        //auto breaks
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(c);
-        int hoursInFrontOfAutoBreak = preferences.getInt("hours_break",
-                HOURS_AHEAD_FOR_BREAK_BACKUP);
-        List<LocalDateTime> aBreaks = dbHandler.getAutoBreaks(hoursInFrontOfAutoBreak);
-        mBreaks.addAll(aBreaks);
-        Collections.sort(mBreaks);
-        return mBreaks;
     }
     /**
      * Do both manual and automatic breaks

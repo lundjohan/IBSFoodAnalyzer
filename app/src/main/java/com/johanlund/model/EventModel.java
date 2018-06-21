@@ -2,12 +2,9 @@ package com.johanlund.model;
 
 import android.content.Context;
 
-import com.johanlund.base_classes.Tag;
 import com.johanlund.database.DBHandler;
 
 import org.threeten.bp.LocalDateTime;
-
-import java.util.List;
 
 
 public abstract class EventModel {

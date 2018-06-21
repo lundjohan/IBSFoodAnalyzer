@@ -16,7 +16,7 @@ import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Rating;
-import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.database.DBHandler;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.ibsfoodanalyzer.R;
@@ -76,7 +76,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         tagHolder.tagQuantsLayout.removeAllViews();
         tagHolder.tagNamesLayout.removeAllViews();
 
-        for (Tag tag : inputEvent.getTags()) {
+        for (TagWithoutTime tag : inputEvent.getTagsWithoutTime()) {
             TextView tagQuant = new TextView(tagHolder.tagQuantsLayout.getContext());
             tagQuant.setText('X' + Double.toString(tag.getSize()));
             tagHolder.tagQuantsLayout.addView(tagQuant);

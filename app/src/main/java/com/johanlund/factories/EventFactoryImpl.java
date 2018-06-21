@@ -6,7 +6,7 @@ import com.johanlund.base_classes.Exercise;
 import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Rating;
-import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.exceptions.InvalidEventType;
 
 import org.threeten.bp.LocalDateTime;
@@ -24,13 +24,13 @@ public class EventFactoryImpl  implements EventFactory{
     public Event makeDummyEventWithTime(LocalDateTime ldt, int eventType) {
         switch (eventType){
             case MEAL:{
-                return new Meal(ldt, new ArrayList<Tag>(), 1.0);
+                return new Meal(ldt, new ArrayList<TagWithoutTime>(), 1.0);
             }
             case OTHER:{
-                return new Other(ldt, new ArrayList<Tag>());
+                return new Other(ldt, new ArrayList<TagWithoutTime>());
             }
             case EXERCISE:{
-                return new Exercise(ldt, new Tag(ldt, "exercise type",1.0), 3);
+                return new Exercise(ldt, new TagWithoutTime("exercise type",1.0), 3);
             }
             case BM:{
                 return new Bm(ldt, 1, 1);

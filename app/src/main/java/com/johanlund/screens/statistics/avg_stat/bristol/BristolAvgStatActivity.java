@@ -7,6 +7,7 @@ import android.support.v7.preference.PreferenceManager;
 import com.johanlund.base_classes.Break;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.database.DBHandler;
+import com.johanlund.model.EventManager;
 import com.johanlund.screens.statistics.avg_stat.common.AvgStatActivity;
 import com.johanlund.screens.statistics.avg_stat.common.BmAvgStatAdapter;
 import com.johanlund.screens.statistics.avg_stat.common.AvgStatAdapter;
@@ -33,8 +34,8 @@ public class BristolAvgStatActivity extends AvgStatActivity {
     @Override
     protected List<TagsWrapperBase> getTagsWrapperBase() {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-
-        List<Tag>tags = dbHandler.getAllTags();
+        EventManager em = new EventManager(getApplicationContext());
+        List<Tag>tags = em.getAllTagsWithTime();
         List <ScoreTime> bristolTimes = dbHandler.getBristolTimes();
         List<LocalDateTime>allBreaks = Break.getAllBreaks(getApplicationContext());
         return BmsWrapper.makeBmsWrappers(tags, bristolTimes, allBreaks);

@@ -18,6 +18,7 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Exercise;
 import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.ibsfoodanalyzer.R;
 
 import java.util.ArrayList;

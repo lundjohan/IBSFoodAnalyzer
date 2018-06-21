@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Rating;
+import com.johanlund.base_classes.Tag;
 import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.exceptions.InvalidEventType;
@@ -1530,12 +1531,52 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return toReturn;
     }
+    public List<Tag> getAllTagsWithTime() {
+        List<Tag> toReturn = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_SIZE + ", e." + COLUMN_DATETIME +
+                 " FROM " + TABLE_TAGS + " t " +
+                " LEFT JOIN " + TABLE_TAGTYPES + " tt " + " ON tt. " + COLUMN_ID + " = t."+ COLUMN_TAGTYPE +
+                " LEFT JOIN " + TABLE_EVENTS + " e " + " ON e. " + COLUMN_ID + " = t."+ COLUMN_EVENT;
+        Cursor c = null;
+        try {
+            c = db.rawQuery(QUERY, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            String timeStr = c.getString(c.getColumnIndex(COLUMN_DATETIME));
+                            LocalDateTime ldt = DateTimeFormat.fromSqLiteFormat(timeStr);
+                            String tagName = c.getString(c.getColumnIndex(COLUMN_TAGNAME));
+                            double size = c.getDouble(c.getColumnIndex(COLUMN_SIZE));
+                            toReturn.add(new Tag(ldt, tagName, size));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        }
+        finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
+    }
 
+    /**
+     *
+     * @return tagsWithoutTime in no particular order
+     */
     public List<TagWithoutTime> getAllTags() {
         List<TagWithoutTime> toReturn = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_DATETIME + ", t." + COLUMN_SIZE +
-                " FROM " + TABLE_TAGTYPES + " tt " + " JOIN " + TABLE_TAGS + " t " + " ON tt. " + COLUMN_ID + " = t."+ COLUMN_TAGTYPE +  " ORDER BY " + COLUMN_DATETIME + " ASC ";
+        final String QUERY = "SELECT " + " tt." + COLUMN_TAGNAME + ", t." + COLUMN_SIZE +
+                " FROM " + TABLE_TAGTYPES + " tt " + " JOIN " + TABLE_TAGS + " t " + " ON tt. " + COLUMN_ID + " = t."+ COLUMN_TAGTYPE;
 
         Cursor c = null;
         try {

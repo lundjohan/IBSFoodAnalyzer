@@ -16,11 +16,9 @@ import com.johanlund.screens.event_activities.factories.EventViewFactory;
 import com.johanlund.screens.event_activities.factories.EventViewFactoryImpl;
 import com.johanlund.screens.event_activities.mvcviews.EventViewMvc;
 import com.johanlund.screens.info.ActivityInfoContent;
-import com.johanlund.screens.tag_adder.TagAdderActivity;
 
 import static com.johanlund.constants.Constants.EVENT_SAVED_FROM_VIEW;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
-import static com.johanlund.constants.Constants.TAGS_TO_ADD;
 import static com.johanlund.constants.Constants.TITLE_STRING;
 
 public abstract class EventActivity extends AppCompatActivity implements EventViewMvc
