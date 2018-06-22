@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.johanlund.base_classes.Tag;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.model.EventManager;
 import com.johanlund.screens.statistics.avg_stat.bristol.BristolAvgStatActivity;
 import com.johanlund.screens.statistics.avg_stat.common.BmsWrapper;
 import com.johanlund.stat_backend.avg_scorewrapper.BristolAvgScoreWrapper;
@@ -40,7 +39,7 @@ public class CompleteAvgStatActivity extends BristolAvgStatActivity {
 
     @Override
     protected List<TagsWrapperBase> getTagsWrapperBase() {
-        EventManager em = new EventManager(getApplicationContext());
+        Dao dao = new SqLiteDao(getApplicationContext());
         List<Tag> tags = em.getAllTagsWithTime();
         List<ScoreTime> completeBms = em.getCompleteTimes();
         List<LocalDateTime> allBreaks = em.getAllBreaks();

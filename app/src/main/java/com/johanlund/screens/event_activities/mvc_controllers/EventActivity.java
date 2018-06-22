@@ -9,13 +9,16 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.johanlund.base_classes.Event;
-import com.johanlund.model.EventManager;
+import com.johanlund.dao.Dao;
+import com.johanlund.dao.SqLiteDao;
 import com.johanlund.picker_views.DatePickerFragment;
 import com.johanlund.picker_views.TimePickerFragment;
 import com.johanlund.screens.event_activities.factories.EventViewFactory;
 import com.johanlund.screens.event_activities.factories.EventViewFactoryImpl;
 import com.johanlund.screens.event_activities.mvcviews.EventViewMvc;
 import com.johanlund.screens.info.ActivityInfoContent;
+
+import javax.inject.Inject;
 
 import static com.johanlund.constants.Constants.EVENT_SAVED_FROM_VIEW;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
@@ -24,7 +27,8 @@ import static com.johanlund.constants.Constants.TITLE_STRING;
 public abstract class EventActivity extends AppCompatActivity implements EventViewMvc
         .EventActivityViewMvcListener {
     protected EventViewMvc mViewMVC;
-    protected EventManager eventManager;
+    @Inject
+    protected Dao dao;
     protected Event eventToBind = null;
 
     @Override
@@ -33,7 +37,7 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
         if (savedInstanceState != null) {
             eventToBind = (Event) savedInstanceState.getSerializable(EVENT_SAVED_FROM_VIEW);
         }
-        eventManager = new EventManager(getApplicationContext());
+        dao = new SqLiteDao(getApplicationContext());
     }
 
     @Override

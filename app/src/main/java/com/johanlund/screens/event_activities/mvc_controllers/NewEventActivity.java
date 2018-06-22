@@ -44,7 +44,7 @@ public class NewEventActivity extends TagEventActivity {
     @Override
     public void completeSession(Event e) {
         int type = e.getType();
-        if (eventManager.eventTypeAtSameTimeAlreadyExists(type, e.getTime())) {
+        if (dao.eventTypeAtSameTimeAlreadyExists(type, e.getTime())) {
             mViewMVC.showEventAlreadyExistsPopUp(type);
         } else {
             returnEventAndFinish(e);

@@ -3,7 +3,6 @@ package com.johanlund.base_classes;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.johanlund.model.EventManager;
 import com.johanlund.stat_backend.stat_util.BmTimes;
 import com.johanlund.stat_backend.stat_util.RatingTimes;
 import com.johanlund.stat_backend.stat_util.ScoreTime;
@@ -35,7 +34,7 @@ public class Break implements Comparable<Break> {
      * @return manual AND auto breaks
      */
     public static List<LocalDateTime> getAllBreaks(Context c) {
-        EventManager em = new EventManager(c);
+        Dao dao = new SqLiteDao(c);
         return em.getAllBreaks();
 
     }

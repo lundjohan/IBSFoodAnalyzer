@@ -65,7 +65,7 @@ public abstract class TagEventActivity extends EventActivity {
     private void delTagsWithNamesThatHasNoOccuranceInModel() {
         List<String> tagNames = mViewMVC.getTagNames();
         for (String tagName : tagNames) {
-            if (eventManager.tagTemplateDoesntExist(tagName)) {
+            if (dao.tagTemplateDoesntExist(tagName)) {
                 mViewMVC.removeTagFromView(tagName);
             }
         }
@@ -76,7 +76,7 @@ public abstract class TagEventActivity extends EventActivity {
      */
     private void addEditedTags(long[] editedTagTemplatesIds) {
         for (long idOfTagTemplate : editedTagTemplatesIds) {
-            String tagName = eventManager.retrieveNameOfTagTemplate(idOfTagTemplate);
+            String tagName = dao.retrieveNameOfTagTemplate(idOfTagTemplate);
             mViewMVC.bindAddedTagToView(tagName);
         }
     }

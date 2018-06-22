@@ -8,7 +8,6 @@ import com.johanlund.base_classes.Tag;
 import com.johanlund.database.DBHandler;
 import com.johanlund.external_classes.TinyDB;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.model.EventManager;
 import com.johanlund.screens.statistics.avg_stat.common.TagsWrapper;
 import com.johanlund.screens.statistics.common.StatAsyncTask;
 import com.johanlund.screens.statistics.portions.common.PortionStatActivity;
@@ -68,7 +67,7 @@ public class RatingPortionStatActivity extends PortionStatActivity {
     //copied from RatingAvgStatActivity
     protected List<TagsWrapperBase> getTagsWrapperBase() {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        EventManager em = new EventManager(getApplicationContext());
+        Dao dao = new SqLiteDao(getApplicationContext());
         List<Tag> tags = em.getAllTagsWithTime();
         List<ScoreTime> ratings = dbHandler.getRatingTimes();
         List<LocalDateTime> allBreaks = Break.getAllBreaks(getApplicationContext());

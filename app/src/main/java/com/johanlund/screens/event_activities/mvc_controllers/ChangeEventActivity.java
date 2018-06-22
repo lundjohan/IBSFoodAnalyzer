@@ -51,7 +51,7 @@ public class ChangeEventActivity extends TagEventActivity {
         } else if (intent.hasExtra(ID_OF_EVENT) && intent.hasExtra(EVENT_POSITION)) {
             eventId = intent.getLongExtra(ID_OF_EVENT, -1);
             posOfEvent = intent.getIntExtra(EVENT_POSITION, -1);
-            eventToBind = eventManager.fetchEventById(eventId);
+            eventToBind = dao.fetchEventById(eventId);
             startingTimeBeforeChanges = eventToBind.getTime();
         }
         initMvcView(eventToBind);
@@ -69,7 +69,7 @@ public class ChangeEventActivity extends TagEventActivity {
     @Override
     public void completeSession(Event e) {
         int type = e.getType();
-        if (eventManager.eventTypeAtSameTimeAlreadyExists(type, e.getTime()) &&
+        if (dao.eventTypeAtSameTimeAlreadyExists(type, e.getTime()) &&
                 changingEventHasDifferentDateTimeThanStart(e)) {
             mViewMVC.showEventAlreadyExistsPopUp(type);
         } else {
