@@ -27,7 +27,6 @@ import static com.johanlund.constants.Constants.TITLE_STRING;
 public abstract class EventActivity extends AppCompatActivity implements EventViewMvc
         .EventActivityViewMvcListener {
     protected EventViewMvc mViewMVC;
-    @Inject
     protected Dao dao;
     protected Event eventToBind = null;
 

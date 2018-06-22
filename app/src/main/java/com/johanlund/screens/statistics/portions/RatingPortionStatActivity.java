@@ -5,6 +5,8 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.base_classes.Break;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.dao.Dao;
+import com.johanlund.dao.SqLiteDao;
 import com.johanlund.database.DBHandler;
 import com.johanlund.external_classes.TinyDB;
 import com.johanlund.ibsfoodanalyzer.R;
@@ -68,7 +70,7 @@ public class RatingPortionStatActivity extends PortionStatActivity {
     protected List<TagsWrapperBase> getTagsWrapperBase() {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         Dao dao = new SqLiteDao(getApplicationContext());
-        List<Tag> tags = em.getAllTagsWithTime();
+        List<Tag> tags = dao.getAllTagsWithTime();
         List<ScoreTime> ratings = dbHandler.getRatingTimes();
         List<LocalDateTime> allBreaks = Break.getAllBreaks(getApplicationContext());
 

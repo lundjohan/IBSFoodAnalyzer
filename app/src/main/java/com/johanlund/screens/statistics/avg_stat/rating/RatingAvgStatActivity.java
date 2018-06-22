@@ -6,6 +6,8 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.johanlund.base_classes.Break;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.dao.Dao;
+import com.johanlund.dao.SqLiteDao;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.statistics.avg_stat.common.AvgStatActivity;
@@ -39,7 +41,7 @@ public class RatingAvgStatActivity extends AvgStatActivity {
     protected List<TagsWrapperBase> getTagsWrapperBase() {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         Dao dao = new SqLiteDao(getApplicationContext());
-        List<Tag> tags = em.getAllTagsWithTime();
+        List<Tag> tags = dao.getAllTagsWithTime();
         List<ScoreTime> ratings = dbHandler.getRatingTimes();
         List<LocalDateTime> allBreaks = Break.getAllBreaks(getApplicationContext());
         dbHandler.close();

@@ -3,6 +3,8 @@ package com.johanlund.screens.statistics.avg_stat.complete;
 import android.os.Bundle;
 
 import com.johanlund.base_classes.Tag;
+import com.johanlund.dao.Dao;
+import com.johanlund.dao.SqLiteDao;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.statistics.avg_stat.bristol.BristolAvgStatActivity;
 import com.johanlund.screens.statistics.avg_stat.common.BmsWrapper;
@@ -40,9 +42,9 @@ public class CompleteAvgStatActivity extends BristolAvgStatActivity {
     @Override
     protected List<TagsWrapperBase> getTagsWrapperBase() {
         Dao dao = new SqLiteDao(getApplicationContext());
-        List<Tag> tags = em.getAllTagsWithTime();
-        List<ScoreTime> completeBms = em.getCompleteTimes();
-        List<LocalDateTime> allBreaks = em.getAllBreaks();
+        List<Tag> tags = dao.getAllTagsWithTime();
+        List<ScoreTime> completeBms = dao.getCompleteTimes();
+        List<LocalDateTime> allBreaks = dao.getAllBreaks();
         return BmsWrapper.makeBmsWrappers(tags, completeBms, allBreaks);
     }
 }

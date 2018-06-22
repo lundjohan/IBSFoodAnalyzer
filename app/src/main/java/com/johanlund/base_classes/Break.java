@@ -3,6 +3,8 @@ package com.johanlund.base_classes;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.johanlund.dao.Dao;
+import com.johanlund.dao.SqLiteDao;
 import com.johanlund.stat_backend.stat_util.BmTimes;
 import com.johanlund.stat_backend.stat_util.RatingTimes;
 import com.johanlund.stat_backend.stat_util.ScoreTime;
@@ -35,7 +37,7 @@ public class Break implements Comparable<Break> {
      */
     public static List<LocalDateTime> getAllBreaks(Context c) {
         Dao dao = new SqLiteDao(c);
-        return em.getAllBreaks();
+        return dao.getAllBreaks();
 
     }
 
