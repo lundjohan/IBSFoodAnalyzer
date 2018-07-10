@@ -64,8 +64,8 @@ public class ImportOptionViewMvcImpl implements ImportOptionViewMvc {
 
         showInfoOnBtnDown(wipeAndLoadBtn, "This is \"the ordinary load\". This action will " +
                 "completely REPLACE current database with the one to-be-imported. Nothing will be saved of the former database.");
-        showInfoOnBtnDown(mergeBtn, "This action will ADD to database from external database file.");
-        showInfoOnBtnDown(tagTypeImportBtn, "Add Tag Types (milk, running, mediation etc) that don't already exists in database.");
+        showInfoOnBtnDown(mergeBtn, "This action will ADD to database from the external database file.");
+        showInfoOnBtnDown(tagTypeImportBtn, "Add Tag Types (milk, running, meditation etc) that don't already exist in database.");
         showInfoOnBtnDown(eventTemplatesBtn, "Import more Event Templates from file. If they contain unknown TagTypes these will be imported also.");
     }
 
