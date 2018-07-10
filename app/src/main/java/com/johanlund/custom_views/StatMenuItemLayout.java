@@ -3,7 +3,7 @@ package com.johanlund.custom_views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 import android.widget.TextView;

@@ -3,12 +3,13 @@ package com.johanlund.custom_views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.johanlund.ibsfoodanalyzer.R;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 /**
  * Created by Johan on 2017-12-03.
