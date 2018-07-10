@@ -216,6 +216,10 @@ public class ExternalStorageHandler {
         }
     }
 
+    public static void insertTagTypesFromExternalDatabase(File externalDB, Context c) {
+        //TODO
+    }
+
     /**
      * This method reads events from a txt file
      * and store them (together with TagTemplates)

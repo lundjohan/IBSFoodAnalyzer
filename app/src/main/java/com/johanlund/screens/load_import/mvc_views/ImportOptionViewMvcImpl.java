@@ -44,7 +44,7 @@ public class ImportOptionViewMvcImpl implements ImportOptionViewMvc {
                         break;
                     }
                     case R.id.radio_import_tagtypes:{
-
+                        listener.importTagTypes();
                         break;
                     }
                     case R.id.radio_import_event_templates:{

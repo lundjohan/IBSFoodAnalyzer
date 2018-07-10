@@ -21,7 +21,8 @@ import com.johanlund.screens.load_import.mvc_views.ImportOptionViewMvcImpl;
 import java.io.File;
 
 import static android.app.Activity.RESULT_OK;
-import static com.johanlund.constants.Constants.IMPORT_DATABASE;
+import static com.johanlund.constants.Constants.IMPORT_DB_CLEAN_AND_LOAD;
+import static com.johanlund.constants.Constants.IMPORT_DB_TAG_TYPES;
 
 public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionViewMvc.ImportOptionViewMvcListener {
     ImportOptionViewMvcImpl mViewMVC;
@@ -52,24 +53,34 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
         super.onStart();
         mViewMVC.setListener(this);
     }
+    //ok, read from external file? Otherwise ask for permission
+    private void handleFilePermissions(){
+        //getActivity doesnt feel perfect here => close coupling.
+        ExternalStorageHandler.showReadablePermission(getActivity());
+    }
 
     @Override
     public void cleanAndLoad() {
-        //ok, read from external file? Otherwise ask for permission
-        //getActivity doesnt feel perfect here => close coupling.
-        ExternalStorageHandler.showReadablePermission(getActivity());
-        showChooser();
+        handleFilePermissions();
+        showChooser(IMPORT_DB_CLEAN_AND_LOAD);
+    }
+
+    @Override
+    public void importTagTypes() {
+        handleFilePermissions();
+        showChooser(IMPORT_DB_TAG_TYPES);
+
     }
 
     //code reused from aFileChooser example
-    private void showChooser() {
+    private void showChooser(int requestCode) {
         // Use the GET_CONTENT intent from the utility class
         Intent target = FileUtils.createGetContentIntent();
         // Create the chooser Intent
         Intent intent = Intent.createChooser(
                 target, getString(R.string.chooser_title));
         try {
-            startActivityForResult(intent, IMPORT_DATABASE);
+            startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
             // The reason for the existence of aFileChooser
         }
@@ -81,15 +92,27 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
             return;
         }
         switch (requestCode) {
-            case IMPORT_DATABASE:
+            case IMPORT_DB_CLEAN_AND_LOAD: {
                 if (data != null) {
                     File dbFileToImport = getChosenFile(data);
                     if (dbFileToImport != null) {
-                        ImportOptionsFragmentImpl.ImportDBAsyncTask asyncThread = new ImportOptionsFragmentImpl.ImportDBAsyncTask(dbFileToImport);
+                        ImportOptionsFragmentImpl.ImportDBAsyncTask asyncThread = new ImportOptionsFragmentImpl.CleanAndLoadDatabase(dbFileToImport);
                         asyncThread.execute(0);
                     }
                 }
                 break;
+            }
+            case IMPORT_DB_TAG_TYPES: {
+                if (data != null) {
+                    File dbFileToImport = getChosenFile(data);
+                    if (dbFileToImport != null) {
+                        ImportOptionsFragmentImpl.ImportDBAsyncTask asyncThread = new ImportOptionsFragmentImpl.ImportTagTypes(dbFileToImport);
+                        asyncThread.execute(0);
+                    }
+                }
+                break;
+            }
+
         }
     }
 
@@ -111,7 +134,7 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
         }
         return file;
     }
-    private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
+    private abstract class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
         File file = null;
 
@@ -119,17 +142,34 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
             this.file = file;
         }
 
-        @Override
-        protected Void doInBackground(Integer... notUsedParams) {
-            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getContext());
-            return null;
-        }
+
 
         @Override
         protected void onPostExecute(Void notUsed) {
             //after db has been replaced, make the date shown for user the last date filled in
             // new db.
             listener.startDiaryAtLastDate();
+        }
+    }
+    private class CleanAndLoadDatabase extends ImportDBAsyncTask{
+        public CleanAndLoadDatabase(File file) {
+            super(file);
+        }
+        @Override
+        protected Void doInBackground(Integer... notUsedParams) {
+            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getContext());
+            return null;
+        }
+    }
+
+    private class ImportTagTypes extends ImportDBAsyncTask{
+        public ImportTagTypes(File file) {
+            super(file);
+        }
+        @Override
+        protected Void doInBackground(Integer... notUsedParams) {
+            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getContext());
+            return null;
         }
     }
 }

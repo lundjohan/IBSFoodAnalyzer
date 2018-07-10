@@ -9,5 +9,7 @@ public interface ImportOptionViewMvc extends ViewMvc {
 
     interface ImportOptionViewMvcListener{
         void cleanAndLoad();
+
+        void importTagTypes();
     }
 }
