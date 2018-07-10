@@ -1,6 +1,5 @@
 *.iml
 
-.gradle
 .aar
 .map.properties
 /local.properties
@@ -16,3 +15,5 @@ build/
 aFileChooser/build
 /captures
 .externalNativeBuild
+
+.gradle/*
