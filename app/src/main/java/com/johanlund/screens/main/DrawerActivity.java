@@ -3,8 +3,6 @@ package com.johanlund.screens.main;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -19,7 +17,6 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.johanlund.base_classes.Event;
@@ -30,6 +27,8 @@ import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.about.AboutActivity;
 import com.johanlund.screens.events_container_classes.DiaryContainerFragment;
 import com.johanlund.screens.events_templates.TemplateFragment;
+import com.johanlund.screens.load_import.mvc_controllers.ImportOptionsFragment;
+import com.johanlund.screens.load_import.mvc_controllers.ImportOptionsFragmentImpl;
 import com.johanlund.screens.settings.GeneralSettingsActivity;
 import com.johanlund.screens.statistics.options.StatOptionsFragment;
 
@@ -41,7 +40,6 @@ import java.util.List;
 import static com.johanlund.constants.Constants.DATE_TO_START_DIARY;
 import static com.johanlund.constants.Constants.DIARY_CONTAINER;
 import static com.johanlund.constants.Constants.EVENTS_TO_LOAD;
-import static com.johanlund.constants.Constants.IMPORT_DATABASE;
 import static com.johanlund.constants.Constants.IMPORT_FROM_CSV_FILE;
 import static com.johanlund.constants.Constants.LOAD_EVENTS_FROM_EVENTSTEMPLATE;
 import static com.johanlund.constants.Constants.LOCALDATE;
@@ -55,7 +53,7 @@ import static com.johanlund.constants.Constants.RESTART_DATE_REQUEST;
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiaryContainerFragment
         .DiaryContainerListener, TemplateFragment
-        .TemplateFragmentListener, StatOptionsFragment.DiaryStarterActivity {
+        .TemplateFragmentListener, StatOptionsFragment.DiaryStarterActivity, ImportOptionsFragment.ImportOptionsFragmentListener {
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
@@ -190,9 +188,10 @@ public class DrawerActivity extends AppCompatActivity
                 break;
 
             case R.id.importMenuItem:
-                //ok, read from external file? Otherwise ask for permission
-                ExternalStorageHandler.showReadablePermission(this);
-                showChooser();
+                fragment = new ImportOptionsFragmentImpl();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
                 break;
 
             case R.id.exportMenuItem:
@@ -295,21 +294,6 @@ public class DrawerActivity extends AppCompatActivity
         positiveButton.setLayoutParams(positiveButtonLL);
     }
 
-
-    //code reused from aFileChooser example
-    private void showChooser() {
-        // Use the GET_CONTENT intent from the utility class
-        Intent target = FileUtils.createGetContentIntent();
-        // Create the chooser Intent
-        Intent intent = Intent.createChooser(
-                target, getString(R.string.chooser_title));
-        try {
-            startActivityForResult(intent, IMPORT_DATABASE);
-        } catch (ActivityNotFoundException e) {
-            // The reason for the existence of aFileChooser
-        }
-    }
-
     //code reused from aFileChooser example
     private void showChooserForCSVImport() {
         // Use the GET_CONTENT intent from the utility class
@@ -372,15 +356,6 @@ public class DrawerActivity extends AppCompatActivity
             return;
         }
         switch (requestCode) {
-            case IMPORT_DATABASE:
-                if (data != null) {
-                    File dbFileToImport = getChosenFile(data);
-                    if (dbFileToImport != null) {
-                        ImportDBAsyncTask asyncThread = new ImportDBAsyncTask(dbFileToImport);
-                        asyncThread.execute(0);
-                    }
-                }
-                break;
            /* case IMPORT_FROM_CSV_FILE:
                 if (data != null) {
                     File csvFileToImport = getChosenFile(data);
@@ -415,33 +390,14 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
-    private File getChosenFile(Intent data) {
-        // Get the URI of the selected file
-        final Uri uri = data.getData();
-        File file = null;
-        try {
-            // Get the file path from the URI
-            final String path = FileUtils.getPath(this, uri);
-            Toast.makeText(getApplicationContext(),
-                    "File Selected: " + path, Toast.LENGTH_LONG).show();
-
-            if (path != null && FileUtils.isLocal(path)) {
-                file = new File(path);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
-
     public LocalDate addEventsToDatabase(List<Event> events) {
         DBHandler dbHandler = new DBHandler(getApplicationContext());
         dbHandler.addEvents(events);
         return events.get(events.size() - 1).getTime().toLocalDate();
     }
 
-    private void startDiaryAtLastDate() {
+    @Override
+    public void startDiaryAtLastDate() {
         final DBHandler dbImport = new DBHandler(getApplication());
         LocalDate lastDateOfEvents = dbImport.getDateOfLastEvent();
         lastDateOfEvents = lastDateOfEvents != null ? lastDateOfEvents : LocalDate.now();
@@ -451,28 +407,6 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     public void startDiaryWithDate(LocalDate ld) {
         startContainerDiary(ld);
-    }
-
-    private class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
-        final String TAG = this.getClass().getName();
-        File file = null;
-
-        public ImportDBAsyncTask(File file) {
-            this.file = file;
-        }
-
-        @Override
-        protected Void doInBackground(Integer... notUsedParams) {
-            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getApplicationContext());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void notUsed) {
-            //after db has been replaced, make the date shown for user the last date filled in
-            // new db.
-            startDiaryAtLastDate();
-        }
     }
 
     /**
