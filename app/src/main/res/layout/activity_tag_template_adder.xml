@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.johanlund.ibsfoodanalyzer.com.johanlund.screens.tag_type.TagTypeAdderActivity">
+    tools:context="com.johanlund.screens.tag_type.TagTypeAdderActivity">
 
     <com.johanlund.custom_views.HeadLineLayout
         android:id="@+id/nameHeadLine"
