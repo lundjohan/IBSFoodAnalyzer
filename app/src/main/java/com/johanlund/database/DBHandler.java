@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.InputEvent;
@@ -115,6 +114,7 @@ public class DBHandler extends SQLiteOpenHelper {
             "UPDATE " + TABLE_RATINGS + " SET " +
                     COLUMN_AFTER + " = " + COLUMN_AFTER + " -1 " + " WHERE " + COLUMN_AFTER + " " +
                     "!= '1' ";
+
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -1628,30 +1628,50 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return toReturn;
     }
-    /* First solution.
-    It is not optimal but works fine when importing on startup.
-    However there will be a crash if TagTypes with same id already exist (which is likely).
 
-    NB: all _is_a_1 is put to null in this solution, which is clearly a huge blow for the user who has put an effort in doing those.
-
-    Since no Tags are added in this case it doesn't matter that ids are different on insertion.
-    Otherwise the tagType.fk inside Tags table must be altered to same id as the altered TagType._id
-
-    method should not crash on failure either, just return false or something.
+    /*
+    Imports TagTypes from external database.
+    Takes care to avoid id crash.
+    Note that a tagtype that has same name as already existing tagtype will not be added (due to table definition).
      */
     public void insertTagTypesFromExternalDatabase(@NotNull File pathToExternal) {
-        Log.d("DBHandler", "pathToExternal.getAbsolutePath(): " +pathToExternal.getAbsolutePath()); ///storage/emulated/0/ibsFoodAnalyzer/2018-07-09T12:20:15.332_foodanalyzer.db
-        Log.d("DBHandler", "pathToExternal.getPath(): " +pathToExternal.getPath()); // same as AbsolutePath
-        Log.d("DBHandler", "pathToExternal.getName(): " +pathToExternal.getName()); // 2018-07-09T12:20:15.332_foodanalyzer.db
         SQLiteDatabase db = this.getWritableDatabase();
+
+        //get max _id from tag_type.
+        //-----------------------------
+        //Default start value of id == 1. If it was zero, then I would have had to do: maxId++
+        final String QUERY = "SELECT MAX(" + COLUMN_ID + ") AS 'max_id' FROM " + TABLE_TAGTYPES;
+
+        Cursor c = null;
+        String maxId ="0";
         try {
-            db.execSQL("ATTACH DATABASE '" + pathToExternal.getAbsolutePath() + "' as 'external_db'");
-            db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " SELECT _id, _tagname, _is_a1 FROM external_db.tag_templates ");
-        }
-        catch (Exception e){
+            c = db.rawQuery(QUERY, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    maxId = c.getString(c.getColumnIndex("max_id"));
+
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
         }
-        finally {
+
+
+        //attach and copy from external database
+        //---------------------------------------
+        try {
+            db.execSQL("ATTACH DATABASE '" + pathToExternal.getAbsolutePath() + "' as " +
+                    "'external_db'");
+
+            db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " SELECT _id + "+maxId+ ", _tagname, _is_a1 +"+maxId+ " FROM " +
+                    "external_db.tag_templates ");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             if (db.isOpen()) {
                 db.execSQL("DETACH external_db");
                 db.close();
