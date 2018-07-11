@@ -168,7 +168,7 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
         }
         @Override
         protected Void doInBackground(Integer... notUsedParams) {
-            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getContext());
+            ExternalStorageHandler.insertTagTypesFromExternalDatabase(file, getContext());
             return null;
         }
     }

@@ -13,6 +13,9 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.johanlund.dao.Dao;
+import com.johanlund.dao.SqLiteDao;
+
 import org.threeten.bp.LocalDateTime;
 
 import java.io.File;
@@ -217,7 +220,8 @@ public class ExternalStorageHandler {
     }
 
     public static void insertTagTypesFromExternalDatabase(File externalDB, Context c) {
-        //TODO
+        Dao dao = new SqLiteDao(c);
+        dao.insertTagTypesFromExternalDatabase(externalDB);
     }
 
     /**

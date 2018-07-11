@@ -8,6 +8,7 @@ import com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP
 import com.johanlund.database.DBHandler
 import com.johanlund.stat_backend.stat_util.ScoreTime
 import org.threeten.bp.LocalDateTime
+import java.io.File
 import java.util.*
 
 class SqLiteDao(val c: Context): Dao{
@@ -49,5 +50,9 @@ class SqLiteDao(val c: Context): Dao{
         mBreaks.addAll(aBreaks)
         Collections.sort(mBreaks)
         return mBreaks
+    }
+
+    override fun insertTagTypesFromExternalDatabase(pathToExternal: File) {
+        dbHandler.insertTagTypesFromExternalDatabase(pathToExternal)
     }
 }
