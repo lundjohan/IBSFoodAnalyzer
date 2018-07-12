@@ -5,7 +5,7 @@ package com.johanlund.database;
  */
 
 public class TablesAndStrings {
-    public static final int DATABASE_VERSION = 40;
+    public static final int DATABASE_VERSION = 41;
     public static final String DATABASE_NAME = "foodanalyzer.db";
 
     //Foreign key support
@@ -25,7 +25,7 @@ public class TablesAndStrings {
     public static final String COLUMN_TAGTYPE = "tagtemplate";
     public static final String COLUMN_SIZE = "size";
     public static final String COLUMN_DATETIME = "date";
-    public static final String COLUMN_DATE = "date_without_time";
+    //public static final String COLUMN_DATE = "date_without_time";
     public static final String COLUMN_EVENT = "event";
 
     //Event
@@ -56,6 +56,7 @@ public class TablesAndStrings {
     public static final String TABLE_RATINGS = "ratings";
     public static final String TMP_TABLE_RATINGS = "tmp_ratings_table";
     public static final String TMP_TABLE_TAGS = "tmp_tags_table";
+    public static final String TMP_TABLE_EVENTS = "tmp_events_table";
     public static final String COLUMN_AFTER = "after_score";
 
     //EventsTemplates
@@ -87,11 +88,13 @@ public class TablesAndStrings {
             + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
 
+    /*Important! Note that this variable is also used inside onUpdate.
+    So if this is changed it also has to change there*/
     public static final String CREATE_EVENT_TABLE = "CREATE TABLE " +
             TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
             COLUMN_DATETIME + " TEXT NOT NULL, " +
-            COLUMN_DATE + " TEXT NOT NULL, " +
+           // COLUMN_DATE + " TEXT NOT NULL, " +
             COLUMN_TYPE_OF_EVENT + " INTEGER NOT NULL, " +
             //this column is only used when event is inside a EventsTemplate, otherwise null
             COLUMN_EVENTSTEMPLATE + " INTEGER, " +

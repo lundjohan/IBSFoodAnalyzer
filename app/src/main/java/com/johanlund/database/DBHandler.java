@@ -35,7 +35,6 @@ import static com.johanlund.database.TablesAndStrings.COLUMN_AFTER;
 import static com.johanlund.database.TablesAndStrings.COLUMN_BRISTOL;
 import static com.johanlund.database.TablesAndStrings.COLUMN_COMMENT;
 import static com.johanlund.database.TablesAndStrings.COLUMN_COMPLETENESS;
-import static com.johanlund.database.TablesAndStrings.COLUMN_DATE;
 import static com.johanlund.database.TablesAndStrings.COLUMN_DATETIME;
 import static com.johanlund.database.TablesAndStrings.COLUMN_EVENT;
 import static com.johanlund.database.TablesAndStrings.COLUMN_EVENTSTEMPLATE;
@@ -69,6 +68,7 @@ import static com.johanlund.database.TablesAndStrings.TABLE_OTHERS;
 import static com.johanlund.database.TablesAndStrings.TABLE_RATINGS;
 import static com.johanlund.database.TablesAndStrings.TABLE_TAGS;
 import static com.johanlund.database.TablesAndStrings.TABLE_TAGTYPES;
+import static com.johanlund.database.TablesAndStrings.TMP_TABLE_EVENTS;
 import static com.johanlund.database.TablesAndStrings.TMP_TABLE_RATINGS;
 import static com.johanlund.database.TablesAndStrings.TMP_TABLE_TAGS;
 import static com.johanlund.database.TablesAndStrings.TYPE_OF;
@@ -114,7 +114,13 @@ public class DBHandler extends SQLiteOpenHelper {
             "UPDATE " + TABLE_RATINGS + " SET " +
                     COLUMN_AFTER + " = " + COLUMN_AFTER + " -1 " + " WHERE " + COLUMN_AFTER + " " +
                     "!= '1' ";
-
+    private String CHANGE_EVENT_TABLE_NAME = "ALTER TABLE "+ TABLE_EVENTS + " RENAME TO "+ TMP_TABLE_EVENTS + ";";
+    private String CREATE_NEW_EVENT_TABLE_WITHOUT_DATE_COL = CREATE_EVENT_TABLE;
+    private String INSERT_CONTENTS_TO_NEW_EVENT_TABLE = "INSERT INTO " +TABLE_EVENTS + " ( " +
+            COLUMN_ID + ", " + COLUMN_DATETIME + ", " + COLUMN_TYPE_OF_EVENT + ", " + COLUMN_EVENTSTEMPLATE + ", " + COLUMN_COMMENT + ", " + COLUMN_HAS_BREAK +") " +
+            " SELECT " + COLUMN_ID + ", " + COLUMN_DATETIME + ", " + COLUMN_TYPE_OF_EVENT + ", " + COLUMN_EVENTSTEMPLATE + ", " + COLUMN_COMMENT + ", " + COLUMN_HAS_BREAK +
+            " FROM " + TMP_TABLE_EVENTS;
+    private String DROP_OLD_EVENT_TABLE = "DROP TABLE " + TMP_TABLE_EVENTS;
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -143,6 +149,23 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+
+        //Table Events no longer contains row COLUMN_DATE
+        if (oldVersion <= 40) {
+            db.beginTransaction();
+            try {
+                // Changing name of column
+                // Before the column's name was 'after' which is a keyword in SQLITE syntax
+                db.execSQL(CHANGE_EVENT_TABLE_NAME);
+                db.execSQL(CREATE_NEW_EVENT_TABLE_WITHOUT_DATE_COL);
+                db.execSQL(INSERT_CONTENTS_TO_NEW_EVENT_TABLE);
+                db.execSQL(DROP_OLD_EVENT_TABLE);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
 
         //action done to remove time dependency of Tag Table
         if (oldVersion <= 39) {
@@ -425,7 +448,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private long addEventHelper1(Event e, ContentValues values, long typeOfEvent) {
         values.put(COLUMN_DATETIME, DateTimeFormat.toSqLiteFormat(e.getTime()));
-        values.put(COLUMN_DATE, DateTimeFormat.dateToSqLiteFormat(e.getTime().toLocalDate()));
+        //values.put(COLUMN_DATE, DateTimeFormat.dateToSqLiteFormat(e.getTime().toLocalDate())); deprecated since databaseversion 41
         values.put(COLUMN_TYPE_OF_EVENT, typeOfEvent);
         values.put(COLUMN_COMMENT, e.getComment());
         return addEventHelper2(e, values);
@@ -662,11 +685,13 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     public List<Event> getAllEventsMinusEventsTemplateSortedFromDay(LocalDate currentDate) {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATE + " =? " +
-                " AND " + COLUMN_EVENTSTEMPLATE + " IS NULL " +
+        //where column_datetime starts with currentDate
+        String dateStr = DateTimeFormat.dateToSqLiteFormat(currentDate);
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATETIME + " LIKE '"+dateStr+"%' AND " +
+                COLUMN_EVENTSTEMPLATE + " IS NULL " +
                 " ORDER BY " + COLUMN_DATETIME + "" +
-                " ASC";
-        Cursor c = db.rawQuery(QUERY, new String[]{DateTimeFormat.dateToSqLiteFormat(currentDate)});
+                " ASC;";
+        Cursor c = db.rawQuery(QUERY, null);
         return getEventsRetrieverHelper(c);
     }
 
