@@ -88,8 +88,8 @@
         android:textSize="24sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/break_line"/>
-<!-- a textview is used instead of a GuideLine (library conflict androidx/support so therefor removed Guideline)-->
-    <TextView
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
