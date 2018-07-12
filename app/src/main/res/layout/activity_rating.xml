@@ -43,7 +43,7 @@
     <SeekBar
         android:id="@+id/intensityBar"
         style="@android:style/Widget.SeekBar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView12"
         android:layout_alignParentStart="true"

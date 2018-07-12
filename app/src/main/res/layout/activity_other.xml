@@ -9,7 +9,7 @@
 
     <include
         layout="@layout/add_tags"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

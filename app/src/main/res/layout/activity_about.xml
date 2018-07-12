@@ -14,7 +14,7 @@
 
         <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/zeroAboutHeadLine"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -38,7 +38,7 @@
 
         <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/firstAboutHeadLine"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -203,7 +203,7 @@
 
         <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/developerHeadLine"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"

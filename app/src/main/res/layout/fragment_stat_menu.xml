@@ -13,7 +13,7 @@
 
         <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/firstHeadLine"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -23,7 +23,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/avgRatingItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -37,7 +37,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/avgDeltaItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -51,7 +51,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/avgCompleteItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -65,7 +65,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/avgBristolItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -79,7 +79,7 @@
 
         <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/thirdHeadLine"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -89,7 +89,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/timeRatingItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -103,7 +103,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/timeCompleteItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -117,7 +117,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/timeBristolItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -131,7 +131,7 @@
 
         <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/secondHeadLine"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:visibility="gone"
@@ -143,7 +143,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/freqRatingItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -158,7 +158,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/freqCompleteItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -173,7 +173,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/freqBristolItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -188,7 +188,7 @@
 
         <com.johanlund.custom_views.HeadLineLayout
             android:id="@+id/fourthHeadLine"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -198,7 +198,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/portionsRatingItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
@@ -212,7 +212,7 @@
 
         <com.johanlund.custom_views.StatMenuItemLayout
             android:id="@+id/portionsCompleteItem"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="8dp"
