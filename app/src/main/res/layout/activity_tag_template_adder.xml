@@ -10,7 +10,7 @@
 
     <com.johanlund.custom_views.HeadLineLayout
         android:id="@+id/nameHeadLine"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -35,7 +35,7 @@
 
     <com.johanlund.custom_views.HeadLineLayout
         android:id="@+id/parentHeadLine"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
