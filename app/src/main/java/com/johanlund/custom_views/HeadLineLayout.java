@@ -40,7 +40,7 @@ public class HeadLineLayout extends ConstraintLayout {
         headLineText.setText(text);
 
         boolean notReady = arr.getBoolean(R.styleable.HeadLineLayout_notReady, false);
-        //in case function is not ready for production, do the following. getColor is not supported >23
+        //in case function is not ready for production, do the following. getColor is not supported <23
         if (notReady && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 headLineText.setTextColor(getResources().getColor(R.color.colorWeakGrey, null));
         }
