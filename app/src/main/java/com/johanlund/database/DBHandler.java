@@ -687,11 +687,11 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         //where column_datetime starts with currentDate
         String dateStr = DateTimeFormat.dateToSqLiteFormat(currentDate);
-        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATETIME + " LIKE '"+dateStr+"%' AND " +
+        final String QUERY = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_DATETIME + " LIKE ? AND " +
                 COLUMN_EVENTSTEMPLATE + " IS NULL " +
                 " ORDER BY " + COLUMN_DATETIME + "" +
                 " ASC;";
-        Cursor c = db.rawQuery(QUERY, null);
+        Cursor c = db.rawQuery(QUERY, new String[]{dateStr + "%"});
         return getEventsRetrieverHelper(c);
     }
 
