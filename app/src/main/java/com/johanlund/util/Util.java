@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -92,8 +93,8 @@ public class Util {
         }
     }
 
-    public static void useNumberPickerDialog(Activity activity, final TextView textWithNrToChange) {
-        View v = activity.getLayoutInflater().inflate(R.layout.decimal_number_picker, null);
+    public static void useNumberPickerDialog(final TextView textWithNrToChange, LayoutInflater inflater, Context context) {
+        View v = inflater.inflate(R.layout.decimal_number_picker, null);
         final NumberPicker np1 = (NumberPicker) v.findViewById(R.id.numberPicker1);
         setNrsForNumberPicker(np1, true);
         final NumberPicker np2 = (NumberPicker) v.findViewById(R.id.numberPicker2);
@@ -106,7 +107,7 @@ public class Util {
         int decPart = (int) Math.round((originalNr.doubleValue() - (double) intPart) * 10.);
         np1.setValue(intPart);
         np2.setValue(decPart);
-        new AlertDialog.Builder(activity)
+        new AlertDialog.Builder(context)
                 .setView(v)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

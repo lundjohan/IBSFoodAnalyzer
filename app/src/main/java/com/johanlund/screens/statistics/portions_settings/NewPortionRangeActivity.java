@@ -30,7 +30,7 @@ public class NewPortionRangeActivity extends AppCompatActivity {
         from.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.useNumberPickerDialog(here, from);
+                Util.useNumberPickerDialog(from, here.getLayoutInflater(), here);
             }
         });
 
@@ -38,7 +38,7 @@ public class NewPortionRangeActivity extends AppCompatActivity {
         to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.useNumberPickerDialog(here, to);
+                Util.useNumberPickerDialog(to, here.getLayoutInflater(), here);
             }
         });
     }
