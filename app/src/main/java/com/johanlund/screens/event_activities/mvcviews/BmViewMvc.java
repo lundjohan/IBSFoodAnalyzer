@@ -23,32 +23,12 @@ public class BmViewMvc extends EventViewMvcAbstract {
         super(inflater, container);
     }
 
-    private static void setBristolNrAndText(TextView v, int bristolScore) {
-        v.setText("(" + bristolScore + ") " + Bm.bristolToText(bristolScore));
+    private void setBristolNrAndText(int bristolScore) {
+        bristolName.setText("(" + bristolScore + ") " + Bm.bristolToText(bristolScore));
     }
 
     @Override
     protected void initializeSpecViews() {
-
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.activity_bm;
-    }
-
-    @Override
-    protected int getInfoLayout() {
-        return R.layout.info_bm;
-    }
-
-    @Override
-    protected String getBarTitle() {
-        return "New Bowel Movement";
-    }
-
-    @Override
-    protected void bindEventSpecsToView(Event e) {
         bristolName = (TextView) rootView.findViewById(R.id.bristolName);
         bristolBar = (SeekBar) rootView.findViewById(R.id.bristolBar);
         completeName = (TextView) rootView.findViewById(R.id.completeName);
@@ -58,7 +38,7 @@ public class BmViewMvc extends EventViewMvcAbstract {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int score = ++progress;
-                setBristolNrAndText(bristolName, score);
+                setBristolNrAndText(score);
             }
 
             @Override
@@ -88,6 +68,30 @@ public class BmViewMvc extends EventViewMvcAbstract {
 
             }
         });
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_bm;
+    }
+
+    @Override
+    protected int getInfoLayout() {
+        return R.layout.info_bm;
+    }
+
+    @Override
+    protected String getBarTitle() {
+        return "New Bowel Movement";
+    }
+
+    @Override
+    protected void bindEventSpecsToView(Event e) {
+        Bm bm = (Bm)e;
+        bristolBar.setProgress(bm.getBristol()-1);
+        setBristolNrAndText(bm.getBristol());
+        completeBar.setProgress(bm.getComplete()-1);
+        completeName.setText(Bm.completenessScoreToText(bm.getComplete()));
     }
 
     @Override
