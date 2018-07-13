@@ -17,4 +17,8 @@ interface Dao {
 
     //only insert TagTypes that don't already exist (same name)
     fun insertTagTypesFromExternalDatabase(pathToExternal: File)
+
+    fun insertEventTemplatesFromExternalDatabase(externalDB: File) {
+
+    }
 }

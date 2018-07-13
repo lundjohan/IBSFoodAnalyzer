@@ -229,8 +229,9 @@ public class ExternalStorageHandler {
         //TODO
     }
 
-    public static void insertEventTemplatesFromExternalDatabase(File file, Context context) {
-        //TODO
+    public static void insertEventTemplatesFromExternalDatabase(File externalDB, Context c) {
+        Dao dao = new SqLiteDao(c);
+        dao.insertEventTemplatesFromExternalDatabase(externalDB);
     }
 }
 

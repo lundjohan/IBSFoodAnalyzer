@@ -55,4 +55,8 @@ class SqLiteDao(val c: Context): Dao{
     override fun insertTagTypesFromExternalDatabase(pathToExternal: File) {
         dbHandler.insertTagTypesFromExternalDatabase(pathToExternal)
     }
+
+    override fun insertEventTemplatesFromExternalDatabase(externalDB: File) {
+        dbHandler.insertEventTemplatesFromExternalDatabase(externalDB)
+    }
 }
