@@ -10,6 +10,11 @@ public interface ImportOptionViewMvc extends ViewMvc {
     interface ImportOptionViewMvcListener{
         void cleanAndLoad();
 
+        void mergeDatabase();
+
         void importTagTypes();
+
+        void importEventTemplates();
+
     }
 }

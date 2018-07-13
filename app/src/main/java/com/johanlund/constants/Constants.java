@@ -17,8 +17,10 @@ public class Constants {
     public final static int REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE = 9999;
     public final static int REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE = 9998;
     public final static int IMPORT_DB_CLEAN_AND_LOAD = 1357;
+    public final static int IMPORT_MERGE = 1358;
     public final static int IMPORT_DB_TAG_TYPES= 1359;
-    public final static int IMPORT_FROM_CSV_FILE = 1358;
+    public final static int IMPORT_EVENT_TEMPLATES =1360 ;
+    public final static int IMPORT_FROM_CSV_FILE = 1361;
 
     //Other
 

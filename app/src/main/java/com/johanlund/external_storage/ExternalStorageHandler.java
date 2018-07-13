@@ -224,30 +224,14 @@ public class ExternalStorageHandler {
         dao.insertTagTypesFromExternalDatabase(externalDB);
     }
 
-    /**
-     * This method reads events from a txt file
-     * and store them (together with TagTemplates)
-     * in database
-     */
-    /*public static List<Event> importEventsFromCsv(File file) {
-        List<Event> importedEvents = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            for (String line; (line = br.readLine()) != null; ) {
-                try {
-                    Event event = Importer.lineToEvent(line);
-                    importedEvents.add(event);
-                } catch (Exception e) {
-                    Log.e("Error", "One event could not be imported, skipping row.");
-                }
-            }
-            // line is not visible here.
-        } catch (Exception e) {
-            Log.e("Error", "Something went wrong when reading from file");
-        }
-        return importedEvents;
-    }*/
 
+    public static void mergeUsingExternalDatabase(File file, Context context) {
+        //TODO
+    }
 
+    public static void insertEventTemplatesFromExternalDatabase(File file, Context context) {
+        //TODO
+    }
 }
 
 

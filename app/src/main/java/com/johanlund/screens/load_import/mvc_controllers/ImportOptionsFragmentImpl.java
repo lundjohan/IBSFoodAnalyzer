@@ -23,8 +23,11 @@ import java.io.File;
 import static android.app.Activity.RESULT_OK;
 import static com.johanlund.constants.Constants.IMPORT_DB_CLEAN_AND_LOAD;
 import static com.johanlund.constants.Constants.IMPORT_DB_TAG_TYPES;
+import static com.johanlund.constants.Constants.IMPORT_EVENT_TEMPLATES;
+import static com.johanlund.constants.Constants.IMPORT_MERGE;
 
-public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionViewMvc.ImportOptionViewMvcListener {
+public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionViewMvc
+        .ImportOptionViewMvcListener {
     ImportOptionViewMvcImpl mViewMVC;
     ImportOptionsFragment.ImportOptionsFragmentListener listener;
 
@@ -36,10 +39,11 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
         // Return the root view of the associated MVC view
         return mViewMVC.getRootView();
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        listener = (ImportOptionsFragment.ImportOptionsFragmentListener)context;
+        listener = (ImportOptionsFragment.ImportOptionsFragmentListener) context;
     }
 
     @Override
@@ -49,12 +53,13 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         mViewMVC.setListener(this);
     }
+
     //ok, read from external file? Otherwise ask for permission
-    private void handleFilePermissions(){
+    private void handleFilePermissions() {
         //getActivity doesnt feel perfect here => close coupling.
         ExternalStorageHandler.showReadablePermission(getActivity());
     }
@@ -66,10 +71,22 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
     }
 
     @Override
+    public void mergeDatabase() {
+        handleFilePermissions();
+        showChooser(IMPORT_MERGE);
+    }
+
+    @Override
     public void importTagTypes() {
         handleFilePermissions();
         showChooser(IMPORT_DB_TAG_TYPES);
 
+    }
+
+    @Override
+    public void importEventTemplates() {
+        handleFilePermissions();
+        showChooser(IMPORT_EVENT_TEMPLATES);
     }
 
     //code reused from aFileChooser example
@@ -85,34 +102,40 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
             // The reason for the existence of aFileChooser
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
         }
-        switch (requestCode) {
-            case IMPORT_DB_CLEAN_AND_LOAD: {
-                if (data != null) {
-                    File dbFileToImport = getChosenFile(data);
-                    if (dbFileToImport != null) {
-                        ImportOptionsFragmentImpl.ImportDBAsyncTask asyncThread = new ImportOptionsFragmentImpl.CleanAndLoadDatabase(dbFileToImport);
-                        asyncThread.execute(0);
+        ImportOptionsFragmentImpl.ImportDBAsyncTask asyncThread = null;
+        if (data != null) {
+            File dbFileToImport = getChosenFile(data);
+            if (dbFileToImport != null) {
+                switch (requestCode) {
+                    case IMPORT_DB_CLEAN_AND_LOAD: {
+                        asyncThread = new ImportOptionsFragmentImpl.CleanAndLoadDatabase
+                                (dbFileToImport);
+                        break;
+                    }
+                    case IMPORT_MERGE: {
+                        asyncThread = new ImportOptionsFragmentImpl.MergeDatabase(dbFileToImport);
+                        break;
+                    }
+                    case IMPORT_DB_TAG_TYPES: {
+                        asyncThread = new ImportOptionsFragmentImpl.ImportTagTypes(dbFileToImport);
+                        break;
+                    }
+                    case IMPORT_EVENT_TEMPLATES: {
+                        asyncThread = new ImportOptionsFragmentImpl.ImportEventTemplates(dbFileToImport);
+                        break;
                     }
                 }
-                break;
-            }
-            case IMPORT_DB_TAG_TYPES: {
-                if (data != null) {
-                    File dbFileToImport = getChosenFile(data);
-                    if (dbFileToImport != null) {
-                        ImportOptionsFragmentImpl.ImportDBAsyncTask asyncThread = new ImportOptionsFragmentImpl.ImportTagTypes(dbFileToImport);
-                        asyncThread.execute(0);
-                    }
+                if (asyncThread != null) {
+                    asyncThread.execute(0);
                 }
-                break;
             }
-
         }
     }
 
@@ -123,7 +146,7 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
         try {
             // Get the file path from the URI
             final String path = FileUtils.getPath(getContext(), uri);
-            Toast.makeText(getContext(),"File Selected: " + path, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "File Selected: " + path, Toast.LENGTH_LONG).show();
 
             if (path != null && FileUtils.isLocal(path)) {
                 file = new File(path);
@@ -134,6 +157,7 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
         }
         return file;
     }
+
     private abstract class ImportDBAsyncTask extends AsyncTask<Integer, Void, Void> {
         final String TAG = this.getClass().getName();
         File file = null;
@@ -143,6 +167,11 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
         }
 
 
+        @Override
+        protected Void doInBackground(Integer... notUsedParams) {
+            doAction();
+            return null;
+        }
 
         @Override
         protected void onPostExecute(Void notUsed) {
@@ -150,26 +179,48 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
             // new db.
             listener.startDiaryAtLastDate();
         }
+        protected abstract void doAction();
     }
-    private class CleanAndLoadDatabase extends ImportDBAsyncTask{
+
+    private class CleanAndLoadDatabase extends ImportDBAsyncTask {
         public CleanAndLoadDatabase(File file) {
             super(file);
         }
-        @Override
-        protected Void doInBackground(Integer... notUsedParams) {
-            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getContext());
-            return null;
-        }
-    }
 
-    private class ImportTagTypes extends ImportDBAsyncTask{
+        @Override
+        protected void doAction() {
+            ExternalStorageHandler.replaceDBWithExtStorageFile(file, getContext());
+        }
+
+    }
+    private class ImportTagTypes extends ImportDBAsyncTask {
         public ImportTagTypes(File file) {
             super(file);
         }
+
         @Override
-        protected Void doInBackground(Integer... notUsedParams) {
+        protected void doAction() {
             ExternalStorageHandler.insertTagTypesFromExternalDatabase(file, getContext());
-            return null;
+        }
+    }
+    private class MergeDatabase extends ImportDBAsyncTask {
+        public MergeDatabase(File file) {
+            super(file);
+        }
+
+        @Override
+        protected void doAction() {
+            ExternalStorageHandler.mergeUsingExternalDatabase(file, getContext());
+        }
+    }
+    private class ImportEventTemplates extends ImportDBAsyncTask {
+        public ImportEventTemplates(File file) {
+            super(file);
+        }
+
+        @Override
+        protected void doAction() {
+            ExternalStorageHandler.insertEventTemplatesFromExternalDatabase(file, getContext());
         }
     }
 }
