@@ -7,12 +7,12 @@ import android.widget.TextView;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Exercise;
-import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.ibsfoodanalyzer.R;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ExerciseViewMvc extends EventViewMvcAbstract {
@@ -82,16 +82,11 @@ public class ExerciseViewMvc extends EventViewMvcAbstract {
 
     @Override
     public void removeTagFromView(String tagName) {
-        /*
-        not applicable
-         */
+        typeOfExercise.setText(context.getResources().getString(R.string.type_of_exercise));
     }
 
     @Override
     public List<String> getTagNames() {
-        /*
-        not applicable
-         */
-        return null;
+        return Arrays.asList(typeOfExercise.getText().toString());
     }
 }

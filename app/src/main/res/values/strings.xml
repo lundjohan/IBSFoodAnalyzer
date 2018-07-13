@@ -82,5 +82,6 @@
     <string name="no_parent_of_tag_type_added">no parent added</string>
     <string name="add_new_tagtype_name_info">Write the name of the TagType. For example \"Butter\" or \"Running\".</string>
     <string name="add_new_tagtype_parent_info">Add a parent to this Tag Type. For example: The Tag Type \'Cheese\' might have the parent \'Lacteo Product\'. This option is not necessary.</string>
+    <string name="type_of_exercise">Type of Exercise</string>
 
 </resources>
