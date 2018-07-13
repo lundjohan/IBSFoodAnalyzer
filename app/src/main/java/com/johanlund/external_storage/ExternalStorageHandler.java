@@ -28,6 +28,7 @@ import static com.johanlund.constants.Constants.DIRECTORY_IBSFOODANALYZER;
 import static com.johanlund.constants.Constants.REQUEST_PERMISSION_READ_TO_EXTERNAL_STORAGE;
 import static com.johanlund.constants.Constants.REQUEST_PERMISSION_WRITE_TO_EXTERNAL_STORAGE;
 import static com.johanlund.database.TablesAndStrings.DATABASE_NAME;
+import static com.johanlund.database.TablesAndStrings.DATABASE_VERSION;
 
 /**
  * Created by Johan on 2017-05-31.
@@ -136,7 +137,7 @@ public class ExternalStorageHandler {
      */
     public static void saveDBToExtStorage(Context c) {
         try {
-            File backupDB = makeFileToSaveTo(LocalDateTime.now() + "_" + DATABASE_NAME);
+            File backupDB = makeFileToSaveTo(LocalDateTime.now() + "_" + DATABASE_NAME+"_v."+DATABASE_VERSION);
             File currentDB = c.getDatabasePath(DATABASE_NAME);
             if (currentDB.exists()) {
                 FileChannel src = new FileInputStream(currentDB).getChannel();
