@@ -72,7 +72,7 @@ public class ExerciseViewMvc extends EventViewMvcAbstract {
 
     @Override
     protected Event makeEventFromView(LocalDateTime ldt, String comment) {
-        return new Exercise(ldt, comment, eventHasBreak, new TagWithoutTime(typeOfExercise.getText().toString(),1.0), intensityBar.getProgress());
+        return new Exercise(ldt, comment, eventHasBreak, new TagWithoutTime(typeOfExercise.getText().toString(),1.0), intensityBar.getProgress()+1);
     }
 
     @Override
