@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.Exercise;
+import com.johanlund.base_classes.Meal;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.ibsfoodanalyzer.R;
 
 import org.threeten.bp.LocalDateTime;
@@ -70,11 +72,13 @@ public class ExerciseViewMvc extends EventViewMvcAbstract {
 
     @Override
     protected Event makeEventFromView(LocalDateTime ldt, String comment) {
-        return null;
+        return new Exercise(ldt, comment, eventHasBreak, new TagWithoutTime(typeOfExercise.getText().toString(),1.0), intensityBar.getProgress());
     }
 
     @Override
-    public void bindAddedTagToView(String tagName) {/*no tags to bind in this view*/}
+    public void bindAddedTagToView(String tagName) {
+        typeOfExercise.setText(tagName);
+    }
 
     @Override
     public void removeTagFromView(String tagName) {
