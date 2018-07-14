@@ -23,26 +23,6 @@ public class RatingViewMvc extends EventViewMvcAbstract {
 
     @Override
     protected void initializeSpecViews() {
-
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.activity_rating;
-    }
-
-    @Override
-    protected int getInfoLayout() {
-        return R.layout.info_rating;
-    }
-
-    @Override
-    protected String getBarTitle() {
-        return "New Rating";
-    }
-
-    @Override
-    protected void bindEventSpecsToView(Event e) {
         scoreName = (TextView) rootView.findViewById(R.id.intensityName);
         scoreBar = (SeekBar) rootView.findViewById(R.id.intensityBar);
         scoreBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -62,6 +42,28 @@ public class RatingViewMvc extends EventViewMvcAbstract {
 
             }
         });
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_rating;
+    }
+
+    @Override
+    protected int getInfoLayout() {
+        return R.layout.info_rating;
+    }
+
+    @Override
+    protected String getBarTitle() {
+        return "New Rating";
+    }
+
+    @Override
+    protected void bindEventSpecsToView(Event e) {
+        int score = ((Rating)e).getAfter();
+        scoreName.setText(Rating.pointsToText(score));
+        scoreBar.setProgress(score-1);
     }
 
     @Override
