@@ -10,6 +10,7 @@ import com.johanlund.stat_backend.stat_util.ScoreTime
 import org.threeten.bp.LocalDateTime
 import java.io.File
 import java.util.*
+import kotlin.math.abs
 
 class SqLiteDao(val c: Context): Dao{
     val dbHandler: DBHandler = DBHandler(c)
@@ -52,11 +53,11 @@ class SqLiteDao(val c: Context): Dao{
         return mBreaks
     }
 
-    override fun insertTagTypesFromExternalDatabase(pathToExternal: File) {
-        dbHandler.insertTagTypesFromExternalDatabase(pathToExternal)
+    override fun insertTagTypesFromExternalDatabase(absolutePathToExternalDB: String) {
+        dbHandler.insertTagTypesFromExternalDatabase(absolutePathToExternalDB)
     }
 
-    override fun insertEventTemplatesFromExternalDatabase(externalDB: File) {
-        dbHandler.insertEventTemplatesFromExternalDatabase(externalDB)
+    override fun insertEventTemplatesFromExternalDatabase(absolutePathToExternalDB: String) {
+        dbHandler.insertEventTemplatesFromExternalDatabase(absolutePathToExternalDB)
     }
 }

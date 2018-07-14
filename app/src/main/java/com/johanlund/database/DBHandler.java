@@ -1659,13 +1659,38 @@ public class DBHandler extends SQLiteOpenHelper {
     Takes care to avoid id crash.
     Note that a tagtype that has same name as already existing tagtype will not be added (due to table definition).
      */
-    public void insertTagTypesFromExternalDatabase(@NotNull File pathToExternal) {
+    public void insertTagTypesFromExternalDatabase(@NotNull String absolutePath) {
+        String maxId = getMaxIdFromTable(TABLE_TAGTYPES);
+
+        //attach and copy from external database
+        //---------------------------------------
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.execSQL("ATTACH DATABASE '" + absolutePath + "' as " +
+                    "'external_db'");
+
+            db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " SELECT _id + "+maxId+ ", _tagname, _is_a1 +"+maxId+ " FROM " +
+                    "external_db.tag_templates ");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (db.isOpen()) {
+                db.execSQL("DETACH external_db");
+                db.close();
+            }
+        }
+    }
+
+    public void insertEventTemplatesFromExternalDatabase(@NotNull String absolutePath) {
+        String eventTemplatesMaxId = getMaxIdFromTable(TABLE_EVENTSTEMPLATES);
+
+    }
+
+    private String getMaxIdFromTable (String table){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //get max _id from tag_type.
-        //-----------------------------
         //Default start value of id == 1. If it was zero, then I would have had to do: maxId++
-        final String QUERY = "SELECT MAX(" + COLUMN_ID + ") AS 'max_id' FROM " + TABLE_TAGTYPES;
+        final String QUERY = "SELECT MAX(" + COLUMN_ID + ") AS 'max_id' FROM " + table;
 
         Cursor c = null;
         String maxId ="0";
@@ -1683,28 +1708,10 @@ public class DBHandler extends SQLiteOpenHelper {
             if (c != null && !c.isClosed()) {
                 c.close();
             }
-        }
-
-
-        //attach and copy from external database
-        //---------------------------------------
-        try {
-            db.execSQL("ATTACH DATABASE '" + pathToExternal.getAbsolutePath() + "' as " +
-                    "'external_db'");
-
-            db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " SELECT _id + "+maxId+ ", _tagname, _is_a1 +"+maxId+ " FROM " +
-                    "external_db.tag_templates ");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (db.isOpen()) {
-                db.execSQL("DETACH external_db");
+            if (db != null && db.isOpen()){
                 db.close();
             }
         }
-    }
-
-    public void insertEventTemplatesFromExternalDatabase(@NotNull File externalDB) {
-        
+        return maxId;
     }
 }

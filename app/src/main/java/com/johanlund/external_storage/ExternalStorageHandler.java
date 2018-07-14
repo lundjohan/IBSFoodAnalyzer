@@ -202,7 +202,6 @@ public class ExternalStorageHandler {
 
     public static void replaceDBWithExtStorageFile(File backupDB, Context c) {
         //get current path to internal storage db file
-        File data = Environment.getDataDirectory();
         File pathToCurrentDB = c.getDatabasePath(DATABASE_NAME);
         try {
             FileChannel src = new FileInputStream(backupDB).getChannel();
@@ -218,21 +217,6 @@ public class ExternalStorageHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void insertTagTypesFromExternalDatabase(File externalDB, Context c) {
-        Dao dao = new SqLiteDao(c);
-        dao.insertTagTypesFromExternalDatabase(externalDB);
-    }
-
-
-    public static void mergeUsingExternalDatabase(File file, Context context) {
-        //TODO
-    }
-
-    public static void insertEventTemplatesFromExternalDatabase(File externalDB, Context c) {
-        Dao dao = new SqLiteDao(c);
-        dao.insertEventTemplatesFromExternalDatabase(externalDB);
     }
 }
 

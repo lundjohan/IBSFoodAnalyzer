@@ -16,9 +16,9 @@ interface Dao {
     fun getAllBreaks(): List<LocalDateTime>
 
     //only insert TagTypes that don't already exist (same name)
-    fun insertTagTypesFromExternalDatabase(pathToExternal: File)
+    fun insertTagTypesFromExternalDatabase(pathToExternal: String)
 
-    fun insertEventTemplatesFromExternalDatabase(externalDB: File) {
+    fun insertEventTemplatesFromExternalDatabase(pathToExternal: String) {
 
     }
 }

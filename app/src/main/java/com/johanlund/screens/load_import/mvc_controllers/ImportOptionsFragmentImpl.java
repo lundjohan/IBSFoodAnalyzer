@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
+import com.johanlund.dao.Dao;
+import com.johanlund.dao.SqLiteDao;
 import com.johanlund.external_storage.ExternalStorageHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.load_import.mvc_views.ImportOptionViewMvc;
@@ -200,7 +202,8 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
 
         @Override
         protected void doAction() {
-            ExternalStorageHandler.insertTagTypesFromExternalDatabase(file, getContext());
+            Dao dao = new SqLiteDao(getContext());
+            dao.insertTagTypesFromExternalDatabase(file.getAbsolutePath());
         }
     }
     private class MergeDatabase extends ImportDBAsyncTask {
@@ -210,7 +213,7 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
 
         @Override
         protected void doAction() {
-            ExternalStorageHandler.mergeUsingExternalDatabase(file, getContext());
+            //TODO
         }
     }
     private class ImportEventTemplates extends ImportDBAsyncTask {
@@ -220,7 +223,8 @@ public class ImportOptionsFragmentImpl extends Fragment implements ImportOptionV
 
         @Override
         protected void doAction() {
-            ExternalStorageHandler.insertEventTemplatesFromExternalDatabase(file, getContext());
+            Dao dao = new SqLiteDao(getContext());
+            dao.insertEventTemplatesFromExternalDatabase(file.getAbsolutePath());
         }
     }
 }
