@@ -137,7 +137,7 @@ public class ExternalStorageHandler {
      */
     public static void saveDBToExtStorage(Context c) {
         try {
-            File backupDB = makeFileToSaveTo(LocalDateTime.now() + "_" + DATABASE_NAME+"_v."+DATABASE_VERSION);
+            File backupDB = makeFileToSaveTo("v_"+DATABASE_VERSION +"_"+LocalDateTime.now() + "_" + DATABASE_NAME);
             File currentDB = c.getDatabasePath(DATABASE_NAME);
             if (currentDB.exists()) {
                 FileChannel src = new FileInputStream(currentDB).getChannel();
