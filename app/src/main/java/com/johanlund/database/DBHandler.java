@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.InputEvent;
@@ -22,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1658,19 +1658,97 @@ public class DBHandler extends SQLiteOpenHelper {
     Imports TagTypes from external database.
     Takes care to avoid id crash.
     Note that a tagtype that has same name as already existing tagtype will not be added (due to table definition).
+
+    This works good when import is done to empty database. However there can be problems if internal_db already has some tagtypes that have same names as the TagTypes-to-be-imported.
+    The problem is for _is_a1 which then can reference to wrong (or to non existant) tagtype.
      */
     public void insertTagTypesFromExternalDatabase(@NotNull String absolutePath) {
-        String maxId = getMaxIdFromTable(TABLE_TAGTYPES);
-
+        String maxId = getMaxIdFromInternalDBTable(TABLE_TAGTYPES);
+        Log.d("DBHandler",  "max_id tagtypes before insert: "+ maxId);
         //attach and copy from external database
         //---------------------------------------
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            //attaching database must be done outside of transaction
+            db.execSQL("ATTACH DATABASE '" + absolutePath + "' as " +
+                    "'external_db'");
+            db.execSQL("PRAGMA foreign_keys = OFF;");
+
+            db.execSQL("BEGIN;");
+
+            db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " (_tagname, _is_a1) SELECT _tagname, _is_a1 FROM external_db.tag_templates;");
+
+            //change the inserted TagTypes is_a1 to correct values.
+            db.execSQL("UPDATE " + TABLE_TAGTYPES + " SET _is_a1 = (SELECT "+ COLUMN_ID +" FROM  "+ TABLE_TAGTYPES +" WHERE _tagname = " +
+                    "(SELECT te._tagname from external_db.tag_templates te, tag_templates ti WHERE ti._is_a1 = te."+ COLUMN_ID +"))" +
+                            " WHERE "+ COLUMN_ID +" > "+maxId +" AND _is_a1 IS NOT NULL;");
+            db.execSQL("END;");
+
+        } catch (Exception e) {
+            db.execSQL("ROLLBACK;");
+            e.printStackTrace();
+        } finally {
+            if (db.isOpen()) {
+                db.execSQL("PRAGMA foreign_keys = ON;");
+                db.execSQL("DETACH 'external_db'");
+                db.close();
+            }
+        }
+    }
+    private void insertIntoEventTypeTableFromExternalDB(String specTable, int eventType, String moreColsToInsert, String maxIdOfEvents, SQLiteDatabase db, String external_db_name){
+        String maxIdOfSpecTable = getMaxIdFromInternalDBTable(specTable);
+        db.execSQL("INSERT INTO " + specTable + " SELECT "+COLUMN_ID +maxIdOfSpecTable + ", "+ COLUMN_EVENT +"+" +maxIdOfEvents+ moreColsToInsert +
+                " FROM  "+external_db_name+"."+specTable+ " WHERE "+ TABLE_EVENTS +"." +COLUMN_ID +" > "+maxIdOfEvents+
+                " AND "+ TABLE_EVENTS +"." +COLUMN_TYPE_OF_EVENT+" = "+eventType +
+                " AND external.db."+ specTable + "." +COLUMN_EVENT + " + " + maxIdOfEvents +" = " + TABLE_EVENTS +"."+ COLUMN_ID+";");
+    }
+    public void insertEventTemplatesFromExternalDatabase(@NotNull String absolutePath) {
+        //1. Insert table eventsTemplates (only the ones with names that doesn't already exist -> this is handled internally by UNIQUE ON CONFLICT IGNORE. )
+
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             db.execSQL("ATTACH DATABASE '" + absolutePath + "' as " +
                     "'external_db'");
 
-            db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " SELECT _id + "+maxId+ ", _tagname, _is_a1 +"+maxId+ " FROM " +
-                    "external_db.tag_templates ");
+            //1. Insert EventsTemplates that don't already exist (same name)
+            String eventTemplatesMaxId = getMaxIdFromInternalDBTable(TABLE_EVENTSTEMPLATES);
+            db.execSQL("INSERT INTO " + TABLE_EVENTSTEMPLATES + " SELECT _id + "+eventTemplatesMaxId+ ", _tagname, _is_a1 +"+eventTemplatesMaxId+ " FROM " +
+                    "external_db."+TABLE_EVENTSTEMPLATES);
+
+            //2. Insert events from external_DB that refers to the the equivalent of the (already) inserted eventsTemplates
+            String eventsMaxId = getMaxIdFromInternalDBTable(TABLE_EVENTS);
+
+            db.execSQL("INSERT INTO " + TABLE_EVENTS + " SELECT "+COLUMN_ID + "+"+eventsMaxId + ", "+ COLUMN_DATETIME + ", " + COLUMN_TYPE_OF_EVENT + ", " + COLUMN_EVENTSTEMPLATE+eventTemplatesMaxId + ", " + COLUMN_COMMENT + ", " + COLUMN_HAS_BREAK  +
+                    " FROM  external_db."+TABLE_EVENTS + " WHERE "+ TABLE_EVENTSTEMPLATES +"." +COLUMN_ID+" > "+eventTemplatesMaxId + " = external_db."+TABLE_EVENTS +"."+COLUMN_EVENTSTEMPLATE+eventTemplatesMaxId+";");
+
+            //3. for the INSERTED EVENTS, insert meal, exercise, rating, bm, rating from external DB
+            insertIntoEventTypeTableFromExternalDB(TABLE_MEALS, MEAL, ", " + COLUMN_PORTIONS, eventsMaxId, db, "external_db");
+            insertIntoEventTypeTableFromExternalDB(TABLE_OTHERS, OTHER, "", eventsMaxId, db, "external_db");
+            insertIntoEventTypeTableFromExternalDB(TABLE_EXERCISES, EXERCISE, ", " + COLUMN_INTENSITY, eventsMaxId, db, "external_db");
+            insertIntoEventTypeTableFromExternalDB(TABLE_BMS, BM, ", " + COLUMN_COMPLETENESS + ", " + COLUMN_BRISTOL, eventsMaxId, db, "external_db");
+            insertIntoEventTypeTableFromExternalDB(TABLE_RATINGS, RATING, ", " + COLUMN_AFTER, eventsMaxId, db, "external_db");
+
+            //4. Insert relevant Tag Types (if dublette -> doesn't matter, ON CONFLICT IGNORE takes care of it!). This function must be partially recursive.
+            String tagsMaxId = getMaxIdFromInternalDBTable(TABLE_TAGS);
+            String tagTypesMaxId = getMaxIdFromInternalDBTable(TABLE_TAGTYPES);
+
+            db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " SELECT "+COLUMN_ID + "+" + tagTypesMaxId + ", "+ COLUMN_TAGNAME + ", null" + ", " + COLUMN_EVENTSTEMPLATE+eventTemplatesMaxId + ", " + COLUMN_COMMENT + ", " + COLUMN_HAS_BREAK  +
+                    " FROM  external_db."+TABLE_EVENTS + " WHERE "+ TABLE_EVENTSTEMPLATES +"." +COLUMN_ID+" > "+eventTemplatesMaxId + " = external_db."+TABLE_EVENTS +"."+COLUMN_EVENTSTEMPLATE+eventTemplatesMaxId+";");
+
+            //ovan är relativt straight forward, det är nedan det blir mer komplicerat.
+
+            //4. for the inserted events => insert tags from external DB.
+            //5.  To insert tags:
+            //Step one: Search through external db for tags that refer to these events
+            //Step two: For these tags -> find the tag types names they refer to. If these tagtypes already exist in internal db (most probably with different _id), refer to these, otherwise import and refer to external_db.tagtypes
+
+            //That's it!
+
+
+
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -1679,14 +1757,11 @@ public class DBHandler extends SQLiteOpenHelper {
                 db.close();
             }
         }
-    }
 
-    public void insertEventTemplatesFromExternalDatabase(@NotNull String absolutePath) {
-        String eventTemplatesMaxId = getMaxIdFromTable(TABLE_EVENTSTEMPLATES);
 
     }
 
-    private String getMaxIdFromTable (String table){
+    private String getMaxIdFromInternalDBTable(String table){
         SQLiteDatabase db = this.getWritableDatabase();
 
         //Default start value of id == 1. If it was zero, then I would have had to do: maxId++
@@ -1699,6 +1774,8 @@ public class DBHandler extends SQLiteOpenHelper {
             if (c != null) {
                 if (c.moveToFirst()) {
                     maxId = c.getString(c.getColumnIndex("max_id"));
+                    //have to check for null, since this will be returned if max (no_rows).
+                    maxId = maxId == null ?"0":maxId;
 
                 }
             }
