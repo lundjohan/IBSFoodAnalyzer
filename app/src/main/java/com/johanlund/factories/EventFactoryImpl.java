@@ -33,7 +33,7 @@ public class EventFactoryImpl implements EventFactory {
                 return new Exercise(ldt, new TagWithoutTime("exercise type", 1.0), 3);
             }
             case BM: {
-                return new Bm(ldt, 4, 4);
+                return new Bm(ldt, 3, 4);
             }
             case RATING: {
                 return new Rating(ldt, "", 4);
