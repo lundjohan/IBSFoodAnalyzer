@@ -1682,7 +1682,8 @@ public class DBHandler extends SQLiteOpenHelper {
             final String QUERY =
                     "SELECT t1."+ COLUMN_ID + ", t2."+ COLUMN_ID +" FROM tag_templates t1 " +
                     "INNER JOIN external_db.tag_templates te ON t1._is_a1 = te._id " +
-                    "INNER JOIN tag_templates t2 ON te._tagname = t2._tagname;";
+                    "INNER JOIN tag_templates t2 ON te._tagname = t2._tagname" +
+                            " WHERE t1."+ COLUMN_ID + " > "+maxId +";";
             Cursor c = null;
             try {
                 c = db.rawQuery(QUERY, null);
