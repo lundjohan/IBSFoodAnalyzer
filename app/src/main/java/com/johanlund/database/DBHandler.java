@@ -1679,9 +1679,38 @@ public class DBHandler extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " (_tagname, _is_a1) SELECT _tagname, _is_a1 FROM external_db.tag_templates;");
 
             //change the inserted TagTypes is_a1 to correct values.
-            db.execSQL("UPDATE " + TABLE_TAGTYPES + " SET _is_a1 = (SELECT "+ COLUMN_ID +" FROM  "+ TABLE_TAGTYPES +" WHERE _tagname = " +
-                    "(SELECT te._tagname from external_db.tag_templates te, tag_templates ti WHERE ti._is_a1 = te."+ COLUMN_ID +"))" +
-                            " WHERE "+ COLUMN_ID +" > "+maxId +" AND _is_a1 IS NOT NULL;");
+            final String QUERY =
+                    "SELECT t1."+ COLUMN_ID + ", t2."+ COLUMN_ID +" FROM tag_templates t1 " +
+                    "INNER JOIN external_db.tag_templates te ON t1._is_a1 = te._id " +
+                    "INNER JOIN tag_templates t2 ON te._tagname = t2._tagname;";
+            Cursor c = null;
+            try {
+                c = db.rawQuery(QUERY, null);
+                if (c != null) {
+                    if (c.moveToFirst()) {
+                        while (!c.isAfterLast()) {
+                            try {
+
+                                //retrieve id (the Tagtype row that should )
+                                long id = c.getLong(0);
+                                long correct_parent_id = c.getLong(1);
+                                Log.d("DBHandler", "---------------------------");
+                                Log.d("DBHandler", "id of tagtype to change "+id);
+                                Log.d("DBHandler", "parent id to change into "+correct_parent_id);
+                                Log.d("DBHandler", "---------------------------");
+
+                                db.execSQL("UPDATE " + TABLE_TAGTYPES + " SET "+ TYPE_OF + " = " + correct_parent_id + " WHERE "+ COLUMN_ID + " = " + id + ";");
+                            } finally {
+                                c.moveToNext();
+                            }
+                        }
+                    }
+                }
+            } finally {
+                if (c != null && !c.isClosed()) {
+                    c.close();
+                }
+            }
             db.execSQL("END;");
 
         } catch (Exception e) {
