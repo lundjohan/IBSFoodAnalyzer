@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
 
-public class SaveEventsTemplateActivity extends EventsTemplateActivity {
+public class NewEventsTemplateActivity extends EventsTemplateActivity {
     TextView nameView;
 
     @Override
