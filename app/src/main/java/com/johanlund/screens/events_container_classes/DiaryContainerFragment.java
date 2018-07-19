@@ -26,7 +26,8 @@ import com.johanlund.picker_views.DatePickerFragment;
 import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
-import com.johanlund.screens.events_templates.common.EventsTemplateAdapter;
+import com.johanlund.screens.events_templates_actions.mvc_controller.NewEventsTemplateActivity;
+import com.johanlund.screens.events_templates_dashboard.common.EventsTemplateAdapter;
 import com.johanlund.screens.info.ActivityInfoContent;
 
 import org.threeten.bp.LocalDate;

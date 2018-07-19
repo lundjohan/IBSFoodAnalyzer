@@ -26,7 +26,7 @@ import com.johanlund.external_storage.SaveDBIntentService;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.about.AboutActivity;
 import com.johanlund.screens.events_container_classes.DiaryContainerFragment;
-import com.johanlund.screens.events_templates.TemplateFragment;
+import com.johanlund.screens.events_templates_dashboard.TemplateFragment;
 import com.johanlund.screens.load_import.mvc_controllers.ImportOptionsFragment;
 import com.johanlund.screens.load_import.mvc_controllers.ImportOptionsFragmentImpl;
 import com.johanlund.screens.settings.GeneralSettingsActivity;

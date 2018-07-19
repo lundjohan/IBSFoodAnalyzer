@@ -1,4 +1,4 @@
-package com.johanlund.screens.events_container_classes;
+package com.johanlund.screens.events_templates_actions.mvc_controller;
 
 import android.content.Intent;
 import android.os.Bundle;

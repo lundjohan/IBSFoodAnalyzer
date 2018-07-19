@@ -1,4 +1,4 @@
-package com.johanlund.screens.events_templates.common;
+package com.johanlund.screens.events_templates_dashboard.common;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,9 +20,9 @@ import android.widget.TextView;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
-import com.johanlund.screens.events_container_classes.EditEventsTemplateActivity;
-import com.johanlund.screens.events_container_classes.LoadEventsTemplateActivity;
-import com.johanlund.screens.events_templates.TemplateFragment;
+import com.johanlund.screens.events_templates_actions.mvc_controller.EditEventsTemplateActivity;
+import com.johanlund.screens.events_templates_actions.mvc_controller.LoadEventsTemplateActivity;
+import com.johanlund.screens.events_templates_dashboard.TemplateFragment;
 
 import java.io.Serializable;
 

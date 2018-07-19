@@ -1,4 +1,4 @@
-package com.johanlund.screens.events_templates;
+package com.johanlund.screens.events_templates_dashboard;
 
 
 import android.content.Intent;
@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
-import com.johanlund.screens.events_templates.common.EventsTemplateAdapter;
+import com.johanlund.screens.events_templates_dashboard.common.EventsTemplateAdapter;
 import com.johanlund.screens.info.ActivityInfoContent;
 import com.johanlund.util.Util;
 

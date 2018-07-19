@@ -45,15 +45,15 @@
         <activity android:name="com.johanlund.screens.tag_adder.TagAdderActivity"/>
         <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
         <activity
-            android:name="com.johanlund.screens.events_container_classes.NewEventsTemplateActivity"
+            android:name="com.johanlund.screens.events_templates_actions.mvc_controller.NewEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name="com.johanlund.screens.events_container_classes.EditEventsTemplateActivity"
+            android:name="com.johanlund.screens.events_templates_actions.mvc_controller.EditEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name="com.johanlund.screens.events_container_classes.LoadEventsTemplateActivity"
+            android:name="com.johanlund.screens.events_templates_actions.mvc_controller.LoadEventsTemplateActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
