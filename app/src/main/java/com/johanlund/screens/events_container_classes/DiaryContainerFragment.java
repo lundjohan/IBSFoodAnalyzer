@@ -245,7 +245,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
     }
 
     private void doEventsTemplateAdder(List<Event> events) {
-        Intent intent = new Intent(getActivity(), SaveEventsTemplateActivity.class);
+        Intent intent = new Intent(getActivity(), NewEventsTemplateActivity.class);
         //Gson gson = new Gson();
         //String objAsJSON = gson.toJson(events);
         intent.putExtra(LIST_OF_EVENTS, (Serializable) events);
