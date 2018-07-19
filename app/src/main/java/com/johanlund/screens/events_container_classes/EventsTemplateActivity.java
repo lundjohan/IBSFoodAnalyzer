@@ -240,7 +240,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
         intent.putExtra(EVENT_POSITION, posInList);
         DBHandler dbHandler = new DBHandler(getApplicationContext());
-        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);
+        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);    //this is crazy, should be idINSIDEEventsTemplate
         intent.putExtra(ID_OF_EVENT, eventId);
         startActivityForResult(intent, valueToReturn);
     }
