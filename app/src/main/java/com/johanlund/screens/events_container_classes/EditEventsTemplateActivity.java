@@ -17,12 +17,12 @@ import static com.johanlund.constants.Constants.ID_OF_EVENTSTEMPLATE;
 public class EditEventsTemplateActivity extends EventsTemplateActivity {
     TextView nameView;
     EventsTemplate et;
-    long id;
+    long idEventsTemplate;
 
     @Override
     protected void saveToDB(EventsTemplate changedET) {
         DBHandler dbHandler = new DBHandler(this);
-        dbHandler.editEventsTemplate(id, changedET);
+        dbHandler.editEventsTemplate(idEventsTemplate, changedET);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class EditEventsTemplateActivity extends EventsTemplateActivity {
                     (EVENTSTEMPLATE_TO_CHANGE);
         }
         if (intent.hasExtra(ID_OF_EVENTSTEMPLATE)) {
-            id = intent.getLongExtra(ID_OF_EVENTSTEMPLATE, -1);
+            idEventsTemplate = intent.getLongExtra(ID_OF_EVENTSTEMPLATE, -1);
         }
         super.onCreate(savedInstanceState);
     }
