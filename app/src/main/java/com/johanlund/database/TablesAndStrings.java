@@ -154,6 +154,6 @@ public class TablesAndStrings {
     public static final String CREATE_EVENTS_TEMPLATE_TABLE = "CREATE TABLE " +
             TABLE_EVENTSTEMPLATES + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY," +
-            COLUMN_NAME + " TEXT NOT NULL UNIQUE " +
+            COLUMN_NAME + " TEXT NOT NULL UNIQUE ON CONFLICT IGNORE" +
             ");";
 }
