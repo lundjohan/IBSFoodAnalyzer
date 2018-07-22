@@ -45,7 +45,7 @@ import static com.johanlund.constants.Constants.NEW_EVENT_DATE;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_EXERCISE;
+import static com.johanlund.screens.events_container_classes.common.EventsContainer.EVENT_NEW;
 
 /**
  * This class uses an adapter that is using DiaryFragment
@@ -259,7 +259,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
             Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
             dbHandler.addEvent(event);
-            getCurrentDiary().addEventToList(event);
+            getCurrentDiary().bindEventToList(event);
 
             //it can be that the new event should be created at another date.
             LocalDate dateForEventCreation = event.getTime().toLocalDate();
@@ -274,7 +274,7 @@ public class DiaryContainerFragment extends Fragment implements DiaryFragment.Di
         Intent intent = new Intent(getActivity(), NewEventActivity.class);
         intent.putExtra(EVENT_TYPE, eventType);
         intent.putExtra(NEW_EVENT_DATE, (Serializable) currentDate);
-        startActivityForResult(intent, NEW_EXERCISE);
+        startActivityForResult(intent, EVENT_NEW);
     }
 
     @Override

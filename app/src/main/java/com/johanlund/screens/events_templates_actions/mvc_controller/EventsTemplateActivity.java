@@ -3,28 +3,32 @@ package com.johanlund.screens.events_templates_actions.mvc_controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.johanlund.base_classes.Event;
+import com.johanlund.base_classes.Exercise;
+import com.johanlund.base_classes.InputEvent;
+import com.johanlund.base_classes.Meal;
+import com.johanlund.base_classes.Other;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.constants.Constants;
+import com.johanlund.dao.Dao;
+import com.johanlund.dao.SqLiteDao;
 import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity;
 import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
-import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
+import com.johanlund.screens.events_templates_actions.mvc_views.EventsTemplateViewMvc;
 import com.johanlund.screens.info.ActivityInfoContent;
 
-import java.util.Collections;
+import org.threeten.bp.LocalDate;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.johanlund.constants.Constants.EVENT_POSITION;
@@ -35,7 +39,7 @@ import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.NEW_MEAL;
+import static com.johanlund.screens.events_container_classes.common.EventsContainer.EVENT_NEW;
 
 /**
  * Reuses a lot of code from DiaryFragment.
@@ -43,74 +47,33 @@ import static com.johanlund.screens.events_container_classes.common.EventsContai
  * Some implemenations uses a TextView for name and some (1) don't. Be aware of this! => It
  * should be abstracted completely in this parent class.
  */
-public abstract class EventsTemplateActivity extends AppCompatActivity implements EventsContainer
-        .EventsContainerUser, EventButtonsViewMvc.Listener {
+public abstract class EventsTemplateActivity extends AppCompatActivity
+        implements EventsTemplateViewMvc.Listener {
 
     protected EventsContainer ec;
     protected EventButtonsViewMvcImpl mButtonsViewMvc;
+    protected EventsTemplateViewMvc mViewMVC;
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_info, menu);
-        menu.findItem(R.id.menu_info).setOnMenuItemClickListener(new MenuItem
-                .OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent(getApplicationContext(), ActivityInfoContent.class);
-                intent.putExtra(LAYOUT_RESOURCE, R.layout.info_events_template);
-                intent.putExtra(TITLE_STRING, getTitleStr());
-                startActivity(intent);
-                return true;
-            }
-        });
-
-        inflater.inflate(R.menu.done_menu, menu);
-        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
-                .OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                EventsTemplate toReturn = createEventsTemplateForReturn();
-                saveToDB(toReturn);
-                saveToDiary();
-                finish();
-                return true;
-            }
-        });
-        return true;
+        return mViewMVC.createOptionsMenu(menu, getMenuInflater());
     }
 
-    protected abstract String getTitleStr();
-
-    private EventsTemplate createEventsTemplateForReturn() {
-        String nameOfTemplate = getEndingName();
-        return new EventsTemplate(ec.eventsOfDay, nameOfTemplate);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events_template);
+        // Set the root view of the associated MVC view as the content of this activity
+        setContentView(mViewMVC.getRootView());
+        mButtonsViewMvc = new EventButtonsViewMvcImpl(getLayoutInflater(), (ViewGroup) mViewMVC.getRootView().findViewById(R
+                .id.buttons));
+        ec = mViewMVC.getEventsContainer();
+    }
 
-        //inflate specifics for heritating class
-        ViewGroup upperPart = (ViewGroup) findViewById(R.id.upperPart);
-        getLayoutInflater().inflate(getLayoutRes(), upperPart, true);
-
-        setUpNameViewIfExisting();
-
-
-        //Set up EventsContainer
-        ec = new EventsContainer(this, getApplicationContext());
-        ec.eventsOfDay = getStartingEvents();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        ec.initiateRecyclerView(recyclerView, false, this);
-        ec.adapter.notifyDataSetChanged();
-
-        //Set up EventButtonsViewMvcImpl
-        mButtonsViewMvc = new EventButtonsViewMvcImpl(LayoutInflater.from(this), (ViewGroup)
-                findViewById(R.id.buttons));
+    protected void initMvcView(EventsTemplate et) {
+        mViewMVC.setListener(this);
+        mViewMVC.bindEventsTemplateToView(et);
+        mViewMVC.bindDateToView(LocalDate.now());
     }
 
     @Override
@@ -133,22 +96,9 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         ec.onActivityResult(requestCode, resultCode, data);
     }
 
-    protected abstract int getLayoutRes();
-
-    protected abstract String getStartingName();
-
-    protected abstract String getEndingName();
-
-    /**
-     * As hinted, only some implemenations use a nameView.
-     */
-    protected abstract void setUpNameViewIfExisting();
-
-    protected abstract List<Event> getStartingEvents();
-
     protected abstract void saveToDB(EventsTemplate et);
 
-    protected abstract void saveToDiary();
+    protected abstract void saveToDiary(EventsTemplate et);
 
     @Override
     public void onBackPressed() {
@@ -167,15 +117,80 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         return true;
     }
 
-    @Override
-    public void addEventToList(Event event) {
-        ec.eventsOfDay.add(event);
-        //All dates must be the same, becuase dates are irrellevant in a EventsTemplate,
-        // only time matter.
-        //TODO: implement constriction for above
-        Collections.sort(ec.eventsOfDay);
-        ec.adapter.notifyDataSetChanged();
+    /**
+     * Function that removes tagtypes in EventsTemplate if there is no find for it in database
+     *
+     * @param et
+     * @return
+     */
 
+    public EventsTemplate removeTagTypesThatDontExist(final EventsTemplate et) {
+        List<Event> cleansedEvents = new ArrayList<>();
+        Dao dao = new SqLiteDao(this.getApplicationContext());
+        for (Event e : et.getEvents()) {
+            Event cleansedEvent = null;
+            if (e instanceof InputEvent) {
+                List<TagWithoutTime> tags = ((InputEvent) e).getTagsWithoutTime();
+                List<TagWithoutTime> cleansedTags = new ArrayList<>();
+                for (TagWithoutTime t : tags) {
+                    if (dao.tagTypeExists(t.getName())) {
+                        cleansedTags.add(t);
+                    }
+                }
+                if (e instanceof Meal) {
+                    Meal m = ((Meal) e);
+                    cleansedEvent = new Meal(m.getTime(), m.getComment(), m.hasBreak(),
+                            cleansedTags, m.getPortions());
+                } else if (e instanceof Other) {
+                    Other o = ((Other) e);
+                    cleansedEvent = new Other(o.getTime(), o.getComment(), o.hasBreak(),
+                            cleansedTags);
+                }
+            } else if (e instanceof Exercise) {
+                Exercise exercise = ((Exercise) e);
+                TagWithoutTime t = exercise.getTypeOfExercise();
+                if (t != null && dao.tagTypeExists(t.getName())) {
+                    cleansedEvent = exercise;
+                } else {
+                    cleansedEvent = new Exercise(exercise.getTime(), exercise.getComment(),
+                            exercise.hasBreak(), null, exercise.getIntensity());
+                }
+            } else {
+                cleansedEvent = e;
+            }
+            cleansedEvents.add(cleansedEvent);
+        }
+        return new EventsTemplate(cleansedEvents, et.getNameOfTemplate());
+    }
+
+    @Override
+    public void completeSession(EventsTemplate et) {
+        saveToDB(et);
+        saveToDiary(et);
+        finish();
+    }
+
+    @Override
+    public void showInfo(String titleStr, int infoLayout) {
+        //move below to controller
+        Intent intent = new Intent(this, ActivityInfoContent.class);
+        intent.putExtra(LAYOUT_RESOURCE, infoLayout);
+        intent.putExtra(TITLE_STRING, titleStr);
+        startActivity(intent);
+    }
+
+
+    /*
+    --------------------------------------------------------------------------------------------
+    EventButtonsUser.Listener methods
+    --------------------------------------------------------------------------------------------
+    */
+    @Override
+    public void newEventActivity(int eventType) {
+        Intent intent = new Intent(this, NewEventActivity.class);
+        intent.putExtra(Constants.EVENT_TYPE, eventType);
+        // intent.putExtra(Constants.NEW_EVENT_DATE, getDate() eller annan lösning);
+        startActivityForResult(intent, EVENT_NEW);
     }
 
     //TODO code is extremly similar to DiaryFragment (except for database handling)
@@ -183,8 +198,28 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
     public void executeNewEvent(int requestCode, Intent data) {
         if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
             Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
-            addEventToList(event);
+            mViewMVC.bindEventToList(event);
         }
+    }
+
+    /*
+       --------------------------------------------------------------------------------------------
+       EventsContainerUser.Listener methods
+       --------------------------------------------------------------------------------------------
+       */
+    //user requests to change event
+    @Override
+    public void changeEventActivity(Event event, int eventType, int valueToReturn, int
+            posInList) {
+        Intent intent = new Intent(this, ChangeEventActivity.class);
+        intent.putExtra(EVENT_TYPE, eventType);
+        intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
+        intent.putExtra(EVENT_POSITION, posInList);
+        DBHandler dbHandler = new DBHandler(getApplicationContext());
+        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);    //this is crazy,
+        // should be idINSIDEEventsTemplate
+        intent.putExtra(ID_OF_EVENT, eventId);
+        startActivityForResult(intent, valueToReturn);
     }
 
     //TODO code is extremly similar to DiaryFragment (except for database handling)
@@ -197,60 +232,8 @@ public abstract class EventsTemplateActivity extends AppCompatActivity implement
         }
         if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
             Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
-            ec.changeEventInList(posInList, event);
+            mViewMVC.bindChangedEventToList(event, posInList);
         }
-    }
-
-    public void newEventActivity(int eventType) {
-        Intent intent = new Intent(this, NewEventActivity.class);
-        intent.putExtra(Constants.EVENT_TYPE, eventType);
-       // intent.putExtra(Constants.NEW_EVENT_DATE, getDate() eller annan lösning);
-        startActivityForResult(intent, NEW_MEAL);
-    }
-
-    @Override
-    public void onItemClicked(View v, int position) {
-        ec.editEvent(position);
-    }
-
-    @Override
-    public boolean onItemLongClicked(final View v, final int position) {
-        //initiate pop-up menu
-        PopupMenu popup = new PopupMenu(this, v);
-        //Inflating the Popup using xml file
-        popup.getMenuInflater().inflate(R.menu.event_delete_menu, popup.getMenu());
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.deleteEventForEventsTemplate) {
-                    ec.eventsOfDay.remove(position);
-                    ec.adapter.notifyDataSetChanged();
-                }
-                return true;
-            }
-        });
-        popup.show();
-        return true;
-    }
-
-    //user requests to change event
-    public void changeEventActivity(Event event, int eventType, int valueToReturn, int
-            posInList) {
-        Intent intent = new Intent(this, ChangeEventActivity.class);
-        intent.putExtra(EVENT_TYPE, eventType);
-        intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
-        intent.putExtra(EVENT_POSITION, posInList);
-        DBHandler dbHandler = new DBHandler(getApplicationContext());
-        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);    //this is crazy, should be idINSIDEEventsTemplate
-        intent.putExtra(ID_OF_EVENT, eventId);
-        startActivityForResult(intent, valueToReturn);
-    }
-
-    @Override
-    public void updateTagsInListOfEventsAfterTagTemplateChange() {
-
-        //does this work? Write tests for EventsTemplate classes just as you have for DiaryFragment
-        ec.eventsOfDay = getStartingEvents();
-        ec.adapter.notifyDataSetChanged();
     }
 
 }

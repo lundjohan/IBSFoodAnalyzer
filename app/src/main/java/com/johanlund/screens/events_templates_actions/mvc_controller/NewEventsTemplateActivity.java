@@ -2,50 +2,29 @@ package com.johanlund.screens.events_templates_actions.mvc_controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
-import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
+import com.johanlund.screens.events_templates_actions.mvc_views.NewEventsTemplateViewMvc;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.johanlund.constants.Constants.LIST_OF_EVENTS;
 
 public class NewEventsTemplateActivity extends EventsTemplateActivity {
-    TextView nameView;
-
-    @Override
-    protected String getTitleStr() {
-        return "Save EventsTemplate";
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mViewMVC = new NewEventsTemplateViewMvc(getLayoutInflater(), null);
         super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.activity_save_events_templates;
-    }
-
-    @Override
-    protected String getStartingName() {
-        return "";
-    }
-
-    @Override
-    protected List<Event> getStartingEvents() {
-        List<Event> events = new ArrayList<>();
         Intent intent = getIntent();
         if (intent.hasExtra(LIST_OF_EVENTS)) {
-            events = (List<Event>) intent.getSerializableExtra(LIST_OF_EVENTS);
+            List<Event> events = (List<Event>) intent.getSerializableExtra(LIST_OF_EVENTS);
+            EventsTemplate etToBind = new EventsTemplate(events, "");
+            initMvcView(etToBind);
         }
-        return events;
+        //else throw exc
     }
 
     @Override
@@ -54,18 +33,12 @@ public class NewEventsTemplateActivity extends EventsTemplateActivity {
         dbHandler.addEventsTemplate(et);
     }
 
+    /**
+     * Not applicable
+     * @param et
+     */
     @Override
-    protected void saveToDiary() {
-    }
+    protected void saveToDiary(EventsTemplate et) {
 
-    @Override
-    protected String getEndingName() {
-        return nameView.getText().toString();
-    }
-
-    @Override
-    protected void setUpNameViewIfExisting() {
-        nameView = (TextView) findViewById(R.id.template_name);
-        nameView.setText(getStartingName());
     }
 }

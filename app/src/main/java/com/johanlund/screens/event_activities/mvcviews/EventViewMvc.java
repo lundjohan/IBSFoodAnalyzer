@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.screens.common.mvcviews.ViewMvc;
+import com.johanlund.screens.common.mvcviews.WithOptionsMenuViewMvc;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -15,10 +16,8 @@ import org.threeten.bp.LocalTime;
 
 import java.util.List;
 
-public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListener, TimePickerDialog
+public interface EventViewMvc extends WithOptionsMenuViewMvc, DatePickerDialog.OnDateSetListener, TimePickerDialog
         .OnTimeSetListener {
-
-    boolean createOptionsMenu(Menu menu, MenuInflater menuInflater);
 
     void bindEventToView(Event e);
 
@@ -47,17 +46,15 @@ public interface EventViewMvc extends ViewMvc, DatePickerDialog.OnDateSetListene
      *
      * @param listener listener that should be notified; null to clear
      */
-    void setListener(EventActivityViewMvcListener listener);
+    void setListener(Listener listener);
 
 
-    interface EventActivityViewMvcListener {
+    interface Listener extends ViewMvc.Listener {
         void startTimePicker(View view);
 
         void startDatePicker(View view);
 
         void completeSession(Event finalEvent);
-
-        void showInfo(String titleStr, int infoLayout);
 
         void finish();
     }

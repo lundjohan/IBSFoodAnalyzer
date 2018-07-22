@@ -20,6 +20,7 @@ import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 
+import org.jetbrains.annotations.NotNull;
 import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
@@ -37,15 +38,11 @@ import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ * Should be divided into Controller/ View
  */
-public class DiaryFragment extends Fragment implements EventsContainer
-        .EventsContainerUser {
+public class DiaryFragment extends Fragment implements EventsContainerUser, EventsContainerUser.Listener {
 
-    public static final int CHANGED_MEAL = 1010;
-    public static final int CHANGED_OTHER = 1011;
-    public static final int CHANGED_EXERCISE = 1012;
-    public static final int CHANGED_BM = 1013;
-    public static final int CHANGED_RATING = 1014;
     public static final String TAG = "DebuggingDiaryFragment";
     static final int BACKGROUND_COLOR = Color.YELLOW;
     //===========================================================================================
@@ -71,15 +68,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
 
     }
 
-    @Override
-    public void addEventToList(Event event) {
-        ec.eventsOfDay.add(event);
-        //All dates must be the same, becuase dates are irrellevant in a EventsTemplate,
-        // only time matter.
-        //TODO: implement constriction for above
-        Collections.sort(ec.eventsOfDay);
-        ec.adapter.notifyDataSetChanged();
-    }
 //==================================================================================================
 
     @Override
@@ -87,7 +75,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
-        ec = new EventsContainer(this, getContext());
+        ec = new EventsContainer(this,this, getContext());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
         ec.initiateRecyclerView(recyclerView, true, this.getContext());
 
@@ -131,29 +119,7 @@ public class DiaryFragment extends Fragment implements EventsContainer
     }
 
 
-    @Override
-    public void executeChangedEvent(int requestCode, Intent data) {
-        int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
-        long eventId = data.getLongExtra(ID_OF_EVENT_RETURNED, -1);
-        if (posInList == -1) {
-            throw new RuntimeException("Received no EVENT POSITION from New/Changed Event " +
-                    "Activity (MealActivity etc)");
-        } else if (eventId == -1) {
-            throw new RuntimeException("Received no EVENT ID from New/Changed Event Activity " +
-                    "(MealActivity etc)");
-        }
-        DBHandler dbHandler = new DBHandler(getContext());
-        if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
-            Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
-            dbHandler.changeEvent(eventId, event);
-            ec.changeEventInList(posInList, event);
-        }
-    }
 
-    @Override
-    public void updateTagsInListOfEventsAfterTagTemplateChange() {
-        fillEventListWithDatabase(currentDate);
-    }
 
     /*
     Obs krasch om man klickar för snabbt, i alla fall vid ec.adapter.notifyItemRemoved!
@@ -290,19 +256,6 @@ public class DiaryFragment extends Fragment implements EventsContainer
         return eventsMarked.size() > 0;
     }
 
-
-    //user requests to change event
-    public void changeEventActivity(Event event, int eventType, int valueToReturn, int
-            posInList) {
-        Intent intent = new Intent(getActivity(), ChangeEventActivity.class);
-        intent.putExtra(EVENT_TYPE, eventType);
-        intent.putExtra(EVENT_POSITION, posInList);
-        DBHandler dbHandler = new DBHandler(getContext());
-        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);
-        intent.putExtra(ID_OF_EVENT, eventId);
-        startActivityForResult(intent, valueToReturn);
-    }
-
     private boolean eventIsMarked(int position) {
         return eventsMarked.contains(position);
     }
@@ -340,5 +293,61 @@ public class DiaryFragment extends Fragment implements EventsContainer
         void changeToTabbedMenu();
 
         void changeToMarkedMenu();
+    }
+
+    /*
+    --------------------------------------------------------------------------------------------
+    EventContainerUser methods
+    --------------------------------------------------------------------------------------------
+    */
+    @Override
+    public void bindEventToList(Event event) {
+        ec.eventsOfDay.add(event);
+        //All dates must be the same, becuase dates are irrellevant in a EventsTemplate,
+        // only time matter.
+        //TODO: implement constriction for above
+        Collections.sort(ec.eventsOfDay);
+        ec.adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void executeChangedEvent(int requestCode, Intent data) {
+        int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
+        long eventId = data.getLongExtra(ID_OF_EVENT_RETURNED, -1);
+        if (posInList == -1) {
+            throw new RuntimeException("Received no EVENT POSITION from New/Changed Event " +
+                    "Activity (MealActivity etc)");
+        } else if (eventId == -1) {
+            throw new RuntimeException("Received no EVENT ID from New/Changed Event Activity " +
+                    "(MealActivity etc)");
+        }
+        DBHandler dbHandler = new DBHandler(getContext());
+        if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
+            Event event = (Event) data.getSerializableExtra(RETURN_EVENT_SERIALIZABLE);
+            dbHandler.changeEvent(eventId, event);
+            bindChangedEventToList(event, posInList);
+        }
+    }
+    @Override
+    public void bindChangedEventToList(@NotNull Event event, int posInList) {
+        ec.changeEventInList(posInList, event);
+    }
+
+    //user requests to change event
+    @Override
+    public void changeEventActivity(Event event, int eventType, int valueToReturn, int
+            posInList) {
+        Intent intent = new Intent(getActivity(), ChangeEventActivity.class);
+        intent.putExtra(EVENT_TYPE, eventType);
+        intent.putExtra(EVENT_POSITION, posInList);
+        DBHandler dbHandler = new DBHandler(getContext());
+        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);
+        intent.putExtra(ID_OF_EVENT, eventId);
+        startActivityForResult(intent, valueToReturn);
+    }
+
+    @Override
+    public void updateTagsInListOfEventsAfterTagTemplateChange() {
+        fillEventListWithDatabase(currentDate);
     }
 }

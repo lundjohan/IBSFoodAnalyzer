@@ -1,20 +1,14 @@
 package com.johanlund.screens.events_templates_actions.mvc_controller;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.TextView;
 
 import com.johanlund.base_classes.Event;
-import com.johanlund.date_time.DateTimeFormat;
-import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventModel;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.picker_views.DatePickerFragment;
-
-import org.threeten.bp.LocalDate;
+import com.johanlund.screens.events_templates_actions.mvc_views.LoadEventsTemplateViewMvc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,46 +17,23 @@ import java.util.List;
 import static com.johanlund.constants.Constants.EVENTSTEMPLATE_TO_LOAD;
 import static com.johanlund.constants.Constants.EVENTS_TO_LOAD;
 
-public class LoadEventsTemplateActivity extends EventsTemplateActivity implements
-        DatePickerDialog.OnDateSetListener {
-    TextView dateView;
-    EventsTemplate et;
-
-    @Override
-    protected String getTitleStr() {
-        return "Load EventsTemplate";
-    }
+public class LoadEventsTemplateActivity extends EventsTemplateActivity  {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mViewMVC = new LoadEventsTemplateViewMvc(getLayoutInflater(), null);
+        super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         if (intent.hasExtra(EVENTSTEMPLATE_TO_LOAD)) {
-            et = (EventsTemplate) intent.getSerializableExtra
+            EventsTemplate et = (EventsTemplate) intent.getSerializableExtra
                     (EVENTSTEMPLATE_TO_LOAD);
+            initMvcView(et);
         }
-        super.onCreate(savedInstanceState);
-        dateView = (TextView) findViewById(R.id.dateView);
-        setDateView(LocalDate.now());
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.activity_load_events_templates;
+        //else{pop-up or error msg declaring something is wrong};
     }
 
     /**
-     * The name doesn't matter in this class
-     *
-     * @return
-     */
-    @Override
-    protected String getStartingName() {
-        return "";
-    }
-
-
-    /**
-     * in this class, this method is only used as a preperation for finish.
+     * in this class, there should be no save to db.
      *
      * @param et
      */
@@ -71,13 +42,11 @@ public class LoadEventsTemplateActivity extends EventsTemplateActivity implement
     }
 
     @Override
-    protected void saveToDiary() {
+    protected void saveToDiary(EventsTemplate et) {
         List<Event> eventsFromTemplate = et.getEvents();
         List<Event> eventsToReturnWithUniqueTypeAndTimes = new ArrayList<>();
+
         for (Event e : eventsFromTemplate) {
-            String ldStr = (String) dateView.getText();
-            LocalDate ld = DateTimeFormat.fromTextViewDateFormat(ldStr);
-            e.setDate(ld);
             if (!EventModel.eventTypeAtSameTimeAlreadyExists(e.getType(), e.getTime(),
                     getApplicationContext())) {
                 eventsToReturnWithUniqueTypeAndTimes.add(e);
@@ -86,49 +55,16 @@ public class LoadEventsTemplateActivity extends EventsTemplateActivity implement
         Intent intent = new Intent();
         intent.putExtra(EVENTS_TO_LOAD, (Serializable) eventsToReturnWithUniqueTypeAndTimes);
         setResult(RESULT_OK, intent);
-        super.finish();
     }
 
-
-    /**
-     * when user wants to change date.
+    /* =============================================================================================
+     * DATE PICKER (duplicate from EventActivity. )
+     * =============================================================================================
      */
-    public void newDate(View v) {
+    public void startDatePicker(View view) {
         DatePickerFragment newFragment = new DatePickerFragment();
         newFragment.setContext(this);
-        newFragment.setListener(this);
+        newFragment.setListener((LoadEventsTemplateViewMvc)mViewMVC);
         newFragment.show(getFragmentManager(), "datePicker");
-    }
-
-    /**
-     * This must be overloaded from EditEventsTemplateActivity
-     *
-     * @return
-     */
-    @Override
-    protected String getEndingName() {
-        return "";
-    }
-
-    @Override
-    protected void setUpNameViewIfExisting() {
-        //dont do anything, as name is of no use for this class.
-    }
-
-    @Override
-    protected List<Event> getStartingEvents() {
-
-        return et.getEvents();
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        //month datepicker +1 == LocalDate.Month
-        LocalDate ld = LocalDate.of(year, month + 1, dayOfMonth);
-        setDateView(ld);
-    }
-
-    private void setDateView(LocalDate ld) {
-        dateView.setText(DateTimeFormat.toTextViewFormat(ld));
     }
 }

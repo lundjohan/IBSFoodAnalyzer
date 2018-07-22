@@ -8,11 +8,9 @@ import com.johanlund.constants.Constants.HOURS_AHEAD_FOR_BREAK_BACKUP
 import com.johanlund.database.DBHandler
 import com.johanlund.stat_backend.stat_util.ScoreTime
 import org.threeten.bp.LocalDateTime
-import java.io.File
-import java.util.*
-import kotlin.math.abs
 
 class SqLiteDao(val c: Context): Dao{
+
     val dbHandler: DBHandler = DBHandler(c)
     override fun eventTypeAtSameTimeAlreadyExists(type: Int, ldt: LocalDateTime): Boolean {
         return dbHandler.eventDoesExistOutsideOfEventsTemplate(type, ldt)
@@ -49,8 +47,12 @@ class SqLiteDao(val c: Context): Dao{
                 HOURS_AHEAD_FOR_BREAK_BACKUP)
         val aBreaks = dbHandler.getAutoBreaks(hoursInFrontOfAutoBreak)
         mBreaks.addAll(aBreaks)
-        Collections.sort(mBreaks)
+        mBreaks.sort()
         return mBreaks
+    }
+
+    override fun tagTypeExists(tagTypeName: String): Boolean {
+        return dbHandler.checkIfTagTypeExist(tagTypeName)
     }
 
     override fun insertTagTypesFromExternalDatabase(absolutePathToExternalDB: String) {

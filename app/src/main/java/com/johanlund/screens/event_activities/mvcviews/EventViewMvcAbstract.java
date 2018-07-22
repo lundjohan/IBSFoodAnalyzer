@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,21 +15,21 @@ import android.widget.TimePicker;
 import com.johanlund.base_classes.Event;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.ibsfoodanalyzer.R;
+import com.johanlund.screens.common.mvcviews.ViewMvcAbstract;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 
-public abstract class EventViewMvcAbstract implements EventViewMvc {
+public abstract class EventViewMvcAbstract extends ViewMvcAbstract implements EventViewMvc {
     protected final Context context;
-    protected View rootView;
     TextView dateView;
     TextView timeView;
     TextView commentView;
     Button dateBtn;
     Button timeBtn;
     boolean eventHasBreak;
-    EventActivityViewMvcListener listener;
+    EventViewMvc.Listener listener;
 
     public EventViewMvcAbstract(LayoutInflater inflater, ViewGroup container) {
         rootView = inflater.inflate(R.layout.activity_event, container, false);
@@ -55,39 +52,14 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
     protected abstract void initializeSpecViews();
 
     @Override
-    public void setListener(EventActivityViewMvcListener listener) {
+    public void setListener(EventViewMvc.Listener listener) {
         this.listener = listener;
     }
 
     @Override
-    public boolean createOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.info_menu, menu);
-        inflater.inflate(R.menu.done_menu, menu);
-        menu.findItem(R.id.menu_done).setOnMenuItemClickListener(new MenuItem
-                .OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                doneClicked(null);
-                return true;
-            }
-        });
-        menu.findItem(R.id.menu_info).setOnMenuItemClickListener(new MenuItem
-                .OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.menu_done) {
-                    doneClicked(null);
-                } else if (item.getItemId() == R.id.menu_info) {
-                    listener.showInfo(getBarTitle(), getInfoLayout());
-                }
-                return true;
-            }
-        });
-        return true;
+public EventViewMvc.Listener getListener(){
+        return listener;
     }
-
     @Override
     public void bindEventToView(Event e) {
         eventHasBreak = e.hasBreak();
@@ -100,10 +72,6 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
     protected abstract void bindEventSpecsToView(Event e);
 
     protected abstract int getLayoutRes();
-
-    protected abstract int getInfoLayout();
-
-    protected abstract String getBarTitle();
 
     protected abstract Event makeEventFromView(LocalDateTime ldt, String comment);
 
@@ -138,10 +106,6 @@ public abstract class EventViewMvcAbstract implements EventViewMvc {
         return LocalDateTime.of(ld, lt);
     }
 
-    @Override
-    public View getRootView() {
-        return rootView;
-    }
 
 
     /**

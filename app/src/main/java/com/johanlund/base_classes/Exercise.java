@@ -2,9 +2,14 @@ package com.johanlund.base_classes;
 
 import com.johanlund.constants.Constants;
 
+import org.jetbrains.annotations.Nullable;
 import org.threeten.bp.LocalDateTime;
 
+/**
+ * typeOfExercise is nullable, and design elsewhere in code be reflected that.
+ */
 public class Exercise extends Event {
+    @Nullable
     private TagWithoutTime typeOfExercise;
     //from 1 to 5
     private int intensity;
@@ -51,6 +56,7 @@ public class Exercise extends Event {
         return text;
     }
 
+    @Nullable
     public TagWithoutTime getTypeOfExercise() {
         return typeOfExercise;
     }

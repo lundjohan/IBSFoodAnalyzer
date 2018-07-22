@@ -24,7 +24,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/frame"
         android:clickable="true"
-        android:onClick="newDate"
+        android:onClick="startDatePicker"
         android:padding="5dp"
         android:text="TextView"
         app:layout_constraintLeft_toLeftOf="parent"

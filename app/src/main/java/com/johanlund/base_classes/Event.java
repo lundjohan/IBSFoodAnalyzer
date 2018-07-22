@@ -97,7 +97,7 @@ public abstract class Event implements Comparable<Event>, Serializable {
      *
      * @param ld
      */
-    public void setDate(LocalDate ld) {
+    public void changeDateKeepTime(LocalDate ld) {
         time = LocalDateTime.of(ld, time.toLocalTime());
     }
 

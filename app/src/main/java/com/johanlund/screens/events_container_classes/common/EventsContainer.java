@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.johanlund.base_classes.Event;
+import com.johanlund.screens.events_container_classes.DiaryFragment;
+import com.johanlund.screens.events_container_classes.EventsContainerUser;
 import com.johanlund.util.Util;
 
 import java.util.ArrayList;
@@ -15,7 +17,6 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static com.johanlund.constants.Constants.CHANGED_EVENT;
 import static com.johanlund.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
-import static com.johanlund.screens.events_container_classes.DiaryFragment.CHANGED_MEAL;
 
 /**
  * Created by Johan on 2017-08-30.
@@ -26,23 +27,33 @@ import static com.johanlund.screens.events_container_classes.DiaryFragment.CHANG
  * Users of this class must implement EventsContainerUser.
  * <p>
  * The class handles changes of events, and potential updates of tagtemplates in diary.
+ * <p>
+ *  This class should in principle have no knowledge of database etc. It is only using a list.
+ *  (A small exception in adapter exist for colorcoding the events, however)
  */
 
 public class EventsContainer {
-    public static final int NEW_MEAL = 1000;
-    public static final int NEW_OTHER = 1001;
-    public static final int NEW_EXERCISE = 1002;
-    public static final int NEW_BM = 1003;
-    public static final int NEW_RATING = 1004;
+    public static final int EVENT_CHANGE = 1010;
+    public static final int EVENT_NEW = 1000;
     public RecyclerView recyclerView;
     public List<Event> eventsOfDay = new ArrayList<>();
     public EventAdapter adapter;
     EventsContainerUser user;
+    EventsContainerUser.Listener userListener;
     LinearLayoutManager layoutManager;
     //context is solely used to retrieve resources inside EventAdapter
     private Context context;
-    public EventsContainer(EventsContainerUser user, Context context) {
+
+    /**
+     * This class' raison d'être is to avoid code duplication. It should actually be part of users view-and-controller set-up.
+     * That's why it looks fragmented with references both to a view user and a controller user.
+     * @param user - the view that using this class
+     * @param userListener  - the controller that uses this class
+     * @param context
+     */
+    public EventsContainer(EventsContainerUser user, EventsContainerUser.Listener userListener, Context context) {
         this.user = user;
+        this.userListener = userListener;
         this.context = context;
     }
 
@@ -54,7 +65,7 @@ public class EventsContainer {
             user.updateTagsInListOfEventsAfterTagTemplateChange();
         }
         if (data.hasExtra(CHANGED_EVENT)) {
-            user.executeChangedEvent(requestCode, data);
+            userListener.executeChangedEvent(requestCode, data);
         }
     }
 
@@ -77,7 +88,7 @@ public class EventsContainer {
     public void editEvent(int position) {
         Event event = eventsOfDay.get(position);
         int eventType = event.getType();
-        user.changeEventActivity(event, eventType, CHANGED_MEAL, position);
+        userListener.changeEventActivity(event, eventType, EVENT_CHANGE, position);
     }
 
     //first remove event from list
@@ -86,22 +97,10 @@ public class EventsContainer {
         eventsOfDay.remove(pos);
         //this line is needed, otherwise ec.adapter cannot handle it.
         adapter.notifyItemRemoved(pos);
-        user.addEventToList(e);
+        user.bindEventToList(e);
     }
 
     public View getItemView(int pos) {
         return layoutManager.findViewByPosition(pos);
-    }
-
-    public interface EventsContainerUser extends EventAdapter
-            .EventAdapterUser {
-        void addEventToList(Event event);
-
-        void executeChangedEvent(int requestCode, Intent data);
-
-        void changeEventActivity(Event event, int eventType, int valueToReturn, int
-                posInList);
-
-        void updateTagsInListOfEventsAfterTagTemplateChange();
     }
 }

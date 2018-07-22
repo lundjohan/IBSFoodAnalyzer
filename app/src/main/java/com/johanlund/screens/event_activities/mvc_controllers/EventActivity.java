@@ -18,14 +18,11 @@ import com.johanlund.screens.event_activities.factories.EventViewFactoryImpl;
 import com.johanlund.screens.event_activities.mvcviews.EventViewMvc;
 import com.johanlund.screens.info.ActivityInfoContent;
 
-import javax.inject.Inject;
-
 import static com.johanlund.constants.Constants.EVENT_SAVED_FROM_VIEW;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
 
-public abstract class EventActivity extends AppCompatActivity implements EventViewMvc
-        .EventActivityViewMvcListener {
+public abstract class EventActivity extends AppCompatActivity implements EventViewMvc.Listener {
     protected EventViewMvc mViewMVC;
     protected Dao dao;
     protected Event eventToBind = null;
@@ -38,7 +35,14 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
         }
         dao = new SqLiteDao(getApplicationContext());
     }
-
+    @Override
+    public void showInfo(String titleStr, int infoLayout) {
+        //move below to controller
+        Intent intent = new Intent(this, ActivityInfoContent.class);
+        intent.putExtra(LAYOUT_RESOURCE, infoLayout);
+        intent.putExtra(TITLE_STRING, titleStr);
+        startActivity(intent);
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -62,15 +66,6 @@ public abstract class EventActivity extends AppCompatActivity implements EventVi
 
     @Override
     public abstract void completeSession(Event e);
-
-    @Override
-    public void showInfo(String titleStr, int infoLayout) {
-        //move below to controller
-        Intent intent = new Intent(this, ActivityInfoContent.class);
-        intent.putExtra(LAYOUT_RESOURCE, infoLayout);
-        intent.putExtra(TITLE_STRING, titleStr);
-        startActivity(intent);
-    }
 
     protected void returnEventAndFinish(Event e) {
         returnEvent(e);

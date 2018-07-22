@@ -26,6 +26,8 @@ import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.jvm.internal.StringCompanionObject;
+
 import static com.johanlund.constants.Constants.BM;
 import static com.johanlund.constants.Constants.EXERCISE;
 import static com.johanlund.constants.Constants.MEAL;
@@ -1918,5 +1920,30 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         return maxId;
+    }
+
+    public boolean checkIfTagTypeExist(@NotNull String string) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT COUNT( * ) FROM " + TABLE_TAGTYPES + " WHERE "+ COLUMN_NAME +" = " + string +";";
+        Cursor c = null;
+        boolean exists = false;
+        try {
+            c = db.rawQuery(QUERY, null);
+            c.moveToFirst();
+            int count= c.getInt(0);
+            if (count > 0){
+                exists = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()){
+                db.close();
+            }
+        }
+        return exists;
     }
 }
