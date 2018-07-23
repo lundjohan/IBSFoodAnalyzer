@@ -32,7 +32,8 @@ public class EditEventsTemplateViewMvc extends EventsTemplateViewMvcAbstract {
     @Override
     public void bindEventsTemplateToView(@NotNull EventsTemplate et) {
         setNameView(et.getNameOfTemplate());
-        ec.eventsOfDay = et.getEvents();
+        ec.eventsOfDay.clear();
+        ec.eventsOfDay.addAll(et.getEvents());
         ec.adapter.notifyDataSetChanged();
     }
 
