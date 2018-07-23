@@ -12,13 +12,8 @@ interface EventsContainerUser: EventAdapter.EventAdapterUser {
     fun bindChangedEventToList (event: Event, posInList: Int)
 
 
-
+    fun changeEventActivity(event: Event, eventType: Int, valueToReturn: Int, posInList: Int)
+    fun executeChangedEvent(requestCode: Int, data: Intent)
 
     fun updateTagsInListOfEventsAfterTagTemplateChange()
-
-    //for controller
-    interface Listener{
-        fun changeEventActivity(event: Event, eventType: Int, valueToReturn: Int, posInList: Int)
-        fun executeChangedEvent(requestCode: Int, data: Intent)
-    }
 }

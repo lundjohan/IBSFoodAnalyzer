@@ -41,7 +41,7 @@ import static com.johanlund.constants.Constants.SWIPING_TO_DATE;
  *
  * Should be divided into Controller/ View
  */
-public class DiaryFragment extends Fragment implements EventsContainerUser, EventsContainerUser.Listener {
+public class DiaryFragment extends Fragment implements EventsContainerUser {
 
     public static final String TAG = "DebuggingDiaryFragment";
     static final int BACKGROUND_COLOR = Color.YELLOW;
@@ -75,7 +75,7 @@ public class DiaryFragment extends Fragment implements EventsContainerUser, Even
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_diary, container, false);
-        ec = new EventsContainer(this,this, getContext());
+        ec = new EventsContainer(this, getContext());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.events_layout);
         ec.initiateRecyclerView(recyclerView, true, this.getContext());
 

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.johanlund.base_classes.Event;
-import com.johanlund.screens.events_container_classes.DiaryFragment;
 import com.johanlund.screens.events_container_classes.EventsContainerUser;
 import com.johanlund.util.Util;
 
@@ -39,23 +38,15 @@ public class EventsContainer {
     public List<Event> eventsOfDay = new ArrayList<>();
     public EventAdapter adapter;
     EventsContainerUser user;
-    EventsContainerUser.Listener userListener;
     LinearLayoutManager layoutManager;
     //context is solely used to retrieve resources inside EventAdapter
     private Context context;
 
-    /**
-     * This class' raison d'être is to avoid code duplication. It should actually be part of users view-and-controller set-up.
-     * That's why it looks fragmented with references both to a view user and a controller user.
-     * @param user - the view that using this class
-     * @param userListener  - the controller that uses this class
-     * @param context
-     */
-    public EventsContainer(EventsContainerUser user, EventsContainerUser.Listener userListener, Context context) {
+    public EventsContainer(EventsContainerUser user, Context context) {
         this.user = user;
-        this.userListener = userListener;
         this.context = context;
     }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
@@ -65,7 +56,7 @@ public class EventsContainer {
             user.updateTagsInListOfEventsAfterTagTemplateChange();
         }
         if (data.hasExtra(CHANGED_EVENT)) {
-            userListener.executeChangedEvent(requestCode, data);
+            user.executeChangedEvent(requestCode, data);
         }
     }
 
@@ -88,7 +79,7 @@ public class EventsContainer {
     public void editEvent(int position) {
         Event event = eventsOfDay.get(position);
         int eventType = event.getType();
-        userListener.changeEventActivity(event, eventType, EVENT_CHANGE, position);
+        user.changeEventActivity(event, eventType, EVENT_CHANGE, position);
     }
 
     //first remove event from list

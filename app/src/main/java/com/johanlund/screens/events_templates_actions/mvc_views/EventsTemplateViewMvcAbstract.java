@@ -1,6 +1,7 @@
 package com.johanlund.screens.events_templates_actions.mvc_views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,10 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.johanlund.base_classes.Event;
+import com.johanlund.constants.Constants;
+import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.screens.common.mvcviews.ViewMvc;
 import com.johanlund.screens.common.mvcviews.ViewMvcAbstract;
+import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity;
 import com.johanlund.screens.events_container_classes.EventsContainerUser;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
@@ -21,6 +25,12 @@ import com.johanlund.screens.events_container_classes.common.mvcviews.EventButto
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+
+import static com.johanlund.constants.Constants.EVENT_POSITION;
+import static com.johanlund.constants.Constants.EVENT_TYPE;
+import static com.johanlund.constants.Constants.ID_OF_EVENT;
+import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
+import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 
 public abstract class EventsTemplateViewMvcAbstract extends ViewMvcAbstract implements EventsTemplateViewMvc, EventsContainerUser, EventButtonsViewMvc{
     protected final Context context;
@@ -35,7 +45,7 @@ public abstract class EventsTemplateViewMvcAbstract extends ViewMvcAbstract impl
         inflater.inflate(getUpperPartOfLayout(), upperPart, true);
 
         //Set up EventsContainer
-        ec = new EventsContainer(this, listener, context);
+        ec = new EventsContainer(this, context);  //denna listener är ej inituerad
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         ec.initiateRecyclerView(recyclerView, false, context);
@@ -57,6 +67,7 @@ public abstract class EventsTemplateViewMvcAbstract extends ViewMvcAbstract impl
     @Override
     public void setListener(EventsTemplateViewMvc.Listener listener){
         this.listener = listener;
+
     }
 
     public void doneClicked(View v){
@@ -104,6 +115,7 @@ public abstract class EventsTemplateViewMvcAbstract extends ViewMvcAbstract impl
 
     }
 
+
     @Override
     public void bindChangedEventToList (Event event, int posInList){
         ec.changeEventInList(posInList, event);
@@ -122,4 +134,27 @@ public abstract class EventsTemplateViewMvcAbstract extends ViewMvcAbstract impl
     protected ViewMvc.Listener getListener() {
         return listener;
     }
+    @Override
+    public void handleEcOnActivityResult(int requestCode, int resultCode, Intent data) {
+        ec.onActivityResult(requestCode, resultCode, data);
+    }
+    /*
+   --------------------------------------------------------------------------------------------
+   EventsContainerUser.Listener methods
+   --------------------------------------------------------------------------------------------
+   */
+    //user requests to change event
+    @Override
+    public void changeEventActivity(Event event, int eventType, int valueToReturn, int
+            posInList) {
+        listener.changeEventActivity(event,eventType, valueToReturn,
+        posInList);
+    }
+
+    //TODO code is extremly similar to DiaryFragment (except for database handling)
+    @Override
+    public void executeChangedEvent(int requestCode, Intent data) {
+        listener.executeChangedEvent(requestCode,data);
+    }
+
 }

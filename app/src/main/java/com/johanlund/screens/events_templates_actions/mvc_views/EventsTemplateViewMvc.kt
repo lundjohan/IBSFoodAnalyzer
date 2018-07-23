@@ -1,5 +1,7 @@
 package com.johanlund.screens.events_templates_actions.mvc_views
 
+import android.content.Intent
+import com.johanlund.base_classes.Event
 import com.johanlund.model.EventsTemplate
 import com.johanlund.screens.common.mvcviews.ViewMvc
 import com.johanlund.screens.common.mvcviews.WithOptionsMenuViewMvc
@@ -15,8 +17,14 @@ interface EventsTemplateViewMvc: WithOptionsMenuViewMvc, EventsContainerUser, Ev
     fun createEventsTemplateFromView(): EventsTemplate
     fun getEventsContainer(): EventsContainer
 
-    interface Listener: ViewMvc.Listener, EventsContainerUser.Listener, EventButtonsViewMvc.Listener {
+    //very clumpsy, view and controller shouldnt call each other forth and back like this,but works.
+    fun handleEcOnActivityResult(requestCode:Int,resultCode:Int,data:Intent);
+
+    interface Listener: ViewMvc.Listener, EventButtonsViewMvc.Listener {
         fun completeSession(finalEventsTemplate: EventsTemplate)
         fun removeTagTypesThatDontExist(et: EventsTemplate): EventsTemplate
+
+        fun changeEventActivity(event: Event, eventType: Int, valueToReturn: Int, posInList: Int)
+        fun executeChangedEvent(requestCode: Int, data: Intent)
     }
 }

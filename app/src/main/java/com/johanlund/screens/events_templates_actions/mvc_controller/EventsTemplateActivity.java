@@ -39,7 +39,6 @@ import static com.johanlund.constants.Constants.NEW_EVENT;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
-import static com.johanlund.screens.events_container_classes.common.EventsContainer.EVENT_NEW;
 
 /**
  * Reuses a lot of code from DiaryFragment.
@@ -50,7 +49,6 @@ import static com.johanlund.screens.events_container_classes.common.EventsContai
 public abstract class EventsTemplateActivity extends AppCompatActivity
         implements EventsTemplateViewMvc.Listener {
 
-    protected EventsContainer ec;
     protected EventButtonsViewMvcImpl mButtonsViewMvc;
     protected EventsTemplateViewMvc mViewMVC;
 
@@ -67,7 +65,6 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
         setContentView(mViewMVC.getRootView());
         mButtonsViewMvc = new EventButtonsViewMvcImpl(getLayoutInflater(), (ViewGroup) mViewMVC.getRootView().findViewById(R
                 .id.buttons));
-        ec = mViewMVC.getEventsContainer();
     }
 
     protected void initMvcView(EventsTemplate et) {
@@ -93,7 +90,8 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
         if (resultCode == RESULT_OK && data.hasExtra(NEW_EVENT)) {
             executeNewEvent(requestCode, data);
         }
-        ec.onActivityResult(requestCode, resultCode, data);
+        mViewMVC.handleEcOnActivityResult(requestCode, resultCode, data);
+
     }
 
     protected abstract void saveToDB(EventsTemplate et);
@@ -189,8 +187,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
     public void newEventActivity(int eventType) {
         Intent intent = new Intent(this, NewEventActivity.class);
         intent.putExtra(Constants.EVENT_TYPE, eventType);
-        // intent.putExtra(Constants.NEW_EVENT_DATE, getDate() eller annan lösning);
-        startActivityForResult(intent, EVENT_NEW);
+        startActivityForResult(intent, EventsContainer.EVENT_NEW);
     }
 
     //TODO code is extremly similar to DiaryFragment (except for database handling)
