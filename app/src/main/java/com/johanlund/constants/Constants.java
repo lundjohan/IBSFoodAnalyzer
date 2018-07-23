@@ -46,6 +46,7 @@ public class Constants {
     //sent to new Event activities if all you want to do is change an event
     public final static String CHANGING_EVENT_ID = "eventToChange";
     //changed event or new event?
+    public final static String EVENT_TO_CHANGE = "EVENT_TO_CHANGE";
     public final static String CHANGED_EVENT = "changedEvent";
     public final static String NEW_EVENT = "newEvent";
     public final static String EVENT_TYPE = "eventType";

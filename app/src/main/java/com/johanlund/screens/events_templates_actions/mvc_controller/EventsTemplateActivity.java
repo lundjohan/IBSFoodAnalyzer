@@ -20,6 +20,7 @@ import com.johanlund.database.DBHandler;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.model.EventsTemplate;
 import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity;
+import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventInsideEtActivity;
 import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
@@ -36,6 +37,7 @@ import static com.johanlund.constants.Constants.EVENT_TYPE;
 import static com.johanlund.constants.Constants.ID_OF_EVENT;
 import static com.johanlund.constants.Constants.LAYOUT_RESOURCE;
 import static com.johanlund.constants.Constants.NEW_EVENT;
+import static com.johanlund.constants.Constants.EVENT_TO_CHANGE;
 import static com.johanlund.constants.Constants.POS_OF_EVENT_RETURNED;
 import static com.johanlund.constants.Constants.RETURN_EVENT_SERIALIZABLE;
 import static com.johanlund.constants.Constants.TITLE_STRING;
@@ -51,7 +53,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
 
     protected EventButtonsViewMvcImpl mButtonsViewMvc;
     protected EventsTemplateViewMvc mViewMVC;
-
+    long idEventsTemplate;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         return mViewMVC.createOptionsMenu(menu, getMenuInflater());
@@ -190,7 +192,6 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
         startActivityForResult(intent, EventsContainer.EVENT_NEW);
     }
 
-    //TODO code is extremly similar to DiaryFragment (except for database handling)
     @Override
     public void executeNewEvent(int requestCode, Intent data) {
         if (data.hasExtra(RETURN_EVENT_SERIALIZABLE)) {
@@ -208,18 +209,12 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
     @Override
     public void changeEventActivity(Event event, int eventType, int valueToReturn, int
             posInList) {
-        Intent intent = new Intent(this, ChangeEventActivity.class);
-        intent.putExtra(EVENT_TYPE, eventType);
-        intent.putExtra(Constants.SHOULD_HAVE_DATE, false);
+        Intent intent = new Intent(this, ChangeEventInsideEtActivity.class);
+        intent.putExtra(EVENT_TO_CHANGE, event);
         intent.putExtra(EVENT_POSITION, posInList);
-        DBHandler dbHandler = new DBHandler(getApplicationContext());
-        long eventId = dbHandler.getEventIdOutsideEventsTemplate(event);    //this is crazy,
-        // should be idINSIDEEventsTemplate
-        intent.putExtra(ID_OF_EVENT, eventId);
         startActivityForResult(intent, valueToReturn);
     }
 
-    //TODO code is extremly similar to DiaryFragment (except for database handling)
     @Override
     public void executeChangedEvent(int requestCode, Intent data) {
         int posInList = data.getIntExtra(POS_OF_EVENT_RETURNED, -1);
@@ -232,5 +227,4 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
             mViewMVC.bindChangedEventToList(event, posInList);
         }
     }
-
 }

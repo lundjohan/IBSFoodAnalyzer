@@ -11,7 +11,7 @@ import static com.johanlund.constants.Constants.EVENTSTEMPLATE_TO_CHANGE;
 import static com.johanlund.constants.Constants.ID_OF_EVENTSTEMPLATE;
 
 public class EditEventsTemplateActivity extends EventsTemplateActivity {
-    long idEventsTemplate;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
