@@ -36,7 +36,6 @@ public abstract class EventsTemplateViewMvcAbstract extends ViewMvcAbstract impl
     protected final Context context;
     protected EventsTemplateViewMvc.Listener listener;
     protected EventsContainer ec;
-    protected EventButtonsViewMvcImpl mButtonsViewMvc;
 
     public EventsTemplateViewMvcAbstract(LayoutInflater inflater, ViewGroup container) {
         rootView = inflater.inflate(R.layout.activity_events_template, container, true);
@@ -45,14 +44,10 @@ public abstract class EventsTemplateViewMvcAbstract extends ViewMvcAbstract impl
         inflater.inflate(getUpperPartOfLayout(), upperPart, true);
 
         //Set up EventsContainer
-        ec = new EventsContainer(this, context);  //denna listener är ej inituerad
+        ec = new EventsContainer(this, context);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         ec.initiateRecyclerView(recyclerView, false, context);
-
-
-        //Set up EventButtonsViewMvcImpl
-        mButtonsViewMvc = new EventButtonsViewMvcImpl(inflater, (ViewGroup) rootView.findViewById(R.id.buttons));
     }
 
     @NotNull
