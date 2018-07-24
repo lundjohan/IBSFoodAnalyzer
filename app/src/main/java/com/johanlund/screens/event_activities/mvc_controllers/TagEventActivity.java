@@ -2,6 +2,7 @@ package com.johanlund.screens.event_activities.mvc_controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 
 import com.johanlund.model.TagType;
@@ -15,6 +16,7 @@ import static com.johanlund.constants.Constants.TAGS_TO_ADD;
 import static com.johanlund.constants.Constants.TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED;
 
 public abstract class TagEventActivity extends EventActivity {
+    private boolean tagTemplateSeemsToHaveBeenBeenEditedOrDeleted;
     /*
    ================================================================================================
    TAG RELATED
@@ -36,6 +38,7 @@ public abstract class TagEventActivity extends EventActivity {
             return;
         }
         if (data.hasExtra(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED)) {
+            tagTemplateSeemsToHaveBeenBeenEditedOrDeleted = true;
             long[] editedTagTemplatesIds = null;
             if (data.hasExtra(IDS_OF_EDITED_TAG_TEMPLATES)) {
                 editedTagTemplatesIds = data.getLongArrayExtra(IDS_OF_EDITED_TAG_TEMPLATES);
@@ -79,5 +82,18 @@ public abstract class TagEventActivity extends EventActivity {
             String tagName = dao.retrieveNameOfTagTemplate(idOfTagTemplate);
             mViewMVC.bindAddedTagToView(tagName);
         }
+    }
+    @Override
+    public void onBackPressed() {
+        if (tagTemplateSeemsToHaveBeenBeenEditedOrDeleted) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(TAG_TEMPLATE_MIGHT_HAVE_BEEN_EDITED_OR_DELETED,
+                    tagTemplateSeemsToHaveBeenBeenEditedOrDeleted);
+
+            Intent intent = new Intent();
+            intent.putExtras(bundle);
+            setResult(RESULT_OK, intent);
+        }
+        super.onBackPressed();
     }
 }
