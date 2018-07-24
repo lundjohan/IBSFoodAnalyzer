@@ -20,13 +20,19 @@ import static junit.framework.Assert.assertEquals;
 //One difference from Chunk, is that .makeTagsWrappers requiers a finishing break for last chunkend.
 
 //When it says "Chunk" it should really be "TagsWrapper"
+
+/*Tag t1n = TagWithoutTime.toTagWithTime(t1,ldt1);
+         Tag t2n = TagWithoutTime.toTagWithTime(t2,ldt2);
+         List<Tag> tagsn = TagWithoutTime.toTagsWithTime(tags1, ldt1);
+         */
 public class TagsWrapperTest {
     private static LocalDateTime newYear = LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0);
 
     @Test
     public void testThatNoChunkIsCreatedIfNoEventsButOneBreak() {
         List<LocalDateTime> breaks = asList(newYear);
-        List<TagsWrapperBase> tw = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), new ArrayList
+        List<TagsWrapperBase> tw = TagsWrapper.makeTagsWrappers(new ArrayList<com.johanlund
+                .base_classes.Tag>(), new ArrayList
                 <ScoreTime>(), breaks);
         assertEquals(0, tw.size());
     }
@@ -40,7 +46,8 @@ public class TagsWrapperTest {
         ScoreTime afterSplit = new ScoreTime(newYear.plusHours(2), 3);
         LocalDateTime chunkEnd = newYear.plusHours(3);
 
-        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList
+        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(new ArrayList<com.johanlund
+                .base_classes.Tag>(), asList
                 (beforeSplit, afterSplit), asList(splitter, chunkEnd));
 
         assertEquals(2, chunks.size());
@@ -53,7 +60,7 @@ public class TagsWrapperTest {
         ScoreTime beforeSplit1 = new ScoreTime(newYear, 3);
         ScoreTime beforeSplit2 = new ScoreTime(newYear.plusHours(1), 3);
         LocalDateTime splitter = newYear.plusHours(2);
-        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList
+        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(new ArrayList<com.johanlund.base_classes.Tag>(), asList
                 (beforeSplit1, beforeSplit2), asList(splitter));
 
 
@@ -96,7 +103,7 @@ public class TagsWrapperTest {
         ScoreTime rMiddle = new ScoreTime(newYear.plusHours(2), 3);
         LocalDateTime chunkEnd = newYear.plusHours(3);
 
-        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList
+        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(new ArrayList<com.johanlund.base_classes.Tag>(), asList
                 (rStart1, rMiddle), asList(bAfterStart1, chunkEnd));
 
         assertEquals(2, chunks.size());
@@ -118,7 +125,7 @@ public class TagsWrapperTest {
         LocalDateTime chunkEnd = newYear.plusHours(3);
         LocalDateTime chunkEnd2 = newYear.plusHours(3);
 
-        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(new ArrayList<Tag>(), asList
+        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(new ArrayList<com.johanlund.base_classes.Tag>(), asList
                 (rStart1, rMiddle), asList(bAfterStart1, bAfterStart2, chunkEnd, chunkEnd2));
 
         assertEquals(2, chunks.size());

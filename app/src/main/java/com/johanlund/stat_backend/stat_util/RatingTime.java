@@ -152,7 +152,7 @@ public class RatingTime {
         return avgScore;
     }
 
-    static List<ScoreTime> getRatingsBetweenAndSometimesOneBefore(TimePeriod tp, List<ScoreTime>
+    public static List<ScoreTime> getRatingsBetweenAndSometimesOneBefore(TimePeriod tp, List<ScoreTime>
             divs) {
         return getRatingsBetweenAndSometimesOneBefore(tp.getStart(), tp.getEnd(), divs);
     }

@@ -30,7 +30,7 @@ public class BreaksTest {
     @Test
     public void autoBreaksTest() {
         //empty tags list
-        List<Tag> tagsList = new ArrayList<>();
+        List<TagWithoutTime> tagsList = new ArrayList<>();
 
         //create a list with some events
         List<Event> events = new ArrayList<>();
@@ -84,7 +84,7 @@ public class BreaksTest {
     @Test
     public void manualBreaksTest() {
         //empty tags list
-        List<Tag> tagsList = new ArrayList<>();
+        List<TagWithoutTime> tagsList = new ArrayList<>();
 
         //create a list with some events
         List<Event> events = new ArrayList<>();

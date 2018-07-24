@@ -188,8 +188,7 @@ public class RatingTimeTests {
         ScoreTime r1 = new ScoreTime(firstTime, 3);
         ScoreTime r2 = new ScoreTime(firstTime.plusHours(3), 3);
 
-        List<ScoreTime> returnedList = getRatingsBetweenAndSometimesOneBefore(tp, Arrays.asList
-                (r1, r2));
+        List<ScoreTime> returnedList = getRatingsBetweenAndSometimesOneBefore(tp, Arrays.asList(r1, r2));
         assertEquals(2, returnedList.size());
         assertEquals(r1.getTime(), returnedList.get(0).getTime());
         assertEquals(r2.getTime(), returnedList.get(1).getTime());
