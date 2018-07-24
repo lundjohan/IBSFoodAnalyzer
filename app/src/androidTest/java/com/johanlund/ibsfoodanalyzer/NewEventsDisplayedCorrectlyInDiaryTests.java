@@ -19,12 +19,9 @@ import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Other;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.help_classes.AndroidTestUtil;
-import com.johanlund.screens.event_activities.BmActivity;
-import com.johanlund.screens.event_activities.ExerciseActivity;
-import com.johanlund.screens.event_activities.MealActivity;
-import com.johanlund.screens.event_activities.OtherActivity;
-import com.johanlund.screens.event_activities.RatingActivity;
+import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.main.DrawerActivity;
 
 import org.hamcrest.Description;
@@ -75,7 +72,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     @Rule
     public IntentsTestRule<DrawerActivity> intentsRule = new IntentsTestRule<>(DrawerActivity
             .class);
-    List<Tag> tags = new ArrayList<>();
+    List<TagWithoutTime> tags = new ArrayList<>();
     LocalDateTime ldt;
 
     public static Instrumentation.ActivityResult buildAnIntentResult(String putExtraStr, Event
@@ -121,15 +118,15 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
         ldt = LocalDateTime.of(2017, Month.MAY, 23, 16, 0);
 
         // Create a meal object
-        Tag sugar = new Tag(ldt, "banana", 2.0);
-        Tag honey = new Tag(ldt, "honey", 1.0);
+        TagWithoutTime sugar = new TagWithoutTime( "banana", 2.0);
+        TagWithoutTime honey = new TagWithoutTime( "honey", 1.0);
         tags.add(sugar);
         tags.add(honey);
         Meal meal = new Meal(ldt, tags, 1.0);
 
         Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 meal);
-        stubOutActivity(MealActivity.class.getName(), result);
+        stubOutActivity(NewEventActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
@@ -163,12 +160,12 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     @Test
     public void testReturnValueFromOtherActivity() {
         ldt = LocalDateTime.of(2017, Month.MAY, 24, 23, 22);
-        tags.add(new Tag(ldt, "happy", 1.0));
+        tags.add(new TagWithoutTime( "happy", 1.0));
         Other other = new Other(ldt, tags);
 
         Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 other);
-        stubOutActivity(OtherActivity.class.getName(), result);
+        stubOutActivity(NewEventActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
@@ -199,14 +196,14 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     public void testReturnValueFromExerciseActivity() {
         // Create a meal object with timeView 16:00
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 17, 30);
-        Tag running = new Tag(ldt, "running", 1.0);
+        TagWithoutTime running = new TagWithoutTime( "running", 1.0);
 
         //a 4 means Intense
         Exercise exercise = new Exercise(ldt, running, 4);
 
         Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 exercise);
-        stubOutActivity(ExerciseActivity.class.getName(), result);
+        stubOutActivity(NewEventActivity.class.getName(), result);
 
         //Press Exercise Btn
         ViewInteraction appCompatImageButton = onView(
@@ -245,7 +242,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
 
         Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 bm);
-        stubOutActivity(BmActivity.class.getName(), result);
+        stubOutActivity(NewEventActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
@@ -281,7 +278,7 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
 
         Instrumentation.ActivityResult result = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 rating);
-        stubOutActivity(RatingActivity.class.getName(), result);
+        stubOutActivity(NewEventActivity.class.getName(), result);
 
         //now press click of MealBtn that makes us go to MealActivity stub above
         ViewInteraction appCompatImageButton = onView(
@@ -311,12 +308,12 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
     public void mealAddedAfterOtherMealHasOtherTime() {
         // Create a meal object with timeView 19:00
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 23, 19, 0);
-        Meal meal1 = new Meal(ldt, new ArrayList<Tag>(), 1.0);
+        Meal meal1 = new Meal(ldt, new ArrayList<TagWithoutTime>(), 1.0);
 
 
         Instrumentation.ActivityResult result1 = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 meal1);
-        stubOutActivity(MealActivity.class.getName(), result1);
+        stubOutActivity(NewEventActivity.class.getName(), result1);
 
 
         //now press click of MealBtn that makes us go to MealActivity stub above
@@ -332,10 +329,10 @@ public class NewEventsDisplayedCorrectlyInDiaryTests {
 
         //do same thing again with another meal-object
         LocalDateTime ldt2 = LocalDateTime.of(2017, Month.MAY, 23, 20, 0);
-        Meal meal2 = new Meal(ldt2, new ArrayList<Tag>(), 1.0);
+        Meal meal2 = new Meal(ldt2, new ArrayList<TagWithoutTime>(), 1.0);
         Instrumentation.ActivityResult result2 = buildAnIntentResult(RETURN_EVENT_SERIALIZABLE,
                 meal2);
-        stubOutActivity(MealActivity.class.getName(), result2);
+        stubOutActivity(NewEventActivity.class.getName(), result2);
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withId(R.id.mealBtn), withContentDescription("Meal"),
                         childAtPosition(

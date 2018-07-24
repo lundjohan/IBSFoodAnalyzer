@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.johanlund.base_classes.Meal;
 import com.johanlund.base_classes.Tag;
+import com.johanlund.base_classes.TagWithoutTime;
 import com.johanlund.model.TagType;
 
 import org.junit.Before;
@@ -33,8 +34,8 @@ public class DatabaseTests {
     }
 
     private Meal createAMeal(LocalDateTime ldt, String tagName) {
-        List<Tag> tags = new ArrayList<>();
-        tags.add(new Tag(ldt, "yoghurt", 1));
+        List<TagWithoutTime> tags = new ArrayList<>();
+        tags.add(new TagWithoutTime( "yoghurt", 1));
         return new Meal(ldt, tags, 1);
     }
 
