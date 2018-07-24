@@ -191,6 +191,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
     public void newEventActivity(int eventType) {
         Intent intent = new Intent(this, NewEventActivity.class);
         intent.putExtra(Constants.EVENT_TYPE, eventType);
+        intent.putExtra(Constants.NEW_EVENT_DATE, LocalDate.now()); // date is insignificant here, but NewEventActivity requires it
         startActivityForResult(intent, EventsContainer.EVENT_NEW);
     }
 
