@@ -12,7 +12,6 @@ import static com.johanlund.constants.Constants.ID_OF_EVENTSTEMPLATE;
 
 public class EditEventsTemplateActivity extends EventsTemplateActivity {
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mViewMVC = new EditEventsTemplateViewMvc(getLayoutInflater(), null);

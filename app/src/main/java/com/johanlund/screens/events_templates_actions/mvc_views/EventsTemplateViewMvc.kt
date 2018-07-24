@@ -20,7 +20,7 @@ interface EventsTemplateViewMvc: WithOptionsMenuViewMvc, EventsContainerUser, Ev
     //very clumpsy, view and controller shouldnt call each other forth and back like this,but works.
     fun handleEcOnActivityResult(requestCode:Int,resultCode:Int,data:Intent);
 
-    interface Listener: ViewMvc.Listener, EventButtonsViewMvc.Listener {
+    interface Listener: ViewMvc.Listener {
         fun completeSession(finalEventsTemplate: EventsTemplate)
         fun removeTagTypesThatDontExist(et: EventsTemplate): EventsTemplate
 

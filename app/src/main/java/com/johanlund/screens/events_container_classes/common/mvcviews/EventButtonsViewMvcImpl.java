@@ -1,5 +1,6 @@
 package com.johanlund.screens.events_container_classes.common.mvcviews;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,11 @@ public class EventButtonsViewMvcImpl extends BaseObservable<EventButtonsViewMvc.
     }
 
     private void setUpEventButton(View eventBtn) {
+        Log.d("eventbuttons"," eventbtn, its parent and rootv: "+eventBtn.getParent()+ " "+ eventBtn.getRootView());
         eventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("eventbuttons"," btn was clicked");
                 for (EventButtonsViewMvc.Listener listener : getListeners()) {
                     doOnClick(v, listener);
                 }

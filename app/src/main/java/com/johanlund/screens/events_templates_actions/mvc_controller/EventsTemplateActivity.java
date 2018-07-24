@@ -3,6 +3,7 @@ package com.johanlund.screens.events_templates_actions.mvc_controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivit
 import com.johanlund.screens.event_activities.mvc_controllers.ChangeEventInsideEtActivity;
 import com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity;
 import com.johanlund.screens.events_container_classes.common.EventsContainer;
+import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvc;
 import com.johanlund.screens.events_container_classes.common.mvcviews.EventButtonsViewMvcImpl;
 import com.johanlund.screens.events_templates_actions.mvc_views.EventsTemplateViewMvc;
 import com.johanlund.screens.info.ActivityInfoContent;
@@ -49,7 +51,7 @@ import static com.johanlund.constants.Constants.TITLE_STRING;
  * should be abstracted completely in this parent class.
  */
 public abstract class EventsTemplateActivity extends AppCompatActivity
-        implements EventsTemplateViewMvc.Listener {
+        implements EventsTemplateViewMvc.Listener, EventButtonsViewMvc.Listener {
 
     protected EventButtonsViewMvcImpl mButtonsViewMvc;
     protected EventsTemplateViewMvc mViewMVC;
@@ -65,7 +67,7 @@ public abstract class EventsTemplateActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         // Set the root view of the associated MVC view as the content of this activity
         setContentView(mViewMVC.getRootView());
-        mButtonsViewMvc = new EventButtonsViewMvcImpl(getLayoutInflater(), (ViewGroup) mViewMVC.getRootView().findViewById(R
+        mButtonsViewMvc = new EventButtonsViewMvcImpl(LayoutInflater.from(this), (ViewGroup) mViewMVC.getRootView().findViewById(R
                 .id.buttons));
     }
 
