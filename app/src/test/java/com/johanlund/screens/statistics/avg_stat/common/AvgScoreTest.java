@@ -28,11 +28,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * Created by Johan on 2018-02-10.
  */
- /*Tag t1n = TagWithoutTime.toTagWithTime(t1,ldt1);
-         Tag t2n = TagWithoutTime.toTagWithTime(t2,ldt2);
-         List<Tag> tagsn = TagWithoutTime.toTagsWithTime(tags1, ldt1);
 
-         */
 public class AvgScoreTest {
     /**
      * this test checks that avg rating stat is working properly.
@@ -40,14 +36,14 @@ public class AvgScoreTest {
      */
 
     /*
-    Simple test case with only one TagWithoutTime and one rating (before the tag)
+    Simple test case with only one tag and one rating (before the tag)
      */
     @Test
     public void simpleAvgRatingTest() {
         //create some tags...
-        List<TagWithoutTime> tags1 = new ArrayList<>();
+        List<Tag> tags1 = new ArrayList<>();
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
-        TagWithoutTime t1 = new TagWithoutTime( "Butter", 1.0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
 
         //create a Rating that appears slightly before
@@ -56,7 +52,7 @@ public class AvgScoreTest {
         //make a chunkend 10 hours in the future, just to make rating extend to it
         LocalDateTime breakTime = ldt1.plusHours(10);
 
-        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(TagWithoutTime.toTagsWithTime(tags1, ldt1), Arrays.asList(r1),
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(r1),
                 Arrays.asList(breakTime));
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 2;
@@ -79,16 +75,15 @@ public class AvgScoreTest {
     @Test
     public void noRatingInAvgStatTest() {
         //create some tags...
-        List<TagWithoutTime> tags1 = new ArrayList<>();
+        List<Tag> tags1 = new ArrayList<>();
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
-        TagWithoutTime t1 = new TagWithoutTime( "Butter", 1.0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
         //...and add them to an TagsWrapper
 
         //make a chunkend 10 hours in the future, just to make rating extend to it
         LocalDateTime breakTime = ldt1.plusHours(10);
-        List<Tag> tagsn = TagWithoutTime.toTagsWithTime(tags1, ldt1);
-        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tagsn, new
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tags1, new
                 ArrayList<ScoreTime>(), Arrays.asList(breakTime));
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 2;
@@ -105,9 +100,9 @@ public class AvgScoreTest {
     @Test
     public void twoTagsAndTwoRatingsAvgStatTest() {
         //create some tags...
-        List<TagWithoutTime> tags1 = new ArrayList<>();
+        List<Tag> tags1 = new ArrayList<>();
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
-        TagWithoutTime t1 = new TagWithoutTime( "Butter", 1.0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
 
         //create a Rating that appears slightly before
@@ -115,8 +110,8 @@ public class AvgScoreTest {
 
         //create an extra butter further on, just to make rating extend to it
         LocalDateTime ldt2 = LocalDateTime.of(2017, Month.JANUARY, 1, 20, 0);
-        TagWithoutTime t2 = new TagWithoutTime( "Butter", 1.0);
-        List<TagWithoutTime> tags2 = new ArrayList<>();
+        Tag t2 = new Tag(ldt2, "Butter", 1.0);
+        List<Tag> tags2 = new ArrayList<>();
         tags2.add(t2);
 
         //join (will be in sort order)
@@ -127,7 +122,7 @@ public class AvgScoreTest {
 
         //add a break later on just to make sure that chunk isn't cutting off
         LocalDateTime breakTime = ldt2.plusHours(20);
-        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(TagWithoutTime.toTagsWithTime(tags1, ldt1), Arrays.asList(r1, r2)
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(r1, r2)
                 , Arrays.asList(breakTime));
         int startHoursAfterEvent = 0;
         int stopHoursAfterEvent = 20;
@@ -153,9 +148,9 @@ public class AvgScoreTest {
     @Test
     public void ratingsAvgStatStillGivesScoreEvenIfHoursIsntEnoughTest() {
         //create some tags...
-        List<TagWithoutTime> tags1 = new ArrayList<>();
+        List<Tag> tags1 = new ArrayList<>();
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
-        TagWithoutTime t1 = new TagWithoutTime( "Butter", 1.0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
 
         //create a Rating that appears slightly before
@@ -163,8 +158,8 @@ public class AvgScoreTest {
 
         //create an event further on, just to make rating extend to it
         LocalDateTime breakTime = ldt1.plusHours(10);
-        List<Tag> tagsn = TagWithoutTime.toTagsWithTime(tags1, ldt1);
-        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tagsn, Arrays.asList(r1),
+
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(r1),
                 Arrays.asList(breakTime));
         int startHoursAfterEvent = 0;
 
@@ -199,14 +194,14 @@ public class AvgScoreTest {
     public void startHoursAfterEventWorksProperlyTest() {
         //create some tags...
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
-        TagWithoutTime t1 = new TagWithoutTime( "Butter", 1.0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
 
         //create a Rating that appears slightly before
         ScoreTime r1 = new ScoreTime(ldt1.minusHours(1), 3);
 
         //create an extra butter further on, just to make rating extend to it
         LocalDateTime ldt2 = LocalDateTime.of(2017, Month.JANUARY, 1, 20, 0);
-        TagWithoutTime t2 = new TagWithoutTime( "Butter", 1.0);
+        Tag t2 = new Tag(ldt2, "Butter", 1.0);
 
         //add a rating at same time as the second Other, and with a higher score
         ScoreTime r2 = new ScoreTime(ldt2, 6);
@@ -214,9 +209,7 @@ public class AvgScoreTest {
         //add another other later on just to make sure that chunk isn't cutting off
         LocalDateTime breakTime = ldt2.plusHours(20);
 
-        Tag t1n = TagWithoutTime.toTagWithTime(t1,ldt1);
-        Tag t2n = TagWithoutTime.toTagWithTime(t2,ldt2);
-        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(Arrays.asList(t1n, t2n),
+        List<TagsWrapperBase> chunks1 = TagsWrapper.makeTagsWrappers(Arrays.asList(t1, t2),
                 Arrays.asList(r1, r2), Arrays.asList(breakTime));
         //HERE, startHoursAfterEvent is NOT zero this time
         int startHoursAfterEvent = 5;
@@ -246,9 +239,9 @@ public class AvgScoreTest {
         int stopHoursAfterEvent = 41;
 
         //create some tags...
-        List<TagWithoutTime> tags1 = new ArrayList<>();
+        List<Tag> tags1 = new ArrayList<>();
         LocalDateTime ldt1 = LocalDateTime.of(2017, Month.JANUARY, 1, 10, 0);
-        TagWithoutTime t1 = new TagWithoutTime( "Butter", 1.0);
+        Tag t1 = new Tag(ldt1, "Butter", 1.0);
         tags1.add(t1);
 
         //create a Rating that appears slightly before ...
@@ -256,8 +249,8 @@ public class AvgScoreTest {
 
         //and a Other event that appears slightly after ...
         LocalDateTime breakTime = ldt1.plusHours(1);
-        List<Tag> tagsn = TagWithoutTime.toTagsWithTime(tags1, ldt1);
-        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(tagsn, Arrays.asList(r1),
+
+        List<TagsWrapperBase> chunks = TagsWrapper.makeTagsWrappers(tags1, Arrays.asList(r1),
                 Arrays.asList(breakTime));
         Map<String, TagPoint> tagPoints = new HashMap<>();
 
@@ -274,7 +267,7 @@ public class AvgScoreTest {
     /**
      * x == NO Rating score there(due to omission by user)
      * <p>
-     * |xxx------| Time for Chunk (the TagWithoutTime occurs in the beginning)
+     * |xxx------| Time for Chunk (the tag occurs in the beginning)
      * |------| Time for calculation of score, there is only in 2nd half that score should be
      * assigned
      */
