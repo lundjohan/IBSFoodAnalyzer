@@ -1763,45 +1763,14 @@ public class DBHandler extends SQLiteOpenHelper {
                     " ON ite. "+COLUMN_NAME + " = ete."+COLUMN_NAME +
                     " AND ite."+COLUMN_ID +" > "+ eventTemplatesMaxId + ";");
 
-            //3. For these inserted events, change to correct reference to eventstemplates
-          /*  String QUERY = "SELECT ie."+COLUMN_ID + ", et." +COLUMN_EVENTSTEMPLATE +
-                    " FROM " + TABLE_EVENTS + " ie "+
-                    " INNER JOIN external_db."+TABLE_EVENTS + " et ON ie." + COLUMN_DATETIME + " = et."+COLUMN_DATETIME +
-                    " AND ie."+COLUMN_TYPE_OF_EVENT + " = et."+COLUMN_TYPE_OF_EVENT + ";";
-            Cursor c = null;
-            try {
-                c = db.rawQuery(QUERY, null);
-                if (c != null) {
-                    if (c.moveToFirst()) {
-                        while (!c.isAfterLast()) {
-
-                                //retrieve id (the Tagtype row that should )
-                                long eventToUpdateId = c.getLong(0);
-                                long correctEventsTemplateRef = c.getLong(1);
-                                Log.d("DBHandler", "---------------------------");
-                                Log.d("DBHandler", "eventToUpdateId: "+eventToUpdateId);
-                                Log.d("DBHandler", "correctEventsTemplateRef: "+correctEventsTemplateRef);
-                                Log.d("DBHandler", "---------------------------");
-
-                                db.execSQL("UPDATE " + TABLE_EVENTS + " SET "+ COLUMN_EVENTSTEMPLATE + " = " + correctEventsTemplateRef + " WHERE "+ COLUMN_ID + " = " + eventToUpdateId + ";");
-                                c.moveToNext();
-                            }
-                        }
-                    }
-            } finally {
-                if (c != null && !c.isClosed()) {
-                    c.close();
-                }
-            }*/
-
-            //4. for the INSERTED EVENTS, insert meal, exercise, rating, bm, rating from external DB
+            //3. for the INSERTED EVENTS, insert meal, exercise, rating, bm, rating from external DB
             insertIntoEventTypeTableFromExternalDB(TABLE_MEALS, MEAL, ", "+COLUMN_PORTIONS, eventsMaxId, db, "external_db");
             insertIntoEventTypeTableFromExternalDB(TABLE_OTHERS, OTHER, "", eventsMaxId, db, "external_db");
             insertIntoEventTypeTableFromExternalDB(TABLE_EXERCISES, EXERCISE, ", " + COLUMN_INTENSITY, eventsMaxId, db, "external_db");
             insertIntoEventTypeTableFromExternalDB(TABLE_BMS, BM, ", " + COLUMN_COMPLETENESS + ", " + COLUMN_BRISTOL, eventsMaxId, db, "external_db");
             insertIntoEventTypeTableFromExternalDB(TABLE_RATINGS, RATING, ", " + COLUMN_AFTER, eventsMaxId, db, "external_db");
 
-            //5. Insert Tags associated with some of the events (which, by themselves, are assoiciated with newly inserted eventstemplates)
+            //4. Insert Tags associated with some of the events (which, by themselves, are assoiciated with newly inserted eventstemplates)
             // After this the Tags.tagtype will reference tagtypes in EXTERNAL db (so this is temporary solution).
             String tagsMaxId = getMaxIdFromInternalDBTable(TABLE_TAGS, db);
             db.execSQL("INSERT INTO "+ TABLE_TAGS + "( " + COLUMN_TAGTYPE + ", " + COLUMN_SIZE + ", " + COLUMN_EVENT+ ") " +
@@ -1816,7 +1785,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     " ON et."+COLUMN_EVENT + " = ee." + COLUMN_ID + ";"
             );
 
-            //6 Insert TagTypes that are missing and are associated with Tags inserted above.
+            //5 Insert TagTypes that are missing and are associated with Tags inserted above.
             String tagTypesMaxId = getMaxIdFromInternalDBTable(TABLE_TAGTYPES, db);
             db.execSQL("INSERT INTO " + TABLE_TAGTYPES + "( " + COLUMN_TAGNAME + ", " + TYPE_OF + " )" +
                     " SELECT "+COLUMN_TAGNAME + ", " + TYPE_OF +
@@ -1826,7 +1795,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     " AND it."+COLUMN_ID +" > " + tagsMaxId + ";"
             );
 
-            //7. Tags.tagtype now points to external db, but we want it to internal db
+            //6. Tags.tagtype now points to external db, but we want it to internal db
             String TAG_QUERY = "SELECT it."+ COLUMN_ID + ", itt."+ COLUMN_ID +
                     " FROM " +TABLE_TAGS + " it "+
                     " INNER JOIN external_db."+ TABLE_TAGTYPES +  " te "+
@@ -1860,7 +1829,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     cursor.close();
                 }
             }
-            //8. The newly inserted tagtypes.is_a1 points to external => make them point to internal instead.
+            //7. The newly inserted tagtypes.is_a1 points to external => make them point to internal instead.
             makeParentTagTypePointToOwnDB(tagTypesMaxId, db);
 
             db.execSQL("END;");
