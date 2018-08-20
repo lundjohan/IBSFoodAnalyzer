@@ -1665,8 +1665,10 @@ public class DBHandler extends SQLiteOpenHelper {
     The problem is for _is_a1 which then can reference to wrong (or to non existant) tagtype.
      */
     public void insertTagTypesFromExternalDatabase(@NotNull String absolutePath) {
+        SQLiteDatabase db1 = this.getWritableDatabase();
+        String maxId = getMaxIdFromInternalDBTable(TABLE_TAGTYPES, db1);
+        db1.close();
         SQLiteDatabase db = this.getWritableDatabase();
-        String maxId = getMaxIdFromInternalDBTable(TABLE_TAGTYPES, db);
         //attach and copy from external database
         //---------------------------------------
         try {
@@ -1675,18 +1677,19 @@ public class DBHandler extends SQLiteOpenHelper {
                     "'external_db'");
             db.execSQL("PRAGMA foreign_keys = OFF;");
 
-            db.execSQL("BEGIN;");
+            db.beginTransaction();
+            //db.execSQL("BEGIN;");   //krashar här, varför
 
             db.execSQL("INSERT INTO " + TABLE_TAGTYPES + " (_tagname, _is_a1) SELECT _tagname, _is_a1 FROM external_db.tag_templates;");
 
             makeParentTagTypePointToOwnDB(maxId, db);
-            db.execSQL("END;");
+            db.setTransactionSuccessful();
 
         } catch (Exception e) {
-            db.execSQL("ROLLBACK;");
             e.printStackTrace();
         } finally {
             if (db.isOpen()) {
+                db.endTransaction();
                 db.execSQL("PRAGMA foreign_keys = ON;");
                 db.execSQL("DETACH 'external_db'");
                 db.close();
