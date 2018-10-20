@@ -121,12 +121,12 @@ public class DrawerActivity extends AppCompatActivity
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
         DiaryContainerFragment diaryContainer = (DiaryContainerFragment)
                 getSupportFragmentManager().findFragmentByTag(DIARY_CONTAINER);
         if (diaryContainer != null && diaryContainer.isVisible()) {
             savedInstanceState.putSerializable(LOCALDATE, diaryContainer.extractDateFromDiary());
         }
+        super.onSaveInstanceState(savedInstanceState);
     }
 
 
