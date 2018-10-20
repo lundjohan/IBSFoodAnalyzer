@@ -4,25 +4,25 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     signingConfigs {
-        Release {
+        /*Release {
             keyAlias 'johanlund'
             keyPassword 'snorre1241'
             storeFile file('C:/Users/Johan/.android/deployment_cert.der')
             storePassword 'MD5: 46:FC:63:CC:EC:39:BE:19:FA:7E:DA:1D:FE:13:DE:22'
-        }
+        }*/
         Debug {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('C:/Users/Johan/.android/debug.keystore')
+            storeFile file('/home/johan/.android/debug.keystore')
             storePassword 'android'
         }
     }
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.johanlund.ibsfoodanalyzer"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 4
         versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
