@@ -9,10 +9,10 @@
 .idea/misc.xml
 ./idea/runConfigurations.xml
 /.idea/libraries
-.DS_Store
-build/
-!app/build.gradle
-aFileChooser/build
+#.DS_Store
+#build/
+#!app/build.gradle
+#aFileChooser/build
 /captures
 .externalNativeBuild
 
