@@ -5,11 +5,11 @@ apply plugin: 'kotlin-kapt'
 
 android {
     signingConfigs {
-        Release {
+        release {
             keyAlias 'johanlund'
             keyPassword 'snorre1241'
-            storeFile file('/home/johan/.android/deployment_cert.der')
-            storePassword 'MD5: 46:FC:63:CC:EC:39:BE:19:FA:7E:DA:1D:FE:13:DE:22'
+            storeFile file('/home/johan/.android/keystore')
+            storePassword 'Nansen22'
         }
        /* Debug {
             keyAlias 'androiddebugkey'
@@ -43,6 +43,7 @@ android {
          */
         release {
             minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         /*debug {
