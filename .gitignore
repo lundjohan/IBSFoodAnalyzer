@@ -1,2 +1,9 @@
-.*/
+*.bin
+*.lock
+*.ser
+*.iml
+gradlew
 !/.gitignore
+build/*
+/aFileChooser/build/*
+
