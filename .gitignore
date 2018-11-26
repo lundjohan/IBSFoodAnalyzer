@@ -1,10 +1,11 @@
+.*
+!/.gitignore
 #*.iml
 
 #.aar
 #.map.properties
 #/local.properties
 #.idea/*
-=======
 #.DS_Store
 #build/
 #!app/build.gradle
