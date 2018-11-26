@@ -34,11 +34,11 @@
             android:text="Load Database"
             />
 
-        <RadioButton
+        <!-- THIS MIGHT BE ADDED LATER<RadioButton
             android:id="@+id/radio_import_merge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Merge Database"/>
+            android:text="Merge Database"/>-->
 
         <RadioButton
             android:id="@+id/radio_import_tagtypes"

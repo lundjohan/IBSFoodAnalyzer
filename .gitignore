@@ -3,16 +3,11 @@
 .aar
 .map.properties
 /local.properties
-.idea
-=======
-/.idea/workspace.xml
-.idea/misc.xml
-./idea/runConfigurations.xml
-/.idea/libraries
-#.DS_Store
-#build/
-#!app/build.gradle
-#aFileChooser/build
+.idea/*
+.DS_Store
+build/
+!app/build.gradle
+aFileChooser/build
 /captures
 .externalNativeBuild
 

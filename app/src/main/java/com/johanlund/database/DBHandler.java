@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.util.Pair;
 
 import com.johanlund.base_classes.Event;
 import com.johanlund.base_classes.InputEvent;
@@ -1668,10 +1669,36 @@ public class DBHandler extends SQLiteOpenHelper {
     public void insertTagTypesFromExternalDatabase(@NotNull String absolutePath) {
         SQLiteDatabase db1 = this.getReadableDatabase();
         String maxId = getMaxIdFromInternalDBTable(TABLE_TAGTYPES, db1);
+        Log.e(TAG, "maxId: "+maxId); //
         db1.close();
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.e(TAG, "db.isOpen "+db.isOpen());   //true => ok!
+        Log.e(TAG, "db.isReadOnly() "+db.isReadOnly()); //false => ok!
+        Log.e(TAG, "db.inTransaction() "+db.inTransaction());   //false => ok!
+
+
+
+
+
         //attach and copy from external database
         //---------------------------------------
+        try {
+            //attaching database must be done outside of transaction
+            db.execSQL("ATTACH DATABASE '" + absolutePath + "' as " +
+                    "'external_db'");
+            db.execSQL("PRAGMA foreign_keys = OFF;");
+
+            //======loggging
+
+            List<Pair<String, String>> databases = db.getAttachedDbs();
+
+            for (Pair p: databases){
+                Log.e(TAG, "databases (plus attached:) "+p.first.toString());   //main + external_db => ok!
+            }
+
+//===================================================
+            db.beginTransaction();
+            //db.execSQL("BEGIN;");   //krashar här, varför
 
         //attaching database must be done outside of transaction
         Log.e("DBHandler","absolutePath: " +absolutePath);
