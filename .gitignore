@@ -1,14 +1,15 @@
-*.iml
+#*.iml
 
-.aar
-.map.properties
-/local.properties
-.idea/*
-.DS_Store
-build/
-!app/build.gradle
-aFileChooser/build
-/captures
-.externalNativeBuild
+#.aar
+#.map.properties
+#/local.properties
+#.idea/*
+=======
+#.DS_Store
+#build/
+#!app/build.gradle
+#aFileChooser/build
+#/captures
+#.externalNativeBuild
 
-.gradle/*
+#.gradle/*
