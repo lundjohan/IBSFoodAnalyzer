@@ -9,7 +9,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3d7bbbd3-950d-455c-ac70-ac5c0c0c897b" name="Default" comment="" />
+    <list default="true" id="3d7bbbd3-950d-455c-ac70-ac5c0c0c897b" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,8 +50,8 @@
       <file leaf-file-name="SqLiteDao.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/johanlund/dao/SqLiteDao.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="972">
-              <caret line="54" column="32" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
+            <state relative-caret-position="98">
+              <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
               <folding>
                 <element signature="e#27#391#0" expanded="true" />
               </folding>
@@ -52,19 +59,33 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DBHandler.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DBHandler.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/johanlund/database/DBHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-33136">
-              <caret line="29" column="14" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
+            <state relative-caret-position="36">
+              <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+              <folding>
+                <element signature="e#7476#7477#0" expanded="true" />
+                <element signature="e#7545#7546#0" expanded="true" />
+                <element signature="e#7604#7605#0" expanded="true" />
+                <element signature="e#7651#7652#0" expanded="true" />
+                <element signature="e#55526#55527#0" expanded="true" />
+                <element signature="e#55575#55576#0" expanded="true" />
+                <element signature="e#55620#55621#0" expanded="true" />
+                <element signature="e#55671#55672#0" expanded="true" />
+                <element signature="e#59104#59105#0" expanded="true" />
+                <element signature="e#59169#59170#0" expanded="true" />
+                <element signature="e#59448#59449#0" expanded="true" />
+                <element signature="e#59511#59512#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ImportOptionViewMvcImpl.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ImportOptionViewMvcImpl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/johanlund/screens/load_import/mvc_views/ImportOptionViewMvcImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-266">
+            <state relative-caret-position="-252">
               <caret line="60" column="10" selection-start-line="60" selection-start-column="10" selection-end-line="60" selection-end-column="10" />
             </state>
           </provider>
@@ -76,8 +97,8 @@
     <findStrings>
       <find>Merge Database</find>
       <find>getMaxIdFromInternalDBTable</find>
-      <find>checkIf</find>
       <find>check</find>
+      <find>checkIf</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -3592,6 +3613,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/johanlund/screens/load_import/mvc_views/ImportOptionViewMvcImpl.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/johanlund/database/DBHandler.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/johanlund/dao/SqLiteDao.kt" />
       </list>
     </option>
   </component>
@@ -3796,7 +3818,7 @@
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="bottom" id="Logcat" order="0" weight="0.74882996" />
-      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.17848605" />
+      <window_info content_ui="combo" id="Project" order="5" weight="0.17848605" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="5" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="12" />
@@ -3829,10 +3851,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/johanlund/screens/load_import/mvc_views/ImportOptionViewMvcImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-252">
+          <caret line="60" column="10" selection-start-line="60" selection-start-column="10" selection-end-line="60" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/johanlund/dao/SqLiteDao.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="972">
-          <caret line="54" column="32" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
+        <state relative-caret-position="98">
+          <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
           <folding>
             <element signature="e#27#391#0" expanded="true" />
           </folding>
@@ -3841,15 +3870,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/johanlund/database/DBHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-33136">
-          <caret line="29" column="14" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/johanlund/screens/load_import/mvc_views/ImportOptionViewMvcImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-266">
-          <caret line="60" column="10" selection-start-line="60" selection-start-column="10" selection-end-line="60" selection-end-column="10" />
+        <state relative-caret-position="36">
+          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+          <folding>
+            <element signature="e#7476#7477#0" expanded="true" />
+            <element signature="e#7545#7546#0" expanded="true" />
+            <element signature="e#7604#7605#0" expanded="true" />
+            <element signature="e#7651#7652#0" expanded="true" />
+            <element signature="e#55526#55527#0" expanded="true" />
+            <element signature="e#55575#55576#0" expanded="true" />
+            <element signature="e#55620#55621#0" expanded="true" />
+            <element signature="e#55671#55672#0" expanded="true" />
+            <element signature="e#59104#59105#0" expanded="true" />
+            <element signature="e#59169#59170#0" expanded="true" />
+            <element signature="e#59448#59449#0" expanded="true" />
+            <element signature="e#59511#59512#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
