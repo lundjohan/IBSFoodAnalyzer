@@ -1,21 +1,22 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     signingConfigs {
-        /*Release {
+        Release {
             keyAlias 'johanlund'
             keyPassword 'snorre1241'
-            storeFile file('C:/Users/Johan/.android/deployment_cert.der')
+            storeFile file('/home/johan/.android/deployment_cert.der')
             storePassword 'MD5: 46:FC:63:CC:EC:39:BE:19:FA:7E:DA:1D:FE:13:DE:22'
-        }*/
-        Debug {
+        }
+       /* Debug {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
             storeFile file('/home/johan/.android/debug.keystore')
             storePassword 'android'
-        }
+        }*/
     }
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
@@ -23,8 +24,8 @@ android {
         applicationId "com.johanlund.ibsfoodanalyzer"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.1"
+        versionCode 5
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
     }
@@ -44,9 +45,9 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
+        /*debug {
             signingConfig signingConfigs.Debug
-        }
+        }*/
     }
     lintOptions {
         checkReleaseBuilds false
@@ -90,7 +91,7 @@ dependencies {
     androidTestImplementation 'com.android.support:support-annotations:27.1.1'
 
     implementation 'com.google.dagger:dagger:2.14.1'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+    kapt 'com.google.dagger:dagger-compiler:2.14.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
 }
