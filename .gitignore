@@ -1,16 +1,2 @@
 .*/
 !/.gitignore
-#*.iml
-
-#.aar
-#.map.properties
-#/local.properties
-#.idea/*
-#.DS_Store
-#build/
-#!app/build.gradle
-#aFileChooser/build
-#/captures
-#.externalNativeBuild
-
-#.gradle/*
