@@ -39,10 +39,10 @@ public class ImportOptionViewMvcImpl implements ImportOptionViewMvc {
                         listener.cleanAndLoad();
                         break;
                     }
-                    case R.id.radio_import_merge:{
+                    /*case R.id.radio_import_merge:{
 
                         break;
-                    }
+                    }*/
                     case R.id.radio_import_tagtypes:{
                         listener.importTagTypes();
                         break;
@@ -58,7 +58,7 @@ public class ImportOptionViewMvcImpl implements ImportOptionViewMvc {
 
 
         wipeAndLoadBtn = mRootView.findViewById(R.id.radio_import_override);
-        mergeBtn = mRootView.findViewById(R.id.radio_import_merge);
+        //mergeBtn = mRootView.findViewById(R.id.radio_import_merge);
         tagTypeImportBtn = mRootView.findViewById(R.id.radio_import_tagtypes);
         eventTemplatesBtn = mRootView.findViewById(R.id.radio_import_event_templates);
 
