@@ -14,6 +14,13 @@ import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
 import com.johanlund.base_classes.TagWithoutTime;
+import com.johanlund.database.entities.BmEntity;
+import com.johanlund.database.entities.ExerciseEntity;
+import com.johanlund.database.entities.MealEntity;
+import com.johanlund.database.entities.OtherEntity;
+import com.johanlund.database.entities.RatingEntity;
+import com.johanlund.database.entities.TagEntity;
+import com.johanlund.database.entities.TagTypeEntity;
 import com.johanlund.date_time.DateTimeFormat;
 import com.johanlund.exceptions.InvalidEventType;
 import com.johanlund.model.EventsTemplate;
@@ -1145,6 +1152,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return toReturn;
     }
 
+
     public void editTagTemplate(TagType tagType, long idOfTagTemplate) {
         ContentValues values = makeTagTemplateContentValues(tagType);
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1205,6 +1213,25 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         return tagTypes;
+    }
+
+    public List<TagTypeEntity>getAllTagTypeEntities(){
+        List<TagTypeEntity> tagTypeEntities = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_TAGTYPES;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+                String tagName = cursor.getString(cursor.getColumnIndex(COLUMN_TAGNAME));
+                int typeOf = cursor.getInt(cursor.getColumnIndex(TYPE_OF));
+                TagTypeEntity tte = new TagTypeEntity(id, tagName,typeOf);
+                tagTypeEntities.add(tte);
+                cursor.moveToNext();
+            }
+        }
+        return tagTypeEntities;
     }
 
     public TagType findTagTemplate(String tagName) {
@@ -1936,5 +1963,72 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         }
         return exists;
+    }
+
+    /*
+
+        NEITHER of below do return tags referenced from EventsTemplates
+     */
+    @NotNull
+    public List<TagEntity> getAllRealTagEntities() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT tt."+COLUMN_ID + ", "+COLUMN_TAGTYPE +", "+COLUMN_SIZE +", "+COLUMN_EVENT +" FROM " + TABLE_TAGS + " tt " +
+                " INNER JOIN "+ TABLE_EVENTS  + " te " +
+                " ON tt."+COLUMN_EVENT +" = te."+ COLUMN_ID +
+                " WHERE te."+COLUMN_EVENTSTEMPLATE + " IS NULL;";
+        Cursor c = null;
+        List<TagEntity>toReturn = new ArrayList<>();
+        try {
+            c = db.rawQuery(QUERY, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
+                            int tagType = c.getInt(c.getColumnIndex(COLUMN_TAGTYPE));
+                            double size = c.getDouble(c.getColumnIndex(COLUMN_SIZE));
+                            int event = c.getInt(c.getColumnIndex(COLUMN_EVENT));
+                            toReturn.add(new TagEntity(id, tagType, size, event));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
+
+    }
+
+    @NotNull
+    public List<MealEntity> getAllRealMealEntities() {
+        return new ArrayList<MealEntity>();
+    }
+
+    @NotNull
+    public List<OtherEntity> getAllRealOtherEntities() {
+        return new ArrayList<OtherEntity>();
+    }
+
+    @NotNull
+    public List<ExerciseEntity> getAllRealExerciseEntities() {
+        return new ArrayList<ExerciseEntity>();
+    }
+
+    @NotNull
+    public List<BmEntity> getAllRealBmEntities() {
+        return new ArrayList<BmEntity>();
+    }
+
+    @NotNull
+    public List<RatingEntity> getAllRealRatingEntities() {
+        return new ArrayList<RatingEntity>();
     }
 }

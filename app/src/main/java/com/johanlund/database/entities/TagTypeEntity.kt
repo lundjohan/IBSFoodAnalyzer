@@ -14,4 +14,4 @@ data class TagTypeEntity(
         val id: Int,
         val tagName: String,
         val typeOf: Int
-)
+): EntityBase()

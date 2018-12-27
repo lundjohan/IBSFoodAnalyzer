@@ -1,4 +1,5 @@
 package com.johanlund.database.entities
+
 /*
 TABLE_EVENTS + " (  " +
             COLUMN_ID + " INTEGER PRIMARY KEY, " +
@@ -16,11 +17,11 @@ TABLE_EVENTS + " (  " +
             + " ( " + COLUMN_ID + ") ON DELETE CASCADE " +
             ");";
  */
-open class EventEntity (
+open class EventEntity(
         val id: Int,
         val dateTime: String,
         val typeOfEvent: Int,
         //we don't use eventstemplate for now
         val comment: String,
         val hasBreak: Boolean = false
-)
+) : EntityBase()

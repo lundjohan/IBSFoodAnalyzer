@@ -69,7 +69,7 @@ dependencies {
     }
     /*Works as replacement for java 8 missing features in android, specifiacally java.time.api - Johan*/
     implementation project(':aFileChooser')
-    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    //https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:preference-v7:28.0.0'

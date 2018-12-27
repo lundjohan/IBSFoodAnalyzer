@@ -14,5 +14,5 @@ data class TagEntity(
         val tagType: Int,
         val size: Double,
         val event: Int
-)
+): EntityBase()
 

@@ -1402,6 +1402,7 @@ id expand_activities_button
 id expanded_menu
 id exportMenuItem
 id exportToCsvMenuItem
+id exportToJsonMenuItem
 id externalLibrariesText
 id fill
 id fill_horizontal

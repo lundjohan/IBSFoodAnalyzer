@@ -20,6 +20,10 @@
             android:title="Import from .csv file"
             />-->
         <item
+            android:id="@+id/exportToJsonMenuItem"
+            android:title="Export to .json file"
+            />
+        <item
             android:id="@+id/exportToCsvMenuItem"
             android:title="Export to .csv file"
             />

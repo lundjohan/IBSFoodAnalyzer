@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
-INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
-INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
-INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
+INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
+INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
+INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
 MERGED from [com.android.databinding:adapters:3.2.1] /home/johan/.gradle/caches/transforms-1/files-1.1/adapters-3.2.1.aar/fe8aea2ee2f3cdf7cfbc2443058ad5d6/AndroidManifest.xml:17:1-24:12
 MERGED from [com.android.databinding:library:3.2.1] /home/johan/.gradle/caches/transforms-1/files-1.1/library-3.2.1.aar/d44de4a3f15e3eb334c09d9daa4337d8/AndroidManifest.xml:17:1-24:12
 MERGED from [:aFileChooser] /home/johan/AndroidStudioProjects/androidibsapp/aFileChooser/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml:17:1-24:12
@@ -47,20 +47,20 @@ MERGED from [android.arch.core:runtime:1.1.1] /home/johan/.gradle/caches/transfo
 MERGED from [com.android.support:documentfile:28.0.0] /home/johan/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/05e41e8c068356a344d6ef34e8e7c393/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:localbroadcastmanager:28.0.0] /home/johan/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/7615e623603ab15af997e07a1b462ece/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:print:28.0.0] /home/johan/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/cc53ed3ccf1aa75ff27e30b75543e846/AndroidManifest.xml:17:1-22:12
-INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
-INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
-INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
+INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
+INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
+INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
 	package
 		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:3:11-50
 		INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml
 		INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml
 	android:versionName
 		INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
 		INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-176:12
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:1-180:12
 		INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:2:11-69
@@ -73,7 +73,7 @@ ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidM
 	android:name
 		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:6:22-77
 application
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:8:5-174:19
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:8:5-178:19
 MERGED from [com.android.support:design:28.0.0] /home/johan/.gradle/caches/transforms-1/files-1.1/design-28.0.0.aar/ad3c8144b5ed45f2012b0413274bca34/AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:design:28.0.0] /home/johan/.gradle/caches/transforms-1/files-1.1/design-28.0.0.aar/ad3c8144b5ed45f2012b0413274bca34/AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.gms:play-services-plus:10.2.1] /home/johan/.gradle/caches/transforms-1/files-1.1/play-services-plus-10.2.1.aar/049b6811434e843e766917ddf672c908/AndroidManifest.xml:18:5-19
@@ -196,130 +196,136 @@ ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidM
 		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:64:13-37
 	android:name
 		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:63:13-78
+service#com.johanlund.external_storage.SaveToJsonIntentService
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:66:9-69:19
+	android:exported
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:68:13-37
+	android:name
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:67:13-82
 activity#com.johanlund.screens.tag_type.TagTypeAdderActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:67:9-73:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:71:9-77:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:69:13-90
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:73:13-90
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:68:13-79
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:72:13-79
 meta-data#android.support.PARENT_ACTIVITY
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:70:13-72:83
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:74:13-76:83
 	android:value
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:72:17-81
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:76:17-81
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:71:17-63
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:75:17-63
 activity#com.johanlund.screens.tag_type.TagTypeEditActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:74:9-75:20
-	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:74:19-84
-activity#com.johanlund.screens.settings.StatSettingsActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:76:9-77:20
-	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:76:19-85
-activity#com.johanlund.screens.settings.GeneralSettingsActivity
 ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:78:9-79:20
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:78:19-88
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:78:19-84
+activity#com.johanlund.screens.settings.StatSettingsActivity
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:80:9-81:20
+	android:name
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:80:19-85
+activity#com.johanlund.screens.settings.GeneralSettingsActivity
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:82:9-83:20
+	android:name
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:82:19-88
 activity#com.johanlund.screens.statistics.avg_stat.rating.RatingAvgStatActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:80:9-86:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:84:9-90:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:82:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:86:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:81:13-98
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:85:13-98
 activity#com.johanlund.screens.statistics.avg_stat.complete.CompleteAvgStatActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:87:9-93:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:91:9-97:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:89:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:93:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:88:13-102
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:92:13-102
 activity#com.johanlund.screens.statistics.avg_stat.bristol.BristolAvgStatActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:94:9-100:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:98:9-104:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:96:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:100:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:95:13-100
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:99:13-100
 activity#com.johanlund.screens.statistics.time.RatingTimeStatActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:101:9-107:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:105:9-111:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:103:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:107:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:102:13-88
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:106:13-88
 activity#com.johanlund.screens.statistics.time.CompleteTimeStatActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:108:9-114:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:112:9-118:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:110:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:114:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:109:13-90
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:113:13-90
 activity#com.johanlund.screens.statistics.time.BristolTimeStatActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:115:9-121:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:119:9-125:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:117:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:121:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:116:13-89
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:120:13-89
 activity#com.johanlund.screens.statistics.portions_settings.PortionStatSettingsActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:122:9-129:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:126:9-133:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:125:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:129:13-83
 	android:label
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:124:13-50
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:128:13-50
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:123:13-106
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:127:13-106
 activity#com.johanlund.screens.statistics.portions_settings.NewPortionRangeActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:130:9-136:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:134:9-140:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:132:13-120
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:136:13-120
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:131:13-102
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:135:13-102
 activity#com.johanlund.screens.statistics_settings.AvgRatingSettingsActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:137:9-138:20
-	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:137:19-101
-activity#com.johanlund.screens.statistics_settings.AvgBmSettingsActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:139:9-140:20
-	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:139:19-97
-activity#com.johanlund.screens.statistics_settings.TimeRatingSettingsActivity
 ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:141:9-142:20
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:141:19-102
-activity#com.johanlund.screens.statistics_settings.TimeCompleteSettingsActivity
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:141:19-101
+activity#com.johanlund.screens.statistics_settings.AvgBmSettingsActivity
 ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:143:9-144:20
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:143:19-104
-activity#com.johanlund.screens.statistics_settings.TimeBristolSettingsActivity
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:143:19-97
+activity#com.johanlund.screens.statistics_settings.TimeRatingSettingsActivity
 ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:145:9-146:20
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:145:19-103
-activity#com.johanlund.screens.info.InfoActivity
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:145:19-102
+activity#com.johanlund.screens.statistics_settings.TimeCompleteSettingsActivity
 ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:147:9-148:20
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:147:19-73
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:147:19-104
+activity#com.johanlund.screens.statistics_settings.TimeBristolSettingsActivity
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:149:9-150:20
+	android:name
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:149:19-103
+activity#com.johanlund.screens.info.InfoActivity
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:151:9-152:20
+	android:name
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:151:19-73
 activity#com.johanlund.screens.about.AboutActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:149:9-155:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:153:9-159:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:151:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:155:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:150:13-69
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:154:13-69
 activity#com.johanlund.screens.info.ActivityInfoContent
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:156:9-157:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:160:9-161:20
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:156:19-80
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:160:19-80
 activity#com.johanlund.screens.statistics.portions_settings.PortionStatSettingsMoreActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:158:9-159:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:162:9-163:20
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:158:19-116
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:162:19-116
 activity#com.johanlund.screens.statistics.portions.RatingPortionStatActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:160:9-166:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:164:9-170:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:162:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:166:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:161:13-95
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:165:13-95
 activity#com.johanlund.screens.statistics.avg_stat.delta.DeltaAvgStatActivity
-ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:167:9-173:20
+ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:171:9-177:20
 	android:parentActivityName
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:169:13-83
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:173:13-83
 	android:name
-		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:168:13-96
+		ADDED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml:172:13-96
 uses-sdk
 INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/johan/AndroidStudioProjects/androidibsapp/app/src/main/AndroidManifest.xml

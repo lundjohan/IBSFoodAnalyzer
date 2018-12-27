@@ -23,6 +23,7 @@ import com.johanlund.base_classes.Event;
 import com.johanlund.database.DBHandler;
 import com.johanlund.external_storage.ExternalStorageHandler;
 import com.johanlund.external_storage.SaveDBIntentService;
+import com.johanlund.external_storage.SaveToJsonIntentService;
 import com.johanlund.ibsfoodanalyzer.R;
 import com.johanlund.screens.about.AboutActivity;
 import com.johanlund.screens.events_container_classes.DiaryContainerFragment;
@@ -209,7 +210,15 @@ public class DrawerActivity extends AppCompatActivity
                 ExternalStorageHandler.showReadablePermission(this);
                 showChooserForCSVImport();
                 break;*/
-
+            case R.id.exportToJsonMenuItem:
+                //ok, write to file? Otherwise ask for permission
+                ExternalStorageHandler.showWritablePermission(this);
+                //IntentService
+                Intent jsonIntent = new Intent(this, SaveToJsonIntentService.class);
+                startService(jsonIntent);
+                //show pop up that shows location where file was saved.
+                showPopUpWithSavedFileLocationSavedFile(ExternalStorageHandler.getFolderToSaveIn());
+                break;
             /*case R.id.exportToCsvMenuItem:
                 //ok, write to file? Otherwise ask for permission
                 ExternalStorageHandler.showWritablePermission(this);
