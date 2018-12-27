@@ -7,3 +7,5 @@ gradlew
 build/*
 /aFileChooser/build/*
 
+.gradle/*
+.idea/*
