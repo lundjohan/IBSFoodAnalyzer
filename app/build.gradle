@@ -5,18 +5,18 @@ apply plugin: 'kotlin-kapt'
 
 android {
     signingConfigs {
-        release {
+        /*release {
             keyAlias 'johanlund'
             keyPassword 'snorre1241'
             storeFile file('/home/johan/.android/keystore')
             storePassword 'Nansen22'
-        }
-       /* Debug {
+        }*/
+        Debug {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
             storeFile file('/home/johan/.android/debug.keystore')
             storePassword 'android'
-        }*/
+        }
     }
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
@@ -41,14 +41,14 @@ android {
          * By default, Android Studio configures the release build type to enable code
          * shrinking, using minifyEnabled, and specifies the Proguard settings file.
          */
-        release {
+       /* release {
             minifyEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        /*debug {
-            signingConfig signingConfigs.Debug
         }*/
+        debug {
+            signingConfig signingConfigs.Debug
+        }
     }
     lintOptions {
         checkReleaseBuilds false
