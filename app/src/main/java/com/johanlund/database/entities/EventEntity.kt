@@ -20,8 +20,6 @@ TABLE_EVENTS + " (  " +
 open class EventEntity(
         val id: Int,
         val dateTime: String,
-        val typeOfEvent: Int,
-        //we don't use eventstemplate for now
         val comment: String,
         val hasBreak: Boolean = false
 ) : EntityBase()

@@ -257,11 +257,16 @@ public class ExternalStorageHandler {
             out.println(tagTypes);
             out.println(", \"tags\": ");
             out.println(tags);
-            /*out.println(meals);
+            out.println(", \"meals\": ");
+            out.println(meals);
+            out.println(", \"others\": ");
             out.println(others);
+            out.println(", \"exercises\": ");
             out.println(exercises);
+            out.println(", \"bms\": ");
             out.println(bms);
-            out.println(ratings);*/
+            out.println(", \"ratings\": ");
+            out.println(ratings);
             out.println('}');
             out.flush();
         } catch (FileNotFoundException e) {

@@ -9,8 +9,9 @@ TABLE_MEALS + " (  " +
             + " ( " + COLUMN_ID + ")" + " ON DELETE CASCADE " +
             ");";
  */
-class MealEntity(val portions: Double, id: Int, dateTime: String,
-                 typeOfEvent: Int, comment: String = "", hasBreak: Boolean)
-    : EventEntity(id, dateTime, typeOfEvent, comment, hasBreak)
+class MealEntity(
+        val portions: Double, id: Int, dateTime: String,
+                  comment: String = "", hasBreak: Boolean)
+    : EventEntity(id, dateTime, comment, hasBreak)
 
 

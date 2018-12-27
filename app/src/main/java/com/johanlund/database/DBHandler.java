@@ -10,6 +10,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.johanlund.base_classes.Event;
+import com.johanlund.base_classes.Exercise;
 import com.johanlund.base_classes.InputEvent;
 import com.johanlund.base_classes.Rating;
 import com.johanlund.base_classes.Tag;
@@ -2006,29 +2007,213 @@ public class DBHandler extends SQLiteOpenHelper {
         return toReturn;
 
     }
+/*
+        val id: Int,
+        val dateTime: String,
+        //this is unneccessary
+        val typeOfEvent: Int,
+        //we don't use eventstemplate for now
+        val comment: String,
+        val hasBreak: Boolean = false
+        val portions: Double
 
+
+ */
     @NotNull
     public List<MealEntity> getAllRealMealEntities() {
-        return new ArrayList<MealEntity>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT m."+COLUMN_PORTIONS + ", e."+COLUMN_ID +", "+COLUMN_DATETIME +", "+COLUMN_COMMENT +", "+COLUMN_HAS_BREAK +" FROM " + TABLE_EVENTS + " e " +
+                " INNER JOIN "+ TABLE_MEALS  + " m " +
+                " ON m."+COLUMN_EVENT +" = e."+ COLUMN_ID +
+                " WHERE e."+COLUMN_TYPE_OF_EVENT + " =  "+ MEAL +";";
+        Cursor c = null;
+        List<MealEntity>toReturn = new ArrayList<>();
+        try {
+            c = db.rawQuery(QUERY, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            double portions = c.getDouble(c.getColumnIndex(COLUMN_PORTIONS));
+                            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME ));
+                            String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
+                            //sqlite stores boolean true as int 1, false as 0
+                            boolean hasBreak = c.getInt(c.getColumnIndex(COLUMN_HAS_BREAK)) == 1 ?true:false;
+                            toReturn.add(new MealEntity(portions, id, datetime, comment, hasBreak));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
+
     }
 
     @NotNull
     public List<OtherEntity> getAllRealOtherEntities() {
-        return new ArrayList<OtherEntity>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT e."+COLUMN_ID +", "+COLUMN_DATETIME +", "+COLUMN_COMMENT +", "+COLUMN_HAS_BREAK +" FROM " + TABLE_EVENTS + " e " +
+                " INNER JOIN "+ TABLE_OTHERS  + " o " +
+                " ON o."+COLUMN_EVENT +" = e."+ COLUMN_ID +
+                " WHERE e."+COLUMN_TYPE_OF_EVENT + " =  "+ OTHER +";";
+        Cursor c = null;
+        List<OtherEntity>toReturn = new ArrayList<>();
+        try {
+            c = db.rawQuery(QUERY, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME ));
+                            String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
+                            //sqlite stores boolean true as int 1, false as 0
+                            boolean hasBreak = c.getInt(c.getColumnIndex(COLUMN_HAS_BREAK)) == 1 ?true:false;
+                            toReturn.add(new OtherEntity(id, datetime, comment, hasBreak));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
+
     }
 
     @NotNull
     public List<ExerciseEntity> getAllRealExerciseEntities() {
-        return new ArrayList<ExerciseEntity>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT ex."+COLUMN_INTENSITY + ", e."+COLUMN_ID +", "+COLUMN_DATETIME +", "+COLUMN_COMMENT +", "+COLUMN_HAS_BREAK +" FROM " + TABLE_EVENTS + " e " +
+                " INNER JOIN "+ TABLE_EXERCISES  + " ex " +
+                " ON ex."+COLUMN_EVENT +" = e."+ COLUMN_ID +
+                " WHERE e."+COLUMN_TYPE_OF_EVENT + " =  "+ EXERCISE +";";
+        Cursor c = null;
+        List<ExerciseEntity>toReturn = new ArrayList<>();
+        try {
+            c = db.rawQuery(QUERY, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            int intensity = c.getInt(c.getColumnIndex(COLUMN_INTENSITY));
+                            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME ));
+                            String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
+                            //sqlite stores boolean true as int 1, false as 0
+                            boolean hasBreak = c.getInt(c.getColumnIndex(COLUMN_HAS_BREAK)) == 1 ?true:false;
+                            toReturn.add(new ExerciseEntity(intensity, id, datetime, comment, hasBreak));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
+
     }
 
     @NotNull
     public List<BmEntity> getAllRealBmEntities() {
-        return new ArrayList<BmEntity>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT bm."+COLUMN_COMPLETENESS + ", bm."+COLUMN_BRISTOL+ ", e."+COLUMN_ID +", "+COLUMN_DATETIME +", "+COLUMN_COMMENT +", "+COLUMN_HAS_BREAK +" FROM " + TABLE_EVENTS + " e " +
+                " INNER JOIN "+ TABLE_BMS  + " bm " +
+                " ON bm."+COLUMN_EVENT +" = e."+ COLUMN_ID +
+                " WHERE e."+COLUMN_TYPE_OF_EVENT + " =  "+ BM +";";
+        Cursor c = null;
+        List<BmEntity>toReturn = new ArrayList<>();
+        try {
+            c = db.rawQuery(QUERY, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            int complete = c.getInt(c.getColumnIndex(COLUMN_COMPLETENESS));
+                            int bristol = c.getInt(c.getColumnIndex(COLUMN_BRISTOL));
+                            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME ));
+                            String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
+                            //sqlite stores boolean true as int 1, false as 0
+                            boolean hasBreak = c.getInt(c.getColumnIndex(COLUMN_HAS_BREAK)) == 1 ?true:false;
+                            toReturn.add(new BmEntity(complete, bristol, id, datetime, comment, hasBreak));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
     }
 
     @NotNull
     public List<RatingEntity> getAllRealRatingEntities() {
-        return new ArrayList<RatingEntity>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String QUERY = "SELECT r."+COLUMN_AFTER + ", e."+COLUMN_ID +", "+COLUMN_DATETIME +", "+COLUMN_COMMENT +", "+COLUMN_HAS_BREAK +" FROM " + TABLE_EVENTS + " e " +
+                " INNER JOIN "+ TABLE_RATINGS  + " r " +
+                " ON r."+COLUMN_EVENT +" = e."+ COLUMN_ID +
+                " WHERE e."+COLUMN_TYPE_OF_EVENT + " =  "+ RATING +";";
+        Cursor c = null;
+        List<RatingEntity>toReturn = new ArrayList<>();
+        try {
+            c = db.rawQuery(QUERY, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        try {
+                            int after = c.getInt(c.getColumnIndex(COLUMN_AFTER));
+                            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
+                            String datetime = c.getString(c.getColumnIndex(COLUMN_DATETIME ));
+                            String comment = c.getString(c.getColumnIndex(COLUMN_COMMENT));
+                            //sqlite stores boolean true as int 1, false as 0
+                            boolean hasBreak = c.getInt(c.getColumnIndex(COLUMN_HAS_BREAK)) == 1 ?true:false;
+                            toReturn.add(new RatingEntity(after, id, datetime, comment, hasBreak));
+                        } finally {
+                            c.moveToNext();
+                        }
+                    }
+                }
+            }
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            if (db.isOpen()) {
+                db.close();
+            }
+        }
+        return toReturn;
     }
 }
