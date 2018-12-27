@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.johanlund.ibsfoodanalyzer"
+    android:versionCode="5"
+    android:versionName="1.2" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="28" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+/>
+    <application
+        android:name="com.johanlund.application.MyCustomApplication"
+        android:allowBackup="true"
+        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+        android:icon="@mipmap/foodanalyzer_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/foodanalyzer_rounded"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.ipaulpro.afilechooser.FileChooserActivity"
+            android:enabled="@bool/use_activity"
+            android:exported="true"
+            android:icon="@drawable/ic_chooser"
+            android:label="@string/choose_file" >
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.main.DrawerActivity"
+            android:label="@string/title_activity_drawer"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.johanlund.screens.event_activities.mvc_controllers.NewEventActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.event_activities.mvc_controllers.ChangeEventActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.event_activities.mvc_controllers.ChangeEventInsideEtActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.tag_adder.TagAdderActivity" />
+        <!-- The 'adjust-pan' is for that the soft keyboard should not push up views -->
+        <activity
+            android:name="com.johanlund.screens.events_templates_actions.mvc_controller.NewEventsTemplateActivity"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.events_templates_actions.mvc_controller.EditEventsTemplateActivity"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.events_templates_actions.mvc_controller.LoadEventsTemplateActivity"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+
+        <service
+            android:name="com.johanlund.external_storage.SaveDBIntentService"
+            android:exported="false" >
+        </service>
+
+        <activity
+            android:name="com.johanlund.screens.tag_type.TagTypeAdderActivity"
+            android:parentActivityName="com.johanlund.screens.tag_adder.TagAdderActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.tag_adder.TagAdderActivity" />
+        </activity>
+        <activity android:name="com.johanlund.screens.tag_type.TagTypeEditActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.settings.StatSettingsActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.settings.GeneralSettingsActivity" >
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.avg_stat.rating.RatingAvgStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.avg_stat.complete.CompleteAvgStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.avg_stat.bristol.BristolAvgStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.time.RatingTimeStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.time.CompleteTimeStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.time.BristolTimeStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.portions_settings.PortionStatSettingsActivity"
+            android:label="Portion Stat Settings"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.portions_settings.NewPortionRangeActivity"
+            android:parentActivityName="com.johanlund.screens.statistics.portions_settings.PortionStatSettingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.statistics.portions_settings.PortionStatSettingsActivity" />
+        </activity>
+        <activity android:name="com.johanlund.screens.statistics_settings.AvgRatingSettingsActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.statistics_settings.AvgBmSettingsActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.statistics_settings.TimeRatingSettingsActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.statistics_settings.TimeCompleteSettingsActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.statistics_settings.TimeBristolSettingsActivity" >
+        </activity>
+        <activity android:name="com.johanlund.screens.info.InfoActivity" >
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.about.AboutActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity android:name="com.johanlund.screens.info.ActivityInfoContent" >
+        </activity>
+        <activity android:name="com.johanlund.screens.statistics.portions_settings.PortionStatSettingsMoreActivity" >
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.portions.RatingPortionStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.johanlund.screens.statistics.avg_stat.delta.DeltaAvgStatActivity"
+            android:parentActivityName="com.johanlund.screens.main.DrawerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.johanlund.screens.main.DrawerActivity" />
+        </activity>
+        <activity
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+
+</manifest>

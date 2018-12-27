@@ -1,0 +1,11 @@
+#Internal package file, do not edit.
+#Mon Nov 26 17:21:03 CET 2018
+1.base=/home/johan/AndroidStudioProjects/androidibsapp/app/build/intermediates/merged_assets/release/mergeReleaseAssets/out
+0.baseType=DIRECTORY
+1.baseType=DIRECTORY
+count=2
+1.set=ASSET
+0.path=classes.dex
+0.set=DEX
+0.base=/home/johan/AndroidStudioProjects/androidibsapp/app/build/intermediates/transforms/dexMerger/release/0
+1.path=org/threeten/bp/TZDB.dat

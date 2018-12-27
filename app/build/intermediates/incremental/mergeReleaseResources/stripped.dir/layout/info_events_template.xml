@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="8dp"
+    tools:layout_editor_absoluteY="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.johanlund.custom_views.HeadLineLayout
+            android:id="@+id/zeroAboutHeadLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            custom:idOfInfoBtn="@+id/uniqueNotImportantName0"
+            custom:infoBtnExists="false"
+            custom:textString="Concepts"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/z"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
+            custom:textForH2="How to save an EventsTemplate?"/>
+
+        <TextView
+            android:id="@+id/infoMealText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Mark an event item in the diary and press the disquette menu, and you should come here. Add a name for the EventsTemplate. You can add more events to your EventsTemplate or change them as you please. Note that the date of your events doesn't matter, they will be overridden by the date you choose to import it into. Time matters though."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/z"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/zi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoMealText"
+            custom:textForH2="How to load an EventsTemplate?"/>
+
+        <TextView
+            android:id="@+id/infoMealTex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Press the three dots of an EventsTemplate item, and choose 'Load into Diary'. Choose the date you want to load the diary into."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/zi"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/FirstHeadLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoMealTex"
+            custom:textForH2="How to edit an EventsTemplate"/>
+
+        <TextView
+            android:id="@+id/infoTypeOfExercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Edit the events of the EventsTemplate like you would have edited events in the diary. You can add and remove events as you please."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FirstHeadLine"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

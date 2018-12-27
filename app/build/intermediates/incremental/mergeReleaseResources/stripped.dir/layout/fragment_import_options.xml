@@ -1,0 +1,86 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:id="@+id/contraintLayout2"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context="com.johanlund.screens.load_import.mvc_controllers.ImportOptionsFragmentImpl">
+
+    <RadioGroup
+        android:id="@+id/import_alternatives"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose an alternative."
+            />
+
+        <RadioButton
+            android:id="@+id/radio_import_override"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Load Database"
+            />
+
+        <!-- THIS MIGHT BE ADDED LATER<RadioButton
+            android:id="@+id/radio_import_merge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Merge Database"/>-->
+
+        <RadioButton
+            android:id="@+id/radio_import_tagtypes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Import TagTypes"/>
+
+        <RadioButton
+            android:id="@+id/radio_import_event_templates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Import Event Templates"/>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/getDbFileBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="Get Database File!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/import_options_infobox"
+        app:layout_constraintVertical_bias="1.0"/>
+
+    <TextView
+        android:id="@+id/import_options_infobox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/import_alternatives"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.johanlund.screens.tag_type.TagTypeAdderActivity">
+
+    <com.johanlund.custom_views.HeadLineLayout
+        android:id="@+id/nameHeadLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        custom:idOfInfoBtn="@+id/newTagTypeNameItem"
+        custom:textString="Name of new Tag Type"/>
+
+    <EditText
+        android:id="@+id/name_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="write here"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameHeadLine"
+        />
+
+    <com.johanlund.custom_views.HeadLineLayout
+        android:id="@+id/parentHeadLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_box"
+        custom:idOfInfoBtn="@+id/parentOfTagTypeItem"
+        custom:textString="Add Parent to Tag Type"/>
+
+    <TextView
+        android:id="@+id/is_a_type_of"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/frame"
+        android:clickable="true"
+        android:padding="5dp"
+        android:text="@string/no_parent_of_tag_type_added"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/parentHeadLine"/>
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

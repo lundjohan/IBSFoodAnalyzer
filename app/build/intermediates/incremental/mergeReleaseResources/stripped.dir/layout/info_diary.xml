@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="8dp"
+    tools:layout_editor_absoluteY="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.johanlund.custom_views.HeadLineLayout
+            android:id="@+id/zeroAboutHeadLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            custom:idOfInfoBtn="@+id/uniqueNotImportantName0"
+            custom:infoBtnExists="false"
+            custom:textString="Concepts"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/z"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/zeroAboutHeadLine"
+            custom:textForH2="Adding events"/>
+
+        <TextView
+            android:id="@+id/infoMealText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Add an event by pressing one of the five buttons in the bottom (Meal, Other, Exercise, BM (Bowel Movement) and Rating events)."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/z"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/FirstHeadLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoMealText"
+            custom:textForH2="The Date"/>
+
+        <TextView
+            android:id="@+id/infoTypeOfExercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Change date by either pressing the date and choosing in the calendar, or change by swiping to left or right in the diary."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FirstHeadLine"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/FirstHeadLin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoTypeOfExercise"
+            custom:textForH2="Long clicks and short clicks on the events"/>
+
+        <TextView
+            android:id="@+id/infoTypeOfExercis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="When an event has been added to the diary, you can put your finger on top of the list item and either do a short click or a long click. A short click will let you change the event. A long click gives you some options. Some of them will be described below."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FirstHeadLin"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/FirstHeadLi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoTypeOfExercis"
+            custom:textForH2="Mark Event"/>
+
+        <TextView
+            android:id="@+id/infoTypeOfExerci"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="If you do a long click on a list item, you can mark one or several event(s). The menu will change when you mark events. You can then either save the events by using the Template button (a disquette) or you can directly copy the events to another time by using the copying button. "
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FirstHeadLi"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/FirstHeadL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoTypeOfExerci"
+            custom:textForH2="Templates"/>
+
+        <TextView
+            android:id="@+id/infoTypeOfExerc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="If you have saved a Template (see above), you can reach it by pressing the 'Loading Template' button, which lies next to the info button in the Diary. Templates are a good way to reuse the event or events that you use regurarly. Perhaps you for example have the same breakfast everyday?"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FirstHeadL"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/FirstHead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoTypeOfExerc"
+            custom:textForH2="Breaks"/>
+
+        <TextView
+            android:id="@+id/infoTypeOfExer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="If you longclick an event item, you can put a Break on the item (it is shown as a fat red border on top of the event item). Breaks can be used when you stop writing the diary for a while and you want the statistics to stop calculating ratings after that event (if breaks are not used, the algorithms will take care of it for you, you can choose the 'Automatic Break Hours' in Settings. Then a Break will be inplanted if there haven't been any added Events for a certain amount of hours). If you think this is too complicated, don't bother with Breaks, it will not matter that much."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FirstHead"/>
+
+        <com.johanlund.custom_views.SecondHeadLine
+            android:id="@+id/FirstHea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoTypeOfExer"
+            custom:textForH2="Saving the Diary"/>
+
+        <TextView
+            android:id="@+id/infoTypeOfExe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="From the Drawer Menu (the menu button with the three lines) you have three different options to save the Diary. The first one ''Export to file' saves the database of the Diary. The second alternative, 'Export to .csv file' saves the Diary as a .csv file that you can read inside an text editor on a computer. The third alternative, 'Export to .csv file for graph' just saves the Rating of the Diary over time. You can view this as a graph in OpenOffice calc if you want to. This third saving function might be replaced by an internal graph in the app in the future. A good idea is to save your database as often as you can, using 'Export to file' or 'Export to .csv file'. They are saved in the location pointed out by a pop-up. If you connect your device to a computer you can go to this folder and delete the files that are superflous, and perferably save some of the files on your computer as a back up (for example before an update of the app).."
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FirstHea"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
